@@ -22,7 +22,7 @@ Optional AI-enhanced narration:
 cp .env.example .env.local
 ```
 
-Then set `VITE_OPENAI_API_KEY` in `.env.local`, or paste an API key into the top-bar OpenAI narration field at runtime for local development. The current implementation keeps the browser speech engine for playback and uses the OpenAI Responses API only to generate more nuanced section scripts. For production, move the API call into a backend route.
+Then set `OPENAI_API_KEY` in `.env.local` for server-side proxying, or `VITE_OPENAI_API_KEY` if you are only testing the local dev server path. You can also paste an API key into the top-bar OpenAI narration field at runtime for local development. The current implementation keeps the browser speech engine for playback and uses the OpenAI Responses API only to generate more nuanced section scripts. For production, keep the key server-side.
 
 ## Shareable deployment
 
@@ -43,7 +43,7 @@ Steps:
 1. Push the repo to GitHub.
 2. Import the repo into Vercel.
 3. In Vercel project settings, add:
-   - `VITE_OPENAI_API_KEY=your_openai_key`
+   - `OPENAI_API_KEY=your_openai_key`
 4. Deploy.
 
 After that, you can send the Vercel URL directly to someone else.
@@ -131,7 +131,7 @@ You can also skip manual conversion and use the in-app importer to upload either
 
 - The Vite dev server already proxies `/api/openai/*` in local development.
 - Vercel handles those same routes in production via `api/openai/*`.
-- For a serious production deployment, prefer a server-side secret named something like `OPENAI_API_KEY` instead of exposing a `VITE_*` env convention. The current setup is optimized for fast MVP deployment.
+- For a serious production deployment, use `OPENAI_API_KEY` as a server-side secret. `VITE_OPENAI_API_KEY` is only appropriate for local MVP testing.
 
 ## Governance non-claims
 

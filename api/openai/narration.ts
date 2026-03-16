@@ -19,12 +19,14 @@ const extractBody = (body: unknown) => {
 
 export default async function handler(request: VercelRequest, response: VercelResponse) {
   if (request.method !== "POST") {
+    response.setHeader("Content-Type", "application/json");
     response.status(405).send(JSON.stringify({ error: "Method not allowed" }));
     return;
   }
 
-  const apiKey = process.env.VITE_OPENAI_API_KEY;
+  const apiKey = process.env.OPENAI_API_KEY ?? process.env.VITE_OPENAI_API_KEY;
   if (!apiKey) {
+    response.setHeader("Content-Type", "application/json");
     response.status(500).send(JSON.stringify({ error: "Missing VITE_OPENAI_API_KEY in server environment." }));
     return;
   }
@@ -43,6 +45,7 @@ export default async function handler(request: VercelRequest, response: VercelRe
     response.setHeader("Content-Type", upstream.headers.get("content-type") ?? "application/json");
     response.status(upstream.status).send(upstreamText);
   } catch (error) {
+    response.setHeader("Content-Type", "application/json");
     response
       .status(500)
       .send(

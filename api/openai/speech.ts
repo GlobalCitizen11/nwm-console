@@ -6,7 +6,7 @@ type VercelRequest = {
 type VercelResponse = {
   status: (code: number) => VercelResponse;
   setHeader: (name: string, value: string) => void;
-  send: (body: string | Uint8Array) => void;
+  send: (body: string | Buffer) => void;
 };
 
 const extractBody = (body: unknown) => {
@@ -19,12 +19,14 @@ const extractBody = (body: unknown) => {
 
 export default async function handler(request: VercelRequest, response: VercelResponse) {
   if (request.method !== "POST") {
+    response.setHeader("Content-Type", "application/json");
     response.status(405).send(JSON.stringify({ error: "Method not allowed" }));
     return;
   }
 
-  const apiKey = process.env.VITE_OPENAI_API_KEY;
+  const apiKey = process.env.OPENAI_API_KEY ?? process.env.VITE_OPENAI_API_KEY;
   if (!apiKey) {
+    response.setHeader("Content-Type", "application/json");
     response.status(500).send(JSON.stringify({ error: "Missing VITE_OPENAI_API_KEY in server environment." }));
     return;
   }
@@ -39,10 +41,11 @@ export default async function handler(request: VercelRequest, response: VercelRe
       body: extractBody(request.body),
     });
 
-    const buffer = new Uint8Array(await upstream.arrayBuffer());
+    const buffer = Buffer.from(await upstream.arrayBuffer());
     response.setHeader("Content-Type", upstream.headers.get("content-type") ?? "audio/mpeg");
     response.status(upstream.status).send(buffer);
   } catch (error) {
+    response.setHeader("Content-Type", "application/json");
     response
       .status(500)
       .send(
