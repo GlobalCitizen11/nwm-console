@@ -1,0 +1,16 @@
+{
+  "rewrites": [
+    {
+      "source": "/api/openai/narration",
+      "destination": "/api/openai/narration"
+    },
+    {
+      "source": "/api/openai/speech",
+      "destination": "/api/openai/speech"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
+}

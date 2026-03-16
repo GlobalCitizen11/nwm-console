@@ -1,0 +1,109 @@
+{
+  "event_set_id": "ai_sovereignty_initial_events",
+  "world_id": "ai_sovereignty_compute_access",
+  "events": [
+    {
+      "event_id": "event_001",
+      "event_title": "Expanded U.S. Export Controls on Advanced AI Chips",
+      "event_type": "policy_regulation",
+      "event_date": "2024-10-07",
+      "description": "The U.S. government expands export controls restricting the sale of advanced AI chips and semiconductor manufacturing equipment to Chinese firms.",
+      "source": "U.S. Department of Commerce policy announcement",
+      "confidence_level": "high",
+      "affected_actors": [
+        "United States Government",
+        "Chinese Government",
+        "NVIDIA",
+        "AMD"
+      ],
+      "affected_domains": [
+        "semiconductor supply chains",
+        "AI compute infrastructure"
+      ],
+      "narrative_significance": "Reinforces the framing of AI compute as a strategic national resource rather than a purely commercial technology.",
+      "severity_level": "medium",
+      "tags": [
+        "export_controls",
+        "ai_compute",
+        "geopolitics"
+      ]
+    },
+    {
+      "event_id": "event_002",
+      "event_title": "European Commission Announces Sovereign AI Compute Initiative",
+      "event_type": "policy_program",
+      "event_date": "2025-01-18",
+      "description": "The European Commission announces a large-scale program to build sovereign AI supercomputing infrastructure across the European Union.",
+      "source": "European Commission press briefing",
+      "confidence_level": "high",
+      "affected_actors": [
+        "European Union",
+        "European Commission",
+        "European cloud providers"
+      ],
+      "affected_domains": [
+        "compute infrastructure",
+        "AI governance"
+      ],
+      "narrative_significance": "Signals growing alignment around technological sovereignty in AI infrastructure.",
+      "severity_level": "low",
+      "tags": [
+        "ai_infrastructure",
+        "sovereignty",
+        "compute"
+      ]
+    },
+    {
+      "event_id": "event_003",
+      "event_title": "Hyperscalers Announce Multi-Billion Dollar AI Data Center Expansion",
+      "event_type": "corporate_infrastructure",
+      "event_date": "2025-02-10",
+      "description": "Major cloud providers announce large-scale investments in AI data centers and GPU clusters to support next-generation AI models.",
+      "source": "Corporate earnings calls and infrastructure announcements",
+      "confidence_level": "high",
+      "affected_actors": [
+        "Microsoft",
+        "Google",
+        "Amazon Web Services",
+        "NVIDIA"
+      ],
+      "affected_domains": [
+        "cloud infrastructure",
+        "AI compute markets"
+      ],
+      "narrative_significance": "Reinforces the role of hyperscalers as primary infrastructure gatekeepers for AI capability.",
+      "severity_level": "low",
+      "tags": [
+        "cloud",
+        "ai_compute",
+        "infrastructure"
+      ]
+    },
+    {
+      "event_id": "event_004",
+      "event_title": "Policy Debate Emerges Over Classifying Frontier AI Labs as Strategic Infrastructure",
+      "event_type": "policy_discussion",
+      "event_date": "2025-03-01",
+      "description": "Policy discussions begin regarding whether major frontier AI labs should be treated as strategic national infrastructure similar to defense contractors or energy systems.",
+      "source": "Policy think tanks and legislative hearings",
+      "confidence_level": "medium",
+      "affected_actors": [
+        "U.S. Congress",
+        "OpenAI",
+        "Anthropic",
+        "Google DeepMind"
+      ],
+      "affected_domains": [
+        "AI governance",
+        "technology regulation"
+      ],
+      "narrative_significance": "Introduces a structural reclassification pathway in which AI labs transition from private technology firms to strategically governed entities.",
+      "severity_level": "medium",
+      "tags": [
+        "ai_governance",
+        "strategic_infrastructure",
+        "regulation"
+      ]
+    }
+  ]
+}

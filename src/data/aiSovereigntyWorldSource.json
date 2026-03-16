@@ -1,0 +1,81 @@
+{
+  "world_id": "ai_sovereignty_compute_access",
+  "world_name": "AI Sovereignty and Compute Access",
+  "world_description": "A narrative environment focused on how governments, corporations, and institutions compete to control advanced artificial intelligence infrastructure, including compute resources, semiconductor supply chains, cloud platforms, and foundational models. The world tracks signals indicating shifts in technological sovereignty, regulatory control, and geopolitical alignment around AI capability.",
+  "scope_boundaries": {
+    "included_domains": [
+      "AI governance",
+      "semiconductor supply chains",
+      "compute infrastructure",
+      "national AI policy",
+      "cloud infrastructure",
+      "export controls",
+      "technology sovereignty",
+      "strategic infrastructure classification"
+    ],
+    "excluded_domains": [
+      "consumer AI applications",
+      "general startup funding unrelated to infrastructure",
+      "AI entertainment tools",
+      "non-strategic software products"
+    ]
+  },
+  "key_actors": [
+    "United States Government",
+    "European Union",
+    "Chinese Government",
+    "NVIDIA",
+    "OpenAI",
+    "Microsoft",
+    "Google",
+    "Amazon Web Services",
+    "TSMC",
+    "Intel",
+    "Sovereign Wealth Funds"
+  ],
+  "key_institutions": [
+    "U.S. Department of Commerce",
+    "European Commission",
+    "World Trade Organization",
+    "National Security Councils",
+    "Major sovereign investment authorities"
+  ],
+  "key_geographies": [
+    "United States",
+    "European Union",
+    "China",
+    "Taiwan",
+    "South Korea",
+    "Middle East"
+  ],
+  "key_infrastructures": [
+    "AI compute clusters",
+    "advanced semiconductor manufacturing",
+    "cloud hyperscaler infrastructure",
+    "GPU supply chains",
+    "data center power infrastructure"
+  ],
+  "primary_tensions": [
+    "Globalization vs technological sovereignty",
+    "Commercial AI development vs national security classification",
+    "Open compute access vs export control restrictions",
+    "Private AI labs vs state oversight"
+  ],
+  "time_horizon": "2024-2035",
+  "signal_types": [
+    "policy announcements",
+    "export control regulations",
+    "semiconductor supply shifts",
+    "cloud infrastructure investments",
+    "national AI legislation",
+    "corporate strategic partnerships",
+    "compute capacity restrictions"
+  ],
+  "initial_assumptions": [
+    "AI capability increasingly correlates with access to compute infrastructure",
+    "Compute supply chains may become geopolitically segmented",
+    "States may treat frontier AI companies as strategic national assets",
+    "AI infrastructure may be reclassified as critical national infrastructure"
+  ],
+  "analyst_notes": "This world monitors signals indicating a transition from globally integrated AI development toward regionally governed AI infrastructure regimes."
+}
