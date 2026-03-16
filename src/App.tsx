@@ -26,6 +26,7 @@ import { configurePreferredVoice, getSavedVoiceProfile, isOpenAiVoiceProfile, se
 import { generateOpenAiSpeechAudio } from "./utils/openaiNarration";
 import { hasOpenAiNarrationConfig } from "./utils/openaiNarration";
 import { readUrlState, writeUrlState } from "./utils/urlState";
+import { blockSectionAudio, claimAudioFocus, releaseAudioFocus, unblockSectionAudio } from "./utils/audioFocus";
 import { ExecutiveView } from "./views/ExecutiveView";
 import { AnalystView } from "./views/AnalystView";
 import { OversightView } from "./views/OversightView";
@@ -35,6 +36,7 @@ import { StateProvenancePanel } from "./components/StateProvenancePanel";
 import { ScenarioImportPanel } from "./components/ScenarioImportPanel";
 import { ActivityLogPanel } from "./components/ActivityLogPanel";
 import { AutoDemoPanel } from "./components/AutoDemoPanel";
+import { ArtifactIngressRibbon } from "./components/ArtifactIngressRibbon";
 
 type Role = "Executive" | "Analyst" | "Oversight" | "Sandbox";
 
@@ -209,6 +211,15 @@ const autoDemoScripts = {
       role: "Sandbox" as Role,
       month: 12,
       targetId: "demo-sandbox-controls",
+      presentationMode: false,
+    },
+    {
+      title: "Scenario import",
+      description:
+        "Right after the sandbox, you can move into Scenario Import. This is where you bring a new bounded world or event set into the console so the same workflow can be reused for a different operating environment, client case, or internal monitoring track.",
+      role: "Sandbox" as Role,
+      month: 12,
+      targetId: "demo-import",
       presentationMode: false,
     },
     {
@@ -394,6 +405,15 @@ const autoDemoScripts = {
       presentationMode: false,
     },
     {
+      title: "Scenario import",
+      description:
+        "Right after sandbox testing, Scenario Import shows that you can bring a new bounded world into the same workflow. That is useful when your team wants to move from a showcase world into a client-specific environment without changing the operating model of the console.",
+      role: "Sandbox" as Role,
+      month: 12,
+      targetId: "demo-import",
+      presentationMode: false,
+    },
+    {
       title: "Scenario report",
       description:
         "This operational summary acts as a compact scenario report. It captures the active world, current phase, transition count, and simulation status in one place so the analytical output can be handed off cleanly.",
@@ -418,15 +438,6 @@ const autoDemoScripts = {
       role: "Sandbox" as Role,
       month: 12,
       targetId: "demo-exports",
-      presentationMode: false,
-    },
-    {
-      title: "Scenario import and activity log",
-      description:
-        "You also have direct scenario import and a local activity log. That means the console can ingest new bounded worlds, preserve a working history, and support a more realistic institutional workflow beyond a single canned demo.",
-      role: "Sandbox" as Role,
-      month: 12,
-      targetId: "demo-import",
       presentationMode: false,
     },
     {
@@ -585,6 +596,15 @@ const autoDemoScripts = {
       presentationMode: false,
     },
     {
+      title: "Scenario import",
+      description:
+        "Right after sandbox testing, Scenario Import shows that the platform can take in a new bounded world and reuse the same governed workflow. That is important commercially because it shows you are not locked into one canned scenario or one static storyline.",
+      role: "Sandbox" as Role,
+      month: 12,
+      targetId: "demo-import",
+      presentationMode: false,
+    },
+    {
       title: "Scenario report and saved views",
       description:
         "After running a sandbox variation, the scenario report and saved views let you preserve the resulting posture and compare it against other checkpoints. That turns the sandbox from a one-off exploration into a reusable operating artifact.",
@@ -609,15 +629,6 @@ const autoDemoScripts = {
       role: "Sandbox" as Role,
       month: 12,
       targetId: "demo-exports",
-      presentationMode: false,
-    },
-    {
-      title: "Import path and operating history",
-      description:
-        "You can also import new scenarios and preserve an activity record inside the workspace. That is useful when you want this to operate like an ongoing client or internal review system rather than a single presentation artifact.",
-      role: "Sandbox" as Role,
-      month: 12,
-      targetId: "demo-import",
       presentationMode: false,
     },
     {
@@ -732,6 +743,7 @@ export default function App() {
   const demoAdvanceTimerRef = useRef<number | null>(null);
   const demoSandboxTimerRefs = useRef<number[]>([]);
   const demoNarrationRequestIdRef = useRef(0);
+  const autoDemoAudioOwnerIdRef = useRef("auto-demo-narration");
   const autoDemoPausedRef = useRef(autoDemoPaused);
   const autoDemoSteps = autoDemoScripts[autoDemoScriptId];
 
@@ -842,6 +854,15 @@ export default function App() {
     autoDemoPausedRef.current = autoDemoPaused;
   }, [autoDemoPaused]);
 
+  useEffect(() => {
+    if (autoDemoActive && !autoDemoPaused) {
+      blockSectionAudio();
+      return;
+    }
+
+    unblockSectionAudio();
+  }, [autoDemoActive, autoDemoPaused]);
+
   const stopAutoDemoNarration = useCallback(() => {
     demoNarrationRequestIdRef.current += 1;
     window.speechSynthesis.cancel();
@@ -853,6 +874,7 @@ export default function App() {
       window.URL.revokeObjectURL(demoAudioUrlRef.current);
       demoAudioUrlRef.current = null;
     }
+    releaseAudioFocus(autoDemoAudioOwnerIdRef.current);
   }, []);
 
   const stopAutoDemoPlayback = useCallback(() => {
@@ -1181,6 +1203,7 @@ export default function App() {
 
     const playNarration = async () => {
       stopAutoDemoNarration();
+      claimAudioFocus(autoDemoAudioOwnerIdRef.current, stopAutoDemoNarration);
       const narrationRequestId = demoNarrationRequestIdRef.current;
 
       if (isOpenAiVoiceProfile(voiceProfile)) {
@@ -1193,8 +1216,14 @@ export default function App() {
           demoAudioUrlRef.current = url;
           const audio = new Audio(url);
           demoAudioRef.current = audio;
-          audio.onended = finishStep;
-          audio.onerror = finishStep;
+          audio.onended = () => {
+            releaseAudioFocus(autoDemoAudioOwnerIdRef.current);
+            finishStep();
+          };
+          audio.onerror = () => {
+            releaseAudioFocus(autoDemoAudioOwnerIdRef.current);
+            finishStep();
+          };
           await audio.play();
           return;
         } catch {
@@ -1204,8 +1233,14 @@ export default function App() {
 
       const utterance = new SpeechSynthesisUtterance(step.description);
       configurePreferredVoice(utterance, "Executive");
-      utterance.onend = finishStep;
-      utterance.onerror = finishStep;
+      utterance.onend = () => {
+        releaseAudioFocus(autoDemoAudioOwnerIdRef.current);
+        finishStep();
+      };
+      utterance.onerror = () => {
+        releaseAudioFocus(autoDemoAudioOwnerIdRef.current);
+        finishStep();
+      };
       if (demoNarrationRequestIdRef.current !== narrationRequestId) {
         return;
       }
@@ -1430,7 +1465,7 @@ export default function App() {
                     title="Preferred audio brief voice"
                   >
                     <option value="google-us-female">Google US Female</option>
-                    <option value="openai-shimmer">OpenAI Voice</option>
+                    <option value="openai-shimmer">HiFi Audio</option>
                   </select>
                 </label>
               </div>
@@ -1461,6 +1496,7 @@ export default function App() {
             ) : null}
           </div>
         </header>
+        <ArtifactIngressRibbon events={selectedScenario.dataset.events} currentMonth={safeMonth} />
 
         <main
           className={`mx-auto grid max-w-[1600px] gap-5 px-4 py-5 ${

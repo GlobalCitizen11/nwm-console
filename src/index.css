@@ -149,3 +149,110 @@ input {
   border-radius: 0.75rem;
   animation: demo-highlight 2.4s ease-in-out infinite;
 }
+
+@keyframes artifact-ribbon-scroll {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+.artifact-ribbon-label {
+  display: flex;
+  min-width: 176px;
+  flex-direction: column;
+  gap: 0.1rem;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+}
+
+.artifact-ribbon-label-neutral {
+  color: #d5b349;
+}
+
+.artifact-ribbon-label-yellow {
+  color: #d5b349;
+}
+
+.artifact-ribbon-label-orange {
+  color: #c76c2d;
+}
+
+.artifact-ribbon-label-red {
+  color: #a94646;
+}
+
+.artifact-ribbon-track {
+  position: relative;
+  overflow: hidden;
+  flex: 1;
+  mask-image: linear-gradient(to right, transparent 0, black 4%, black 96%, transparent 100%);
+}
+
+.artifact-ribbon-marquee {
+  display: flex;
+  width: max-content;
+  gap: 0.75rem;
+  animation: artifact-ribbon-scroll var(--artifact-ribbon-duration, 32s) linear infinite;
+}
+
+.artifact-ribbon-track:hover .artifact-ribbon-marquee {
+  animation-play-state: paused;
+}
+
+.artifact-ribbon-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  white-space: nowrap;
+  border: 1px solid rgba(46, 63, 82, 0.75);
+  background: rgba(15, 22, 30, 0.9);
+  padding: 0.5rem 0.75rem;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #d7e0ea;
+}
+
+.artifact-ribbon-item-latest {
+  border-color: rgba(213, 179, 73, 0.62);
+  box-shadow: 0 0 0 1px rgba(213, 179, 73, 0.22);
+}
+
+.artifact-ribbon-month,
+.artifact-ribbon-source {
+  color: #9fb0c1;
+}
+
+.artifact-ribbon-title {
+  text-transform: none;
+  letter-spacing: 0.01em;
+  color: #eef3f7;
+}
+
+.artifact-ribbon-effect {
+  font-weight: 600;
+}
+
+.artifact-ribbon-empty {
+  flex: 1;
+  border: 1px solid rgba(46, 63, 82, 0.75);
+  background: rgba(15, 22, 30, 0.9);
+  padding: 0.65rem 0.75rem;
+  font-size: 12px;
+  color: #9fb0c1;
+}
+
+.artifact-mobile-card {
+  border: 1px solid rgba(46, 63, 82, 0.75);
+  background: rgba(15, 22, 30, 0.9);
+  padding: 0.7rem 0.8rem;
+}
+
+.artifact-mobile-card-latest {
+  border-color: rgba(213, 179, 73, 0.62);
+  box-shadow: 0 0 0 1px rgba(213, 179, 73, 0.16);
+}

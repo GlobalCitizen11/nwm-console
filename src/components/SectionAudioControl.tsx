@@ -5,6 +5,7 @@ import {
   generateOpenAiSpeechAudio,
 } from "../utils/openaiNarration";
 import { configurePreferredVoice, isOpenAiVoiceProfile } from "../utils/speech";
+import { claimAudioFocus, isSectionAudioBlocked, releaseAudioFocus } from "../utils/audioFocus";
 
 interface SectionAudioControlProps {
   sectionTitle: string;
@@ -34,8 +35,10 @@ export function SectionAudioControl({
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const audioUrlRef = useRef<string | null>(null);
+  const ownerIdRef = useRef(`section-audio-${sectionTitle.replace(/\s+/g, "-").toLowerCase()}-${Math.random().toString(36).slice(2, 8)}`);
 
   useEffect(() => {
+    const ownerId = ownerIdRef.current;
     setSupported(typeof window !== "undefined" && ("speechSynthesis" in window || "Audio" in window));
     return () => {
       if (typeof window !== "undefined" && "speechSynthesis" in window) {
@@ -47,8 +50,26 @@ export function SectionAudioControl({
       if (audioUrlRef.current) {
         window.URL.revokeObjectURL(audioUrlRef.current);
       }
+      releaseAudioFocus(ownerId);
     };
   }, []);
+
+  const stopPlayback = () => {
+    if (typeof window !== "undefined" && "speechSynthesis" in window) {
+      window.speechSynthesis.cancel();
+    }
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current = null;
+    }
+    if (audioUrlRef.current) {
+      window.URL.revokeObjectURL(audioUrlRef.current);
+      audioUrlRef.current = null;
+    }
+    setSpeaking(false);
+    setLoading(false);
+    releaseAudioFocus(ownerIdRef.current);
+  };
 
   const buildScript = () => {
     return [
@@ -67,10 +88,17 @@ export function SectionAudioControl({
     if (!supported || typeof window === "undefined") {
       return;
     }
+    claimAudioFocus(ownerIdRef.current, stopPlayback);
     const utterance = new SpeechSynthesisUtterance(script);
     configurePreferredVoice(utterance, role);
-    utterance.onend = () => setSpeaking(false);
-    utterance.onerror = () => setSpeaking(false);
+    utterance.onend = () => {
+      setSpeaking(false);
+      releaseAudioFocus(ownerIdRef.current);
+    };
+    utterance.onerror = () => {
+      setSpeaking(false);
+      releaseAudioFocus(ownerIdRef.current);
+    };
     setSpeaking(true);
     window.speechSynthesis.cancel();
     window.speechSynthesis.speak(utterance);
@@ -81,14 +109,9 @@ export function SectionAudioControl({
       return;
     }
 
-    if (audioRef.current) {
-      audioRef.current.pause();
-      audioRef.current = null;
-    }
-    if (audioUrlRef.current) {
-      window.URL.revokeObjectURL(audioUrlRef.current);
-      audioUrlRef.current = null;
-    }
+    claimAudioFocus(ownerIdRef.current, stopPlayback);
+    stopPlayback();
+    claimAudioFocus(ownerIdRef.current, stopPlayback);
 
     const blob = await generateOpenAiSpeechAudio(script, voiceProfile, role);
     const url = window.URL.createObjectURL(blob);
@@ -103,6 +126,7 @@ export function SectionAudioControl({
         audioUrlRef.current = null;
       }
       audioRef.current = null;
+      releaseAudioFocus(ownerIdRef.current);
     };
     audio.onerror = () => {
       setSpeaking(false);
@@ -111,6 +135,7 @@ export function SectionAudioControl({
         audioUrlRef.current = null;
       }
       audioRef.current = null;
+      releaseAudioFocus(ownerIdRef.current);
     };
 
     setSpeaking(true);
@@ -121,20 +146,15 @@ export function SectionAudioControl({
     if (!supported || typeof window === "undefined") {
       return;
     }
+
+    if (isSectionAudioBlocked()) {
+      setErrorMessage("Auto demo narration is active. Pause or stop the demo before playing a section brief.");
+      return;
+    }
     const useOpenAiVoice = isOpenAiVoiceProfile(voiceProfile);
 
     if (speaking) {
-      window.speechSynthesis.cancel();
-      if (audioRef.current) {
-        audioRef.current.pause();
-        audioRef.current = null;
-      }
-      if (audioUrlRef.current) {
-        window.URL.revokeObjectURL(audioUrlRef.current);
-        audioUrlRef.current = null;
-      }
-      setSpeaking(false);
-      setLoading(false);
+      stopPlayback();
       return;
     }
 
@@ -179,7 +199,7 @@ export function SectionAudioControl({
             : "Speech synthesis unavailable"
         }
       >
-        {speaking ? "Stop Audio" : loading ? "Preparing AI Audio" : label}
+        {speaking ? "Stop Audio" : loading ? "Preparing Audio" : label}
       </button>
       {errorMessage ? (
         <p className="max-w-xs text-right text-[11px] leading-5 text-phaseOrange">

@@ -76,6 +76,19 @@
       "haloColor": "#c76c2d"
     },
     {
+      "id": "B4A",
+      "month": 5,
+      "label": "B4A",
+      "title": "Strategic Inventory Buffer Mandate",
+      "description": "A new buffer mandate requires strategic inventory reserves for critical manufacturing inputs, increasing policy density around resilient supply posture.",
+      "sourceType": "policy",
+      "domainTags": ["inventory", "buffer", "resilience"],
+      "structuralEffect": "reinforce",
+      "metrics": { "velocity": 42, "density": 46, "coherence": 51, "reversibility": 48 },
+      "phase": "Escalation Edge",
+      "haloColor": "#c76c2d"
+    },
+    {
       "id": "B5",
       "month": 6,
       "label": "B5",
@@ -111,6 +124,19 @@
       "domainTags": ["insurance", "logistics", "repricing"],
       "structuralEffect": "destabilize",
       "metrics": { "velocity": 63, "density": 67, "coherence": 43, "reversibility": 31 },
+      "phase": "Escalation Edge",
+      "haloColor": "#c76c2d"
+    },
+    {
+      "id": "B7A",
+      "month": 9,
+      "label": "B7A",
+      "title": "Trusted Logistics Corridor Certification",
+      "description": "Allied governments begin certifying trusted logistics corridors, signaling narrower tolerance for open routing across strategic shipments.",
+      "sourceType": "infrastructure",
+      "domainTags": ["trusted-corridor", "logistics", "certification"],
+      "structuralEffect": "reclassify",
+      "metrics": { "velocity": 51, "density": 61, "coherence": 50, "reversibility": 33 },
       "phase": "Escalation Edge",
       "haloColor": "#c76c2d"
     },
@@ -154,6 +180,19 @@
       "haloColor": "#a94646"
     },
     {
+      "id": "B10A",
+      "month": 13,
+      "label": "B10A",
+      "title": "Dual-Source Compliance Covenant",
+      "description": "Large buyers adopt dual-source compliance covenants, increasing evidence that resilience rules are now embedded in procurement logic.",
+      "sourceType": "market",
+      "domainTags": ["dual-source", "procurement", "compliance"],
+      "structuralEffect": "reclassify",
+      "metrics": { "velocity": 57, "density": 68, "coherence": 58, "reversibility": 24 },
+      "phase": "Structural Reclassification",
+      "haloColor": "#a94646"
+    },
+    {
       "id": "B11",
       "month": 14,
       "label": "B11",
@@ -193,6 +232,19 @@
       "haloColor": "#645091"
     },
     {
+      "id": "B13A",
+      "month": 17,
+      "label": "B13A",
+      "title": "Alliance Capacity Escrow Agreement",
+      "description": "Alliance members create escrowed access rights for strategic capacity, further reducing assumptions of neutral spot access during stress.",
+      "sourceType": "sovereign",
+      "domainTags": ["capacity", "alliance", "escrow"],
+      "structuralEffect": "reclassify",
+      "metrics": { "velocity": 56, "density": 79, "coherence": 62, "reversibility": 14 },
+      "phase": "Fragmented Regime",
+      "haloColor": "#645091"
+    },
+    {
       "id": "B14",
       "month": 18,
       "label": "B14",
@@ -202,6 +254,19 @@
       "domainTags": ["supplier-allocation", "bloc-alignment", "capacity-access"],
       "structuralEffect": "reclassify",
       "metrics": { "velocity": 59, "density": 85, "coherence": 69, "reversibility": 11 },
+      "phase": "Fragmented Regime",
+      "haloColor": "#645091"
+    },
+    {
+      "id": "B15",
+      "month": 18,
+      "label": "B15",
+      "title": "Strategic Sourcing Covenant Publication",
+      "description": "A published sourcing covenant codifies durable bloc-first supplier preferences across advanced manufacturing categories.",
+      "sourceType": "policy",
+      "domainTags": ["sourcing", "covenant", "bloc-first"],
+      "structuralEffect": "reclassify",
+      "metrics": { "velocity": 55, "density": 80, "coherence": 66, "reversibility": 13 },
       "phase": "Fragmented Regime",
       "haloColor": "#645091"
     }
