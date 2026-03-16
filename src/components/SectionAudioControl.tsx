@@ -33,6 +33,7 @@ export function SectionAudioControl({
   const [speaking, setSpeaking] = useState(false);
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [pendingTapToPlay, setPendingTapToPlay] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const audioUrlRef = useRef<string | null>(null);
   const ownerIdRef = useRef(`section-audio-${sectionTitle.replace(/\s+/g, "-").toLowerCase()}-${Math.random().toString(36).slice(2, 8)}`);
@@ -68,6 +69,7 @@ export function SectionAudioControl({
     }
     setSpeaking(false);
     setLoading(false);
+    setPendingTapToPlay(false);
     releaseAudioFocus(ownerIdRef.current);
   };
 
@@ -121,6 +123,7 @@ export function SectionAudioControl({
 
     audio.onended = () => {
       setSpeaking(false);
+      setPendingTapToPlay(false);
       if (audioUrlRef.current) {
         window.URL.revokeObjectURL(audioUrlRef.current);
         audioUrlRef.current = null;
@@ -130,6 +133,7 @@ export function SectionAudioControl({
     };
     audio.onerror = () => {
       setSpeaking(false);
+      setPendingTapToPlay(false);
       if (audioUrlRef.current) {
         window.URL.revokeObjectURL(audioUrlRef.current);
         audioUrlRef.current = null;
@@ -138,8 +142,43 @@ export function SectionAudioControl({
       releaseAudioFocus(ownerIdRef.current);
     };
 
-    setSpeaking(true);
-    await audio.play();
+    try {
+      setSpeaking(true);
+      setPendingTapToPlay(false);
+      await audio.play();
+    } catch (error) {
+      const errorMessage =
+        error instanceof Error ? error.message.toLowerCase() : "";
+      if (
+        errorMessage.includes("not allowed") ||
+        errorMessage.includes("user agent") ||
+        errorMessage.includes("denied permission")
+      ) {
+        setSpeaking(false);
+        setPendingTapToPlay(true);
+        return;
+      }
+
+      throw error;
+    }
+  };
+
+  const playPreparedAudio = async () => {
+    if (!audioRef.current) {
+      return;
+    }
+
+    try {
+      claimAudioFocus(ownerIdRef.current, stopPlayback);
+      setErrorMessage(null);
+      setPendingTapToPlay(false);
+      setSpeaking(true);
+      await audioRef.current.play();
+    } catch (error) {
+      setSpeaking(false);
+      setPendingTapToPlay(true);
+      setErrorMessage(error instanceof Error ? error.message : "Prepared audio could not start.");
+    }
   };
 
   const toggleSpeech = async () => {
@@ -162,6 +201,7 @@ export function SectionAudioControl({
       try {
         setErrorMessage(null);
         setLoading(true);
+        setPendingTapToPlay(false);
         const generatedScript = await generateOpenAiNarration({
           sectionTitle,
           role,
@@ -201,9 +241,21 @@ export function SectionAudioControl({
       >
         {speaking ? "Stop Audio" : loading ? "Preparing Audio" : label}
       </button>
+      {pendingTapToPlay ? (
+        <button
+          className="rounded-sm border border-phaseYellow px-3 py-2 text-xs uppercase tracking-[0.16em] text-phaseYellow hover:border-ink hover:text-ink"
+          onClick={playPreparedAudio}
+        >
+          Tap To Play
+        </button>
+      ) : null}
       {errorMessage ? (
         <p className="max-w-xs text-right text-[11px] leading-5 text-phaseOrange">
           OpenAI audio unavailable. {errorMessage}
+        </p>
+      ) : pendingTapToPlay ? (
+        <p className="max-w-xs text-right text-[11px] leading-5 text-muted">
+          Audio is ready. Tap to play on this device.
         </p>
       ) : null}
     </div>
