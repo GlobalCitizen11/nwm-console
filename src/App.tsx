@@ -1318,17 +1318,17 @@ export default function App() {
           onSpeedChange={(speed) => setAutoDemoSpeed(speed as AutoDemoSpeed)}
         />
 
-        <header className="sticky top-0 z-30 border-b border-edge bg-panel/95">
-          <div className="mx-auto flex max-w-[1600px] flex-col gap-5 px-4 py-4">
-            <div className="flex flex-col gap-4 xl:flex-row xl:items-end xl:justify-between">
+        <header className="z-30 border-b border-edge bg-panel/95 lg:sticky lg:top-0">
+          <div className="mx-auto flex max-w-[1600px] flex-col gap-4 px-4 py-3 md:gap-4 md:py-3 xl:gap-5 xl:py-4">
+            <div className="flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between xl:gap-4">
               <div>
                 <p className="section-kicker">Narrative World Modeling Console</p>
-                <h1 className="mt-2 text-3xl font-semibold">NWM Console</h1>
-                <p className="mt-2 max-w-3xl text-sm leading-6 text-muted">
+                <h1 className="mt-1.5 text-2xl font-semibold md:text-[1.75rem] xl:mt-2 xl:text-3xl">NWM Console</h1>
+                <p className="mt-1.5 max-w-3xl text-sm leading-6 text-muted md:max-w-2xl xl:mt-2">
                   {selectedScenario.description} Traceable orientation, adjudicated transitions, and bounded scenario review for institutional operators.
                 </p>
               </div>
-              <div className="surface-panel-subtle grid gap-2 px-4 py-3 text-sm xl:min-w-[360px]">
+              <div className="surface-panel-subtle hidden gap-2 px-4 py-3 text-sm lg:grid lg:min-w-[320px] xl:min-w-[360px]">
                 <div className="flex items-center justify-between gap-4">
                   <span className="text-muted">Scenario</span>
                   <span className="text-ink">{selectedScenario.label}</span>
@@ -1355,12 +1355,12 @@ export default function App() {
                 </div>
               </div>
             </div>
-            <div className="flex flex-col gap-3 xl:flex-row xl:items-end xl:justify-between">
+            <div className="flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
               <div className="segmented-control">
               {(["Executive", "Analyst", "Sandbox", "Oversight"] as Role[]).map((candidate) => (
                 <button
                   key={candidate}
-                  className={`rounded-md border px-3 py-2 text-sm transition-colors ${
+                  className={`rounded-md border px-2.5 py-2 text-sm transition-colors md:px-3 ${
                     role === candidate ? "border-muted bg-shell text-ink" : "border-edge/70 text-muted hover:border-edge hover:text-ink"
                   }`}
                   onClick={() => setRole(candidate)}
@@ -1387,7 +1387,7 @@ export default function App() {
                 Reset Demo State
               </button>
               </div>
-              <div className="grid gap-3 md:grid-cols-3">
+              <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
                 <label className="control-stack">
                   <span className="control-label">Scenario</span>
                   <select
@@ -1436,8 +1436,8 @@ export default function App() {
               </div>
             </div>
             {role === "Executive" ? (
-              <div className="flex flex-col gap-3 xl:flex-row xl:items-center xl:justify-end">
-                <div className="surface-panel-subtle text-sm text-muted">
+              <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between xl:justify-end">
+                <div className="surface-panel-subtle text-sm text-muted lg:flex-1 xl:flex-none">
                   <p>
                     Demo readiness:{" "}
                     <span className={isDemoReady ? "text-phaseYellow" : "text-ink"}>
