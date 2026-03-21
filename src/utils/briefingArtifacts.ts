@@ -508,6 +508,16 @@ const sharedConsoleStyles = `
           linear-gradient(180deg, rgba(20, 30, 40, 0.985) 0%, rgba(12, 19, 27, 0.985) 52%, rgba(9, 14, 20, 0.99) 100%);
         box-shadow: 0 28px 80px rgba(0, 0, 0, 0.34);
         overflow: hidden;
+        position: relative;
+      }
+      .sheet::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        background:
+          radial-gradient(circle at top right, rgba(122, 165, 199, 0.08), transparent 26%),
+          linear-gradient(180deg, transparent 0%, rgba(255, 255, 255, 0.015) 100%);
       }
       .header,
       .deck-header {
@@ -567,6 +577,7 @@ const sharedConsoleStyles = `
         background: linear-gradient(180deg, rgba(13, 20, 28, 0.78) 0%, rgba(10, 16, 23, 0.68) 100%);
         padding: 16px 17px;
         min-height: 92px;
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.025);
       }
       .meta-card p {
         margin: 8px 0 0;
@@ -584,6 +595,7 @@ const sharedConsoleStyles = `
         border: 1px solid rgba(113, 138, 161, 0.2);
         background: linear-gradient(180deg, rgba(12, 18, 25, 0.78) 0%, rgba(10, 15, 21, 0.7) 100%);
         padding: 20px 22px;
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.025);
       }
       .section-title {
         margin: 8px 0 13px;
@@ -605,6 +617,7 @@ const sharedConsoleStyles = `
         border: 1px solid rgba(128, 151, 172, 0.24);
         background: linear-gradient(180deg, rgba(21, 30, 39, 0.95) 0%, rgba(13, 20, 27, 0.95) 100%);
         padding: 13px 14px;
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
       }
       .system-chip .label {
         display: block;
@@ -647,6 +660,7 @@ const sharedConsoleStyles = `
         color: #d3dee8;
         line-height: 1.62;
         font-size: 13px;
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.025);
       }
       strong { color: #f4f8fb; font-weight: 600; }
       ul { margin: 12px 0 0; padding-left: 20px; }
@@ -677,6 +691,11 @@ const sharedConsoleStyles = `
             linear-gradient(180deg, rgba(20, 30, 40, 0.99) 0%, rgba(12, 19, 27, 0.99) 52%, rgba(9, 14, 20, 1) 100%);
           overflow: visible;
         }
+        .sheet::after {
+          background:
+            radial-gradient(circle at top right, rgba(122, 165, 199, 0.06), transparent 28%),
+            linear-gradient(180deg, transparent 0%, rgba(255, 255, 255, 0.012) 100%);
+        }
         .header,
         .deck-header,
         .section,
@@ -694,7 +713,7 @@ const sharedConsoleStyles = `
         }
         .body,
         .deck {
-          padding: 22px 30px 28px;
+          padding: 24px 32px 32px;
         }
         .header::before,
         .deck-header::before {

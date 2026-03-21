@@ -42,16 +42,16 @@ const buildPdfDocument = (html: string, orientation: "portrait" | "landscape") =
     <style>
       @page {
         size: ${orientation === "landscape" ? "letter landscape" : "letter portrait"};
-        margin: 12mm;
+        margin: 0;
       }
       html, body {
         margin: 0;
+        min-height: 100%;
         background: #0c1117;
       }
-      @media print {
-        html, body {
-          background: #ffffff;
-        }
+      body {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
       }
     </style>
   </head>
@@ -98,10 +98,10 @@ export default async function handler(request: VercelRequest, response: VercelRe
       landscape: orientation === "landscape",
       printBackground: true,
       margin: {
-        top: "12mm",
-        right: "12mm",
-        bottom: "12mm",
-        left: "12mm",
+        top: "0",
+        right: "0",
+        bottom: "0",
+        left: "0",
       },
       preferCSSPageSize: true,
     });
