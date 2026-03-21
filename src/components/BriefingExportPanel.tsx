@@ -199,9 +199,46 @@ export function BriefingExportPanel({ scenarioLabel, result, point, currentView,
       </div>
     </div>
     <script>
+      const downloadButton = document.getElementById("download-artifact");
+      const setDownloadState = (label, disabled) => {
+        if (!downloadButton) return;
+        downloadButton.textContent = label;
+        downloadButton.disabled = disabled;
+        downloadButton.style.opacity = disabled ? "0.75" : "1";
+        downloadButton.style.cursor = disabled ? "progress" : "pointer";
+      };
+
       document.getElementById("download-artifact")?.addEventListener("click", () => {
-        window.focus();
-        window.print();
+        setDownloadState("Preparing PDF...", true);
+        fetch("/api/briefings/pdf", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            html: ${JSON.stringify(artifact.html)},
+            filename: ${JSON.stringify(artifact.filename)},
+            orientation: ${JSON.stringify(artifact.orientation ?? "portrait")}
+          })
+        })
+          .then(async (response) => {
+            if (!response.ok) {
+              throw new Error(await response.text());
+            }
+            return response.blob();
+          })
+          .then((blob) => {
+            const url = window.URL.createObjectURL(blob);
+            const anchor = document.createElement("a");
+            anchor.href = url;
+            anchor.download = ${JSON.stringify(artifact.filename)};
+            anchor.click();
+            window.URL.revokeObjectURL(url);
+            setDownloadState("Download PDF", false);
+          })
+          .catch(() => {
+            setDownloadState("Print Fallback", false);
+            window.focus();
+            window.print();
+          });
       });
       document.getElementById("close-preview")?.addEventListener("click", () => window.close());
     </script>
