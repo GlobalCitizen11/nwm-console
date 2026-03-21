@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from "react";
+import { useMemo } from "react";
 import type { SimulationResult, ViewSnapshot, WorldStatePoint } from "../types";
 import {
   extractBriefingState,
@@ -6,7 +6,6 @@ import {
   renderExecutiveBriefHtml,
   renderPresentationBriefHtml,
 } from "../utils/briefingArtifacts";
-import { downloadStyledPdfArtifact } from "../utils/pdfArtifacts";
 
 interface BriefingExportPanelProps {
   scenarioLabel: string;
@@ -78,32 +77,6 @@ export function BriefingExportPanel({ scenarioLabel, result, point, currentView,
     }),
     [briefingState, currentView.name, currentView.scenarioId, exportTag],
   );
-
-  useEffect(() => {
-    const handlePreviewDownload = (event: MessageEvent) => {
-      const artifactKey = event.data?.type === "nwm-download-artifact" ? (event.data.artifact as PreviewArtifactKey | undefined) : undefined;
-      if (!artifactKey || !(artifactKey in previewArtifacts)) {
-        return;
-      }
-
-      const artifact = previewArtifacts[artifactKey];
-      const artifactMap: Record<PreviewArtifactKey, string> = {
-        executive: "executive_brief",
-        presentation: "presentation_brief",
-        board: "board_one_pager",
-      };
-
-      onExport?.(artifactMap[artifact.artifact]);
-      void downloadStyledPdfArtifact({
-        filename: artifact.filename,
-        html: artifact.html,
-        orientation: artifact.orientation,
-      });
-    };
-
-    window.addEventListener("message", handlePreviewDownload);
-    return () => window.removeEventListener("message", handlePreviewDownload);
-  }, [onExport, previewArtifacts]);
 
   const buildPreviewDocument = (artifact: PreviewArtifact) => `<!DOCTYPE html>
 <html lang="en">
@@ -183,6 +156,21 @@ export function BriefingExportPanel({ scenarioLabel, result, point, currentView,
       .preview-surface {
         padding: 20px 20px 36px;
       }
+      @page {
+        size: ${artifact.orientation === "landscape" ? "letter landscape" : "letter portrait"};
+        margin: 12mm;
+      }
+      @media print {
+        body {
+          background: #ffffff;
+        }
+        .preview-toolbar {
+          display: none !important;
+        }
+        .preview-surface {
+          padding: 0;
+        }
+      }
       @media (max-width: 720px) {
         .preview-toolbar {
           padding: 14px 16px;
@@ -212,7 +200,8 @@ export function BriefingExportPanel({ scenarioLabel, result, point, currentView,
     </div>
     <script>
       document.getElementById("download-artifact")?.addEventListener("click", () => {
-        window.opener?.postMessage({ type: "nwm-download-artifact", artifact: "${artifact.artifact}" }, "*");
+        window.focus();
+        window.print();
       });
       document.getElementById("close-preview")?.addEventListener("click", () => window.close());
     </script>
@@ -226,6 +215,13 @@ export function BriefingExportPanel({ scenarioLabel, result, point, currentView,
       return;
     }
 
+    const artifactMap: Record<PreviewArtifactKey, string> = {
+      executive: "executive_brief",
+      presentation: "presentation_brief",
+      board: "board_one_pager",
+    };
+
+    onExport?.(artifactMap[artifact]);
     previewWindow.document.open();
     previewWindow.document.write(buildPreviewDocument(preview));
     previewWindow.document.close();
