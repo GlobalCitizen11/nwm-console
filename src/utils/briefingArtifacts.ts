@@ -659,8 +659,8 @@ const sharedConsoleStyles = `
       }
       @media print {
         body {
-          background: #ffffff;
-          color: #0f1720;
+          background: #081018;
+          color: #dbe6ef;
           padding: 0;
         }
         .sheet {
@@ -668,7 +668,8 @@ const sharedConsoleStyles = `
           max-width: none;
           border: 0;
           box-shadow: none;
-          background: #ffffff;
+          background:
+            linear-gradient(180deg, rgba(20, 30, 40, 0.99) 0%, rgba(12, 19, 27, 0.99) 52%, rgba(9, 14, 20, 1) 100%);
           overflow: visible;
         }
         .header,
@@ -678,20 +679,20 @@ const sharedConsoleStyles = `
         .system-chip,
         .note-band,
         .slide {
-          border-color: #d7dee6;
-          background: #ffffff !important;
+          border-color: rgba(113, 138, 161, 0.22);
+          background: rgba(11, 17, 24, 0.78) !important;
           box-shadow: none !important;
         }
         .header::before,
         .deck-header::before {
-          background: linear-gradient(90deg, #a57a22 0%, #567b98 48%, transparent 100%);
+          background: linear-gradient(90deg, #d4b15f 0%, #7aa5c7 48%, transparent 100%);
         }
         .kicker,
         .sub,
         .footer,
         .system-chip .label,
         .slide-number {
-          color: #607283 !important;
+          color: #88a0b4 !important;
         }
         h1,
         .section-title,
@@ -699,16 +700,16 @@ const sharedConsoleStyles = `
         .meta-card p,
         h2,
         strong {
-          color: #111b24 !important;
+          color: #f4f8fb !important;
         }
         .bullet-list,
         .section p,
         .note-band,
         li,
         .notes {
-          color: #2a3947 !important;
+          color: #d8e3eb !important;
         }
-        .accent { color: #805d11; }
+        .accent { color: #d9b768; }
         .meta-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
         .section-grid-two,
         .board-grid { grid-template-columns: 1fr 1fr; }
