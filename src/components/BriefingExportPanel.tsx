@@ -1,4 +1,11 @@
 import type { SimulationResult, ViewSnapshot, WorldStatePoint } from "../types";
+import {
+  composeExecutiveBrief,
+  extractBriefingState,
+  renderBoardOnePagerHtml,
+  renderExecutiveBriefHtml,
+  renderPresentationBriefHtml,
+} from "../utils/briefingArtifacts";
 
 interface BriefingExportPanelProps {
   scenarioLabel: string;
@@ -18,132 +25,19 @@ const download = (filename: string, content: string, mime = "application/json") 
   window.URL.revokeObjectURL(url);
 };
 
-const buildExecutiveBriefHtml = (
-  scenarioLabel: string,
-  result: SimulationResult,
-  point: WorldStatePoint,
-  currentView: ViewSnapshot,
-) => `<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <title>${scenarioLabel} Brief</title>
-    <style>
-      body { font-family: "Avenir Next", "Segoe UI", Arial, sans-serif; background: #0c1117; color: #d7e0ea; margin: 0; padding: 32px; }
-      .sheet { max-width: 980px; margin: 0 auto; border: 1px solid #223041; background: #121922; padding: 28px; }
-      .kicker { font-size: 11px; letter-spacing: 0.24em; text-transform: uppercase; color: #7f90a4; }
-      h1 { margin: 12px 0 8px; font-size: 30px; }
-      .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin-top: 20px; }
-      .card { border: 1px solid #223041; background: #0c1117; padding: 16px; }
-      .muted { color: #7f90a4; }
-      .wide { margin-top: 18px; border: 1px solid #223041; background: #0c1117; padding: 16px; }
-      ul { margin: 10px 0 0 18px; color: #d7e0ea; }
-    </style>
-  </head>
-  <body>
-    <section class="sheet">
-      <div class="kicker">Executive Brief</div>
-      <h1>${scenarioLabel}</h1>
-      <p class="muted">${result.world.summary}</p>
-      <div class="grid">
-        <div class="card"><div class="kicker">World</div><p>${result.world.name}</p></div>
-        <div class="card"><div class="kicker">Month</div><p>${point.month}</p></div>
-        <div class="card"><div class="kicker">Phase</div><p>${point.phase}</p></div>
-        <div class="card"><div class="kicker">Transitions</div><p>${result.transitions.length}</p></div>
-        <div class="card"><div class="kicker">Velocity</div><p>${point.metrics.velocity}</p></div>
-        <div class="card"><div class="kicker">Density</div><p>${point.metrics.density}</p></div>
-        <div class="card"><div class="kicker">Coherence</div><p>${point.metrics.coherence}</p></div>
-        <div class="card"><div class="kicker">Reversibility</div><p>${point.metrics.reversibility}</p></div>
-      </div>
-      <section class="wide">
-        <div class="kicker">Boundary</div>
-        <p>${result.world.domain} | ${result.world.geography} | ${result.world.governanceMode}</p>
-        <p class="muted">${result.world.summary}</p>
-      </section>
-      <section class="wide">
-        <div class="kicker">Transition Highlights</div>
-        <ul>
-          ${result.transitions
-            .slice(0, 4)
-            .map((transition) => `<li>Month ${transition.month}: ${transition.fromPhase} to ${transition.toPhase}</li>`)
-            .join("") || "<li>No adjudicated transitions recorded.</li>"}
-        </ul>
-      </section>
-      <p class="muted" style="margin-top: 22px;">Generated from ${currentView.name}. Orientation and evidence only. Not automated judgment.</p>
-    </section>
-  </body>
-</html>`;
-
-const buildBoardOnePagerHtml = (
-  scenarioLabel: string,
-  result: SimulationResult,
-  point: WorldStatePoint,
-  currentView: ViewSnapshot,
-) => `<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <title>${scenarioLabel} Board One Pager</title>
-    <style>
-      body { font-family: "Avenir Next", "Segoe UI", Arial, sans-serif; background: #f5f7fa; color: #14202b; margin: 0; padding: 28px; }
-      .sheet { max-width: 980px; margin: 0 auto; background: #ffffff; border: 1px solid #d6dde5; padding: 28px; }
-      .kicker { font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: #6f8091; }
-      h1 { margin: 12px 0 6px; font-size: 30px; }
-      .sub { color: #516170; line-height: 1.6; }
-      .grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin-top: 18px; }
-      .card { border: 1px solid #d6dde5; padding: 14px; background: #fbfcfd; }
-      .section { margin-top: 20px; border-top: 1px solid #d6dde5; padding-top: 18px; }
-      ul { margin: 10px 0 0 18px; }
-    </style>
-  </head>
-  <body>
-    <section class="sheet">
-      <div class="kicker">Board One Pager</div>
-      <h1>${scenarioLabel}</h1>
-      <p class="sub">${result.world.summary}</p>
-      <div class="grid">
-        <div class="card"><div class="kicker">Current Phase</div><p>${point.phase}</p></div>
-        <div class="card"><div class="kicker">Replay Month</div><p>${point.month}</p></div>
-        <div class="card"><div class="kicker">Transitions</div><p>${result.transitions.length}</p></div>
-        <div class="card"><div class="kicker">Governance</div><p>${result.world.governanceMode}</p></div>
-      </div>
-      <section class="section">
-        <div class="kicker">Narrative Bounded World</div>
-        <p>${result.world.name}</p>
-        <p class="sub">${result.world.domain} | ${result.world.geography} | ${result.world.timeHorizonMonths} months</p>
-      </section>
-      <section class="section">
-        <div class="kicker">Key Signals To Watch</div>
-        <ul>
-          <li>Velocity ${point.metrics.velocity}, density ${point.metrics.density}, coherence ${point.metrics.coherence}, reversibility ${point.metrics.reversibility}</li>
-          <li>${result.transitions.length > 0 ? `Most recent adjudicated transition: month ${result.transitions[result.transitions.length - 1].month}` : "No adjudicated transition yet"}</li>
-          <li>Visible artifacts at this point: ${point.visibleEvents.length}</li>
-        </ul>
-      </section>
-      <section class="section">
-        <div class="kicker">Governed Use</div>
-        <p class="sub">Use this brief for executive orientation, review timing, committee preparation, and structured follow-up. Generated from ${currentView.name}.</p>
-      </section>
-    </section>
-  </body>
-</html>`;
-
 export function BriefingExportPanel({ scenarioLabel, result, point, currentView, onExport }: BriefingExportPanelProps) {
+  const briefingState = extractBriefingState({
+    scenarioName: scenarioLabel,
+    result,
+    point,
+    currentView,
+  });
+
   const exportExecutiveBrief = () => {
     onExport?.("executive_brief");
     download(
       `${currentView.scenarioId}-executive-brief.txt`,
-      [
-        `Scenario: ${scenarioLabel}`,
-        `World: ${result.world.name}`,
-        `Month: ${point.month}`,
-        `Phase: ${point.phase}`,
-        `Velocity: ${point.metrics.velocity}`,
-        `Density: ${point.metrics.density}`,
-        `Coherence: ${point.metrics.coherence}`,
-        `Reversibility: ${point.metrics.reversibility}`,
-        `Transitions: ${result.transitions.length}`,
-      ].join("\n"),
+      composeExecutiveBrief(briefingState),
       "text/plain",
     );
   };
@@ -185,7 +79,7 @@ export function BriefingExportPanel({ scenarioLabel, result, point, currentView,
     onExport?.("presentation_brief");
     download(
       `${currentView.scenarioId}-executive-brief.html`,
-      buildExecutiveBriefHtml(scenarioLabel, result, point, currentView),
+      renderPresentationBriefHtml(briefingState, currentView.name),
       "text/html",
     );
   };
@@ -194,7 +88,7 @@ export function BriefingExportPanel({ scenarioLabel, result, point, currentView,
     onExport?.("board_one_pager");
     download(
       `${currentView.scenarioId}-board-one-pager.html`,
-      buildBoardOnePagerHtml(scenarioLabel, result, point, currentView),
+      renderBoardOnePagerHtml(briefingState, currentView.name),
       "text/html",
     );
   };
@@ -205,7 +99,7 @@ export function BriefingExportPanel({ scenarioLabel, result, point, currentView,
     if (!printWindow) {
       return;
     }
-    printWindow.document.write(buildExecutiveBriefHtml(scenarioLabel, result, point, currentView));
+    printWindow.document.write(renderExecutiveBriefHtml(briefingState, currentView.name));
     printWindow.document.close();
     printWindow.focus();
     printWindow.print();

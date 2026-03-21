@@ -211,3 +211,56 @@ export interface ActivityLogEntry {
   subject: string;
   detail: string;
 }
+
+export interface BriefingRawState {
+  scenarioName: string;
+  result: SimulationResult;
+  point: WorldStatePoint;
+  currentView: ViewSnapshot;
+}
+
+export interface BriefingState {
+  scenarioName: string;
+  boundedWorld: string;
+  boundaryDefinition: string;
+  asOf: string;
+  phase: string;
+  narrativeDensity: "low" | "building" | "high" | "saturated";
+  structuralMomentum: "fragmenting" | "consolidating" | "cascading";
+  reversibility: "high" | "conditional" | "low" | "locked-in";
+  cyclePosition: "emergence" | "expansion" | "entrenchment" | "resolution-pressure";
+  currentCondition: string;
+  structuralShift: string;
+  earlySignals: string[];
+  systemicUptake: string[];
+  latestDevelopments: string[];
+  pressurePoints: string[];
+  crossDomainEffects: string[];
+  stabilitySignals: string[];
+  signalAnchors: string[];
+  primaryPath: string;
+  alternatePaths: string[];
+  priorities: string[];
+  sensitivities: string[];
+  visibilityNeeds: string[];
+}
+
+export interface PresentationBriefSlide {
+  title: string;
+  bullets: string[];
+  speakerNotes: string;
+}
+
+export interface PresentationBrief {
+  slides: PresentationBriefSlide[];
+}
+
+export interface BoardOnePager {
+  situationInBrief: string;
+  whyThisMattersNow: string;
+  whatHasShifted: string[];
+  structuralReading: string;
+  oversightPriorities: string[];
+  signalBasis: string[];
+  stabilitySignals: string[];
+}
