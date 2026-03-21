@@ -491,13 +491,14 @@ const sharedConsoleStyles = `
       html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
       body {
         margin: 0;
-        padding: 24px;
+        padding: 28px;
         background:
           radial-gradient(circle at top left, rgba(45, 71, 96, 0.25), transparent 28%),
           linear-gradient(180deg, #081018 0%, #0b1219 100%);
         color: #dbe6ef;
         font-family: "Avenir Next", "Inter", "Segoe UI", Arial, sans-serif;
         text-rendering: optimizeLegibility;
+        font-feature-settings: "liga" 1, "kern" 1;
       }
       .sheet {
         width: min(100%, 1100px);
@@ -511,7 +512,7 @@ const sharedConsoleStyles = `
       .header,
       .deck-header {
         position: relative;
-        padding: 30px 34px 22px;
+        padding: 34px 38px 24px;
         border-bottom: 1px solid rgba(113, 138, 161, 0.22);
         background:
           linear-gradient(135deg, rgba(18, 28, 39, 0.98) 0%, rgba(11, 18, 26, 0.94) 62%, rgba(8, 13, 19, 0.98) 100%);
@@ -528,28 +529,30 @@ const sharedConsoleStyles = `
       .kicker {
         font-size: 10px;
         font-weight: 600;
-        letter-spacing: 0.22em;
+        letter-spacing: 0.24em;
         text-transform: uppercase;
         color: #88a0b4;
       }
       h1 {
-        margin: 14px 0 10px;
+        margin: 16px 0 10px;
         color: #f5f9fc;
-        font-size: 32px;
-        line-height: 1.08;
-        letter-spacing: -0.03em;
+        font-size: 36px;
+        font-weight: 650;
+        line-height: 1.02;
+        letter-spacing: -0.035em;
       }
       .sub {
         margin: 0;
         color: #9db3c3;
-        line-height: 1.6;
-        font-size: 14px;
+        line-height: 1.55;
+        font-size: 13px;
+        letter-spacing: 0.01em;
       }
       .meta-grid {
         display: grid;
         grid-template-columns: repeat(4, minmax(0, 1fr));
-        gap: 12px;
-        margin-top: 20px;
+        gap: 14px;
+        margin-top: 24px;
       }
       .meta-card,
       .section,
@@ -561,46 +564,47 @@ const sharedConsoleStyles = `
       }
       .meta-card {
         border: 1px solid rgba(113, 138, 161, 0.2);
-        background: rgba(11, 17, 24, 0.66);
-        padding: 15px 16px;
-        min-height: 84px;
+        background: linear-gradient(180deg, rgba(13, 20, 28, 0.78) 0%, rgba(10, 16, 23, 0.68) 100%);
+        padding: 16px 17px;
+        min-height: 92px;
       }
       .meta-card p {
         margin: 8px 0 0;
         color: #edf4fa;
-        font-size: 14px;
-        line-height: 1.52;
+        font-size: 13px;
+        line-height: 1.55;
       }
       .body,
       .deck {
-        padding: 24px 34px 34px;
+        padding: 26px 38px 38px;
       }
-      .section-grid { display: grid; gap: 14px; }
-      .section-grid-two { display: grid; grid-template-columns: 1.35fr 1fr; gap: 14px; }
+      .section-grid { display: grid; gap: 16px; }
+      .section-grid-two { display: grid; grid-template-columns: 1.35fr 1fr; gap: 16px; }
       .section {
         border: 1px solid rgba(113, 138, 161, 0.2);
-        background: rgba(11, 17, 24, 0.68);
-        padding: 18px 20px;
+        background: linear-gradient(180deg, rgba(12, 18, 25, 0.78) 0%, rgba(10, 15, 21, 0.7) 100%);
+        padding: 20px 22px;
       }
       .section-title {
-        margin: 6px 0 12px;
+        margin: 8px 0 13px;
         color: #f1f7fc;
-        font-size: 18px;
-        line-height: 1.18;
-        letter-spacing: -0.02em;
+        font-size: 19px;
+        font-weight: 620;
+        line-height: 1.14;
+        letter-spacing: -0.025em;
       }
       .section p {
-        margin: 0 0 12px;
+        margin: 0 0 13px;
         color: #d6e2eb;
-        line-height: 1.68;
-        font-size: 14px;
+        line-height: 1.72;
+        font-size: 13.5px;
       }
       .section p:last-child { margin-bottom: 0; }
-      .system-strip { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px; }
+      .system-strip { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px; }
       .system-chip {
         border: 1px solid rgba(128, 151, 172, 0.24);
         background: linear-gradient(180deg, rgba(21, 30, 39, 0.95) 0%, rgba(13, 20, 27, 0.95) 100%);
-        padding: 12px 13px;
+        padding: 13px 14px;
       }
       .system-chip .label {
         display: block;
@@ -614,37 +618,38 @@ const sharedConsoleStyles = `
         display: block;
         margin-top: 8px;
         color: #f3f8fc;
-        font-size: 14px;
-        line-height: 1.35;
+        font-size: 13.5px;
+        line-height: 1.4;
       }
       .bullet-list {
         margin: 0;
-        padding-left: 18px;
+        padding-left: 20px;
         color: #d8e3eb;
       }
       .bullet-list li {
-        margin: 0 0 8px;
-        line-height: 1.58;
-        font-size: 14px;
+        margin: 0 0 9px;
+        line-height: 1.6;
+        font-size: 13.5px;
       }
       .accent { color: #d9b768; }
       .footer {
-        margin-top: 16px;
+        margin-top: 20px;
         color: #7c95aa;
         font-size: 11px;
-        letter-spacing: 0.04em;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
       }
-      .stack { display: grid; gap: 12px; }
+      .stack { display: grid; gap: 14px; }
       .note-band {
         border: 1px solid rgba(128, 151, 172, 0.22);
         background: rgba(19, 28, 38, 0.74);
-        padding: 14px 16px;
+        padding: 15px 16px;
         color: #d3dee8;
-        line-height: 1.58;
+        line-height: 1.62;
         font-size: 13px;
       }
       strong { color: #f4f8fb; font-weight: 600; }
-      ul { margin: 10px 0 0; padding-left: 18px; }
+      ul { margin: 12px 0 0; padding-left: 20px; }
       li { margin-bottom: 8px; }
       @media screen and (max-width: 960px) {
         body { padding: 14px; }
@@ -655,7 +660,7 @@ const sharedConsoleStyles = `
         .body,
         .deck,
         .header,
-        .deck-header { padding-left: 20px; padding-right: 20px; }
+        .deck-header { padding-left: 22px; padding-right: 22px; }
       }
       @media print {
         body {
@@ -682,6 +687,14 @@ const sharedConsoleStyles = `
           border-color: rgba(113, 138, 161, 0.22);
           background: rgba(11, 17, 24, 0.78) !important;
           box-shadow: none !important;
+        }
+        .header,
+        .deck-header {
+          padding: 28px 30px 20px;
+        }
+        .body,
+        .deck {
+          padding: 22px 30px 28px;
         }
         .header::before,
         .deck-header::before {
@@ -713,6 +726,15 @@ const sharedConsoleStyles = `
         .meta-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
         .section-grid-two,
         .board-grid { grid-template-columns: 1fr 1fr; }
+        .section-grid-two > .section,
+        .board-grid > .section,
+        .meta-card,
+        .section,
+        .note-band,
+        .system-chip {
+          break-inside: avoid;
+          page-break-inside: avoid;
+        }
       }
 `;
 
@@ -831,27 +853,27 @@ export function renderPresentationBriefHtml(state: BriefingState, currentViewNam
     <title>${escapeHtml(state.scenarioName)} Presentation Slides</title>
     <style>
       ${sharedConsoleStyles}
-      .deck-header { padding: 28px 30px 16px; border-bottom: 1px solid #223041; }
-      .deck { padding: 22px 30px 30px; display: grid; gap: 16px; }
+      .deck-header { padding: 30px 34px 18px; border-bottom: 1px solid rgba(113, 138, 161, 0.22); }
+      .deck { padding: 24px 34px 34px; display: grid; gap: 18px; }
       .slide {
         border: 1px solid rgba(113, 138, 161, 0.2);
-        background: rgba(11,17,24,0.74);
-        padding: 22px 24px;
-        min-height: 240px;
+        background: linear-gradient(180deg, rgba(12, 18, 25, 0.78) 0%, rgba(10, 15, 21, 0.7) 100%);
+        padding: 24px 26px;
+        min-height: 250px;
       }
       .slide-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
       .slide-number { font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: #7f90a4; }
       h2 { margin: 12px 0; font-size: 24px; line-height: 1.14; letter-spacing: -0.025em; color: #f3f8fc; }
-      .notes { margin-top: 14px; color: #9aa8b7; font-size: 13px; line-height: 1.6; border-top: 1px solid rgba(113, 138, 161, 0.2); padding-top: 12px; }
+      .notes { margin-top: 16px; color: #9aa8b7; font-size: 12.5px; line-height: 1.62; border-top: 1px solid rgba(113, 138, 161, 0.2); padding-top: 13px; }
       .slide ul { margin-top: 14px; }
-      .slide li { color: #dbe6ef; font-size: 14px; line-height: 1.6; }
+      .slide li { color: #dbe6ef; font-size: 13.5px; line-height: 1.62; }
       @media print {
         .deck { gap: 0; padding-top: 18px; }
         .slide {
           min-height: 0;
           border: 0;
           border-top: 1px solid #d7dee6;
-          padding: 18px 0 14px;
+          padding: 20px 0 16px;
           page-break-after: always;
         }
         .slide:last-of-type { page-break-after: auto; }
@@ -901,7 +923,7 @@ export function renderBoardOnePagerHtml(state: BriefingState, currentViewName: s
       .board-grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 14px; }
       @media print {
         .body { padding-top: 18px; padding-bottom: 20px; }
-        .section { padding: 16px 18px; }
+        .section { padding: 17px 18px; }
       }
     </style>
   </head>
