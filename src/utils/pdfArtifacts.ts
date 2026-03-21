@@ -16,6 +16,13 @@ const parseArtifactHtml = (html: string) => {
   };
 };
 
+const waitForLayout = () =>
+  new Promise<void>((resolve) => {
+    window.requestAnimationFrame(() => {
+      window.requestAnimationFrame(() => resolve());
+    });
+  });
+
 export async function downloadStyledPdfArtifact({
   filename,
   html,
@@ -26,28 +33,32 @@ export async function downloadStyledPdfArtifact({
 
   const host = document.createElement("div");
   host.style.position = "fixed";
-  host.style.left = "0";
+  host.style.left = "-20000px";
   host.style.top = "0";
   host.style.width = orientation === "landscape" ? "1400px" : "1120px";
   host.style.pointerEvents = "none";
-  host.style.opacity = "1";
-  host.style.transform = "translateX(-200vw)";
-  host.style.zIndex = "-1";
   host.style.background = "#0c1117";
-
-  const style = document.createElement("style");
-  style.textContent = `
-    ${parsed.styles}
-    .sheet { box-shadow: none !important; }
-    .slide, .section, .meta-card, .system-chip, .note-band { break-inside: avoid; }
+  host.style.zIndex = "-1";
+  host.innerHTML = `
+    <style>
+      ${parsed.styles}
+      body { margin: 0; background: #0c1117; }
+      .sheet { box-shadow: none !important; }
+      .slide, .section, .meta-card, .system-chip, .note-band { break-inside: avoid; }
+    </style>
+    ${parsed.body}
   `;
 
-  host.innerHTML = parsed.body;
-
-  document.head.appendChild(style);
   document.body.appendChild(host);
 
   try {
+    await waitForLayout();
+
+    const target = Array.from(host.children).find((element) => element instanceof HTMLElement && !element.matches("style")) as HTMLElement | undefined;
+    if (!target) {
+      throw new Error("No PDF artifact content was rendered.");
+    }
+
     await html2pdf()
       .set({
         filename,
@@ -69,10 +80,9 @@ export async function downloadStyledPdfArtifact({
           avoid: ".section,.meta-card,.system-chip,.note-band",
         },
       } as never)
-      .from(host)
+      .from(target)
       .save();
   } finally {
     document.body.removeChild(host);
-    document.head.removeChild(style);
   }
 }
