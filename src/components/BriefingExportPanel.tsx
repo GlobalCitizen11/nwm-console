@@ -1,6 +1,5 @@
 import type { SimulationResult, ViewSnapshot, WorldStatePoint } from "../types";
 import {
-  composeExecutiveBrief,
   extractBriefingState,
   renderBoardOnePagerHtml,
   renderExecutiveBriefHtml,
@@ -36,9 +35,9 @@ export function BriefingExportPanel({ scenarioLabel, result, point, currentView,
   const exportExecutiveBrief = () => {
     onExport?.("executive_brief");
     download(
-      `${currentView.scenarioId}-executive-brief.txt`,
-      composeExecutiveBrief(briefingState),
-      "text/plain",
+      `${currentView.scenarioId}-executive-brief.html`,
+      renderExecutiveBriefHtml(briefingState, currentView.name),
+      "text/html",
     );
   };
 
@@ -123,7 +122,7 @@ export function BriefingExportPanel({ scenarioLabel, result, point, currentView,
         <div className="surface-panel-subtle flex items-center justify-between gap-4 p-4">
           <div>
             <p className="text-sm font-medium text-ink">Executive Brief</p>
-            <p className="mt-1 text-sm text-muted">Plain-text summary for fast redistribution.</p>
+            <p className="mt-1 text-sm text-muted">Styled console brief for executive circulation or direct review.</p>
           </div>
           <button className="action-button text-left" onClick={exportExecutiveBrief}>
             Export

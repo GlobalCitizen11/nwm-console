@@ -486,32 +486,147 @@ const escapeHtml = (value: string) =>
     .replace(/"/g, "&quot;")
     .replace(/'/g, "&#39;");
 
-export function renderExecutiveBriefHtml(state: BriefingState, currentViewName: string) {
-  const executiveBrief = composeExecutiveBrief(state)
-    .split("\n")
-    .map((line) => escapeHtml(line))
-    .join("<br />");
+const sharedConsoleStyles = `
+      body { font-family: "Avenir Next", "Segoe UI", Arial, sans-serif; background: #0c1117; color: #d7e0ea; margin: 0; padding: 24px; }
+      .sheet { max-width: 1100px; margin: 0 auto; border: 1px solid #223041; background:
+        linear-gradient(180deg, rgba(18,25,34,0.98) 0%, rgba(11,17,24,0.98) 100%);
+        box-shadow: 0 18px 44px rgba(0,0,0,0.32); }
+      .header { padding: 28px 30px 18px; border-bottom: 1px solid #223041; }
+      .kicker { font-size: 11px; letter-spacing: 0.24em; text-transform: uppercase; color: #7f90a4; }
+      h1 { margin: 12px 0 10px; font-size: 32px; line-height: 1.15; }
+      .sub { color: #97a8ba; line-height: 1.65; margin: 0; }
+      .meta-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin-top: 18px; }
+      .meta-card { border: 1px solid #223041; background: rgba(11,17,24,0.72); padding: 14px; min-height: 74px; }
+      .meta-card p { margin: 8px 0 0; color: #eef3f7; font-size: 15px; line-height: 1.45; }
+      .body { padding: 22px 30px 30px; }
+      .section-grid { display: grid; gap: 14px; }
+      .section-grid-two { display: grid; grid-template-columns: 1.35fr 1fr; gap: 14px; }
+      .section { border: 1px solid #223041; background: rgba(11,17,24,0.72); padding: 18px; }
+      .section-title { margin: 0 0 12px; font-size: 18px; color: #eef3f7; }
+      .section p { margin: 0 0 12px; color: #d7e0ea; line-height: 1.72; font-size: 14px; }
+      .section p:last-child { margin-bottom: 0; }
+      .system-strip { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px; }
+      .system-chip { border: 1px solid #2c3b4d; background: rgba(15,22,30,0.92); padding: 12px; }
+      .system-chip .label { display: block; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: #7f90a4; }
+      .system-chip .value { display: block; margin-top: 8px; color: #eef3f7; font-size: 15px; line-height: 1.3; }
+      .bullet-list { margin: 0; padding-left: 18px; color: #d7e0ea; }
+      .bullet-list li { margin: 0 0 8px; line-height: 1.6; }
+      .accent { color: #d5b349; }
+      .footer { margin-top: 18px; color: #7f90a4; font-size: 12px; }
+      .stack { display: grid; gap: 12px; }
+      .note-band { border: 1px solid #2c3b4d; background: rgba(20,29,40,0.74); padding: 14px 16px; color: #c9d4df; line-height: 1.6; }
+      @media print {
+        body { background: #ffffff; color: #101923; padding: 0; }
+        .sheet { border: 0; box-shadow: none; background: #ffffff; max-width: none; }
+        .header, .section, .meta-card, .system-chip, .note-band { border-color: #d7dde4; background: #ffffff; }
+        .kicker, .sub, .footer, .system-chip .label { color: #556575; }
+        h1, .section-title, .system-chip .value, .meta-card p { color: #101923; }
+        .bullet-list, .section p, .note-band { color: #253342; }
+        .accent { color: #835e00; }
+      }
+`;
 
+const renderSystemStrip = (state: BriefingState) =>
+  formatSystemStateBlock(state)
+    .map((line) => {
+      const [label, value] = line.split(": ");
+      return `<div class="system-chip"><span class="label">${escapeHtml(label)}</span><span class="value">${escapeHtml(value)}</span></div>`;
+    })
+    .join("");
+
+const renderBulletList = (items: string[]) =>
+  `<ul class="bullet-list">${items.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>`;
+
+export function renderExecutiveBriefHtml(state: BriefingState, currentViewName: string) {
   return `<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>${escapeHtml(state.scenarioName)} Presentation Brief</title>
+    <title>${escapeHtml(state.scenarioName)} Executive Brief</title>
     <style>
-      body { font-family: "Avenir Next", "Segoe UI", Arial, sans-serif; background: #0c1117; color: #d7e0ea; margin: 0; padding: 32px; }
-      .sheet { max-width: 980px; margin: 0 auto; border: 1px solid #223041; background: #121922; padding: 28px; }
-      .kicker { font-size: 11px; letter-spacing: 0.24em; text-transform: uppercase; color: #7f90a4; }
-      h1 { margin: 12px 0 8px; font-size: 30px; }
-      .content { margin-top: 18px; font-size: 14px; line-height: 1.8; white-space: normal; }
-      .footer { margin-top: 22px; color: #7f90a4; font-size: 12px; }
+      ${sharedConsoleStyles}
     </style>
   </head>
   <body>
     <section class="sheet">
-      <div class="kicker">Presentation Brief</div>
-      <h1>${escapeHtml(state.scenarioName)}</h1>
-      <div class="content">${executiveBrief}</div>
-      <p class="footer">Generated from ${escapeHtml(currentViewName)}. Orientation and evidence only.</p>
+      <header class="header">
+        <div class="kicker">Executive Brief</div>
+        <h1>${escapeHtml(state.scenarioName)}</h1>
+        <p class="sub">${escapeHtml(state.boundedWorld)} | ${escapeHtml(state.asOf)} | <span class="accent">${escapeHtml(state.phase)}</span></p>
+        <div class="meta-grid">
+          <div class="meta-card"><div class="kicker">Boundary</div><p>${escapeHtml(state.boundaryDefinition)}</p></div>
+          <div class="meta-card"><div class="kicker">Primary Path</div><p>${escapeHtml(state.primaryPath)}</p></div>
+          <div class="meta-card"><div class="kicker">Structural Shift</div><p>${escapeHtml(state.structuralShift)}</p></div>
+          <div class="meta-card"><div class="kicker">Current Condition</div><p>${escapeHtml(state.currentCondition)}</p></div>
+        </div>
+      </header>
+      <div class="body">
+        <section class="section">
+          <div class="kicker">System State</div>
+          <div class="system-strip">${renderSystemStrip(state)}</div>
+        </section>
+
+        <div class="section-grid-two" style="margin-top:14px;">
+          <section class="section">
+            <div class="kicker">System State Overview</div>
+            <h2 class="section-title">Current condition and operational meaning</h2>
+            <p>${escapeHtml(state.currentCondition)} ${escapeHtml(state.structuralShift)}</p>
+            <p>Operationally, the visible pattern is carrying pressure through ${escapeHtml(joinList(state.pressurePoints.slice(0, 2)))}. The current readout is being shaped by structural uptake rather than one-off noise.</p>
+          </section>
+          <section class="section">
+            <div class="kicker">Forward Orientation</div>
+            <h2 class="section-title">Primary and alternate paths</h2>
+            <p>${escapeHtml(state.primaryPath)}</p>
+            ${state.alternatePaths.map((path) => `<p>${escapeHtml(path)}</p>`).join("")}
+          </section>
+        </div>
+
+        <div class="section-grid-two" style="margin-top:14px;">
+          <section class="section">
+            <div class="kicker">Narrative Development</div>
+            <h2 class="section-title">How the current state formed</h2>
+            <div class="stack">
+              <div class="note-band"><strong>Early signals.</strong> ${escapeHtml(`Formation began through ${joinList(state.earlySignals)}.`)}</div>
+              <div class="note-band"><strong>Systemic uptake.</strong> ${escapeHtml(`Broader uptake followed through ${joinList(state.systemicUptake.slice(0, 3))}.`)}</div>
+              <div class="note-band"><strong>Current condition.</strong> ${escapeHtml(`The present phase is now carried by ${joinList(state.latestDevelopments.slice(0, 3))}.`)}</div>
+            </div>
+          </section>
+          <section class="section">
+            <div class="kicker">Structural Interpretation</div>
+            <h2 class="section-title">What the pattern means</h2>
+            <p>The visible pressure is no longer confined to a single lane. It is now moving through the boundary in a way that aligns multiple source classes and gives the current phase more institutional weight.</p>
+            <p>${escapeHtml(joinList(state.crossDomainEffects.slice(0, 2)))} This is why the current state reads as structural rather than episodic.</p>
+          </section>
+        </div>
+
+        <div class="section-grid-two" style="margin-top:14px;">
+          <section class="section">
+            <div class="kicker">Strategic Positioning</div>
+            <h2 class="section-title">Priorities, sensitivities, visibility</h2>
+            ${renderBulletList([...state.priorities, ...state.sensitivities, ...state.visibilityNeeds].slice(0, 7))}
+          </section>
+          <section class="section">
+            <div class="kicker">Signal Basis</div>
+            <h2 class="section-title">Observable anchors</h2>
+            ${renderBulletList(state.signalAnchors)}
+          </section>
+        </div>
+
+        <div class="section-grid-two" style="margin-top:14px;">
+          <section class="section">
+            <div class="kicker">Cross-Domain Effects</div>
+            <h2 class="section-title">How domains are interacting</h2>
+            ${renderBulletList(state.crossDomainEffects)}
+          </section>
+          <section class="section">
+            <div class="kicker">Stability / Containment</div>
+            <h2 class="section-title">What is not spreading</h2>
+            ${renderBulletList(state.stabilitySignals)}
+          </section>
+        </div>
+
+        <p class="footer">Generated from ${escapeHtml(currentViewName)}. Orientation and evidence only.</p>
+      </div>
     </section>
   </body>
 </html>`;
@@ -525,23 +640,31 @@ export function renderPresentationBriefHtml(state: BriefingState, currentViewNam
     <meta charset="UTF-8" />
     <title>${escapeHtml(state.scenarioName)} Presentation Slides</title>
     <style>
-      body { font-family: "Avenir Next", "Segoe UI", Arial, sans-serif; background: #0c1117; color: #d7e0ea; margin: 0; padding: 24px; }
-      .deck { max-width: 1100px; margin: 0 auto; display: grid; gap: 18px; }
-      .slide { border: 1px solid #223041; background: #121922; padding: 22px; }
-      .kicker { font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: #7f90a4; }
+      ${sharedConsoleStyles}
+      .deck-header { padding: 28px 30px 16px; border-bottom: 1px solid #223041; }
+      .deck { padding: 22px 30px 30px; display: grid; gap: 16px; }
+      .slide { border: 1px solid #223041; background: rgba(11,17,24,0.74); padding: 20px; }
+      .slide-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+      .slide-number { font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: #7f90a4; }
       h2 { margin: 12px 0; font-size: 24px; }
-      ul { margin: 12px 0 0 18px; padding: 0; }
-      li { margin: 0 0 8px; line-height: 1.6; }
-      .notes { margin-top: 14px; color: #9aa8b7; font-size: 13px; line-height: 1.6; }
-      .footer { margin-top: 18px; color: #7f90a4; font-size: 12px; }
+      .notes { margin-top: 14px; color: #9aa8b7; font-size: 13px; line-height: 1.6; border-top: 1px solid #223041; padding-top: 12px; }
     </style>
   </head>
   <body>
-    <section class="deck">
+    <section class="sheet">
+      <header class="deck-header">
+        <div class="kicker">Presentation Brief</div>
+        <h1>${escapeHtml(state.scenarioName)}</h1>
+        <p class="sub">${escapeHtml(state.boundedWorld)} | ${escapeHtml(state.asOf)} | <span class="accent">${escapeHtml(state.phase)}</span></p>
+      </header>
+      <div class="deck">
       ${brief.slides
         .map(
           (slide, index) => `<article class="slide">
-            <div class="kicker">Slide ${index + 1}</div>
+            <div class="slide-top">
+              <div class="kicker">Presentation Slide</div>
+              <div class="slide-number">Slide ${index + 1}</div>
+            </div>
             <h2>${escapeHtml(slide.title)}</h2>
             <ul>
               ${slide.bullets.map((bullet) => `<li>${escapeHtml(bullet)}</li>`).join("")}
@@ -551,6 +674,7 @@ export function renderPresentationBriefHtml(state: BriefingState, currentViewNam
         )
         .join("")}
       <p class="footer">Generated from ${escapeHtml(currentViewName)}. Orientation and evidence only.</p>
+      </div>
     </section>
   </body>
 </html>`;
@@ -564,64 +688,56 @@ export function renderBoardOnePagerHtml(state: BriefingState, currentViewName: s
     <meta charset="UTF-8" />
     <title>${escapeHtml(state.scenarioName)} Board One Pager</title>
     <style>
-      body { font-family: "Avenir Next", "Segoe UI", Arial, sans-serif; background: #f5f7fa; color: #14202b; margin: 0; padding: 28px; }
-      .sheet { max-width: 980px; margin: 0 auto; background: #ffffff; border: 1px solid #d6dde5; padding: 28px; }
-      .kicker { font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: #6f8091; }
-      h1 { margin: 12px 0 6px; font-size: 30px; }
-      .sub { color: #516170; line-height: 1.6; }
-      .grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px; margin-top: 18px; }
-      .card { border: 1px solid #d6dde5; padding: 14px; background: #fbfcfd; }
-      .section { margin-top: 20px; border-top: 1px solid #d6dde5; padding-top: 18px; }
-      ul { margin: 10px 0 0 18px; }
-      li { margin-bottom: 6px; }
+      ${sharedConsoleStyles}
+      .board-grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 14px; }
     </style>
   </head>
   <body>
     <section class="sheet">
-      <div class="kicker">Board One Pager</div>
-      <h1>${escapeHtml(state.scenarioName)}</h1>
-      <p class="sub">${escapeHtml(state.boundedWorld)} | ${escapeHtml(state.asOf)} | ${escapeHtml(state.phase)}</p>
-      <div class="grid">
-        ${formatSystemStateBlock(state)
-          .map((line) => {
-            const [label, value] = line.split(": ");
-            return `<div class="card"><div class="kicker">${escapeHtml(label)}</div><p>${escapeHtml(value)}</p></div>`;
-          })
-          .join("")}
+      <header class="header">
+        <div class="kicker">Board One Pager</div>
+        <h1>${escapeHtml(state.scenarioName)}</h1>
+        <p class="sub">${escapeHtml(state.boundedWorld)} | ${escapeHtml(state.asOf)} | <span class="accent">${escapeHtml(state.phase)}</span></p>
+        <div class="system-strip" style="margin-top:18px;">${renderSystemStrip(state)}</div>
+      </header>
+      <div class="body">
+        <div class="board-grid">
+          <section class="section">
+            <div class="kicker">Situation in Brief</div>
+            <h2 class="section-title">Board framing</h2>
+            <p>${escapeHtml(onePager.situationInBrief)}</p>
+            <p>${escapeHtml(onePager.whyThisMattersNow)}</p>
+            <div class="note-band">${escapeHtml(state.boundaryDefinition)}</div>
+          </section>
+          <section class="section">
+            <div class="kicker">Structural Reading</div>
+            <h2 class="section-title">Current interpretation</h2>
+            <p>${escapeHtml(onePager.structuralReading)}</p>
+            ${renderBulletList(onePager.whatHasShifted)}
+          </section>
+        </div>
+
+        <div class="section-grid-two" style="margin-top:14px;">
+          <section class="section">
+            <div class="kicker">Oversight Priorities</div>
+            <h2 class="section-title">Exposure, dependencies, visibility</h2>
+            ${renderBulletList(onePager.oversightPriorities)}
+          </section>
+          <section class="section">
+            <div class="kicker">Signal Basis</div>
+            <h2 class="section-title">Observable anchors</h2>
+            ${renderBulletList(onePager.signalBasis)}
+          </section>
+        </div>
+
+        <section class="section" style="margin-top:14px;">
+          <div class="kicker">Stability / Containment</div>
+          <h2 class="section-title">What remains constrained</h2>
+          ${renderBulletList(onePager.stabilitySignals)}
+        </section>
+
+        <p class="footer">Generated from ${escapeHtml(currentViewName)}. Orientation and evidence only.</p>
       </div>
-      <section class="section">
-        <div class="kicker">Boundary Definition</div>
-        <p>${escapeHtml(state.boundaryDefinition)}</p>
-      </section>
-      <section class="section">
-        <div class="kicker">Situation in Brief</div>
-        <p>${escapeHtml(onePager.situationInBrief)}</p>
-      </section>
-      <section class="section">
-        <div class="kicker">Why This Matters Now</div>
-        <p>${escapeHtml(onePager.whyThisMattersNow)}</p>
-      </section>
-      <section class="section">
-        <div class="kicker">What Has Shifted</div>
-        <ul>${onePager.whatHasShifted.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>
-      </section>
-      <section class="section">
-        <div class="kicker">Structural Reading</div>
-        <p>${escapeHtml(onePager.structuralReading)}</p>
-      </section>
-      <section class="section">
-        <div class="kicker">Oversight Priorities</div>
-        <ul>${onePager.oversightPriorities.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>
-      </section>
-      <section class="section">
-        <div class="kicker">Signal Basis</div>
-        <ul>${onePager.signalBasis.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>
-      </section>
-      <section class="section">
-        <div class="kicker">Stability / Containment Signals</div>
-        <ul>${onePager.stabilitySignals.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>
-      </section>
-      <p class="sub" style="margin-top: 20px;">Generated from ${escapeHtml(currentViewName)}. Orientation and evidence only.</p>
     </section>
   </body>
 </html>`;
