@@ -215,8 +215,8 @@ export function BriefingExportPanel({ scenarioLabel, result, point, currentView,
         </div>
       </div>
       {previewArtifact ? (
-        <div className="fixed inset-0 z-[120] flex items-center justify-center bg-slate-950/80 p-3 sm:p-6">
-          <div className="flex h-[92vh] w-full max-w-7xl flex-col overflow-hidden rounded-[28px] border border-white/10 bg-[rgba(10,16,22,0.98)] shadow-[0_24px_80px_rgba(0,0,0,0.45)]">
+        <div className="fixed inset-0 z-[200] flex items-start justify-center bg-slate-950/80 p-3 pt-20 sm:p-6 sm:pt-24 lg:pt-28">
+          <div className="flex h-[calc(100vh-5.5rem)] w-full max-w-7xl flex-col overflow-hidden rounded-[28px] border border-white/10 bg-[rgba(10,16,22,0.98)] shadow-[0_24px_80px_rgba(0,0,0,0.45)] sm:h-[calc(100vh-6.5rem)] lg:h-[calc(100vh-8rem)]">
             <div className="flex flex-wrap items-start justify-between gap-4 border-b border-white/10 px-4 py-4 sm:px-6">
               <div>
                 <p className="section-kicker">Artifact Preview</p>
