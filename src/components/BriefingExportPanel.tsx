@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo } from "react";
 import type { SimulationResult, ViewSnapshot, WorldStatePoint } from "../types";
 import {
   extractBriefingState,
@@ -43,7 +43,6 @@ const buildExportTag = (point: WorldStatePoint) => {
 };
 
 export function BriefingExportPanel({ scenarioLabel, result, point, currentView, onExport }: BriefingExportPanelProps) {
-  const [previewArtifact, setPreviewArtifact] = useState<PreviewArtifact | null>(null);
   const briefingState = extractBriefingState({
     scenarioName: scenarioLabel,
     result,
@@ -80,27 +79,156 @@ export function BriefingExportPanel({ scenarioLabel, result, point, currentView,
     [briefingState, currentView.name, currentView.scenarioId, exportTag],
   );
 
-  const openPreview = (artifact: PreviewArtifactKey) => {
-    setPreviewArtifact(previewArtifacts[artifact]);
-  };
+  useEffect(() => {
+    const handlePreviewDownload = (event: MessageEvent) => {
+      const artifactKey = event.data?.type === "nwm-download-artifact" ? (event.data.artifact as PreviewArtifactKey | undefined) : undefined;
+      if (!artifactKey || !(artifactKey in previewArtifacts)) {
+        return;
+      }
 
-  const downloadPreviewArtifact = () => {
-    if (!previewArtifact) {
+      const artifact = previewArtifacts[artifactKey];
+      const artifactMap: Record<PreviewArtifactKey, string> = {
+        executive: "executive_brief",
+        presentation: "presentation_brief",
+        board: "board_one_pager",
+      };
+
+      onExport?.(artifactMap[artifact.artifact]);
+      void downloadStyledPdfArtifact({
+        filename: artifact.filename,
+        html: artifact.html,
+        orientation: artifact.orientation,
+      });
+    };
+
+    window.addEventListener("message", handlePreviewDownload);
+    return () => window.removeEventListener("message", handlePreviewDownload);
+  }, [onExport, previewArtifacts]);
+
+  const buildPreviewDocument = (artifact: PreviewArtifact) => `<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>${artifact.title} Preview</title>
+    <style>
+      :root { color-scheme: dark; }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        background: #081018;
+        color: #f3f7fa;
+        font-family: "Inter", "Segoe UI", sans-serif;
+      }
+      .preview-shell {
+        min-height: 100vh;
+        display: grid;
+        grid-template-rows: auto 1fr;
+      }
+      .preview-toolbar {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        padding: 18px 22px;
+        border-bottom: 1px solid rgba(255,255,255,0.1);
+        background: rgba(7, 12, 18, 0.94);
+        backdrop-filter: blur(16px);
+      }
+      .preview-meta {
+        max-width: 720px;
+      }
+      .preview-kicker {
+        margin: 0;
+        font-size: 11px;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: #8aa3b5;
+      }
+      .preview-title {
+        margin: 8px 0 0;
+        font-size: 20px;
+        font-weight: 600;
+        color: #f6fbff;
+      }
+      .preview-description {
+        margin: 8px 0 0;
+        font-size: 13px;
+        line-height: 1.5;
+        color: #9cb2c1;
+      }
+      .preview-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+      .preview-button {
+        appearance: none;
+        border: 1px solid rgba(255,255,255,0.14);
+        background: rgba(20, 31, 42, 0.95);
+        color: #f5fbff;
+        border-radius: 999px;
+        padding: 10px 16px;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+      }
+      .preview-button:hover {
+        background: rgba(28, 43, 57, 0.98);
+      }
+      .preview-surface {
+        padding: 20px 20px 36px;
+      }
+      @media (max-width: 720px) {
+        .preview-toolbar {
+          padding: 14px 16px;
+        }
+        .preview-surface {
+          padding: 12px 12px 24px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="preview-shell">
+      <div class="preview-toolbar">
+        <div class="preview-meta">
+          <p class="preview-kicker">Artifact Preview</p>
+          <p class="preview-title">${artifact.title}</p>
+          <p class="preview-description">${artifact.description}</p>
+        </div>
+        <div class="preview-actions">
+          <button class="preview-button" id="download-artifact">Download PDF</button>
+          <button class="preview-button" id="close-preview">Close</button>
+        </div>
+      </div>
+      <div class="preview-surface">
+        ${artifact.html}
+      </div>
+    </div>
+    <script>
+      document.getElementById("download-artifact")?.addEventListener("click", () => {
+        window.opener?.postMessage({ type: "nwm-download-artifact", artifact: "${artifact.artifact}" }, "*");
+      });
+      document.getElementById("close-preview")?.addEventListener("click", () => window.close());
+    </script>
+  </body>
+</html>`;
+
+  const openPreview = (artifact: PreviewArtifactKey) => {
+    const preview = previewArtifacts[artifact];
+    const previewWindow = window.open("", "_blank");
+    if (!previewWindow) {
       return;
     }
 
-    const artifactMap: Record<PreviewArtifactKey, string> = {
-      executive: "executive_brief",
-      presentation: "presentation_brief",
-      board: "board_one_pager",
-    };
-
-    onExport?.(artifactMap[previewArtifact.artifact]);
-    void downloadStyledPdfArtifact({
-      filename: previewArtifact.filename,
-      html: previewArtifact.html,
-      orientation: previewArtifact.orientation,
-    });
+    previewWindow.document.open();
+    previewWindow.document.write(buildPreviewDocument(preview));
+    previewWindow.document.close();
   };
 
   const exportAuditPacket = () => {
@@ -214,54 +342,6 @@ export function BriefingExportPanel({ scenarioLabel, result, point, currentView,
           </button>
         </div>
       </div>
-      {previewArtifact ? (
-        <div className="fixed inset-0 z-[500] flex items-center justify-center bg-slate-950/88 p-2 sm:p-4">
-          <div className="flex h-[100dvh] w-full max-w-7xl flex-col overflow-hidden rounded-none border border-white/10 bg-[rgba(10,16,22,0.98)] shadow-[0_24px_80px_rgba(0,0,0,0.45)] sm:h-[96vh] sm:rounded-[28px]">
-            <div className="flex flex-wrap items-start justify-between gap-4 border-b border-white/10 px-4 py-4 sm:px-6">
-              <div>
-                <p className="section-kicker">Artifact Preview</p>
-                <p className="mt-2 text-base font-semibold text-ink">{previewArtifact.title}</p>
-                <p className="mt-1 max-w-3xl text-sm text-muted">{previewArtifact.description}</p>
-              </div>
-              <div className="flex flex-wrap items-center gap-2">
-                <button className="action-button text-left" onClick={downloadPreviewArtifact}>
-                  Download PDF
-                </button>
-                <button className="action-button text-left" onClick={() => setPreviewArtifact(null)}>
-                  Close
-                </button>
-              </div>
-            </div>
-            <div className="grid min-h-0 flex-1 gap-4 bg-[rgba(7,11,16,0.94)] p-3 sm:grid-cols-[260px_minmax(0,1fr)] sm:p-4">
-              <div className="surface-panel-subtle flex h-fit flex-col gap-3 p-4">
-                <div>
-                  <p className="text-xs uppercase tracking-[0.18em] text-muted">Document</p>
-                  <p className="mt-2 text-sm font-medium text-ink">{previewArtifact.filename}</p>
-                </div>
-                <div>
-                  <p className="text-xs uppercase tracking-[0.18em] text-muted">Format</p>
-                  <p className="mt-2 text-sm text-ink">
-                    {previewArtifact.orientation === "landscape" ? "Landscape PDF" : "Portrait PDF"}
-                  </p>
-                </div>
-                <div>
-                  <p className="text-xs uppercase tracking-[0.18em] text-muted">Render Path</p>
-                  <p className="mt-2 text-sm text-muted">
-                    This preview uses the same styled HTML surface that is sent to the PDF renderer.
-                  </p>
-                </div>
-              </div>
-              <div className="min-h-0 overflow-hidden rounded-[24px] border border-white/10 bg-[#0c1117] p-2 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] sm:p-3">
-                <iframe
-                  className="h-full min-h-[60vh] w-full rounded-[18px] bg-[#0c1117]"
-                  srcDoc={previewArtifact.html}
-                  title={`${previewArtifact.title} preview`}
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-      ) : null}
     </section>
   );
 }
