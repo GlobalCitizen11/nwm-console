@@ -5,6 +5,7 @@ import {
   renderExecutiveBriefHtml,
   renderPresentationBriefHtml,
 } from "../utils/briefingArtifacts";
+import { downloadStyledPdfArtifact } from "../utils/pdfArtifacts";
 
 interface BriefingExportPanelProps {
   scenarioLabel: string;
@@ -24,6 +25,11 @@ const download = (filename: string, content: string, mime = "application/json") 
   window.URL.revokeObjectURL(url);
 };
 
+const buildExportTag = (point: WorldStatePoint) => {
+  const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
+  return `m${point.month}-${timestamp}`;
+};
+
 export function BriefingExportPanel({ scenarioLabel, result, point, currentView, onExport }: BriefingExportPanelProps) {
   const briefingState = extractBriefingState({
     scenarioName: scenarioLabel,
@@ -31,20 +37,20 @@ export function BriefingExportPanel({ scenarioLabel, result, point, currentView,
     point,
     currentView,
   });
+  const exportTag = buildExportTag(point);
 
   const exportExecutiveBrief = () => {
     onExport?.("executive_brief");
-    download(
-      `${currentView.scenarioId}-executive-brief.html`,
-      renderExecutiveBriefHtml(briefingState, currentView.name),
-      "text/html",
-    );
+    void downloadStyledPdfArtifact({
+      filename: `${currentView.scenarioId}-executive-brief-${exportTag}.pdf`,
+      html: renderExecutiveBriefHtml(briefingState, currentView.name),
+    });
   };
 
   const exportAuditPacket = () => {
     onExport?.("audit_packet");
     download(
-      `${currentView.scenarioId}-audit-packet.json`,
+      `${currentView.scenarioId}-audit-packet-${exportTag}.json`,
       JSON.stringify(
         {
           scenario: scenarioLabel,
@@ -61,7 +67,7 @@ export function BriefingExportPanel({ scenarioLabel, result, point, currentView,
   const exportReplaySnapshot = () => {
     onExport?.("replay_snapshot");
     download(
-      `${currentView.scenarioId}-month-${point.month}-snapshot.json`,
+      `${currentView.scenarioId}-replay-snapshot-${exportTag}.json`,
       JSON.stringify(
         {
           scenario: scenarioLabel,
@@ -76,20 +82,19 @@ export function BriefingExportPanel({ scenarioLabel, result, point, currentView,
 
   const exportPresentationBrief = () => {
     onExport?.("presentation_brief");
-    download(
-      `${currentView.scenarioId}-executive-brief.html`,
-      renderPresentationBriefHtml(briefingState, currentView.name),
-      "text/html",
-    );
+    void downloadStyledPdfArtifact({
+      filename: `${currentView.scenarioId}-presentation-brief-${exportTag}.pdf`,
+      html: renderPresentationBriefHtml(briefingState, currentView.name),
+      orientation: "landscape",
+    });
   };
 
   const exportBoardOnePager = () => {
     onExport?.("board_one_pager");
-    download(
-      `${currentView.scenarioId}-board-one-pager.html`,
-      renderBoardOnePagerHtml(briefingState, currentView.name),
-      "text/html",
-    );
+    void downloadStyledPdfArtifact({
+      filename: `${currentView.scenarioId}-board-one-pager-${exportTag}.pdf`,
+      html: renderBoardOnePagerHtml(briefingState, currentView.name),
+    });
   };
 
   const printBrief = () => {
