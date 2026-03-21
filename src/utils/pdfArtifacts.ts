@@ -26,21 +26,25 @@ export async function downloadStyledPdfArtifact({
 
   const host = document.createElement("div");
   host.style.position = "fixed";
-  host.style.left = "-20000px";
+  host.style.left = "0";
   host.style.top = "0";
   host.style.width = orientation === "landscape" ? "1400px" : "1120px";
   host.style.pointerEvents = "none";
-  host.style.opacity = "0";
+  host.style.opacity = "1";
+  host.style.transform = "translateX(-200vw)";
+  host.style.zIndex = "-1";
+  host.style.background = "#0c1117";
 
-  host.innerHTML = `
-    <style>
-      ${parsed.styles}
-      .sheet { box-shadow: none !important; }
-      .slide, .section, .meta-card, .system-chip, .note-band { break-inside: avoid; }
-    </style>
-    ${parsed.body}
+  const style = document.createElement("style");
+  style.textContent = `
+    ${parsed.styles}
+    .sheet { box-shadow: none !important; }
+    .slide, .section, .meta-card, .system-chip, .note-band { break-inside: avoid; }
   `;
 
+  host.innerHTML = parsed.body;
+
+  document.head.appendChild(style);
   document.body.appendChild(host);
 
   try {
@@ -69,5 +73,6 @@ export async function downloadStyledPdfArtifact({
       .save();
   } finally {
     document.body.removeChild(host);
+    document.head.removeChild(style);
   }
 }
