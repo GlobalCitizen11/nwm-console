@@ -7,7 +7,7 @@ export function BoardOnePagerInsightGrid({ data }: { data: ExportSemanticData })
   return (
     <div className="board-insight-grid">
       {dominant ? <DominantStateBlock insight={dominant} /> : null}
-      <InsightCardGrid insights={supporting} columns={3} compact className="board-supporting-grid" />
+      <InsightCardGrid insights={supporting.slice(0, 2)} columns={3} compact className="board-supporting-grid" mode="board-onepager" fitMode="support" />
     </div>
   );
 }

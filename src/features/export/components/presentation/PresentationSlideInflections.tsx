@@ -6,7 +6,7 @@ export function PresentationSlideInflections({ data }: { data: ExportSemanticDat
   return (
     <div className="export-stack-lg">
       <SectionTitle label="Slide 5" title="Inflection Points" />
-      <InsightCardGrid insights={data.evidenceAnchors.slice(0, 3)} columns={3} />
+      <InsightCardGrid insights={data.evidenceAnchors.slice(0, 3)} columns={3} mode="presentation-brief" fitMode="evidence" />
     </div>
   );
 }

@@ -216,9 +216,6 @@
   display: grid;
   gap: 10px;
   min-height: 0;
-  height: 136px;
-  max-height: 136px;
-  overflow: hidden;
 }
 
 .insight-card-top {
@@ -238,8 +235,7 @@
 }
 
 .board-dominant-state {
-  height: 176px;
-  max-height: 176px;
+  min-height: 156px;
 }
 
 .export-badge {
@@ -275,8 +271,6 @@
   padding: 12px;
   border-radius: 14px;
   min-height: 82px;
-  max-height: 82px;
-  overflow: hidden;
 }
 
 .export-stat-pill .label {
@@ -304,9 +298,7 @@
   grid-template-columns: 86px 1fr;
   gap: 12px;
   padding: 12px;
-  min-height: 116px;
-  max-height: 116px;
-  overflow: hidden;
+  min-height: 104px;
 }
 
 .timeline-phase {
@@ -342,9 +334,7 @@
   border-radius: 12px;
   border: 1px solid rgba(255, 255, 255, 0.06);
   background: rgba(255, 255, 255, 0.02);
-  min-height: 86px;
-  max-height: 86px;
-  overflow: hidden;
+  min-height: 72px;
 }
 
 .strategic-list-item p {
@@ -356,24 +346,19 @@
 .boundary-panel,
 .closing-panel {
   position: relative;
-  overflow: hidden;
 }
 
 .summary-panel {
   background:
     radial-gradient(circle at top right, rgba(215, 181, 108, 0.1), transparent 34%),
     linear-gradient(180deg, rgba(21, 31, 42, 0.96) 0%, rgba(11, 17, 23, 0.94) 100%);
-  min-height: 148px;
-  max-height: 148px;
-  overflow: hidden;
+  min-height: 132px;
 }
 
 .boundary-panel {
   background:
     linear-gradient(180deg, rgba(15, 24, 34, 0.98) 0%, rgba(10, 16, 23, 0.94) 100%);
-  min-height: 148px;
-  max-height: 148px;
-  overflow: hidden;
+  min-height: 132px;
 }
 
 .evidence-anchor-grid {
@@ -382,9 +367,7 @@
 
 .evidence-anchor-card {
   gap: 8px;
-  min-height: 122px;
-  max-height: 122px;
-  overflow: hidden;
+  min-height: 104px;
 }
 
 .signal-driver-grid .insight-card,
@@ -412,8 +395,7 @@
 }
 
 .board-supporting-grid .insight-card {
-  height: 76px;
-  max-height: 76px;
+  min-height: 68px;
 }
 
 .board-kpi-strip {
@@ -445,13 +427,7 @@
 .presentation-slide .insight-card,
 .presentation-slide .strategic-list-item,
 .presentation-slide .summary-panel {
-  height: 112px;
-  max-height: 112px;
-}
-
-.presentation-slide .evidence-anchor-card {
-  min-height: 104px;
-  max-height: 104px;
+  min-height: 96px;
 }
 
 .presentation-two-column {
@@ -488,6 +464,14 @@
   color: #9eb2c1;
   font-size: 11px;
   line-height: 1.45;
+}
+
+.no-clip-typography h4,
+.no-clip-typography p,
+.no-clip-typography span {
+  overflow-wrap: normal;
+  word-break: normal;
+  hyphens: none;
 }
 
 @media screen and (max-width: 960px) {

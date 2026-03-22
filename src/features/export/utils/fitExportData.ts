@@ -1,67 +1,105 @@
-import type { ExportInsight, ExportMode, ExportSemanticData, ExportTimelineItem } from "../types/export";
+import type { CopyVariant, ExportInsight, ExportMode, ExportSemanticData, ExportTimelineItem, ModuleFitMode } from "../types/export";
 import { compressHeadline } from "./compressHeadline";
 import { compressSupportText } from "./compressSupportText";
+import { renderSafeCopy } from "./renderSafeCopy";
 
 type ContentBudget = {
   headlineWords: number;
   supportSentences: number;
   maxChars: number;
+  supportChars: number;
 };
 
 const CONTENT_BUDGETS: Record<ExportMode, ContentBudget> = {
   "executive-brief": {
-    headlineWords: 10,
+    headlineWords: 12,
     supportSentences: 2,
     maxChars: 220,
+    supportChars: 160,
   },
   "board-onepager": {
     headlineWords: 8,
     supportSentences: 1,
     maxChars: 140,
+    supportChars: 72,
   },
   "presentation-brief": {
     headlineWords: 8,
-    supportSentences: 2,
+    supportSentences: 1,
     maxChars: 120,
+    supportChars: 84,
   },
 };
 
 const cleanText = (text: string) => text.replace(/\s+/g, " ").trim();
 
-const dedupeSupport = (headline: string, support: string) => {
-  const normalizedHeadline = headline.toLowerCase().replace(/[^\w\s]/g, "");
-  return support
-    .split(/(?<=[.!?])\s+/)
-    .filter((sentence) => sentence.toLowerCase().replace(/[^\w\s]/g, "") !== normalizedHeadline)
-    .join(" ");
-};
+const buildHeadlineVariants = (text: string, budget: ContentBudget): Record<CopyVariant, string> => ({
+  full: compressHeadline(text, budget.headlineWords),
+  medium: compressHeadline(text, Math.max(7, budget.headlineWords - 2)),
+  compact: compressHeadline(text, Math.max(6, budget.headlineWords - 4)),
+});
 
-const fitText = (text: string, mode: ExportMode, maxCharsOverride?: number) => {
-  const budget = CONTENT_BUDGETS[mode];
-  return compressSupportText(cleanText(text), maxCharsOverride ?? budget.maxChars, budget.supportSentences);
-};
+const buildBodyVariants = (text: string, budget: ContentBudget): Record<CopyVariant, string> => ({
+  full: compressSupportText(text, budget.supportChars, budget.supportSentences),
+  medium: compressSupportText(text, Math.min(budget.supportChars - 16, budget.supportChars), 1),
+  compact: compressSupportText(text, Math.max(34, budget.supportChars - 32), 1),
+});
 
-const fitInsight = (insight: ExportInsight, mode: ExportMode): ExportInsight => {
+const prepareInsight = (insight: ExportInsight, mode: ExportMode, fitMode: ModuleFitMode): ExportInsight => {
   const budget = CONTENT_BUDGETS[mode];
   const source = cleanText(`${insight.headline}. ${insight.support}`);
-  const headline = compressHeadline(source, budget.headlineWords);
-  const rawSupport = compressSupportText(source, budget.maxChars, budget.supportSentences);
-  const support = dedupeSupport(headline, rawSupport) || fitText(insight.support || source, mode, budget.maxChars - 24);
+  const headlineVariants = insight.headlineVariants ?? buildHeadlineVariants(source, budget);
+  const bodyVariants = insight.bodyVariants ?? buildBodyVariants(insight.support || source, budget);
+  const selected = renderSafeCopy({
+    mode,
+    fitMode,
+    item: {
+      headline: insight.headline,
+      support: insight.support,
+      headlineVariants,
+      bodyVariants,
+    },
+  });
+
   return {
     ...insight,
-    headline,
-    support,
+    headlineVariants,
+    bodyVariants,
+    headline: selected.headline,
+    support: selected.body,
+    fitMode,
   };
 };
 
-const fitTimelineItem = (item: ExportTimelineItem, mode: ExportMode): ExportTimelineItem => {
+const prepareTimelineItem = (item: ExportTimelineItem, mode: ExportMode): ExportTimelineItem => {
   const budget = CONTENT_BUDGETS[mode];
   const source = cleanText(`${item.summary}. ${item.significance}`);
+  const summaryVariants = item.summaryVariants ?? buildHeadlineVariants(source, budget);
+  const significanceVariants = item.significanceVariants ?? buildBodyVariants(item.significance || source, budget);
+  const selected = renderSafeCopy({
+    mode,
+    fitMode: "timeline",
+    item: {
+      summary: item.summary,
+      significance: item.significance,
+      summaryVariants,
+      significanceVariants,
+    },
+  });
+
   return {
     ...item,
-    summary: compressHeadline(source, budget.headlineWords),
-    significance: compressSupportText(source, Math.min(budget.maxChars, mode === "presentation-brief" ? 100 : 150), budget.supportSentences),
+    summaryVariants,
+    significanceVariants,
+    summary: selected.headline,
+    significance: selected.body,
+    fitMode: "timeline",
   };
+};
+
+const fitText = (text: string, mode: ExportMode, maxChars: number) => {
+  const budget = CONTENT_BUDGETS[mode];
+  return compressSupportText(cleanText(text), Math.min(maxChars, budget.maxChars), budget.supportSentences);
 };
 
 const limitForMode = <T,>(items: T[], mode: ExportMode, executiveCount: number, presentationCount: number, boardCount: number) => {
@@ -72,20 +110,19 @@ const limitForMode = <T,>(items: T[], mode: ExportMode, executiveCount: number, 
 
 export const fitExportDataForMode = (data: ExportSemanticData, mode: ExportMode): ExportSemanticData => ({
   ...data,
-  boundary: fitText(data.boundary, mode, mode === "board-onepager" ? 120 : 190),
-  executiveLead: fitText(data.executiveLead, mode, mode === "board-onepager" ? 110 : 180),
-  keyInsights: limitForMode(data.keyInsights, mode, 4, 3, 4).map((item) => fitInsight(item, mode)),
-  systemStats:
-    mode === "executive-brief"
-      ? data.systemStats.slice(0, 5)
-      : data.systemStats.slice(0, 4),
-  timeline: limitForMode(data.timeline, mode, 5, 3, 3).map((item) => fitTimelineItem(item, mode)),
-  implications: limitForMode(data.implications, mode, 3, 3, 2).map((item) => fitInsight(item, mode)),
-  risks: limitForMode(data.risks, mode, 3, 3, 2).map((item) => fitInsight(item, mode)),
-  evidenceAnchors: limitForMode(data.evidenceAnchors, mode, 6, 3, 3).map((item) => fitInsight(item, mode)),
-  crossDomainEffects: limitForMode(data.crossDomainEffects, mode, 4, 3, 2).map((item) => fitInsight(item, mode)),
-  containmentSignals: limitForMode(data.containmentSignals, mode, 4, 2, 2).map((item) => fitInsight(item, mode)),
-  scenarioPaths: limitForMode(data.scenarioPaths, mode, 2, 2, 2).map((item) => fitInsight(item, mode)),
-  monitoringPriorities: limitForMode(data.monitoringPriorities, mode, 3, 2, 2).map((item) => fitInsight(item, mode)),
-  closingSynthesis: fitText(data.closingSynthesis, mode, mode === "board-onepager" ? 120 : 180),
+  boundary: fitText(data.boundary, mode, mode === "board-onepager" ? 108 : 180),
+  executiveLead: fitText(data.executiveLead, mode, mode === "executive-brief" ? 190 : mode === "presentation-brief" ? 96 : 84),
+  keyInsights: limitForMode(data.keyInsights, mode, 4, 3, 3).map((item, index) =>
+    prepareInsight(item, mode, index === 0 ? "hero" : "support"),
+  ),
+  systemStats: mode === "executive-brief" ? data.systemStats.slice(0, 5) : data.systemStats.slice(0, 4),
+  timeline: limitForMode(data.timeline, mode, 5, 3, 3).map((item) => prepareTimelineItem(item, mode)),
+  implications: limitForMode(data.implications, mode, 3, 2, 1).map((item) => prepareInsight(item, mode, "implication")),
+  risks: limitForMode(data.risks, mode, 3, 2, 1).map((item) => prepareInsight(item, mode, "monitoring")),
+  evidenceAnchors: limitForMode(data.evidenceAnchors, mode, 6, 3, 3).map((item) => prepareInsight(item, mode, "evidence")),
+  crossDomainEffects: limitForMode(data.crossDomainEffects, mode, 4, 2, 1).map((item) => prepareInsight(item, mode, "implication")),
+  containmentSignals: limitForMode(data.containmentSignals, mode, 4, 2, 1).map((item) => prepareInsight(item, mode, "monitoring")),
+  scenarioPaths: limitForMode(data.scenarioPaths, mode, 2, 2, 2).map((item) => prepareInsight(item, mode, "scenario")),
+  monitoringPriorities: limitForMode(data.monitoringPriorities, mode, 3, 2, 1).map((item) => prepareInsight(item, mode, "monitoring")),
+  closingSynthesis: fitText(data.closingSynthesis, mode, mode === "executive-brief" ? 180 : mode === "presentation-brief" ? 100 : 84),
 });

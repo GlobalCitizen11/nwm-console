@@ -1,5 +1,5 @@
 import type { BriefingState } from "../../../types";
-import type { ExportInsight, ExportSemanticData, ExportStat, ExportTimelineItem } from "../types/export";
+import type { CopyVariant, ExportInsight, ExportSemanticData, ExportStat, ExportTimelineItem } from "../types/export";
 import { compressHeadline } from "./compressHeadline";
 import { compressSupportText } from "./compressSupportText";
 
@@ -30,6 +30,18 @@ const fallbackSupport = (text: string, headline: string) => {
   return alternate ?? sentences[0] ?? "";
 };
 
+const buildHeadlineVariants = (text: string): Record<CopyVariant, string> => ({
+  full: compressHeadline(text, 12),
+  medium: compressHeadline(text, 9),
+  compact: compressHeadline(text, 7),
+});
+
+const buildBodyVariants = (text: string): Record<CopyVariant, string> => ({
+  full: compressSupportText(text, 180, 2),
+  medium: compressSupportText(text, 120, 1),
+  compact: compressSupportText(text, 80, 1),
+});
+
 const buildInsight = (
   id: string,
   text: string,
@@ -37,24 +49,35 @@ const buildInsight = (
   emphasis: ExportInsight["emphasis"] = "neutral",
 ): ExportInsight => {
   const cleaned = cleanText(text);
-  const headline = compressHeadline(cleaned, 8);
-  const support = removeDuplicateLead(headline, compressSupportText(cleaned, 170)) || compressSupportText(fallbackSupport(cleaned, headline), 130);
+  const headlineVariants = buildHeadlineVariants(cleaned);
+  const supportSource = fallbackSupport(cleaned, headlineVariants.full);
+  const bodyVariants = buildBodyVariants(supportSource);
+  const headline = headlineVariants.full;
+  const support = removeDuplicateLead(headline, bodyVariants.full) || compressSupportText(supportSource, 130, 1);
   return {
     id,
     headline,
     support,
     signalTag: tag,
     emphasis,
+    headlineVariants,
+    bodyVariants,
+    priority: emphasis === "attention" ? "primary" : "secondary",
   };
 };
 
 const buildTimelineItem = (id: string, phase: string, text: string): ExportTimelineItem => {
   const cleaned = cleanText(text);
+  const summaryVariants = buildHeadlineVariants(cleaned);
+  const significanceVariants = buildBodyVariants(cleaned);
   return {
     id,
     phase,
-    summary: compressHeadline(cleaned, 9),
-    significance: compressSupportText(cleaned, 145),
+    summary: summaryVariants.full,
+    significance: significanceVariants.full,
+    summaryVariants,
+    significanceVariants,
+    fitMode: "timeline",
   };
 };
 

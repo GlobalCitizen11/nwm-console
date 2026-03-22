@@ -2,6 +2,17 @@ import type { BriefingState } from "../../../types";
 
 export type ExportMode = "executive-brief" | "presentation-brief" | "board-onepager";
 export type DensityMode = "compact" | "standard" | "expanded";
+export type CopyVariant = "full" | "medium" | "compact";
+export type ModuleFitMode =
+  | "hero"
+  | "support"
+  | "kpi"
+  | "evidence"
+  | "timeline"
+  | "implication"
+  | "monitoring"
+  | "scenario"
+  | "closing";
 
 export interface ExportMetadata {
   scenarioName: string;
@@ -19,6 +30,10 @@ export interface ExportInsight {
   support: string;
   emphasis?: "neutral" | "attention" | "stable";
   signalTag?: string;
+  headlineVariants?: Record<CopyVariant, string>;
+  bodyVariants?: Record<CopyVariant, string>;
+  priority?: "primary" | "secondary";
+  fitMode?: ModuleFitMode;
 }
 
 export interface ExportStat {
@@ -32,6 +47,9 @@ export interface ExportTimelineItem {
   phase: string;
   summary: string;
   significance: string;
+  summaryVariants?: Record<CopyVariant, string>;
+  significanceVariants?: Record<CopyVariant, string>;
+  fitMode?: ModuleFitMode;
 }
 
 export interface ExportSemanticData {

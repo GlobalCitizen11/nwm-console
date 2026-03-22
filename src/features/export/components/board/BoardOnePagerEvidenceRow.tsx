@@ -6,7 +6,7 @@ export function BoardOnePagerEvidenceRow({ data }: { data: ExportSemanticData })
   return (
     <section className="export-section board-evidence-row">
       <SectionTitle label="Signal basis" title="Evidence anchors" />
-      <EvidenceAnchorGrid items={data.evidenceAnchors.slice(0, 3)} />
+      <EvidenceAnchorGrid items={data.evidenceAnchors.slice(0, 3)} mode="board-onepager" />
     </section>
   );
 }
