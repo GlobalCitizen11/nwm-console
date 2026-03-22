@@ -1,30 +1,77 @@
-import type { ExportSemanticData } from "../../types/export";
+import type { BoardOnePagerContent } from "../../types/export";
 import { ExportPage } from "../primitives/ExportPage";
-import { BoardOnePagerEvidenceRow } from "./BoardOnePagerEvidenceRow";
-import { BoardOnePagerFooter } from "./BoardOnePagerFooter";
-import { BoardOnePagerHeader } from "./BoardOnePagerHeader";
-import { BoardOnePagerInsightGrid } from "./BoardOnePagerInsightGrid";
-import { BoardOnePagerRiskBlock } from "./BoardOnePagerRiskBlock";
-import { BoardOnePagerSignalStack } from "./BoardOnePagerSignalStack";
-import { BoardOnePagerSystemStrip } from "./BoardOnePagerSystemStrip";
+import { BoardEvidenceStrip } from "./BoardEvidenceStrip";
 
-export function BoardOnePagerDocument({ data }: { data: ExportSemanticData }) {
+export function BoardOnePagerDocument({ content }: { content: BoardOnePagerContent }) {
   return (
-    <ExportPage metadata={data.metadata} pageNumber={1} totalPages={1} className="board-onepager">
+    <ExportPage
+      metadata={{
+        scenarioName: content.title,
+        boundedWorld: content.boundedWorld,
+        phase: content.signalStack[0]?.value ?? "Unknown",
+        asOf: content.replayMonth,
+        generatedAt: content.timestamp,
+        confidentiality: content.confidentialityLabel,
+        currentViewName: "Board One-Pager",
+      }}
+      pageNumber={1}
+      totalPages={1}
+      className="board-onepager"
+    >
       <div className="board-onepager-shell">
-        <BoardOnePagerHeader data={data} />
+        <header className="board-header-band">
+          <div className="board-header-copy">
+            <h1>{content.title}</h1>
+            <p>{content.boundedWorld}</p>
+          </div>
+          <div className="board-header-meta">
+            <span>{content.replayMonth}</span>
+            <span>{content.confidentialityLabel}</span>
+          </div>
+        </header>
         <div className="board-main-grid">
           <div className="board-left-stack">
-            <BoardOnePagerSystemStrip data={data} />
-            <BoardOnePagerInsightGrid data={data} />
+            <section className="export-section board-kpi-strip board-kpi-strip--compact">
+              {content.signalStack.slice(0, 4).map((item) => (
+                <div key={item.label} className="export-stat-pill">
+                  <span className="label">{item.label}</span>
+                  <span className="value">{item.value}</span>
+                </div>
+              ))}
+            </section>
+            <section className="export-section board-left-column">
+              <p className="signal-module-label">System state</p>
+              <h3 className="signal-module-value">{content.currentStateSummary}</h3>
+              <p className="signal-module-support">{content.implicationsSummary}</p>
+            </section>
           </div>
-          <BoardOnePagerSignalStack data={data} />
+          <aside className="board-signal-stack">
+            {content.signalStack.map((item) => (
+              <section key={item.label} className="board-signal-module">
+                <p className="signal-module-label">{item.label}</p>
+                <h4 className="signal-module-value">{item.value}</h4>
+                {item.support ? <p className="signal-module-support">{item.support}</p> : null}
+              </section>
+            ))}
+          </aside>
         </div>
         <div className="board-bottom-grid">
-          <BoardOnePagerRiskBlock data={data} />
-          <BoardOnePagerEvidenceRow data={data} />
+          <section className="export-section strategic-block strategic-block--risk">
+            <div className="export-section-title">
+              <p className="export-meta-label">Monitoring</p>
+              <h3>Watchpoints</h3>
+            </div>
+            <p className="signal-module-support">{content.monitoringSummary}</p>
+          </section>
+          <section className="export-section board-evidence-row">
+            <div className="export-section-title">
+              <p className="export-meta-label">Signal basis</p>
+              <h3>Evidence anchors</h3>
+            </div>
+            <BoardEvidenceStrip items={content.evidenceAnchors} />
+          </section>
         </div>
-        <BoardOnePagerFooter />
+        <p className="board-footer-note">Board surface is bounded to the active world definition and should be refreshed as visible evidence changes.</p>
       </div>
     </ExportPage>
   );

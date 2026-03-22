@@ -59,7 +59,11 @@ export function ExportPreviewPage() {
             </span>
             <button
               className="export-mode-tab is-active"
+              disabled={!qa.ok}
               onClick={async () => {
+                if (!qa.ok) {
+                  return;
+                }
                 try {
                   await playwrightPdf({
                     mode,
@@ -72,7 +76,7 @@ export function ExportPreviewPage() {
                 }
               }}
             >
-              Download PDF
+              {qa.ok ? "Download PDF" : "Fix validation errors"}
             </button>
           </div>
         </div>

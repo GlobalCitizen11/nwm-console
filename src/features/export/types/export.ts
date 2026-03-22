@@ -131,8 +131,108 @@ export interface ExportQaResult {
 export interface ExportPreviewBundle {
   mode: ExportMode;
   data: ExportSemanticData;
+  canonicalSummary: CanonicalExportSummary;
+  contentByMode: ExportContentByMode;
   htmlByMode: Record<ExportMode, string>;
   qaByMode: Record<ExportMode, ExportQaResult>;
   filenameByMode: Record<ExportMode, string>;
   orientationByMode: Record<ExportMode, "portrait" | "landscape">;
+}
+
+export interface CanonicalEvidenceAnchor {
+  id: string;
+  shortTitle: string;
+  shortSubtitle: string;
+}
+
+export interface CanonicalExportSummary {
+  scenarioTitle: string;
+  replayMonth: string;
+  timestamp: string;
+  confidentialityLabel: string;
+  boundedWorld: string;
+  phase: string;
+  density: string;
+  momentum: string;
+  reversibility: string;
+  currentStateSummary: string;
+  dominantPathSummary: string;
+  primaryPressureSummary: string;
+  implicationsSummary: string;
+  monitoringSummary: string;
+  narrativeDevelopment: {
+    earlySignalsSummary: string;
+    systemicUptakeSummary: string;
+    currentStateFormationSummary: string;
+  };
+  structuralInterpretationSummary: string;
+  forwardOrientationSummary: string;
+  alternatePathSummary: string;
+  strategicPositioningSummary: string;
+  watchpointSummary: string;
+  evidenceAnchorsCompact: CanonicalEvidenceAnchor[];
+}
+
+export interface ExecutiveInsightCard {
+  label: string;
+  value: string;
+  support?: string;
+}
+
+export interface ExecutiveBriefSectionContent {
+  id:
+    | "system-state-overview"
+    | "narrative-development"
+    | "structural-interpretation"
+    | "forward-orientation"
+    | "strategic-positioning"
+    | "evidence-anchors";
+  title: string;
+  paragraphs: string[];
+  bullets?: string[];
+  insightCard: ExecutiveInsightCard;
+}
+
+export interface ExecutiveBriefContent {
+  title: string;
+  replayMonth: string;
+  timestamp: string;
+  confidentialityLabel: string;
+  boundedWorld: string;
+  systemStrip: Array<{ label: string; value: string }>;
+  sections: ExecutiveBriefSectionContent[];
+}
+
+export interface BoardOnePagerContent {
+  title: string;
+  replayMonth: string;
+  timestamp: string;
+  confidentialityLabel: string;
+  boundedWorld: string;
+  currentStateSummary: string;
+  implicationsSummary: string;
+  monitoringSummary: string;
+  signalStack: Array<{ label: string; value: string; support?: string }>;
+  evidenceAnchors: CanonicalEvidenceAnchor[];
+}
+
+export interface PresentationSlideContent {
+  id: string;
+  title: string;
+  headline: string;
+  bullets: string[];
+}
+
+export interface PresentationBriefContent {
+  title: string;
+  replayMonth: string;
+  timestamp: string;
+  confidentialityLabel: string;
+  slides: PresentationSlideContent[];
+}
+
+export interface ExportContentByMode {
+  "executive-brief": ExecutiveBriefContent;
+  "presentation-brief": PresentationBriefContent;
+  "board-onepager": BoardOnePagerContent;
 }

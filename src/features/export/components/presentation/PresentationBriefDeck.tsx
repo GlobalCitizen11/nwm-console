@@ -1,42 +1,56 @@
-import type { ExportSemanticData } from "../../types/export";
-import { PresentationSlideClosing } from "./PresentationSlideClosing";
+import type { PresentationBriefContent } from "../../types/export";
 import { PresentationSlideFrame } from "./PresentationSlideFrame";
-import { PresentationSlideImplications } from "./PresentationSlideImplications";
-import { PresentationSlideRisk } from "./PresentationSlideRisk";
-import { PresentationSlideScenarioPaths } from "./PresentationSlideScenarioPaths";
-import { PresentationSlideSystemState } from "./PresentationSlideSystemState";
-import { PresentationSlideTakeaways } from "./PresentationSlideTakeaways";
-import { PresentationSlideTimeline } from "./PresentationSlideTimeline";
-import { PresentationSlideTitle } from "./PresentationSlideTitle";
+import { ExportHeader } from "../primitives/ExportHeader";
 
-export function PresentationBriefDeck({ data }: { data: ExportSemanticData }) {
-  const totalSlides = 8;
+export function PresentationBriefDeck({ content }: { content: PresentationBriefContent }) {
+  const totalSlides = content.slides.length;
   return (
     <>
-      <PresentationSlideFrame metadata={data.metadata} pageNumber={1} totalPages={totalSlides}>
-        <PresentationSlideTitle data={data} />
-      </PresentationSlideFrame>
-      <PresentationSlideFrame metadata={data.metadata} pageNumber={2} totalPages={totalSlides}>
-        <PresentationSlideSystemState data={data} />
-      </PresentationSlideFrame>
-      <PresentationSlideFrame metadata={data.metadata} pageNumber={3} totalPages={totalSlides}>
-        <PresentationSlideTakeaways data={data} />
-      </PresentationSlideFrame>
-      <PresentationSlideFrame metadata={data.metadata} pageNumber={4} totalPages={totalSlides}>
-        <PresentationSlideTimeline data={data} />
-      </PresentationSlideFrame>
-      <PresentationSlideFrame metadata={data.metadata} pageNumber={5} totalPages={totalSlides}>
-        <PresentationSlideImplications data={data} />
-      </PresentationSlideFrame>
-      <PresentationSlideFrame metadata={data.metadata} pageNumber={6} totalPages={totalSlides}>
-        <PresentationSlideScenarioPaths data={data} />
-      </PresentationSlideFrame>
-      <PresentationSlideFrame metadata={data.metadata} pageNumber={7} totalPages={totalSlides}>
-        <PresentationSlideRisk data={data} />
-      </PresentationSlideFrame>
-      <PresentationSlideFrame metadata={data.metadata} pageNumber={8} totalPages={totalSlides}>
-        <PresentationSlideClosing data={data} />
-      </PresentationSlideFrame>
+      {content.slides.map((slide, index) => (
+        <PresentationSlideFrame
+          key={slide.id}
+          metadata={{
+            scenarioName: content.title,
+            boundedWorld: "Presentation Brief",
+            phase: content.replayMonth,
+            asOf: content.replayMonth,
+            generatedAt: content.timestamp,
+            confidentiality: content.confidentialityLabel,
+            currentViewName: "Presentation Brief",
+          }}
+          pageNumber={index + 1}
+          totalPages={totalSlides}
+        >
+          {index === 0 ? (
+            <ExportHeader
+              title={content.title}
+              subtitle={content.replayMonth}
+              metadata={{
+                scenarioName: content.title,
+                boundedWorld: "Presentation Brief",
+                phase: content.replayMonth,
+                asOf: content.replayMonth,
+                generatedAt: content.timestamp,
+                confidentiality: content.confidentialityLabel,
+                currentViewName: "Presentation Brief",
+              }}
+              modeLabel="Presentation Brief"
+            />
+          ) : null}
+          <div className="presentation-slide-section">
+            <div className="export-section-title">
+              <p className="export-meta-label">Slide {index + 1}</p>
+              <h3>{slide.title}</h3>
+            </div>
+            <div className="presentation-slide-headline">{slide.headline}</div>
+            <ul className="presentation-slide-bullets">
+              {slide.bullets.map((bullet) => (
+                <li key={bullet}>{bullet}</li>
+              ))}
+            </ul>
+          </div>
+        </PresentationSlideFrame>
+      ))}
     </>
   );
 }

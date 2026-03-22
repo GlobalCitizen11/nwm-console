@@ -514,6 +514,7 @@
   font-size: 11px;
   line-height: 14px;
   color: #c8d4de;
+  white-space: pre-line;
 }
 
 .board-onepager .strategic-list {
@@ -612,6 +613,28 @@
   line-height: 1.35;
   color: #d7e1e8;
   letter-spacing: -0.015em;
+}
+
+.presentation-slide-headline {
+  margin: 0;
+  font-size: 16px;
+  line-height: 20px;
+  font-weight: 620;
+  color: #e6edf7;
+}
+
+.presentation-slide-bullets {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding-left: 18px;
+  color: #c8d4de;
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.presentation-slide-bullets li {
+  margin: 0;
 }
 
 .presentation-slide .export-section-title {

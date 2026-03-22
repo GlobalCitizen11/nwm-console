@@ -1,18 +1,14 @@
-import type { ExportInsight } from "../../types/export";
+import type { CanonicalEvidenceAnchor } from "../../types/export";
 
-const fallbackMonth = (index: number) => `M${index + 1}`;
+const fallbackMonth = (index: number) => `M${index + 11}`;
 
-const formatAnchor = (insight: ExportInsight, index: number) => {
-  const source = `${insight.headline} ${insight.support}`.trim();
-  const month = source.match(/M\d+/i)?.[0]?.toUpperCase() ?? fallbackMonth(index);
-  const title = insight.headline.replace(/^M\d+\s*[—-]\s*/i, "").trim();
-  const support = insight.support.replace(/^M\d+\s*[—-]\s*/i, "").trim();
-  const value = title || support || "Evidence anchor";
-  const qualifier = support && support !== value ? support : insight.signalTag ?? "Observed";
-  return `${month} — ${value}${qualifier ? ` (${qualifier})` : ""}`;
+const formatAnchor = (anchor: CanonicalEvidenceAnchor, index: number) => {
+  const month = anchor.shortTitle.match(/M\d+/i)?.[0]?.toUpperCase() ?? fallbackMonth(index);
+  const title = anchor.shortTitle.replace(/^M\d+\s*[—-]\s*/i, "").trim();
+  return `${month} — ${title || "Evidence anchor"}\n${anchor.shortSubtitle}`;
 };
 
-export function BoardEvidenceStrip({ items }: { items: ExportInsight[] }) {
+export function BoardEvidenceStrip({ items }: { items: CanonicalEvidenceAnchor[] }) {
   return (
     <div className="board-evidence-strip">
       {items.slice(0, 3).map((item, index) => (
