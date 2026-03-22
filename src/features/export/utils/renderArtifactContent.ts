@@ -38,10 +38,85 @@ const limitWords = (text: string, max: number) => {
 
 const sentence = (text: string, max?: number) => (max ? limitWords(text, max) : finalizeSentence(text));
 
+const humanize = (text: string) =>
+  clean(text)
+    .replace(/-/g, " ")
+    .replace(/\bbloc competition\b/gi, "bloc competition")
+    .replace(/\bai\b/g, "AI")
+    .replace(/\bcurrent posture is sensitive to\b/gi, "")
+    .replace(/\bvisibility is needed on whether\b/gi, "")
+    .replace(/\bmonitoring should stay fixed on\b/gi, "")
+    .replace(/\bdecision posture should stay disciplined where\b/gi, "")
+    .replace(/\bthat pressure is now shaping\b/gi, "")
+    .replace(/\s+/g, " ")
+    .trim();
+
+const removeLead = (text: string, pattern: RegExp) => clean(text).replace(pattern, "").trim();
+
+const titleCase = (text: string) =>
+  clean(text)
+    .split(/\s+/)
+    .filter(Boolean)
+    .map((word) => {
+      if (/^(AI|M\d+)$/i.test(word)) {
+        return word.toUpperCase();
+      }
+      return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+    })
+    .join(" ");
+
+const asPhrase = (text: string, pattern: RegExp, fallback: string) => {
+  const phrase = humanize(removeLead(text, pattern)).replace(/[.]+$/g, "");
+  return phrase || fallback;
+};
+
+const boardCurrentState = (summary: CanonicalExportSummary) =>
+  compactSentence(
+    `The system is operating in ${summary.phase}. Narrative density is ${summary.density}. Reversibility remains ${summary.reversibility}. Fragmentation now defines the planning baseline across the bounded world.`,
+    50,
+  );
+
+const boardImplications = (summary: CanonicalExportSummary) => {
+  const phrase = asPhrase(summary.implicationsSummary, /^that pressure is now shaping\s+/i, "coordination, timing, and allocation");
+  return compactSentence(`Decision room is narrowing around ${phrase}.`, 25);
+};
+
+const boardMonitoring = (summary: CanonicalExportSummary) => {
+  const phrase = asPhrase(summary.monitoringSummary, /^monitoring should stay fixed on\s+/i, "the signals that could reopen flexibility");
+  return compactSentence(`Monitor ${phrase}. Early deviations would matter immediately.`, 20);
+};
+
+const boardPrimaryPressure = (summary: CanonicalExportSummary) => {
+  const phrase = asPhrase(summary.primaryPressureSummary, /^pressure is concentrated in\s+/i, "bloc competition");
+  return compactSentence(`Pressure is concentrated in ${phrase}.`, 15);
+};
+
+const boardDominantPath = (summary: CanonicalExportSummary) =>
+  compactSentence(
+    humanize(summary.dominantPathSummary).replace(/\bis likely to deepen without a stabilizing interruption\b/i, "deepens without a stabilizing interruption"),
+    15,
+  );
+
+const executivePressurePhrase = (summary: CanonicalExportSummary) =>
+  asPhrase(summary.primaryPressureSummary, /^pressure is concentrated in\s+/i, "coordination bottlenecks");
+
+const executiveMonitoringPhrase = (summary: CanonicalExportSummary) =>
+  asPhrase(summary.monitoringSummary, /^monitoring should stay fixed on\s+/i, "the indicators that could reopen flexibility");
+
+const executivePositioningPhrase = (summary: CanonicalExportSummary) =>
+  asPhrase(summary.strategicPositioningSummary, /^decision posture should stay disciplined where\s+/i, "exposure and timing are most exposed");
+
 const compactAnchor = (anchor: CanonicalEvidenceAnchor): CanonicalEvidenceAnchor => ({
   ...anchor,
-  shortTitle: clean(anchor.shortTitle).split(/\s+/).slice(0, 6).join(" "),
-  shortSubtitle: clean(anchor.shortSubtitle).split(/\s+/).slice(0, 8).join(" "),
+  shortTitle: titleCase(clean(anchor.shortTitle).replace(/[()]/g, " ").split(/\s+/).slice(0, 6).join(" ")),
+  shortSubtitle: titleCase(
+    clean(anchor.shortSubtitle)
+      .replace(/[(),]/g, " ")
+      .replace(/\bDestabilize\b/gi, "Destabilization")
+      .split(/\s+/)
+      .slice(0, 8)
+      .join(" "),
+  ),
 });
 
 const section = (
@@ -82,25 +157,16 @@ export const renderBoardOnePager = (summary: CanonicalExportSummary): BoardOnePa
   timestamp: summary.timestamp,
   confidentialityLabel: summary.confidentialityLabel,
   boundedWorld: summary.boundedWorld,
-  currentStateSummary: compactSentence(
-    `${summary.currentStateSummary} ${summary.structuralInterpretationSummary} The regime now operates as the active planning condition inside the boundary.`,
-    50,
-  ),
-  implicationsSummary: compactSentence(
-    `${summary.implicationsSummary} Decision room is narrowing around coordination and timing.`,
-    25,
-  ),
-  monitoringSummary: compactSentence(
-    `${summary.monitoringSummary} Early deviations would matter immediately.`,
-    20,
-  ),
+  currentStateSummary: boardCurrentState(summary),
+  implicationsSummary: boardImplications(summary),
+  monitoringSummary: boardMonitoring(summary),
   signalStack: [
     { label: "Phase", value: summary.phase },
     { label: "Density", value: summary.density },
     { label: "Momentum", value: summary.momentum },
     { label: "Reversibility", value: summary.reversibility },
-    { label: "Dominant path", value: compactSentence(summary.dominantPathSummary, 15) },
-    { label: "Primary pressure", value: compactSentence(summary.primaryPressureSummary, 15) },
+    { label: "Dominant path", value: boardDominantPath(summary) },
+    { label: "Primary pressure", value: boardPrimaryPressure(summary) },
   ],
   evidenceAnchors: summary.evidenceAnchorsCompact.slice(0, 3).map(compactAnchor),
 });
@@ -133,7 +199,7 @@ export const renderExecutiveBrief = (summary: CanonicalExportSummary): Executive
         ),
         narrativeParagraph(
           [
-            summary.primaryPressureSummary,
+            `Pressure is concentrated in ${executivePressurePhrase(summary)}.`,
             "The system is now reacting faster to upstream constraints than to downstream reassurance.",
             "Assumptions built on rapid coordination recovery no longer hold at decision speed.",
             "Pressure is accumulating where allocation and control shape the room to maneuver.",
@@ -144,7 +210,7 @@ export const renderExecutiveBrief = (summary: CanonicalExportSummary): Executive
       {
         label: "Executive insight",
         value: "Decision risk is highest where coordination fails before exposure can be repositioned",
-        support: "The constraint now sits upstream of routine response options",
+        support: "The binding constraint now sits upstream of routine response options",
       },
     ),
     section(
@@ -179,7 +245,7 @@ export const renderExecutiveBrief = (summary: CanonicalExportSummary): Executive
       {
         label: "System inflection",
         value: "Signal accumulation has crossed into operating behavior",
-        support: "The issue now shapes action before it invites explanation",
+        support: "The issue now shapes action before it invites further explanation",
       },
     ),
     section(
@@ -208,7 +274,7 @@ export const renderExecutiveBrief = (summary: CanonicalExportSummary): Executive
       {
         label: "Structural read",
         value: "The system is reorganizing around narrower coordination assumptions",
-        support: "Containment is partial and cannot reset the broader readout",
+        support: "Containment remains partial and cannot reset the broader readout",
       },
     ),
     section(
@@ -246,7 +312,7 @@ export const renderExecutiveBrief = (summary: CanonicalExportSummary): Executive
       [
         narrativeParagraph(
           [
-            summary.strategicPositioningSummary,
+            `Decision posture should stay disciplined where ${executivePositioningPhrase(summary)}.`,
             "What matters most now is where exposure, timing, and dependency intersect under pressure.",
             "That is where small changes can create disproportionate decision consequences.",
             "Decision posture should therefore privilege resilience over optimistic timing assumptions.",
@@ -255,7 +321,7 @@ export const renderExecutiveBrief = (summary: CanonicalExportSummary): Executive
         ),
         narrativeParagraph(
           [
-            summary.monitoringSummary,
+            `Monitoring should stay fixed on ${executiveMonitoringPhrase(summary)}.`,
             "Visibility should stay fixed on the narrow signals that can reopen flexibility.",
             "Decision posture should preserve room to move while the watchpoint set remains small.",
             "The practical challenge is staying responsive without overreacting to routine noise.",
@@ -290,7 +356,7 @@ export const renderExecutiveBrief = (summary: CanonicalExportSummary): Executive
       },
       summary.evidenceAnchorsCompact
         .slice(0, 3)
-        .map((anchor) => sentence(`${stripTerminal(anchor.shortTitle)} ${anchor.shortSubtitle}`, 14)),
+        .map((anchor) => sentence(`${stripTerminal(compactAnchor(anchor).shortTitle)}. ${compactAnchor(anchor).shortSubtitle}`, 14)),
     ),
   ],
 });
@@ -301,42 +367,42 @@ export const renderPresentationBrief = (summary: CanonicalExportSummary): Presen
   timestamp: summary.timestamp,
   confidentialityLabel: summary.confidentialityLabel,
   slides: [
-    slide("title", "Situation frame", "Situation frame", [
+    slide("title", "Operating context", "Fragmentation now defines the brief", [
       makeBullet(`The system is operating in ${summary.phase}`, 10),
-      makeBullet(`Pressure is concentrated in ${stripTerminal(summary.primaryPressureSummary).replace(/^Pressure is concentrated in /, "")}`, 12),
+      makeBullet(`Pressure is concentrated in ${executivePressurePhrase(summary)}`, 12),
     ]),
-    slide("system", "System state", "System state", [
+    slide("system", "System posture", "Density and momentum remain elevated", [
       makeBullet(`Narrative density is ${summary.density}`, 8),
       makeBullet(`Structural momentum is ${summary.momentum}`, 8),
       makeBullet(`Reversibility is ${summary.reversibility}`, 8),
     ]),
-    slide("takeaways", "Key takeaways", "Key takeaways", [
+    slide("takeaways", "Executive takeaways", "Three points frame the current read", [
       makeBullet("Fragmentation is now an operating condition", 9),
       makeBullet("The dominant path still favors deeper separation", 9),
       makeBullet("Decision room is narrowing around timing and coordination", 10),
     ]),
-    slide("progression", "Narrative progression", "Narrative progression", [
-      makeBullet(summary.narrativeDevelopment.earlySignalsSummary, 12),
-      makeBullet(summary.narrativeDevelopment.systemicUptakeSummary, 12),
-      makeBullet(summary.narrativeDevelopment.currentStateFormationSummary, 13),
-    ]),
-    slide("inflections", "Inflection points", "Inflection points", [
+    slide("progression", "Narrative progression", "The pattern moved from signal to condition", [
       makeBullet("Early signals challenged the prior operating logic", 10),
-      makeBullet("Cross-domain uptake widened the response burden", 9),
+      makeBullet("Systemic uptake spread the burden across domains", 10),
       makeBullet("Recent developments locked the pattern into planning", 10),
     ]),
-    slide("implications", "Strategic implications", "Strategic implications", [
-      makeBullet(summary.implicationsSummary, 12),
+    slide("inflections", "Inflection points", "Three turns changed the read", [
+      makeBullet(humanize(summary.narrativeDevelopment.earlySignalsSummary), 12),
+      makeBullet(humanize(summary.narrativeDevelopment.systemicUptakeSummary), 12),
+      makeBullet(humanize(summary.narrativeDevelopment.currentStateFormationSummary), 13),
+    ]),
+    slide("implications", "Strategic implications", "The system now constrains decision room", [
+      makeBullet(boardImplications(summary), 12),
       makeBullet("Coordination failures now carry larger downstream costs", 10),
       makeBullet("Exposure matters most where dependency and timing intersect", 11),
     ]),
-    slide("paths", "Scenario paths", "Scenario paths", [
-      makeBullet(summary.dominantPathSummary, 12),
-      makeBullet(summary.alternatePathSummary, 12),
+    slide("paths", "Scenario paths", "The current path still dominates", [
+      makeBullet(humanize(summary.dominantPathSummary), 12),
+      makeBullet(humanize(summary.alternatePathSummary), 12),
     ]),
-    slide("monitoring", "Risk and monitoring", "Risk and monitoring", [
-      makeBullet(summary.monitoringSummary, 12),
-      makeBullet(summary.watchpointSummary, 12),
+    slide("monitoring", "Monitoring priorities", "A narrow watch list now matters most", [
+      makeBullet(`Monitor ${executiveMonitoringPhrase(summary)}`, 12),
+      makeBullet(humanize(summary.watchpointSummary), 12),
       makeBullet("The watch list is narrow and highly consequential", 10),
     ]),
   ],
