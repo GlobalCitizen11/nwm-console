@@ -42,15 +42,14 @@ const buildQaPlans = (mode: ExportMode, data: ExportSemanticData): ExportModuleP
         [{ id: "slide-title", title: "Title", density: "expanded", estimatedHeight: 6, keepTogether: true, content: [data.title, data.subtitle] }],
         [
           { id: "slide-system", title: "System state", density: "expanded", estimatedHeight: 4, keepTogether: true, content: data.systemStats },
-          { id: "slide-state-hero", title: "State interpretation", density: "expanded", estimatedHeight: 4, keepTogether: true, content: [data.executiveLead] },
+          { id: "slide-state-hero", title: "State interpretation", density: "expanded", estimatedHeight: 3, keepTogether: true, content: [data.executiveLead] },
         ],
         [{ id: "slide-takeaways", title: "Takeaways", density: "expanded", estimatedHeight: 7, keepTogether: true, content: data.keyInsights }],
         [{ id: "slide-timeline", title: "Narrative progression", density: "expanded", estimatedHeight: 7, keepTogether: true, content: data.timeline }],
-        [{ id: "slide-inflections", title: "Inflection points", density: "expanded", estimatedHeight: 6, keepTogether: true, content: data.evidenceAnchors }],
-        [{ id: "slide-implications", title: "Strategic implications", density: "expanded", estimatedHeight: 7, keepTogether: true, content: data.implications }],
-        [{ id: "slide-paths", title: "Scenario paths", density: "expanded", estimatedHeight: 6, keepTogether: true, content: data.scenarioPaths }],
-        [{ id: "slide-risks", title: "Risk and monitoring", density: "expanded", estimatedHeight: 6, keepTogether: true, content: data.risks }],
-        [{ id: "slide-closing", title: "Closing synthesis", density: "expanded", estimatedHeight: 5, keepTogether: true, content: [data.closingSynthesis] }],
+        [{ id: "slide-implications", title: "Strategic implications", density: "expanded", estimatedHeight: 6, keepTogether: true, content: [...data.implications, ...data.crossDomainEffects] }],
+        [{ id: "slide-paths", title: "Scenario paths", density: "expanded", estimatedHeight: 5, keepTogether: true, content: data.scenarioPaths }],
+        [{ id: "slide-risks", title: "Risk and monitoring", density: "expanded", estimatedHeight: 5, keepTogether: true, content: data.risks }],
+        [{ id: "slide-closing", title: "Closing synthesis", density: "expanded", estimatedHeight: 4, keepTogether: true, content: [data.closingSynthesis] }],
       ];
     case "board-onepager":
       return [

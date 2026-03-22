@@ -5,7 +5,7 @@ import { SlideTakeaways } from "./SlideTakeaways";
 export function PresentationSlideTakeaways({ data }: { data: ExportSemanticData }) {
   return (
     <div className="export-stack-lg presentation-slide-section">
-      <SectionTitle label="Slide 3" title="Key Takeaways" subtitle="The dominant read and the two signals that most directly support it." />
+      <SectionTitle label="Slide 3" title="Key takeaways" />
       <SlideTakeaways insights={data.keyInsights.slice(0, 3)} />
     </div>
   );

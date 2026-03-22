@@ -41,6 +41,13 @@ export const compressSupportText = (text: string, maxLength = 170, maxSentences 
     }
     result = candidate;
   }
-
+  result = result.replace(/[ ,;:]+$/, "");
+  if (!/[.!?]$/.test(result)) {
+    const trimmedWords = result.split(/\s+/);
+    if (trimmedWords.length > 4) {
+      trimmedWords.pop();
+      result = trimmedWords.join(" ");
+    }
+  }
   return result.replace(/[ ,;:]+$/, "").replace(/([A-Za-z0-9])$/, "$1.");
 };

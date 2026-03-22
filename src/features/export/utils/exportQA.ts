@@ -26,6 +26,9 @@ export const exportQA = (mode: "executive-brief" | "presentation-brief" | "board
     if (boardScore.scanability < 84) {
       issues.push({ level: "warning", code: "density", message: "Board surface is carrying too much copy to remain scan-safe." });
     }
+    if (boardScore.breakIntegrity < 90) {
+      issues.push({ level: "warning", code: "overflow", message: "Board one-pager integrity is at risk; compress before rendering." });
+    }
   }
 
   return {

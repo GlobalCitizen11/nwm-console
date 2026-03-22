@@ -29,7 +29,7 @@ export function PresentationSlideTimeline({ data }: { data: ExportSemanticData }
 
   return (
     <div className="export-stack-lg presentation-slide-section">
-      <SectionTitle label="Slide 4" title="Narrative Progression" subtitle="The sequence from emergence to the current condition." />
+      <SectionTitle label="Slide 4" title="Narrative progression" />
       <SlideTimeline items={grouped} />
     </div>
   );

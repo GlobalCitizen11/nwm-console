@@ -499,24 +499,21 @@
   padding: 10px 12px;
 }
 
-.board-evidence-row .evidence-anchor-grid {
+.board-evidence-strip {
+  display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 8px;
 }
 
-.board-evidence-row .evidence-anchor-card {
-  min-height: 0;
+.board-evidence-chip {
+  min-width: 0;
   padding: 8px 10px;
-}
-
-.board-evidence-row .signal-module-value {
-  font-size: 12px;
-  line-height: 15px;
-}
-
-.board-evidence-row .signal-module-support {
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.02);
   font-size: 11px;
   line-height: 14px;
+  color: #c8d4de;
 }
 
 .board-onepager .strategic-list {
@@ -588,12 +585,12 @@
 }
 
 .presentation-slide .export-page-inner {
-  gap: 20px;
+  gap: 16px;
 }
 
 .presentation-slide-shell {
   display: grid;
-  gap: 20px;
+  gap: 16px;
   min-height: 0;
 }
 
@@ -611,10 +608,44 @@
 .slide-conclusion-text {
   max-width: 760px;
   margin: 0;
-  font-size: 17px;
-  line-height: 1.4;
+  font-size: 15px;
+  line-height: 1.35;
   color: #d7e1e8;
   letter-spacing: -0.015em;
+}
+
+.presentation-slide .export-section-title {
+  gap: 2px;
+}
+
+.presentation-slide .export-section-title h3 {
+  font-size: 15px;
+  line-height: 19px;
+}
+
+.presentation-slide .export-subtitle {
+  display: none;
+}
+
+.presentation-slide .insight-card,
+.presentation-slide .strategic-list-item,
+.presentation-slide .pathway-panel {
+  gap: 6px;
+  padding: 10px 11px;
+}
+
+.presentation-slide .signal-module-value {
+  font-size: 13px;
+  line-height: 16px;
+}
+
+.presentation-slide .signal-module-support {
+  font-size: 11px;
+  line-height: 14px;
+}
+
+.presentation-slide .export-grid-2 {
+  gap: 12px;
 }
 
 .presentation-two-column {
@@ -859,6 +890,7 @@
   .pathway-panel-grid,
   .board-main-grid,
   .board-bottom-grid,
+  .board-evidence-strip,
   .compact-signal-strip,
   .presentation-progression-grid,
   .executive-progression-grid {

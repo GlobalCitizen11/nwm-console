@@ -8,8 +8,6 @@ import { ExecutiveSignalModule } from "./ExecutiveSignalModule";
 export function ExecutiveBriefPageCover({ data }: { data: ExportSemanticData }) {
   const narrative = composeExecutiveNarrative(data.sourceState);
   const primaryPressure = data.sourceState.pressurePoints[0] ?? "Pressure remains concentrated inside the active boundary.";
-  const strainedAssumption =
-    data.sourceState.sensitivities[0] ?? "Older assumptions about normalization and easy reversal are no longer dependable.";
 
   return (
     <>
@@ -36,12 +34,7 @@ export function ExecutiveBriefPageCover({ data }: { data: ExportSemanticData }) 
             <ExecutiveSignalModule
               label="Primary pressure"
               value={primaryPressure}
-              support="The most active channel is now shaping coordination and decision room."
-            />
-            <ExecutiveSignalModule
-              label="Assumptions under strain"
-              value={strainedAssumption}
-              support="Previous assumptions are weakening under sustained system pressure."
+              support="This channel is now shaping coordination, timing, and decision room."
             />
           </div>
         </div>

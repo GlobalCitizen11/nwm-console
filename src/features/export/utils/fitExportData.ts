@@ -25,10 +25,10 @@ const CONTENT_BUDGETS: Record<ExportMode, ContentBudget> = {
     supportChars: 54,
   },
   "presentation-brief": {
-    headlineWords: 8,
+    headlineWords: 7,
     supportSentences: 1,
-    maxChars: 120,
-    supportChars: 84,
+    maxChars: 92,
+    supportChars: 52,
   },
 };
 
@@ -179,6 +179,6 @@ export const fitExportDataForMode = (data: ExportSemanticData, mode: ExportMode)
     containmentSignals: limitForMode(transformed.containmentSignals, mode, 4, 2, 1).map((item) => prepareInsight(item, mode, "monitoring")),
     scenarioPaths: limitForMode(transformed.scenarioPaths, mode, 2, 2, 2).map((item) => prepareInsight(item, mode, "scenario")),
     monitoringPriorities: limitForMode(transformed.monitoringPriorities, mode, 3, 2, 1).map((item) => prepareInsight(item, mode, "monitoring")),
-    closingSynthesis: fitText(transformed.closingSynthesis, mode, mode === "executive-brief" ? 148 : mode === "presentation-brief" ? 100 : 72),
+    closingSynthesis: fitText(transformed.closingSynthesis, mode, mode === "executive-brief" ? 148 : mode === "presentation-brief" ? 72 : 72),
   };
 };
