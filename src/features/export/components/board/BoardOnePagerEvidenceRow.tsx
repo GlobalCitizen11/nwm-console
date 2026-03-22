@@ -1,6 +1,12 @@
 import type { ExportSemanticData } from "../../types/export";
 import { EvidenceAnchorGrid } from "../modules/EvidenceAnchorGrid";
+import { SectionTitle } from "../primitives/SectionTitle";
 
 export function BoardOnePagerEvidenceRow({ data }: { data: ExportSemanticData }) {
-  return <EvidenceAnchorGrid items={data.evidenceAnchors.slice(0, 4)} />;
+  return (
+    <section className="export-section board-evidence-row">
+      <SectionTitle label="Signal basis" title="Evidence anchors" />
+      <EvidenceAnchorGrid items={data.evidenceAnchors.slice(0, 3)} />
+    </section>
+  );
 }

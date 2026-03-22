@@ -7,11 +7,11 @@ export function ExecutiveBriefPageInterpretation({ data }: { data: ExportSemanti
   return (
     <div className="export-stack-lg">
       <SectionTitle label="Page 4" title="Strategic Interpretation" subtitle="Structural reading, implications, and monitoring priorities." />
-      <div className="export-grid-2">
-        <StrategicImplicationBlock title="Strategic implications" insights={data.implications} label="Interpretation" />
-        <RiskMonitoringBlock title="Monitoring priorities" insights={data.monitoringPriorities} />
+      <div className="export-grid-2 executive-interpretation-grid">
+        <StrategicImplicationBlock title="Strategic implications" insights={data.implications.slice(0, 3)} label="Interpretation" />
+        <RiskMonitoringBlock title="Monitoring priorities" insights={data.monitoringPriorities.slice(0, 3)} />
       </div>
-      <StrategicImplicationBlock title="Sensitivities and watchlist" insights={data.risks} label="Risk + monitoring" />
+      <StrategicImplicationBlock title="Sensitivities and watchlist" insights={data.risks.slice(0, 3)} label="Sensitivity watch" variant="risk" />
     </div>
   );
 }

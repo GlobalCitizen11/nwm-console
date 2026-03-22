@@ -7,9 +7,9 @@ export function ExecutiveBriefPageConclusion({ data }: { data: ExportSemanticDat
   return (
     <div className="export-stack-lg">
       <SectionTitle label="Page 6" title="System Effects + Conclusion" subtitle="Cross-domain interaction, containment dynamics, and final synthesis." />
-      <div className="export-grid-2">
-        <SignalDriverGrid insights={data.crossDomainEffects} />
-        <SignalDriverGrid insights={data.containmentSignals} />
+      <div className="export-grid-2 executive-conclusion-grid">
+        <SignalDriverGrid insights={data.crossDomainEffects.slice(0, 4)} />
+        <SignalDriverGrid insights={data.containmentSignals.slice(0, 4)} />
       </div>
       <ClosingSynthesisBlock text={data.closingSynthesis} />
     </div>

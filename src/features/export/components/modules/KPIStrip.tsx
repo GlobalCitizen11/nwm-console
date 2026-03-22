@@ -1,9 +1,9 @@
 import type { ExportStat } from "../../types/export";
 import { KPIStat } from "./KPIStat";
 
-export function KPIStrip({ stats }: { stats: ExportStat[] }) {
+export function KPIStrip({ stats, className = "" }: { stats: ExportStat[]; className?: string }) {
   return (
-    <div className="kpi-strip">
+    <div className={`kpi-strip ${className}`.trim()}>
       {stats.map((stat) => (
         <KPIStat key={stat.label} stat={stat} />
       ))}

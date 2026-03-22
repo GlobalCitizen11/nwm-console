@@ -2,9 +2,17 @@ import type { ExportInsight } from "../../types/export";
 import { DataBadge } from "../primitives/DataBadge";
 import { Panel } from "../primitives/Panel";
 
-export function InsightCard({ insight, compact = false }: { insight: ExportInsight; compact?: boolean }) {
+export function InsightCard({
+  insight,
+  compact = false,
+  className = "",
+}: {
+  insight: ExportInsight;
+  compact?: boolean;
+  className?: string;
+}) {
   return (
-    <Panel className={`insight-card ${compact ? "insight-card--compact" : ""}`}>
+    <Panel className={`insight-card ${compact ? "insight-card--compact" : ""} ${className}`.trim()}>
       <div className="insight-card-top">
         {insight.signalTag ? <DataBadge tone={insight.emphasis ?? "neutral"}>{insight.signalTag}</DataBadge> : null}
       </div>

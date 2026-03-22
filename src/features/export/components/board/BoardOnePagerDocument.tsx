@@ -12,15 +12,15 @@ export function BoardOnePagerDocument({ data }: { data: ExportSemanticData }) {
   return (
     <ExportPage metadata={data.metadata} pageNumber={1} totalPages={1} className="board-onepager">
       <BoardOnePagerHeader data={data} />
-      <div className="export-stack-md">
+      <div className="export-stack-md board-onepager-layout">
         <BoardOnePagerInsightGrid data={data} />
         <BoardOnePagerSystemStrip data={data} />
-        <div className="export-grid-2">
+        <div className="export-grid-2 board-lower-grid">
           <BoardOnePagerImplications data={data} />
           <BoardOnePagerRiskBlock data={data} />
         </div>
         <BoardOnePagerEvidenceRow data={data} />
-        <BoardOnePagerFooter data={data} />
+        <BoardOnePagerFooter />
       </div>
     </ExportPage>
   );

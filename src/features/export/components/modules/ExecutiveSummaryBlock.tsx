@@ -1,5 +1,5 @@
 import { ContextPanel } from "./ContextPanel";
 
 export function ExecutiveSummaryBlock({ text }: { text: string }) {
-  return <ContextPanel label="Executive Summary" title="Top-line interpretation" text={text} />;
+  return <ContextPanel className="summary-panel" label="Executive summary" title="Top-line interpretation" text={text} />;
 }

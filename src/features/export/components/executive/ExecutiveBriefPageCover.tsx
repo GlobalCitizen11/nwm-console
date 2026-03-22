@@ -9,11 +9,13 @@ export function ExecutiveBriefPageCover({ data }: { data: ExportSemanticData }) 
   return (
     <>
       <ExportHeader title={data.title} subtitle={data.subtitle} metadata={data.metadata} modeLabel="Executive Brief" />
-      <div className="export-stack-lg">
-        <BoundaryPanel boundary={data.boundary} />
-        <KPIStrip stats={data.systemStats} />
-        <ExecutiveSummaryBlock text={data.executiveLead} />
-        <InsightCardGrid insights={data.keyInsights} columns={2} />
+      <div className="export-stack-lg executive-cover-layout">
+        <div className="export-grid-2 executive-cover-top">
+          <BoundaryPanel boundary={data.boundary} />
+          <ExecutiveSummaryBlock text={data.executiveLead} />
+        </div>
+        <KPIStrip stats={data.systemStats} className="executive-kpi-strip" />
+        <InsightCardGrid insights={data.keyInsights} columns={2} className="executive-cover-grid" leadFirst />
       </div>
     </>
   );
