@@ -1,6 +1,6 @@
 @page {
   size: letter;
-  margin: 8mm;
+  margin: 0;
 }
 
 @media print {
@@ -21,11 +21,11 @@
   }
 
   .export-page-frame {
-    min-height: calc(279.4mm - 16mm);
+    min-height: calc(279.4mm);
     border: 0;
     page-break-after: auto;
     break-after: auto;
-    padding: 11mm 10mm 9mm;
+    padding: 40px 40px 44px;
     box-shadow: none;
   }
 
@@ -50,5 +50,9 @@
 
   .export-footer {
     margin-top: 4mm;
+  }
+
+  .executive-page-grid {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
   }
 }

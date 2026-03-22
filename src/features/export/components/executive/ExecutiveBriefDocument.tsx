@@ -7,48 +7,22 @@ import { ExecutiveBriefPageInterpretation } from "./ExecutiveBriefPageInterpreta
 import { ExecutiveBriefPageTakeaways } from "./ExecutiveBriefPageTakeaways";
 import { ExecutiveBriefPageTimeline } from "./ExecutiveBriefPageTimeline";
 
-const hasItems = (items: unknown[] | undefined) => Boolean(items && items.length > 0);
-
 export function ExecutiveBriefDocument({ data }: { data: ExportSemanticData }) {
   const pages = [
-    {
-      id: "cover",
-      isVisible: true,
-      render: () => <ExecutiveBriefPageCover data={data} />,
-    },
-    {
-      id: "takeaways",
-      isVisible: hasItems(data.scenarioPaths) || hasItems(data.keyInsights) || hasItems(data.implications),
-      render: () => <ExecutiveBriefPageTakeaways data={data} />,
-    },
-    {
-      id: "timeline",
-      isVisible: hasItems(data.timeline),
-      render: () => <ExecutiveBriefPageTimeline data={data} />,
-    },
-    {
-      id: "interpretation",
-      isVisible: hasItems(data.implications) || hasItems(data.monitoringPriorities) || hasItems(data.risks),
-      render: () => <ExecutiveBriefPageInterpretation data={data} />,
-    },
-    {
-      id: "evidence",
-      isVisible: hasItems(data.evidenceAnchors) || hasItems(data.crossDomainEffects) || hasItems(data.containmentSignals),
-      render: () => <ExecutiveBriefPageEvidence data={data} />,
-    },
-    {
-      id: "conclusion",
-      isVisible: Boolean(data.closingSynthesis) || hasItems(data.crossDomainEffects) || hasItems(data.containmentSignals),
-      render: () => <ExecutiveBriefPageConclusion data={data} />,
-    },
-  ].filter((page) => page.isVisible);
+    { id: "cover", render: () => <ExecutiveBriefPageCover data={data} /> },
+    { id: "development", render: () => <ExecutiveBriefPageTakeaways data={data} /> },
+    { id: "interpretation", render: () => <ExecutiveBriefPageTimeline data={data} /> },
+    { id: "forward", render: () => <ExecutiveBriefPageInterpretation data={data} /> },
+    { id: "positioning", render: () => <ExecutiveBriefPageEvidence data={data} /> },
+    { id: "evidence", render: () => <ExecutiveBriefPageConclusion data={data} /> },
+  ];
 
-  const totalPages = pages.length;
+  const totalPages = 6;
 
   return (
     <>
       {pages.map((page, index) => (
-        <ExportPage key={page.id} metadata={data.metadata} pageNumber={index + 1} totalPages={totalPages}>
+        <ExportPage key={page.id} metadata={data.metadata} pageNumber={index + 1} totalPages={totalPages} className="executive-brief-page">
           {page.render()}
         </ExportPage>
       ))}

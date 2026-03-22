@@ -9,7 +9,6 @@ export function CompactSignalStrip({ data }: { data: ExportSemanticData }) {
     { label: "Density", value: pick(data, "Narrative Density", data.sourceState.narrativeDensity) },
     { label: "Momentum", value: pick(data, "Structural Momentum", data.sourceState.structuralMomentum) },
     { label: "Reversibility", value: pick(data, "Reversibility", data.sourceState.reversibility) },
-    { label: "Pressure", value: data.sourceState.pressurePoints[0] ?? "Concentrated in the active boundary" },
   ];
 
   return (
