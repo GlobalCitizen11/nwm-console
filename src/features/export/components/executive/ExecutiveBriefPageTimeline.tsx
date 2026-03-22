@@ -30,11 +30,11 @@ export function ExecutiveBriefPageTimeline({ data }: { data: ExportSemanticData 
 
   return (
     <div className="export-stack-lg">
-      <SectionTitle label="Page 3" title="Narrative Evolution" subtitle="Development path from early signals through current condition." />
+      <SectionTitle label="Narrative evolution" title="Narrative evolution" subtitle="The sequence from early formation to the current structural readout." />
       <InsightCardGrid insights={progression} columns={3} className="executive-progression-grid" />
       <ContextPanel
         className="executive-transition-panel"
-        label="Key transition"
+        label="Latest transition"
         title="Latest transition in context"
         text={`${data.sourceState.currentCondition} ${data.sourceState.structuralShift}`}
       />

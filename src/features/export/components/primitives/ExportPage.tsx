@@ -10,7 +10,7 @@ export function ExportPage({
   className = "",
 }: PropsWithChildren<{ metadata: ExportMetadata; pageNumber: number; totalPages: number; className?: string }>) {
   return (
-    <article className={`export-page-frame ${className}`.trim()}>
+    <article className={`export-page-frame ${className}`.trim()} data-page={`${pageNumber}-${totalPages}`}>
       <div className="export-page-inner">{children}</div>
       <ExportFooter metadata={metadata} pageNumber={pageNumber} totalPages={totalPages} />
     </article>

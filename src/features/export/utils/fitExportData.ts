@@ -33,6 +33,39 @@ const CONTENT_BUDGETS: Record<ExportMode, ContentBudget> = {
 
 const cleanText = (text: string) => text.replace(/\s+/g, " ").trim();
 
+const synthesizeExecutiveHeadline = (text: string, fitMode: ModuleFitMode, fallbackWords: number) => {
+  const normalized = cleanText(text).toLowerCase();
+
+  if (fitMode === "hero" || fitMode === "support") {
+    if (normalized.includes("fragment")) return "Fragmentation Entrenches Under Sustained Pressure";
+    if (normalized.includes("revers")) return "Reversibility Narrows as Density Builds";
+    if (normalized.includes("pressure")) return "Pressure Concentrates in Core Structural Drivers";
+    if (normalized.includes("contain")) return "Containment Holds in Narrower System Edges";
+  }
+
+  if (fitMode === "scenario") {
+    if (normalized.includes("continue")) return "Current Path Continues to Favor Fragmented Development";
+    if (normalized.includes("stabil")) return "Alternate Path Depends on Narrow Stabilization Signals";
+  }
+
+  if (fitMode === "implication") {
+    if (normalized.includes("infrastructure")) return "Infrastructure Becomes a Strategic Constraint";
+    if (normalized.includes("institution")) return "Institutional Uptake Extends the Structural Read";
+  }
+
+  if (fitMode === "monitoring") {
+    if (normalized.includes("visibility")) return "Visibility Depends on a Narrow Set of Signals";
+    if (normalized.includes("review")) return "Review Timing Matters More as Conditions Tighten";
+  }
+
+  if (fitMode === "evidence") {
+    if (normalized.includes("disclosure")) return "Disclosure Remains a Primary Evidence Anchor";
+    if (normalized.includes("policy")) return "Policy Moves Continue to Anchor the Readout";
+  }
+
+  return compressHeadline(text, fallbackWords);
+};
+
 const buildHeadlineVariants = (text: string, budget: ContentBudget): Record<CopyVariant, string> => ({
   full: compressHeadline(text, budget.headlineWords),
   medium: compressHeadline(text, Math.max(7, budget.headlineWords - 2)),
@@ -48,7 +81,15 @@ const buildBodyVariants = (text: string, budget: ContentBudget): Record<CopyVari
 const prepareInsight = (insight: ExportInsight, mode: ExportMode, fitMode: ModuleFitMode): ExportInsight => {
   const budget = CONTENT_BUDGETS[mode];
   const source = cleanText(`${insight.headline}. ${insight.support}`);
-  const headlineVariants = insight.headlineVariants ?? buildHeadlineVariants(source, budget);
+  const headlineVariants =
+    insight.headlineVariants ??
+    (mode === "executive-brief"
+      ? {
+          full: synthesizeExecutiveHeadline(source, fitMode, budget.headlineWords),
+          medium: synthesizeExecutiveHeadline(source, fitMode, Math.max(7, budget.headlineWords - 2)),
+          compact: synthesizeExecutiveHeadline(source, fitMode, Math.max(6, budget.headlineWords - 4)),
+        }
+      : buildHeadlineVariants(source, budget));
   const bodyVariants = insight.bodyVariants ?? buildBodyVariants(insight.support || source, budget);
   const selected = renderSafeCopy({
     mode,

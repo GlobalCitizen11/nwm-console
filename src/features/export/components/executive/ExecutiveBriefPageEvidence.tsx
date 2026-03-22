@@ -6,7 +6,7 @@ import { EvidenceCluster } from "./EvidenceCluster";
 export function ExecutiveBriefPageEvidence({ data }: { data: ExportSemanticData }) {
   return (
     <div className="export-stack-lg">
-      <SectionTitle label="Page 5" title="Evidence & Signal Basis" subtitle="Observable anchors, domain interactions, and readout drivers." />
+      <SectionTitle label="Evidence and signal basis" title="Evidence and signal basis" subtitle="Observable anchors, cross-domain interaction, and the evidence that would change the read." />
       <EvidenceCluster items={data.evidenceAnchors.slice(0, 6)} />
       <div className="export-grid-2 executive-evidence-grid">
         <SignalDriverGrid insights={data.crossDomainEffects.slice(0, 4)} mode="executive-brief" />

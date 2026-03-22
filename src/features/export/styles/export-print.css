@@ -23,15 +23,15 @@
   .export-page-frame {
     min-height: calc(279.4mm - 16mm);
     border: 0;
-    page-break-after: always;
-    break-after: page;
-    padding: 12mm 10mm 10mm;
+    page-break-after: auto;
+    break-after: auto;
+    padding: 11mm 10mm 9mm;
     box-shadow: none;
   }
 
-  .export-page-frame:last-child {
-    page-break-after: auto;
-    break-after: auto;
+  .export-page-frame + .export-page-frame {
+    page-break-before: always;
+    break-before: page;
   }
 
   .export-panel,
@@ -46,5 +46,9 @@
   .closing-panel {
     break-inside: avoid;
     page-break-inside: avoid;
+  }
+
+  .export-footer {
+    margin-top: 4mm;
   }
 }

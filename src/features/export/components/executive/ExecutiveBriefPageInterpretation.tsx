@@ -6,7 +6,7 @@ import { SectionTitle } from "../primitives/SectionTitle";
 export function ExecutiveBriefPageInterpretation({ data }: { data: ExportSemanticData }) {
   return (
     <div className="export-stack-lg">
-      <SectionTitle label="Page 4" title="Strategic Interpretation" subtitle="Structural reading, implications, and monitoring priorities." />
+      <SectionTitle label="Strategic interpretation" title="Strategic interpretation" subtitle="What the current structure means, where it is most sensitive, and what deserves closer visibility." />
       <div className="export-grid-2 executive-interpretation-grid">
         <StrategicImplicationBlock title="Strategic implications" insights={data.implications.slice(0, 3)} label="Interpretation" mode="executive-brief" />
         <RiskMonitoringBlock title="Monitoring priorities" insights={data.monitoringPriorities.slice(0, 3)} mode="executive-brief" />

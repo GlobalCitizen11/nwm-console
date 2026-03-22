@@ -7,7 +7,7 @@ import { SectionTitle } from "../primitives/SectionTitle";
 export function ExecutiveBriefPageTakeaways({ data }: { data: ExportSemanticData }) {
   return (
     <div className="export-stack-lg">
-      <SectionTitle label="Page 2" title="Key Takeaways" subtitle="The highest-signal takeaways and the immediate forward orientation." />
+      <SectionTitle label="Takeaways" title="Key takeaways" subtitle="The dominant path, the live alternatives, and the operating read they imply." />
       <ScenarioPathBlock title="Dominant path and alternate path" insights={data.scenarioPaths.slice(0, 2)} mode="executive-brief" />
       <div className="export-grid-2">
         <InsightCardGrid insights={data.keyInsights.slice(0, 2)} columns={2} className="executive-support-grid" mode="executive-brief" fitMode="support" />

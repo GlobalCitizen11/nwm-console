@@ -7,28 +7,51 @@ import { ExecutiveBriefPageInterpretation } from "./ExecutiveBriefPageInterpreta
 import { ExecutiveBriefPageTakeaways } from "./ExecutiveBriefPageTakeaways";
 import { ExecutiveBriefPageTimeline } from "./ExecutiveBriefPageTimeline";
 
+const hasItems = (items: unknown[] | undefined) => Boolean(items && items.length > 0);
+
 export function ExecutiveBriefDocument({ data }: { data: ExportSemanticData }) {
-  const totalPages = 6;
+  const pages = [
+    {
+      id: "cover",
+      isVisible: true,
+      render: () => <ExecutiveBriefPageCover data={data} />,
+    },
+    {
+      id: "takeaways",
+      isVisible: hasItems(data.scenarioPaths) || hasItems(data.keyInsights) || hasItems(data.implications),
+      render: () => <ExecutiveBriefPageTakeaways data={data} />,
+    },
+    {
+      id: "timeline",
+      isVisible: hasItems(data.timeline),
+      render: () => <ExecutiveBriefPageTimeline data={data} />,
+    },
+    {
+      id: "interpretation",
+      isVisible: hasItems(data.implications) || hasItems(data.monitoringPriorities) || hasItems(data.risks),
+      render: () => <ExecutiveBriefPageInterpretation data={data} />,
+    },
+    {
+      id: "evidence",
+      isVisible: hasItems(data.evidenceAnchors) || hasItems(data.crossDomainEffects) || hasItems(data.containmentSignals),
+      render: () => <ExecutiveBriefPageEvidence data={data} />,
+    },
+    {
+      id: "conclusion",
+      isVisible: Boolean(data.closingSynthesis) || hasItems(data.crossDomainEffects) || hasItems(data.containmentSignals),
+      render: () => <ExecutiveBriefPageConclusion data={data} />,
+    },
+  ].filter((page) => page.isVisible);
+
+  const totalPages = pages.length;
+
   return (
     <>
-      <ExportPage metadata={data.metadata} pageNumber={1} totalPages={totalPages}>
-        <ExecutiveBriefPageCover data={data} />
-      </ExportPage>
-      <ExportPage metadata={data.metadata} pageNumber={2} totalPages={totalPages}>
-        <ExecutiveBriefPageTakeaways data={data} />
-      </ExportPage>
-      <ExportPage metadata={data.metadata} pageNumber={3} totalPages={totalPages}>
-        <ExecutiveBriefPageTimeline data={data} />
-      </ExportPage>
-      <ExportPage metadata={data.metadata} pageNumber={4} totalPages={totalPages}>
-        <ExecutiveBriefPageInterpretation data={data} />
-      </ExportPage>
-      <ExportPage metadata={data.metadata} pageNumber={5} totalPages={totalPages}>
-        <ExecutiveBriefPageEvidence data={data} />
-      </ExportPage>
-      <ExportPage metadata={data.metadata} pageNumber={6} totalPages={totalPages}>
-        <ExecutiveBriefPageConclusion data={data} />
-      </ExportPage>
+      {pages.map((page, index) => (
+        <ExportPage key={page.id} metadata={data.metadata} pageNumber={index + 1} totalPages={totalPages}>
+          {page.render()}
+        </ExportPage>
+      ))}
     </>
   );
 }
