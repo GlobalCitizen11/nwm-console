@@ -2,6 +2,7 @@ import type { CopyVariant, ExportInsight, ExportMode, ExportSemanticData, Export
 import { compressHeadline } from "./compressHeadline";
 import { compressSupportText } from "./compressSupportText";
 import { renderSafeCopy } from "./renderSafeCopy";
+import { buildCanonicalSystemTruth, toBoardOnePagerContent, toExecutiveBriefContent, toPresentationBriefContent } from "./transformExportContent";
 
 type ContentBudget = {
   headlineWords: number;
@@ -149,21 +150,39 @@ const limitForMode = <T,>(items: T[], mode: ExportMode, executiveCount: number, 
   return items.slice(0, boardCount);
 };
 
-export const fitExportDataForMode = (data: ExportSemanticData, mode: ExportMode): ExportSemanticData => ({
-  ...data,
-  boundary: fitText(data.boundary, mode, mode === "board-onepager" ? 108 : 180),
-  executiveLead: fitText(data.executiveLead, mode, mode === "executive-brief" ? 190 : mode === "presentation-brief" ? 96 : 84),
-  keyInsights: limitForMode(data.keyInsights, mode, 4, 3, 3).map((item, index) =>
-    prepareInsight(item, mode, index === 0 ? "hero" : "support"),
-  ),
-  systemStats: mode === "executive-brief" ? data.systemStats.slice(0, 5) : data.systemStats.slice(0, 4),
-  timeline: limitForMode(data.timeline, mode, 5, 3, 3).map((item) => prepareTimelineItem(item, mode)),
-  implications: limitForMode(data.implications, mode, 3, 2, 1).map((item) => prepareInsight(item, mode, "implication")),
-  risks: limitForMode(data.risks, mode, 3, 2, 1).map((item) => prepareInsight(item, mode, "monitoring")),
-  evidenceAnchors: limitForMode(data.evidenceAnchors, mode, 6, 3, 3).map((item) => prepareInsight(item, mode, "evidence")),
-  crossDomainEffects: limitForMode(data.crossDomainEffects, mode, 4, 2, 1).map((item) => prepareInsight(item, mode, "implication")),
-  containmentSignals: limitForMode(data.containmentSignals, mode, 4, 2, 1).map((item) => prepareInsight(item, mode, "monitoring")),
-  scenarioPaths: limitForMode(data.scenarioPaths, mode, 2, 2, 2).map((item) => prepareInsight(item, mode, "scenario")),
-  monitoringPriorities: limitForMode(data.monitoringPriorities, mode, 3, 2, 1).map((item) => prepareInsight(item, mode, "monitoring")),
-  closingSynthesis: fitText(data.closingSynthesis, mode, mode === "executive-brief" ? 180 : mode === "presentation-brief" ? 100 : 84),
-});
+export const fitExportDataForMode = (data: ExportSemanticData, mode: ExportMode): ExportSemanticData => {
+  const truth = buildCanonicalSystemTruth(data);
+  const transformed =
+    mode === "executive-brief"
+      ? toExecutiveBriefContent(data, truth)
+      : mode === "board-onepager"
+        ? toBoardOnePagerContent(data, truth)
+        : toPresentationBriefContent(data, truth);
+
+  return {
+    ...transformed,
+    boundary: fitText(transformed.boundary, mode, mode === "board-onepager" ? 108 : 180),
+    executiveLead: fitText(
+      transformed.executiveLead,
+      mode,
+      mode === "executive-brief" ? 190 : mode === "presentation-brief" ? 96 : 84,
+    ),
+    keyInsights: limitForMode(transformed.keyInsights, mode, 4, 3, 3).map((item, index) =>
+      prepareInsight(item, mode, index === 0 ? "hero" : "support"),
+    ),
+    systemStats: mode === "executive-brief" ? transformed.systemStats.slice(0, 5) : transformed.systemStats.slice(0, 4),
+    timeline: limitForMode(transformed.timeline, mode, 5, 3, 3).map((item) => prepareTimelineItem(item, mode)),
+    implications: limitForMode(transformed.implications, mode, 3, 2, 1).map((item) => prepareInsight(item, mode, "implication")),
+    risks: limitForMode(transformed.risks, mode, 3, 2, 1).map((item) => prepareInsight(item, mode, "monitoring")),
+    evidenceAnchors: limitForMode(transformed.evidenceAnchors, mode, 6, 3, 3).map((item) => prepareInsight(item, mode, "evidence")),
+    crossDomainEffects: limitForMode(transformed.crossDomainEffects, mode, 4, 2, 1).map((item) => prepareInsight(item, mode, "implication")),
+    containmentSignals: limitForMode(transformed.containmentSignals, mode, 4, 2, 1).map((item) => prepareInsight(item, mode, "monitoring")),
+    scenarioPaths: limitForMode(transformed.scenarioPaths, mode, 2, 2, 2).map((item) => prepareInsight(item, mode, "scenario")),
+    monitoringPriorities: limitForMode(transformed.monitoringPriorities, mode, 3, 2, 1).map((item) => prepareInsight(item, mode, "monitoring")),
+    closingSynthesis: fitText(
+      transformed.closingSynthesis,
+      mode,
+      mode === "executive-brief" ? 180 : mode === "presentation-brief" ? 100 : 84,
+    ),
+  };
+};

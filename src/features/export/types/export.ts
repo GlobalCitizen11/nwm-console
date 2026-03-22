@@ -72,6 +72,18 @@ export interface ExportSemanticData {
   sourceState: BriefingState;
 }
 
+export interface CanonicalSystemTruth {
+  currentState: string;
+  trajectory: string;
+  primaryPressureSource: string;
+  systemBehavior: string;
+  narrativeEvolution: {
+    earlySignals: string[];
+    systemicUptake: string[];
+    currentState: string[];
+  };
+}
+
 export interface ExportModulePayload {
   id: string;
   title: string;
