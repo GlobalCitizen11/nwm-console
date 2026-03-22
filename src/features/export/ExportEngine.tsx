@@ -13,32 +13,28 @@ const buildQaPlans = (mode: ExportMode, data: ExportSemanticData): ExportModuleP
     case "executive-brief":
       return [
         [
-          { id: "cover-hero", title: "Hero state", density: "standard", estimatedHeight: 6, keepTogether: true, content: data.keyInsights.slice(0, 1) },
-          { id: "cover-kpis", title: "System snapshot", density: "standard", estimatedHeight: 4, keepTogether: true, content: data.systemStats },
-          { id: "cover-grid", title: "Insight grid", density: "standard", estimatedHeight: 7, keepTogether: true, content: data.keyInsights.slice(1) },
+          { id: "cover-hero", title: "Hero state", density: "standard", estimatedHeight: 5, keepTogether: true, content: data.keyInsights.slice(0, 1) },
+          { id: "cover-kpis", title: "System snapshot", density: "standard", estimatedHeight: 3, keepTogether: true, content: data.systemStats.slice(0, 4) },
+          { id: "cover-rail", title: "Signal rail", density: "standard", estimatedHeight: 4, keepTogether: true, content: data.keyInsights.slice(1, 3) },
         ],
         [
-          { id: "takeaways-paths", title: "Dominant path", density: "standard", estimatedHeight: 7, keepTogether: true, content: data.scenarioPaths },
-          { id: "takeaways-support", title: "Supporting signals", density: "standard", estimatedHeight: 6, keepTogether: true, content: data.keyInsights.slice(0, 2) },
-          { id: "takeaways-implications", title: "Operating implications", density: "standard", estimatedHeight: 6, keepTogether: true, content: data.implications },
+          { id: "development-body", title: "Narrative development", density: "standard", estimatedHeight: 9, keepTogether: true, content: data.timeline.slice(0, 3) },
+          { id: "development-rail", title: "Signal rail", density: "standard", estimatedHeight: 4, keepTogether: true, content: data.crossDomainEffects.slice(0, 1) },
         ],
         [
-          { id: "timeline-progression", title: "Narrative progression", density: "standard", estimatedHeight: 8, keepTogether: true, content: data.timeline },
-          { id: "timeline-transition", title: "Transition read", density: "standard", estimatedHeight: 5, keepTogether: true, content: [data.executiveLead] },
+          { id: "interpretation-body", title: "Structural interpretation", density: "standard", estimatedHeight: 8, keepTogether: true, content: data.implications.slice(0, 2) },
+          { id: "interpretation-rail", title: "Signal rail", density: "standard", estimatedHeight: 4, keepTogether: true, content: data.containmentSignals.slice(0, 1) },
         ],
         [
-          { id: "interpretation", title: "Strategic interpretation", density: "standard", estimatedHeight: 7, keepTogether: true, content: data.implications },
-          { id: "monitoring", title: "Monitoring priorities", density: "standard", estimatedHeight: 6, keepTogether: true, content: data.monitoringPriorities },
-          { id: "risks", title: "Sensitivity watch", density: "standard", estimatedHeight: 5, keepTogether: true, content: data.risks },
+          { id: "forward-body", title: "Forward orientation", density: "standard", estimatedHeight: 8, keepTogether: true, content: data.scenarioPaths },
+          { id: "forward-rail", title: "Signal rail", density: "standard", estimatedHeight: 4, keepTogether: true, content: data.scenarioPaths.slice(1, 2) },
         ],
         [
-          { id: "evidence", title: "Evidence anchors", density: "standard", estimatedHeight: 8, keepTogether: true, content: data.evidenceAnchors },
-          { id: "drivers", title: "System effects", density: "standard", estimatedHeight: 6, keepTogether: true, content: data.crossDomainEffects },
-          { id: "containment", title: "Containment signals", density: "standard", estimatedHeight: 5, keepTogether: true, content: data.containmentSignals },
+          { id: "positioning-body", title: "Strategic positioning", density: "standard", estimatedHeight: 8, keepTogether: true, content: data.monitoringPriorities.slice(0, 2) },
+          { id: "positioning-rail", title: "Signal rail", density: "standard", estimatedHeight: 4, keepTogether: true, content: data.risks.slice(0, 1) },
         ],
         [
-          { id: "conclusion-effects", title: "Cross-domain effects", density: "standard", estimatedHeight: 6, keepTogether: true, content: data.crossDomainEffects },
-          { id: "conclusion-closing", title: "Conclusion", density: "standard", estimatedHeight: 5, keepTogether: true, content: [data.closingSynthesis] },
+          { id: "evidence-body", title: "Evidence anchors", density: "standard", estimatedHeight: 6, keepTogether: true, content: data.evidenceAnchors.slice(0, 3) },
         ],
       ];
     case "presentation-brief":
@@ -59,12 +55,10 @@ const buildQaPlans = (mode: ExportMode, data: ExportSemanticData): ExportModuleP
     case "board-onepager":
       return [
         [
-          { id: "board-dominant", title: "Dominant state", density: "compact", estimatedHeight: 6, keepTogether: true, content: data.keyInsights.slice(0, 1) },
-          { id: "board-supporting", title: "Supporting insights", density: "compact", estimatedHeight: 6, keepTogether: true, content: data.keyInsights.slice(1) },
-          { id: "board-kpis", title: "System snapshot", density: "compact", estimatedHeight: 4, keepTogether: true, content: data.systemStats.slice(0, 4) },
-          { id: "board-implications", title: "Implications", density: "compact", estimatedHeight: 4, keepTogether: true, content: data.implications },
-          { id: "board-risks", title: "Risks", density: "compact", estimatedHeight: 4, keepTogether: true, content: data.risks },
-          { id: "board-evidence", title: "Evidence anchors", density: "compact", estimatedHeight: 3, keepTogether: true, content: data.evidenceAnchors },
+          { id: "board-left", title: "State and implications", density: "compact", estimatedHeight: 8, keepTogether: true, content: [...data.keyInsights.slice(0, 1), ...data.implications.slice(0, 2)] },
+          { id: "board-right", title: "Signal stack", density: "compact", estimatedHeight: 7, keepTogether: true, content: [data.metadata.phase, ...data.systemStats.slice(1, 4).map((stat) => stat.value), ...data.scenarioPaths.slice(0, 1).map((item) => item.headline)] },
+          { id: "board-monitoring", title: "Monitoring", density: "compact", estimatedHeight: 4, keepTogether: true, content: data.risks.slice(0, 2) },
+          { id: "board-evidence", title: "Evidence anchors", density: "compact", estimatedHeight: 3, keepTogether: true, content: data.evidenceAnchors.slice(0, 3) },
         ],
       ];
   }

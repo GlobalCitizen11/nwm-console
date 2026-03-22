@@ -13,16 +13,16 @@ type ContentBudget = {
 
 const CONTENT_BUDGETS: Record<ExportMode, ContentBudget> = {
   "executive-brief": {
-    headlineWords: 12,
+    headlineWords: 10,
     supportSentences: 2,
-    maxChars: 220,
-    supportChars: 160,
+    maxChars: 190,
+    supportChars: 132,
   },
   "board-onepager": {
-    headlineWords: 8,
+    headlineWords: 7,
     supportSentences: 1,
-    maxChars: 140,
-    supportChars: 72,
+    maxChars: 100,
+    supportChars: 54,
   },
   "presentation-brief": {
     headlineWords: 8,
@@ -172,17 +172,13 @@ export const fitExportDataForMode = (data: ExportSemanticData, mode: ExportMode)
     ),
     systemStats: mode === "executive-brief" ? transformed.systemStats.slice(0, 5) : transformed.systemStats.slice(0, 4),
     timeline: limitForMode(transformed.timeline, mode, 5, 3, 3).map((item) => prepareTimelineItem(item, mode)),
-    implications: limitForMode(transformed.implications, mode, 3, 2, 1).map((item) => prepareInsight(item, mode, "implication")),
-    risks: limitForMode(transformed.risks, mode, 3, 2, 1).map((item) => prepareInsight(item, mode, "monitoring")),
+    implications: limitForMode(transformed.implications, mode, 3, 2, 2).map((item) => prepareInsight(item, mode, "implication")),
+    risks: limitForMode(transformed.risks, mode, 3, 2, 2).map((item) => prepareInsight(item, mode, "monitoring")),
     evidenceAnchors: limitForMode(transformed.evidenceAnchors, mode, 6, 3, 3).map((item) => prepareInsight(item, mode, "evidence")),
     crossDomainEffects: limitForMode(transformed.crossDomainEffects, mode, 4, 2, 1).map((item) => prepareInsight(item, mode, "implication")),
     containmentSignals: limitForMode(transformed.containmentSignals, mode, 4, 2, 1).map((item) => prepareInsight(item, mode, "monitoring")),
     scenarioPaths: limitForMode(transformed.scenarioPaths, mode, 2, 2, 2).map((item) => prepareInsight(item, mode, "scenario")),
     monitoringPriorities: limitForMode(transformed.monitoringPriorities, mode, 3, 2, 1).map((item) => prepareInsight(item, mode, "monitoring")),
-    closingSynthesis: fitText(
-      transformed.closingSynthesis,
-      mode,
-      mode === "executive-brief" ? 180 : mode === "presentation-brief" ? 100 : 84,
-    ),
+    closingSynthesis: fitText(transformed.closingSynthesis, mode, mode === "executive-brief" ? 148 : mode === "presentation-brief" ? 100 : 72),
   };
 };
