@@ -264,3 +264,96 @@ export interface BoardOnePager {
   signalBasis: string[];
   stabilitySignals: string[];
 }
+
+export type ExportMode = "executive-brief" | "presentation-brief" | "board-onepager";
+
+export type ExportModuleKind =
+  | "cover"
+  | "summary-cards"
+  | "kpi-strip"
+  | "interpretation"
+  | "takeaways"
+  | "forward-paths"
+  | "implications"
+  | "timeline"
+  | "development"
+  | "strategic"
+  | "evidence"
+  | "cross-domain"
+  | "containment"
+  | "closing"
+  | "title-slide"
+  | "system-overview"
+  | "scenario-paths"
+  | "risk-monitoring"
+  | "synthesis"
+  | "board-topline"
+  | "board-kpis"
+  | "board-risks"
+  | "board-evidence";
+
+export type ExportModuleSize = "compact" | "standard" | "expanded";
+
+export interface ExportModule {
+  id: string;
+  kind: ExportModuleKind;
+  title: string;
+  label?: string;
+  size: ExportModuleSize;
+  items?: string[];
+  narrative?: string[];
+  accent?: string;
+  estimatedUnits: number;
+  keepTogether?: boolean;
+}
+
+export interface ExportPagePlan {
+  id: string;
+  title: string;
+  pageNumber: number;
+  modules: ExportModule[];
+  targetUnits: number;
+  totalUnits: number;
+}
+
+export interface ExportDocumentPlan {
+  mode: ExportMode;
+  title: string;
+  subtitle: string;
+  pages: ExportPagePlan[];
+  metadata: {
+    scenarioName: string;
+    asOf: string;
+    phase: string;
+    generatedAt: string;
+    confidentialityLabel: string;
+    currentViewName: string;
+  };
+}
+
+export interface ExportQaIssue {
+  severity: "warning" | "error";
+  code:
+    | "underfilled-page"
+    | "overflow-risk"
+    | "broken-module"
+    | "widow-heading-risk"
+    | "spacing-imbalance"
+    | "contrast-risk";
+  message: string;
+  pageId: string;
+}
+
+export interface ExportQaReport {
+  ok: boolean;
+  issues: ExportQaIssue[];
+}
+
+export interface ExportPreviewPayload {
+  mode: ExportMode;
+  filename: string;
+  orientation: "portrait" | "landscape";
+  html: string;
+  qa: ExportQaReport;
+  metadata: ExportDocumentPlan["metadata"];
+}

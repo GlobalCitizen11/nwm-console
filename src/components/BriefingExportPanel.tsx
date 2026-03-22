@@ -1,11 +1,10 @@
 import { useMemo } from "react";
-import type { SimulationResult, ViewSnapshot, WorldStatePoint } from "../types";
-import {
-  extractBriefingState,
-  renderBoardOnePagerHtml,
-  renderExecutiveBriefHtml,
-  renderPresentationBriefHtml,
-} from "../utils/briefingArtifacts";
+import type { ExportPreviewPayload, SimulationResult, ViewSnapshot, WorldStatePoint } from "../types";
+import { renderBoardOnePagerDocument } from "../export/boardOnePager";
+import { renderExecutiveBriefDocument } from "../export/executiveBrief";
+import { renderPresentationBriefDocument } from "../export/presentationBrief";
+import { saveExportPreviewPayload } from "../export/storage";
+import { extractBriefingState } from "../utils/briefingArtifacts";
 
 interface BriefingExportPanelProps {
   scenarioLabel: string;
@@ -24,6 +23,9 @@ interface PreviewArtifact {
   filename: string;
   html: string;
   orientation?: "portrait" | "landscape";
+  routePath: string;
+  qa: ExportPreviewPayload["qa"];
+  metadata: ExportPreviewPayload["metadata"];
 }
 
 const download = (filename: string, content: string, mime = "application/json") => {
@@ -51,207 +53,50 @@ export function BriefingExportPanel({ scenarioLabel, result, point, currentView,
   const exportTag = buildExportTag(point);
 
   const previewArtifacts = useMemo<Record<PreviewArtifactKey, PreviewArtifact>>(
-    () => ({
-      executive: {
-        artifact: "executive",
-        title: "Executive Brief",
-        description: "Preview the executive briefing surface before downloading the styled PDF.",
-        filename: `${currentView.scenarioId}-executive-brief-${exportTag}.pdf`,
-        html: renderExecutiveBriefHtml(briefingState, currentView.name),
-      },
-      presentation: {
-        artifact: "presentation",
-        title: "Presentation Brief",
-        description: "Review the slide-style briefing layout before downloading the presentation PDF.",
-        filename: `${currentView.scenarioId}-presentation-brief-${exportTag}.pdf`,
-        html: renderPresentationBriefHtml(briefingState, currentView.name),
-        orientation: "landscape",
-      },
-      board: {
-        artifact: "board",
-        title: "Board One Pager",
-        description: "Inspect the board-ready one-pager in-console before downloading the leave-behind PDF.",
-        filename: `${currentView.scenarioId}-board-one-pager-${exportTag}.pdf`,
-        html: renderBoardOnePagerHtml(briefingState, currentView.name),
-      },
-    }),
+    () => {
+      const executive = renderExecutiveBriefDocument(briefingState, currentView.name);
+      const presentation = renderPresentationBriefDocument(briefingState, currentView.name);
+      const board = renderBoardOnePagerDocument(briefingState, currentView.name);
+
+      return {
+        executive: {
+          artifact: "executive",
+          title: "Executive Brief",
+          description: "Preview the executive briefing surface before downloading the styled PDF.",
+          filename: `${currentView.scenarioId}-executive-brief-${exportTag}.pdf`,
+          html: executive.html,
+          routePath: "/export/executive-brief",
+          qa: executive.qa,
+          metadata: executive.plan.metadata,
+        },
+        presentation: {
+          artifact: "presentation",
+          title: "Presentation Brief",
+          description: "Review the slide-style briefing layout before downloading the presentation PDF.",
+          filename: `${currentView.scenarioId}-presentation-brief-${exportTag}.pdf`,
+          html: presentation.html,
+          orientation: "landscape",
+          routePath: "/export/presentation-brief",
+          qa: presentation.qa,
+          metadata: presentation.plan.metadata,
+        },
+        board: {
+          artifact: "board",
+          title: "Board One Pager",
+          description: "Inspect the board-ready one-pager in-console before downloading the leave-behind PDF.",
+          filename: `${currentView.scenarioId}-board-one-pager-${exportTag}.pdf`,
+          html: board.html,
+          routePath: "/export/board-onepager",
+          qa: board.qa,
+          metadata: board.plan.metadata,
+        },
+      };
+    },
     [briefingState, currentView.name, currentView.scenarioId, exportTag],
   );
 
-  const buildPreviewDocument = (artifact: PreviewArtifact) => `<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>${artifact.title} Preview</title>
-    <style>
-      :root { color-scheme: dark; }
-      * { box-sizing: border-box; }
-      body {
-        margin: 0;
-        background: #081018;
-        color: #f3f7fa;
-        font-family: "Inter", "Segoe UI", sans-serif;
-      }
-      .preview-shell {
-        min-height: 100vh;
-        display: grid;
-        grid-template-rows: auto 1fr;
-      }
-      .preview-toolbar {
-        position: sticky;
-        top: 0;
-        z-index: 10;
-        display: flex;
-        flex-wrap: wrap;
-        align-items: center;
-        justify-content: space-between;
-        gap: 16px;
-        padding: 18px 22px;
-        border-bottom: 1px solid rgba(255,255,255,0.1);
-        background: rgba(7, 12, 18, 0.94);
-        backdrop-filter: blur(16px);
-      }
-      .preview-meta {
-        max-width: 720px;
-      }
-      .preview-kicker {
-        margin: 0;
-        font-size: 11px;
-        letter-spacing: 0.18em;
-        text-transform: uppercase;
-        color: #8aa3b5;
-      }
-      .preview-title {
-        margin: 8px 0 0;
-        font-size: 20px;
-        font-weight: 600;
-        color: #f6fbff;
-      }
-      .preview-description {
-        margin: 8px 0 0;
-        font-size: 13px;
-        line-height: 1.5;
-        color: #9cb2c1;
-      }
-      .preview-actions {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 10px;
-      }
-      .preview-button {
-        appearance: none;
-        border: 1px solid rgba(255,255,255,0.14);
-        background: rgba(20, 31, 42, 0.95);
-        color: #f5fbff;
-        border-radius: 999px;
-        padding: 10px 16px;
-        font-size: 13px;
-        font-weight: 600;
-        cursor: pointer;
-      }
-      .preview-button:hover {
-        background: rgba(28, 43, 57, 0.98);
-      }
-      .preview-surface {
-        padding: 20px 20px 36px;
-      }
-      @page {
-        size: ${artifact.orientation === "landscape" ? "letter landscape" : "letter portrait"};
-        margin: 12mm;
-      }
-      @media print {
-        body {
-          background: #ffffff;
-        }
-        .preview-toolbar {
-          display: none !important;
-        }
-        .preview-surface {
-          padding: 0;
-        }
-      }
-      @media (max-width: 720px) {
-        .preview-toolbar {
-          padding: 14px 16px;
-        }
-        .preview-surface {
-          padding: 12px 12px 24px;
-        }
-      }
-    </style>
-  </head>
-  <body>
-    <div class="preview-shell">
-      <div class="preview-toolbar">
-        <div class="preview-meta">
-          <p class="preview-kicker">Artifact Preview</p>
-          <p class="preview-title">${artifact.title}</p>
-          <p class="preview-description">${artifact.description}</p>
-        </div>
-        <div class="preview-actions">
-          <button class="preview-button" id="download-artifact">Download PDF</button>
-          <button class="preview-button" id="close-preview">Close</button>
-        </div>
-      </div>
-      <div class="preview-surface">
-        ${artifact.html}
-      </div>
-    </div>
-    <script>
-      const downloadButton = document.getElementById("download-artifact");
-      const setDownloadState = (label, disabled) => {
-        if (!downloadButton) return;
-        downloadButton.textContent = label;
-        downloadButton.disabled = disabled;
-        downloadButton.style.opacity = disabled ? "0.75" : "1";
-        downloadButton.style.cursor = disabled ? "progress" : "pointer";
-      };
-
-      document.getElementById("download-artifact")?.addEventListener("click", () => {
-        setDownloadState("Preparing PDF...", true);
-        fetch("/api/briefings/pdf", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            html: ${JSON.stringify(artifact.html)},
-            filename: ${JSON.stringify(artifact.filename)},
-            orientation: ${JSON.stringify(artifact.orientation ?? "portrait")}
-          })
-        })
-          .then(async (response) => {
-            if (!response.ok) {
-              throw new Error(await response.text());
-            }
-            return response.blob();
-          })
-          .then((blob) => {
-            const url = window.URL.createObjectURL(blob);
-            const anchor = document.createElement("a");
-            anchor.href = url;
-            anchor.download = ${JSON.stringify(artifact.filename)};
-            anchor.click();
-            window.URL.revokeObjectURL(url);
-            setDownloadState("Download PDF", false);
-          })
-          .catch(() => {
-            setDownloadState("Print Fallback", false);
-            window.focus();
-            window.print();
-          });
-      });
-      document.getElementById("close-preview")?.addEventListener("click", () => window.close());
-    </script>
-  </body>
-</html>`;
-
   const openPreview = (artifact: PreviewArtifactKey) => {
     const preview = previewArtifacts[artifact];
-    const previewWindow = window.open("", "_blank");
-    if (!previewWindow) {
-      return;
-    }
-
     const artifactMap: Record<PreviewArtifactKey, string> = {
       executive: "executive_brief",
       presentation: "presentation_brief",
@@ -259,9 +104,20 @@ export function BriefingExportPanel({ scenarioLabel, result, point, currentView,
     };
 
     onExport?.(artifactMap[artifact]);
-    previewWindow.document.open();
-    previewWindow.document.write(buildPreviewDocument(preview));
-    previewWindow.document.close();
+    const token = saveExportPreviewPayload({
+      mode:
+        artifact === "executive"
+          ? "executive-brief"
+          : artifact === "presentation"
+            ? "presentation-brief"
+            : "board-onepager",
+      filename: preview.filename,
+      orientation: preview.orientation ?? "portrait",
+      html: preview.html,
+      qa: preview.qa,
+      metadata: preview.metadata,
+    });
+    window.open(`${preview.routePath}?token=${encodeURIComponent(token)}`, "_blank");
   };
 
   const exportAuditPacket = () => {
@@ -303,7 +159,7 @@ export function BriefingExportPanel({ scenarioLabel, result, point, currentView,
     if (!printWindow) {
       return;
     }
-    printWindow.document.write(renderExecutiveBriefHtml(briefingState, currentView.name));
+    printWindow.document.write(renderExecutiveBriefDocument(briefingState, currentView.name).html);
     printWindow.document.close();
     printWindow.focus();
     printWindow.print();

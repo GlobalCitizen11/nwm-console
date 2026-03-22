@@ -34,29 +34,35 @@ const parseBody = (body: unknown): PdfRequestBody | null => {
   return null;
 };
 
-const buildPdfDocument = (html: string, orientation: "portrait" | "landscape") => `<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <style>
-      @page {
-        size: ${orientation === "landscape" ? "letter landscape" : "letter portrait"};
-        margin: 0;
-      }
-      html, body {
-        margin: 0;
-        min-height: 100%;
-        background: #0c1117;
-      }
-      body {
-        -webkit-print-color-adjust: exact;
-        print-color-adjust: exact;
-      }
-    </style>
-  </head>
-  <body>${html}</body>
-</html>`;
+const buildPdfDocument = (html: string, orientation: "portrait" | "landscape") => {
+  if (html.trim().startsWith("<!DOCTYPE html>")) {
+    return html;
+  }
+
+  return `<!DOCTYPE html>
+  <html lang="en">
+    <head>
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <style>
+        @page {
+          size: ${orientation === "landscape" ? "letter landscape" : "letter portrait"};
+          margin: 0;
+        }
+        html, body {
+          margin: 0;
+          min-height: 100%;
+          background: #0c1117;
+        }
+        body {
+          -webkit-print-color-adjust: exact;
+          print-color-adjust: exact;
+        }
+      </style>
+    </head>
+    <body>${html}</body>
+  </html>`;
+};
 
 export default async function handler(request: VercelRequest, response: VercelResponse) {
   if (request.method !== "POST") {
