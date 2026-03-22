@@ -1,17 +1,18 @@
 import type { ExportSemanticData } from "../../types/export";
-import { SignalDriverGrid } from "../modules/SignalDriverGrid";
 import { SectionTitle } from "../primitives/SectionTitle";
-import { EvidenceCluster } from "./EvidenceCluster";
+import { composeExecutiveNarrative } from "../../utils/composeExecutiveNarrative";
 
 export function ExecutiveBriefPageEvidence({ data }: { data: ExportSemanticData }) {
+  const narrative = composeExecutiveNarrative(data.sourceState);
+
   return (
-    <div className="export-stack-lg">
-      <SectionTitle label="Evidence and signal basis" title="Evidence and signal basis" subtitle="Observable anchors, cross-domain interaction, and the evidence that would change the read." />
-      <EvidenceCluster items={data.evidenceAnchors.slice(0, 6)} />
-      <div className="export-grid-2 executive-evidence-grid">
-        <SignalDriverGrid insights={data.crossDomainEffects.slice(0, 4)} mode="executive-brief" />
-        <SignalDriverGrid insights={data.containmentSignals.slice(0, 4)} mode="executive-brief" />
+    <section className="executive-brief-section">
+      <SectionTitle title={narrative.positioning.title} subtitle={narrative.positioning.subtitle} />
+      <div className="executive-brief-prose">
+        {narrative.positioning.paragraphs.map((paragraph) => (
+          <p key={paragraph}>{paragraph}</p>
+        ))}
       </div>
-    </div>
+    </section>
   );
 }

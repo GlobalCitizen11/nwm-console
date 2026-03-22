@@ -1,17 +1,18 @@
 import type { ExportSemanticData } from "../../types/export";
-import { StrategicImplicationBlock } from "../modules/StrategicImplicationBlock";
-import { RiskMonitoringBlock } from "../modules/RiskMonitoringBlock";
 import { SectionTitle } from "../primitives/SectionTitle";
+import { composeExecutiveNarrative } from "../../utils/composeExecutiveNarrative";
 
 export function ExecutiveBriefPageInterpretation({ data }: { data: ExportSemanticData }) {
+  const narrative = composeExecutiveNarrative(data.sourceState);
+
   return (
-    <div className="export-stack-lg">
-      <SectionTitle label="Strategic interpretation" title="Strategic interpretation" subtitle="What the current structure means, where it is most sensitive, and what deserves closer visibility." />
-      <div className="export-grid-2 executive-interpretation-grid">
-        <StrategicImplicationBlock title="Strategic implications" insights={data.implications.slice(0, 3)} label="Interpretation" mode="executive-brief" />
-        <RiskMonitoringBlock title="Monitoring priorities" insights={data.monitoringPriorities.slice(0, 3)} mode="executive-brief" />
+    <section className="executive-brief-section">
+      <SectionTitle title={narrative.forward.title} subtitle={narrative.forward.subtitle} />
+      <div className="executive-brief-prose">
+        {narrative.forward.paragraphs.map((paragraph) => (
+          <p key={paragraph}>{paragraph}</p>
+        ))}
       </div>
-      <StrategicImplicationBlock title="Sensitivities and watchlist" insights={data.risks.slice(0, 3)} label="Sensitivity watch" variant="risk" mode="executive-brief" />
-    </div>
+    </section>
   );
 }

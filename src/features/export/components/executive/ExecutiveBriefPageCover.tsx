@@ -1,26 +1,26 @@
 import type { ExportSemanticData } from "../../types/export";
-import { BoundaryPanel } from "../modules/BoundaryPanel";
 import { ExportHeader } from "../primitives/ExportHeader";
-import { HeroStateCard } from "./HeroStateCard";
-import { InsightGrid } from "./InsightGrid";
-import { KPIBar } from "./KPIBar";
+import { SectionTitle } from "../primitives/SectionTitle";
+import { composeExecutiveNarrative } from "../../utils/composeExecutiveNarrative";
 
 export function ExecutiveBriefPageCover({ data }: { data: ExportSemanticData }) {
+  const narrative = composeExecutiveNarrative(data.sourceState);
+
   return (
     <>
       <ExportHeader title={data.title} subtitle={data.subtitle} metadata={data.metadata} modeLabel="Executive Brief" />
-      <div className="export-stack-lg executive-cover-layout">
-        <div className="executive-12-grid executive-cover-top">
-          <div className="grid-span-8">
-            <HeroStateCard text={data.executiveLead} />
-          </div>
-          <div className="grid-span-4">
-            <BoundaryPanel boundary={data.boundary} />
-          </div>
+      <section className="executive-brief-section executive-brief-cover">
+        <div className="executive-brief-context">
+          <p><strong>Bounded world.</strong> {data.boundary}</p>
+          <p><strong>System markers.</strong> {data.systemStats.map((stat) => `${stat.label}: ${stat.value}`).join(" | ")}</p>
         </div>
-        <KPIBar stats={data.systemStats} className="executive-kpi-strip" />
-        <InsightGrid insights={data.keyInsights.slice(0, 3)} className="executive-cover-grid executive-cover-grid--three" />
-      </div>
+        <SectionTitle title={narrative.overview.title} subtitle={narrative.overview.subtitle} />
+        <div className="executive-brief-prose">
+          {narrative.overview.paragraphs.map((paragraph) => (
+            <p key={paragraph}>{paragraph}</p>
+          ))}
+        </div>
+      </section>
     </>
   );
 }

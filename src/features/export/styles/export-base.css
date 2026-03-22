@@ -453,6 +453,46 @@
   background: linear-gradient(180deg, rgba(25, 36, 46, 0.96) 0%, rgba(14, 21, 29, 0.94) 100%);
 }
 
+.executive-brief-section {
+  display: grid;
+  gap: 14px;
+}
+
+.executive-brief-context {
+  display: grid;
+  gap: 8px;
+  padding: 12px 0 2px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.executive-brief-context p {
+  margin: 0;
+  font-size: 12.4px;
+  line-height: 1.55;
+  color: #b9c8d3;
+}
+
+.executive-brief-prose {
+  display: grid;
+  gap: 14px;
+  max-width: 760px;
+}
+
+.executive-brief-prose p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.72;
+  letter-spacing: -0.003em;
+  color: #d8e2ea;
+}
+
+.executive-brief-sources .executive-brief-prose p {
+  font-size: 13.2px;
+  line-height: 1.66;
+  color: #c8d5df;
+}
+
 .executive-support-grid,
 .executive-evidence-grid,
 .executive-conclusion-grid,
