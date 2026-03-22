@@ -1,9 +1,8 @@
 import { useMemo } from "react";
-import type { ExportPreviewPayload, SimulationResult, ViewSnapshot, WorldStatePoint } from "../types";
-import { renderBoardOnePagerDocument } from "../export/boardOnePager";
-import { renderExecutiveBriefDocument } from "../export/executiveBrief";
-import { renderPresentationBriefDocument } from "../export/presentationBrief";
-import { saveExportPreviewPayload } from "../export/storage";
+import type { SimulationResult, ViewSnapshot, WorldStatePoint } from "../types";
+import { buildExportBundle } from "../features/export/ExportEngine";
+import { saveExportPreviewPayload } from "../features/export/storage";
+import { normalizeExportData } from "../features/export/utils/normalizeExportData";
 import { extractBriefingState } from "../utils/briefingArtifacts";
 
 interface BriefingExportPanelProps {
@@ -20,12 +19,7 @@ interface PreviewArtifact {
   artifact: PreviewArtifactKey;
   title: string;
   description: string;
-  filename: string;
-  html: string;
-  orientation?: "portrait" | "landscape";
   routePath: string;
-  qa: ExportPreviewPayload["qa"];
-  metadata: ExportPreviewPayload["metadata"];
 }
 
 const download = (filename: string, content: string, mime = "application/json") => {
@@ -50,49 +44,33 @@ export function BriefingExportPanel({ scenarioLabel, result, point, currentView,
     point,
     currentView,
   });
+  const exportData = normalizeExportData(briefingState, currentView.name);
   const exportTag = buildExportTag(point);
 
   const previewArtifacts = useMemo<Record<PreviewArtifactKey, PreviewArtifact>>(
     () => {
-      const executive = renderExecutiveBriefDocument(briefingState, currentView.name);
-      const presentation = renderPresentationBriefDocument(briefingState, currentView.name);
-      const board = renderBoardOnePagerDocument(briefingState, currentView.name);
-
       return {
         executive: {
           artifact: "executive",
           title: "Executive Brief",
           description: "Preview the executive briefing surface before downloading the styled PDF.",
-          filename: `${currentView.scenarioId}-executive-brief-${exportTag}.pdf`,
-          html: executive.html,
           routePath: "/export/executive-brief",
-          qa: executive.qa,
-          metadata: executive.plan.metadata,
         },
         presentation: {
           artifact: "presentation",
           title: "Presentation Brief",
           description: "Review the slide-style briefing layout before downloading the presentation PDF.",
-          filename: `${currentView.scenarioId}-presentation-brief-${exportTag}.pdf`,
-          html: presentation.html,
-          orientation: "landscape",
           routePath: "/export/presentation-brief",
-          qa: presentation.qa,
-          metadata: presentation.plan.metadata,
         },
         board: {
           artifact: "board",
           title: "Board One Pager",
           description: "Inspect the board-ready one-pager in-console before downloading the leave-behind PDF.",
-          filename: `${currentView.scenarioId}-board-one-pager-${exportTag}.pdf`,
-          html: board.html,
           routePath: "/export/board-onepager",
-          qa: board.qa,
-          metadata: board.plan.metadata,
         },
       };
     },
-    [briefingState, currentView.name, currentView.scenarioId, exportTag],
+    [],
   );
 
   const openPreview = (artifact: PreviewArtifactKey) => {
@@ -104,18 +82,19 @@ export function BriefingExportPanel({ scenarioLabel, result, point, currentView,
     };
 
     onExport?.(artifactMap[artifact]);
+    const normalized = buildExportBundle({
+      data: exportData,
+      scenarioId: currentView.scenarioId,
+      month: point.month,
+    });
     const token = saveExportPreviewPayload({
+      ...normalized,
       mode:
         artifact === "executive"
           ? "executive-brief"
           : artifact === "presentation"
             ? "presentation-brief"
             : "board-onepager",
-      filename: preview.filename,
-      orientation: preview.orientation ?? "portrait",
-      html: preview.html,
-      qa: preview.qa,
-      metadata: preview.metadata,
     });
     window.open(`${preview.routePath}?token=${encodeURIComponent(token)}`, "_blank");
   };
@@ -155,14 +134,15 @@ export function BriefingExportPanel({ scenarioLabel, result, point, currentView,
 
   const printBrief = () => {
     onExport?.("print_brief");
-    const printWindow = window.open("", "_blank", "width=1100,height=900");
-    if (!printWindow) {
-      return;
-    }
-    printWindow.document.write(renderExecutiveBriefDocument(briefingState, currentView.name).html);
-    printWindow.document.close();
-    printWindow.focus();
-    printWindow.print();
+    const token = saveExportPreviewPayload({
+      ...buildExportBundle({
+        data: exportData,
+        scenarioId: currentView.scenarioId,
+        month: point.month,
+      }),
+      mode: "executive-brief",
+    });
+    window.open(`/export/executive-brief?token=${encodeURIComponent(token)}`, "_blank");
   };
 
   return (
