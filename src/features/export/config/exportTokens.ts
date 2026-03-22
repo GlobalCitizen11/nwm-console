@@ -1,10 +1,10 @@
 export const exportTokens = {
   spacing: {
-    xs: "6px",
-    sm: "10px",
-    md: "14px",
-    lg: "20px",
-    xl: "28px",
+    xs: "8px",
+    sm: "16px",
+    md: "24px",
+    lg: "32px",
+    xl: "40px",
     pageX: "18mm",
     pageY: "16mm",
   },

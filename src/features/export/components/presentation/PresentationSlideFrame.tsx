@@ -10,7 +10,7 @@ export function PresentationSlideFrame({
 }: PropsWithChildren<{ metadata: ExportMetadata; pageNumber: number; totalPages: number }>) {
   return (
     <ExportPage metadata={metadata} pageNumber={pageNumber} totalPages={totalPages} className="presentation-slide">
-      {children}
+      <div className="presentation-slide-shell">{children}</div>
     </ExportPage>
   );
 }

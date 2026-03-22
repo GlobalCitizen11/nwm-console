@@ -18,8 +18,8 @@ export const exportTypography = {
     fontWeight: 620,
   },
   body: {
-    fontSize: "13px",
-    lineHeight: "1.6",
+    fontSize: "14px",
+    lineHeight: "1.65",
   },
   meta: {
     fontSize: "10px",

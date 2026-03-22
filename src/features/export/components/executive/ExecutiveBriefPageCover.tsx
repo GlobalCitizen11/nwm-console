@@ -2,6 +2,7 @@ import type { ExportSemanticData } from "../../types/export";
 import { ExportHeader } from "../primitives/ExportHeader";
 import { SectionTitle } from "../primitives/SectionTitle";
 import { composeExecutiveNarrative } from "../../utils/composeExecutiveNarrative";
+import { CompactSignalStrip } from "./CompactSignalStrip";
 
 export function ExecutiveBriefPageCover({ data }: { data: ExportSemanticData }) {
   const narrative = composeExecutiveNarrative(data.sourceState);
@@ -20,6 +21,7 @@ export function ExecutiveBriefPageCover({ data }: { data: ExportSemanticData }) 
             <p key={paragraph}>{paragraph}</p>
           ))}
         </div>
+        <CompactSignalStrip data={data} />
       </section>
     </>
   );

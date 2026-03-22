@@ -4,7 +4,7 @@
     radial-gradient(circle at top left, rgba(65, 92, 116, 0.16), transparent 28%),
     linear-gradient(180deg, #091119 0%, #0c131a 100%);
   color: #e7eef4;
-  font-family: "Avenir Next", "Inter", "Segoe UI", Arial, sans-serif;
+  font-family: Inter, "SF Pro Display", "SF Pro Text", "Avenir Next", "Segoe UI", Arial, sans-serif;
 }
 
 .export-preview-toolbar {
@@ -66,7 +66,7 @@
 
 .export-page-inner {
   display: grid;
-  gap: 12px;
+  gap: 16px;
   align-content: start;
   min-height: 0;
 }
@@ -170,13 +170,13 @@
 .export-grid-2 {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 14px;
+  gap: 16px;
 }
 
 .executive-12-grid {
   display: grid;
   grid-template-columns: repeat(12, minmax(0, 1fr));
-  gap: 14px;
+  gap: 16px;
 }
 
 .grid-span-4 {
@@ -189,17 +189,17 @@
 
 .export-stack-lg {
   display: grid;
-  gap: 16px;
+  gap: 24px;
 }
 
 .export-stack-md {
   display: grid;
-  gap: 12px;
+  gap: 16px;
 }
 
 .insight-card-grid {
   display: grid;
-  gap: 12px;
+  gap: 16px;
 }
 
 .insight-card-grid--2 {
@@ -382,13 +382,18 @@
 }
 
 .board-onepager .export-page-inner {
-  gap: 12px;
+  gap: 16px;
+}
+
+.board-onepager-shell {
+  display: grid;
+  gap: 16px;
 }
 
 .board-insight-grid {
   display: grid;
   grid-template-columns: 1.45fr 1fr;
-  gap: 12px;
+  gap: 16px;
   align-items: stretch;
 }
 
@@ -423,7 +428,30 @@
 }
 
 .presentation-slide .export-page-inner {
-  gap: 18px;
+  gap: 24px;
+}
+
+.presentation-slide-shell {
+  display: grid;
+  gap: 24px;
+}
+
+.presentation-slide-section {
+  max-width: 100%;
+}
+
+.presentation-hero {
+  display: grid;
+  gap: 24px;
+}
+
+.presentation-hero-note {
+  max-width: 700px;
+  margin: 0;
+  font-size: 18px;
+  line-height: 1.5;
+  color: #d8e2ea;
+  letter-spacing: -0.01em;
 }
 
 .presentation-slide .insight-card,
@@ -455,7 +483,7 @@
 
 .executive-brief-section {
   display: grid;
-  gap: 14px;
+  gap: 16px;
 }
 
 .executive-brief-context {
@@ -475,7 +503,7 @@
 
 .executive-brief-prose {
   display: grid;
-  gap: 14px;
+  gap: 16px;
   max-width: 760px;
 }
 
@@ -491,6 +519,35 @@
   font-size: 13.2px;
   line-height: 1.66;
   color: #c8d5df;
+}
+
+.compact-signal-strip {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.compact-signal-box {
+  padding: 10px 12px;
+  border-radius: 14px;
+  border: 1px solid rgba(124, 144, 162, 0.16);
+  background: linear-gradient(180deg, rgba(18, 28, 39, 0.92) 0%, rgba(11, 17, 23, 0.92) 100%);
+}
+
+.compact-signal-label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 10px;
+  letter-spacing: 0.02em;
+  color: #8ea4b5;
+}
+
+.compact-signal-value {
+  display: block;
+  font-size: 12.5px;
+  line-height: 1.4;
+  color: #e8eff4;
+  font-weight: 600;
 }
 
 .executive-support-grid,
@@ -540,7 +597,8 @@
   .board-insight-grid,
   .evidence-anchor-grid,
   .presentation-progression-grid,
-  .executive-progression-grid {
+  .executive-progression-grid,
+  .compact-signal-strip {
     grid-template-columns: 1fr;
   }
 

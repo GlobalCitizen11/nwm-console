@@ -4,7 +4,7 @@ import { SlideImplications } from "./SlideImplications";
 
 export function PresentationSlideImplications({ data }: { data: ExportSemanticData }) {
   return (
-    <div className="export-stack-lg">
+    <div className="export-stack-lg presentation-slide-section">
       <SectionTitle label="Slide 6" title="Strategic Implications" subtitle="What changes in the operating environment if the current path persists." />
       <SlideImplications left={data.implications.slice(0, 3)} right={data.crossDomainEffects.slice(0, 3)} />
     </div>
