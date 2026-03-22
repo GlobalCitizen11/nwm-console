@@ -1,3 +1,25 @@
+.export-root,
+.export-document {
+  --page-width: 8.5in;
+  --page-height: 11in;
+  --page-padding-top: 40px;
+  --page-padding-right: 40px;
+  --page-padding-bottom: 44px;
+  --page-padding-left: 40px;
+  --page-footer-height: 28px;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+.export-document--landscape {
+  --page-width: 11in;
+  --page-height: 8.5in;
+}
+
 .export-preview-shell {
   min-height: 100vh;
   background: #081018;
@@ -45,22 +67,45 @@
 
 .export-preview-canvas {
   padding: 20px;
+  overflow: auto;
 }
 
 .export-document {
-  max-width: 1080px;
+  width: fit-content;
   margin: 0 auto;
+  padding: 0;
+  display: grid;
+  gap: 0;
 }
 
 .export-page-frame {
-  min-height: 100vh;
-  padding: 40px 40px 44px;
+  margin: 0;
+  padding: var(--page-padding-top) var(--page-padding-right) var(--page-padding-bottom) var(--page-padding-left);
   border-bottom: 1px solid rgba(138, 154, 169, 0.14);
   background: #0b1118;
   display: grid;
   grid-template-rows: 1fr auto;
   gap: 8mm;
   box-sizing: border-box;
+  overflow: hidden;
+}
+
+.board-onepager.export-page-frame,
+.executive-brief-page.export-page-frame {
+  width: 8.5in;
+  min-height: 11in;
+  height: 11in;
+}
+
+.board-onepager.export-page-frame {
+  padding: 24px 28px 26px;
+  gap: 0;
+}
+
+.presentation-slide.export-page-frame {
+  width: 11in;
+  min-height: 8.5in;
+  height: 8.5in;
 }
 
 .export-page-inner {
@@ -68,6 +113,7 @@
   gap: 16px;
   align-content: start;
   min-height: 0;
+  overflow: hidden;
 }
 
 .export-header {
@@ -393,12 +439,16 @@
 
 .board-onepager .export-page-inner {
   gap: 12px;
+  grid-template-rows: 1fr;
 }
 
 .board-onepager-shell {
   display: grid;
-  gap: 12px;
+  gap: 10px;
   min-height: 0;
+  height: 100%;
+  grid-template-rows: auto minmax(0, 1fr) auto auto;
+  overflow: hidden;
 }
 
 .board-header-band {
@@ -443,32 +493,39 @@
   grid-template-columns: repeat(12, minmax(0, 1fr));
   gap: 12px;
   align-items: stretch;
+  min-height: 0;
+  overflow: hidden;
 }
 
 .board-left-stack {
   grid-column: span 7;
   display: grid;
-  gap: 10px;
+  gap: 8px;
+  min-height: 0;
 }
 
 .board-left-column {
   display: grid;
-  gap: 10px;
+  gap: 8px;
+  min-height: 0;
+  overflow: hidden;
 }
 
 .board-signal-stack {
   grid-column: span 5;
   display: grid;
-  gap: 8px;
+  gap: 6px;
+  min-height: 0;
 }
 
 .board-signal-module {
   display: grid;
   gap: 4px;
-  padding: 8px 10px;
+  padding: 7px 9px;
   border-radius: 10px;
   border: 1px solid rgba(255, 255, 255, 0.08);
   background: #111827;
+  min-height: 0;
 }
 
 .board-kpi-strip--compact .export-stat-pill {
@@ -488,7 +545,9 @@
 .board-bottom-grid {
   display: grid;
   grid-template-columns: 1.15fr 1.85fr;
-  gap: 12px;
+  gap: 10px;
+  min-height: 0;
+  align-items: start;
 }
 
 .board-bottom-grid .strategic-block {
@@ -496,25 +555,28 @@
 }
 
 .board-evidence-row {
-  padding: 10px 12px;
+  padding: 8px 10px;
+  overflow: hidden;
 }
 
 .board-evidence-strip {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 8px;
+  gap: 6px;
+  min-height: 0;
 }
 
 .board-evidence-chip {
   min-width: 0;
-  padding: 8px 10px;
+  padding: 7px 8px;
   border-radius: 10px;
   border: 1px solid rgba(255, 255, 255, 0.08);
   background: rgba(255, 255, 255, 0.02);
-  font-size: 11px;
-  line-height: 14px;
+  font-size: 10.5px;
+  line-height: 13px;
   color: #c8d4de;
   white-space: pre-line;
+  overflow: hidden;
 }
 
 .board-onepager .strategic-list {
@@ -535,14 +597,16 @@
 }
 
 .board-onepager .export-footer {
-  padding-top: 6px;
+  min-height: 18px;
+  padding-top: 2px;
   font-size: 9px;
 }
 
 .board-footer-note {
   color: #96a8b6;
-  font-size: 10px;
-  line-height: 1.35;
+  font-size: 9.5px;
+  line-height: 1.3;
+  margin: 0;
 }
 
 .executive-brief-page .export-page-inner {
@@ -587,16 +651,22 @@
 
 .presentation-slide .export-page-inner {
   gap: 16px;
+  grid-template-rows: 1fr;
 }
 
 .presentation-slide-shell {
   display: grid;
-  gap: 16px;
+  gap: 14px;
   min-height: 0;
+  height: 100%;
+  grid-template-rows: auto minmax(0, 1fr);
+  overflow: hidden;
 }
 
 .presentation-slide-section {
   max-width: 100%;
+  min-height: 0;
+  overflow: hidden;
 }
 
 .presentation-hero {
@@ -631,6 +701,7 @@
   color: #c8d4de;
   font-size: 12px;
   line-height: 16px;
+  min-height: 0;
 }
 
 .presentation-slide-bullets li {
@@ -806,7 +877,7 @@
 
 .compact-signal-strip {
   display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 8px;
 }
 
@@ -821,6 +892,10 @@
   line-height: 1.35;
   color: #dfe8ef;
   font-weight: 600;
+}
+
+.export-footer {
+  min-height: var(--page-footer-height);
 }
 
 .signal-module-label {

@@ -1,7 +1,7 @@
 import { renderToStaticMarkup } from "react-dom/server";
 import exportBaseCss from "./styles/export-base.css?raw";
 import exportPrintCss from "./styles/export-print.css?raw";
-import type { BoardOnePagerContent, CanonicalExportSummary, ExecutiveBriefContent, ExportContentByMode, ExportMode, ExportPreviewBundle, ExportQaResult, ExportSemanticData, PresentationBriefContent } from "./types/export";
+import type { CanonicalExportSummary, ExportContentByMode, ExportMode, ExportPreviewBundle, ExportQaResult, ExportSemanticData } from "./types/export";
 import { buildPdfFilename } from "./utils/pdfMetadata";
 import { ExportRouter } from "./ExportRouter";
 import { exportLayouts } from "./config/exportLayouts";
@@ -16,8 +16,10 @@ const renderModeHtml = (mode: ExportMode, contentByMode: ExportContentByMode) =>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <style>${exportBaseCss}\n${exportPrintCss}</style>
   </head>
-  <body>
-    <div class="export-document">${renderToStaticMarkup(<ExportRouter mode={mode} contentByMode={contentByMode} />)}</div>
+  <body class="export-root export-root--${mode} export-root--${exportLayouts[mode].orientation}">
+    <div class="export-document export-document--${mode} export-document--${exportLayouts[mode].orientation}">${renderToStaticMarkup(
+      <ExportRouter mode={mode} contentByMode={contentByMode} />,
+    )}</div>
   </body>
 </html>`;
 
@@ -27,43 +29,20 @@ const buildArtifactContent = (
   contentByMode: ExportContentByMode;
   qaByMode: Record<ExportMode, ExportQaResult>;
 } => {
-  const renderWithRetry = <T,>(
-    render: (compact?: boolean) => T,
-    validate: (content: T) => ExportQaResult,
-  ) => {
-    const full = render(false);
-    const fullQa = validate(full);
-    if (fullQa.ok) {
-      return { content: full, qa: fullQa };
-    }
-    const compact = render(true);
-    const compactQa = validate(compact);
-    return { content: compact, qa: compactQa };
-  };
-
-  const board = renderWithRetry<BoardOnePagerContent>(
-    (compact) => renderBoardOnePager(summary, compact),
-    validateBoardOnePager,
-  );
-  const executive = renderWithRetry<ExecutiveBriefContent>(
-    (compact) => renderExecutiveBrief(summary, compact),
-    validateExecutiveBrief,
-  );
-  const presentation = renderWithRetry<PresentationBriefContent>(
-    (compact) => renderPresentationBrief(summary, compact),
-    validatePresentationBrief,
-  );
+  const board = renderBoardOnePager(summary);
+  const executive = renderExecutiveBrief(summary);
+  const presentation = renderPresentationBrief(summary);
 
   return {
     contentByMode: {
-      "board-onepager": board.content,
-      "executive-brief": executive.content,
-      "presentation-brief": presentation.content,
+      "board-onepager": board,
+      "executive-brief": executive,
+      "presentation-brief": presentation,
     },
     qaByMode: {
-      "board-onepager": board.qa,
-      "executive-brief": executive.qa,
-      "presentation-brief": presentation.qa,
+      "board-onepager": validateBoardOnePager(board),
+      "executive-brief": validateExecutiveBrief(executive),
+      "presentation-brief": validatePresentationBrief(presentation),
     },
   };
 };

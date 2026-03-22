@@ -21,17 +21,42 @@
   }
 
   .export-page-frame {
-    min-height: calc(279.4mm);
     border: 0;
     page-break-after: auto;
     break-after: auto;
-    padding: 40px 40px 44px;
+    padding: var(--page-padding-top) var(--page-padding-right) var(--page-padding-bottom) var(--page-padding-left);
     box-shadow: none;
+    overflow: hidden;
   }
 
-  .export-page-frame + .export-page-frame {
-    page-break-before: always;
-    break-before: page;
+  .board-onepager.export-page-frame,
+  .executive-brief-page.export-page-frame {
+    width: 8.5in;
+    min-height: 11in;
+    height: 11in;
+  }
+
+  .board-onepager.export-page-frame {
+    padding: 24px 28px 26px;
+    gap: 0;
+  }
+
+  .presentation-slide.export-page-frame {
+    width: 11in;
+    min-height: 8.5in;
+    height: 8.5in;
+  }
+
+  .executive-brief-page.export-page-frame,
+  .presentation-slide.export-page-frame {
+    page-break-after: always;
+    break-after: page;
+  }
+
+  .executive-brief-page.export-page-frame:last-child,
+  .presentation-slide.export-page-frame:last-child {
+    page-break-after: auto;
+    break-after: auto;
   }
 
   .export-panel,
@@ -49,10 +74,25 @@
   }
 
   .export-footer {
-    margin-top: 4mm;
+    margin-top: 2mm;
   }
 
   .executive-page-grid {
     grid-template-columns: repeat(12, minmax(0, 1fr));
+  }
+
+  .board-onepager,
+  .board-onepager .export-page-inner,
+  .board-onepager-shell,
+  .board-main-grid,
+  .board-bottom-grid,
+  .board-evidence-row,
+  .board-evidence-strip,
+  .presentation-slide,
+  .presentation-slide .export-page-inner,
+  .presentation-slide-shell,
+  .presentation-slide-section {
+    break-inside: avoid;
+    page-break-inside: avoid;
   }
 }

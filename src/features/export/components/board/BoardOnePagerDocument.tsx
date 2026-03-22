@@ -31,14 +31,6 @@ export function BoardOnePagerDocument({ content }: { content: BoardOnePagerConte
         </header>
         <div className="board-main-grid">
           <div className="board-left-stack">
-            <section className="export-section board-kpi-strip board-kpi-strip--compact">
-              {content.signalStack.slice(0, 4).map((item) => (
-                <div key={item.label} className="export-stat-pill">
-                  <span className="label">{item.label}</span>
-                  <span className="value">{item.value}</span>
-                </div>
-              ))}
-            </section>
             <section className="export-section board-left-column">
               <p className="signal-module-label">System state</p>
               <h3 className="signal-module-value">{content.currentStateSummary}</h3>
@@ -71,7 +63,6 @@ export function BoardOnePagerDocument({ content }: { content: BoardOnePagerConte
             <BoardEvidenceStrip items={content.evidenceAnchors} />
           </section>
         </div>
-        <p className="board-footer-note">Board surface is bounded to the active world definition and should be refreshed as visible evidence changes.</p>
       </div>
     </ExportPage>
   );
