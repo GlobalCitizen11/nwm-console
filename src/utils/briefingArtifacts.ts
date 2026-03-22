@@ -776,28 +776,180 @@ export function renderExecutiveBriefHtml(state: BriefingState, currentViewName: 
     <title>${escapeHtml(state.scenarioName)} Executive Brief</title>
     <style>
       ${sharedConsoleStyles}
+      .executive-sheet {
+        background:
+          linear-gradient(180deg, rgba(18, 28, 39, 0.985) 0%, rgba(11, 18, 26, 0.98) 42%, rgba(9, 14, 20, 0.99) 100%);
+      }
+      .executive-header {
+        padding-bottom: 28px;
+      }
+      .executive-hero {
+        display: grid;
+        grid-template-columns: 1.45fr 0.95fr;
+        gap: 18px;
+        align-items: start;
+      }
+      .hero-summary {
+        border: 1px solid rgba(118, 143, 165, 0.2);
+        background: linear-gradient(180deg, rgba(15, 23, 32, 0.88) 0%, rgba(11, 18, 26, 0.78) 100%);
+        padding: 18px 20px;
+        box-shadow: inset 0 1px 0 rgba(255,255,255,0.03);
+      }
+      .hero-summary .hero-label {
+        display: block;
+        font-size: 10px;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+        color: #87a0b4;
+      }
+      .hero-summary .hero-value {
+        display: block;
+        margin-top: 10px;
+        color: #f4f8fb;
+        font-size: 16px;
+        line-height: 1.55;
+      }
+      .hero-grid {
+        display: grid;
+        gap: 12px;
+      }
+      .executive-body {
+        display: grid;
+        gap: 18px;
+      }
+      .executive-lead {
+        display: grid;
+        grid-template-columns: minmax(0, 1.3fr) minmax(320px, 0.9fr);
+        gap: 18px;
+      }
+      .section-compact {
+        padding: 16px 18px;
+      }
+      .system-state-card {
+        display: grid;
+        gap: 14px;
+      }
+      .system-state-card .section-title {
+        margin-bottom: 8px;
+      }
+      .executive-columns {
+        display: grid;
+        grid-template-columns: 1.2fr 1fr;
+        gap: 18px;
+      }
+      .executive-columns-tight {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 18px;
+      }
+      .insight-ribbon {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 12px;
+      }
+      .insight-card {
+        border: 1px solid rgba(118, 143, 165, 0.18);
+        background: linear-gradient(180deg, rgba(16, 24, 33, 0.86) 0%, rgba(11, 17, 25, 0.76) 100%);
+        padding: 14px 15px;
+      }
+      .insight-card .kicker {
+        color: #8099ad;
+      }
+      .insight-card p {
+        margin: 8px 0 0;
+        font-size: 13px;
+        line-height: 1.58;
+      }
+      .anchor-list {
+        display: grid;
+        gap: 10px;
+      }
+      .anchor-item {
+        padding: 12px 14px;
+        border-left: 2px solid rgba(212, 177, 95, 0.45);
+        background: rgba(14, 22, 31, 0.62);
+      }
+      .anchor-item p {
+        margin: 0;
+      }
+      .page-break {
+        break-before: page;
+        page-break-before: always;
+      }
+      @media screen and (max-width: 960px) {
+        .executive-hero,
+        .executive-lead,
+        .executive-columns,
+        .executive-columns-tight,
+        .insight-ribbon {
+          grid-template-columns: 1fr;
+        }
+      }
+      @media print {
+        .executive-hero,
+        .executive-lead,
+        .executive-columns,
+        .executive-columns-tight {
+          grid-template-columns: 1fr 1fr;
+        }
+        .insight-ribbon {
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+        .page-break {
+          margin-top: 0;
+        }
+      }
     </style>
   </head>
   <body>
-    <section class="sheet">
-      <header class="header">
+    <section class="sheet executive-sheet">
+      <header class="header executive-header">
         <div class="kicker">Executive Brief</div>
         <h1>${escapeHtml(state.scenarioName)}</h1>
         <p class="sub">${escapeHtml(state.boundedWorld)} | ${escapeHtml(state.asOf)} | <span class="accent">${escapeHtml(state.phase)}</span></p>
-        <div class="meta-grid">
-          <div class="meta-card"><div class="kicker">Boundary</div><p>${escapeHtml(state.boundaryDefinition)}</p></div>
-          <div class="meta-card"><div class="kicker">Primary Path</div><p>${escapeHtml(state.primaryPath)}</p></div>
-          <div class="meta-card"><div class="kicker">Structural Shift</div><p>${escapeHtml(state.structuralShift)}</p></div>
-          <div class="meta-card"><div class="kicker">Current Condition</div><p>${escapeHtml(state.currentCondition)}</p></div>
+        <div class="executive-hero" style="margin-top:24px;">
+          <div class="hero-summary">
+            <span class="hero-label">Boundary Definition</span>
+            <span class="hero-value">${escapeHtml(state.boundaryDefinition)}</span>
+          </div>
+          <div class="hero-grid">
+            <div class="meta-card"><div class="kicker">Current Condition</div><p>${escapeHtml(state.currentCondition)}</p></div>
+            <div class="meta-card"><div class="kicker">Structural Shift</div><p>${escapeHtml(state.structuralShift)}</p></div>
+          </div>
         </div>
       </header>
-      <div class="body">
-        <section class="section">
-          <div class="kicker">System State</div>
-          <div class="system-strip">${renderSystemStrip(state)}</div>
-        </section>
+      <div class="body executive-body">
+        <div class="executive-lead">
+          <section class="section system-state-card">
+            <div>
+              <div class="kicker">System State</div>
+              <h2 class="section-title">Current operating posture</h2>
+            </div>
+            <div class="system-strip">${renderSystemStrip(state)}</div>
+          </section>
+          <section class="section section-compact">
+            <div class="kicker">Forward Orientation</div>
+            <h2 class="section-title">Primary path</h2>
+            <p>${escapeHtml(state.primaryPath)}</p>
+          </section>
+        </div>
 
-        <div class="section-grid-two" style="margin-top:14px;">
+        <div class="insight-ribbon">
+          <div class="insight-card">
+            <div class="kicker">Pressure</div>
+            <p>${escapeHtml(joinList(state.pressurePoints.slice(0, 2)))}</p>
+          </div>
+          <div class="insight-card">
+            <div class="kicker">Sensitivity</div>
+            <p>${escapeHtml(state.sensitivities[0] ?? "Sensitivity remains concentrated in the active domains.")}</p>
+          </div>
+          <div class="insight-card">
+            <div class="kicker">Visibility Need</div>
+            <p>${escapeHtml(state.visibilityNeeds[0] ?? "Visibility remains concentrated on the current transition path.")}</p>
+          </div>
+        </div>
+
+        <div class="executive-columns">
           <section class="section">
             <div class="kicker">System State Overview</div>
             <h2 class="section-title">Current condition and operational meaning</h2>
@@ -805,14 +957,13 @@ export function renderExecutiveBriefHtml(state: BriefingState, currentViewName: 
             <p>Operationally, the visible pattern is carrying pressure through ${escapeHtml(joinList(state.pressurePoints.slice(0, 2)))}. The current readout is being shaped by structural uptake rather than one-off noise.</p>
           </section>
           <section class="section">
-            <div class="kicker">Forward Orientation</div>
-            <h2 class="section-title">Primary and alternate paths</h2>
-            <p>${escapeHtml(state.primaryPath)}</p>
+            <div class="kicker">Alternate Paths</div>
+            <h2 class="section-title">Interruption and continuation</h2>
             ${state.alternatePaths.map((path) => `<p>${escapeHtml(path)}</p>`).join("")}
           </section>
         </div>
 
-        <div class="section-grid-two" style="margin-top:14px;">
+        <div class="executive-columns page-break">
           <section class="section">
             <div class="kicker">Narrative Development</div>
             <h2 class="section-title">How the current state formed</h2>
@@ -830,7 +981,7 @@ export function renderExecutiveBriefHtml(state: BriefingState, currentViewName: 
           </section>
         </div>
 
-        <div class="section-grid-two" style="margin-top:14px;">
+        <div class="executive-columns-tight">
           <section class="section">
             <div class="kicker">Strategic Positioning</div>
             <h2 class="section-title">Priorities, sensitivities, visibility</h2>
@@ -839,11 +990,13 @@ export function renderExecutiveBriefHtml(state: BriefingState, currentViewName: 
           <section class="section">
             <div class="kicker">Signal Basis</div>
             <h2 class="section-title">Observable anchors</h2>
-            ${renderBulletList(state.signalAnchors)}
+            <div class="anchor-list">
+              ${state.signalAnchors.map((anchor) => `<div class="anchor-item"><p>${escapeHtml(anchor)}</p></div>`).join("")}
+            </div>
           </section>
         </div>
 
-        <div class="section-grid-two" style="margin-top:14px;">
+        <div class="executive-columns-tight page-break">
           <section class="section">
             <div class="kicker">Cross-Domain Effects</div>
             <h2 class="section-title">How domains are interacting</h2>
