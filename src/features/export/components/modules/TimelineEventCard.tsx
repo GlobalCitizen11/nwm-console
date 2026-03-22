@@ -11,8 +11,8 @@ export function TimelineEventCard({ item, mode = "executive-brief" }: { item: Ex
     <div className="timeline-event-card no-clip-typography">
       <div className="timeline-phase">{item.phase}</div>
       <div className="timeline-body">
-        <h4>{safeCopy.headline}</h4>
-        <p>{safeCopy.body}</p>
+        <h4 className="signal-module-value">{safeCopy.headline}</h4>
+        <p className="signal-module-support">{safeCopy.body}</p>
       </div>
     </div>
   );

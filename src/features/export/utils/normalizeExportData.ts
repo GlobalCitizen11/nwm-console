@@ -123,11 +123,11 @@ export const normalizeExportData = (state: BriefingState, currentViewName: strin
   ]).slice(0, 4);
 
   const systemStats: ExportStat[] = [
-    { label: "Phase", value: state.phase, status: "attention" },
-    { label: "Narrative Density", value: state.narrativeDensity },
-    { label: "Structural Momentum", value: state.structuralMomentum },
-    { label: "Reversibility", value: state.reversibility },
-    { label: "Cycle Position", value: state.cyclePosition },
+    { label: "Phase", value: state.phase, support: "Current regime", status: "attention" },
+    { label: "Narrative Density", value: state.narrativeDensity, support: "Signal saturation" },
+    { label: "Structural Momentum", value: state.structuralMomentum, support: "Directional bias" },
+    { label: "Reversibility", value: state.reversibility, support: "Exit capacity" },
+    { label: "Cycle Position", value: state.cyclePosition, support: "Current cycle stage" },
   ];
 
   const timeline: ExportTimelineItem[] = [

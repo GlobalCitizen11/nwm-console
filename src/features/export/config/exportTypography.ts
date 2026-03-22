@@ -1,30 +1,30 @@
 export const exportTypography = {
   title: {
-    fontSize: "32px",
-    lineHeight: "1.04",
+    fontSize: "34px",
+    lineHeight: "1.08",
     letterSpacing: "-0.03em",
-    fontWeight: 670,
+    fontWeight: 640,
   },
   sectionTitle: {
-    fontSize: "19px",
-    lineHeight: "1.16",
-    letterSpacing: "-0.015em",
-    fontWeight: 630,
+    fontSize: "20px",
+    lineHeight: "1.18",
+    letterSpacing: "-0.02em",
+    fontWeight: 620,
   },
   cardTitle: {
     fontSize: "15px",
-    lineHeight: "1.18",
-    letterSpacing: "-0.01em",
-    fontWeight: 620,
+    lineHeight: "1.24",
+    letterSpacing: "-0.012em",
+    fontWeight: 610,
   },
   body: {
     fontSize: "14px",
-    lineHeight: "1.65",
+    lineHeight: "1.52",
   },
   meta: {
     fontSize: "10px",
     lineHeight: "1.3",
-    letterSpacing: "0.02em",
-    fontWeight: 600,
+    letterSpacing: "0.01em",
+    fontWeight: 580,
   },
 } as const;

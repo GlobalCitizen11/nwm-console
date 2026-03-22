@@ -14,16 +14,24 @@ export function ExportHeader({
 }) {
   return (
     <header className="export-header">
-      <div>
-        <p className="export-meta-label">{modeLabel}</p>
-        <h1>{title}</h1>
-        <p className="export-subtitle">{subtitle}</p>
+      <div className="export-system-bar">
+        <span>{metadata.scenarioName}</span>
+        <span>{metadata.phase}</span>
+        <span>{metadata.asOf}</span>
+        <span>{modeLabel}</span>
       </div>
-      <div className="export-header-side">
-        <DataBadge tone="neutral">{metadata.confidentiality}</DataBadge>
-        <div className="export-header-meta">
-          <span>{metadata.phase}</span>
-          <span>{metadata.asOf}</span>
+      <div className="export-header-main">
+        <div className="export-header-copy">
+          <p className="export-meta-label">{modeLabel}</p>
+          <h1>{title}</h1>
+          <p className="export-subtitle">{subtitle}</p>
+        </div>
+        <div className="export-header-side">
+          <DataBadge tone="neutral">{metadata.confidentiality}</DataBadge>
+          <div className="export-header-meta">
+            <span>{metadata.boundedWorld}</span>
+            <span>{metadata.generatedAt}</span>
+          </div>
         </div>
       </div>
     </header>

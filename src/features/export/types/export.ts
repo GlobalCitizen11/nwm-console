@@ -39,6 +39,7 @@ export interface ExportInsight {
 export interface ExportStat {
   label: string;
   value: string;
+  support?: string;
   status?: "neutral" | "attention" | "stable";
 }
 

@@ -11,9 +11,9 @@ export function EvidenceAnchorCard({ insight, mode = "executive-brief" }: { insi
 
   return (
     <Panel className="evidence-anchor-card no-clip-typography">
-      <p className="export-overline">{insight.signalTag ?? "Evidence Anchor"}</p>
-      <h4>{safeCopy.headline}</h4>
-      <p>{safeCopy.body}</p>
+      <p className="signal-module-label">{insight.signalTag ?? "Evidence anchor"}</p>
+      <h4 className="signal-module-value">{safeCopy.headline}</h4>
+      <p className="signal-module-support">{safeCopy.body}</p>
     </Panel>
   );
 }

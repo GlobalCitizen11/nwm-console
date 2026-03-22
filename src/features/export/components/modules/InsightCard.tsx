@@ -1,6 +1,5 @@
 import type { ExportInsight, ExportMode, ModuleFitMode } from "../../types/export";
 import { renderSafeCopy } from "../../utils/renderSafeCopy";
-import { DataBadge } from "../primitives/DataBadge";
 import { Panel } from "../primitives/Panel";
 
 export function InsightCard({
@@ -24,11 +23,9 @@ export function InsightCard({
 
   return (
     <Panel className={`insight-card no-clip-typography ${compact ? "insight-card--compact" : ""} ${className}`.trim()}>
-      <div className="insight-card-top">
-        {insight.signalTag ? <DataBadge tone={insight.emphasis ?? "neutral"}>{insight.signalTag}</DataBadge> : null}
-      </div>
-      <h4>{safeCopy.headline}</h4>
-      <p>{safeCopy.body}</p>
+      {insight.signalTag ? <p className="signal-module-label">{insight.signalTag}</p> : null}
+      <h4 className="signal-module-value">{safeCopy.headline}</h4>
+      <p className="signal-module-support">{safeCopy.body}</p>
     </Panel>
   );
 }
