@@ -1,6 +1,6 @@
 @page {
   size: letter;
-  margin: 0;
+  margin: 8mm;
 }
 
 @media print {
@@ -21,10 +21,12 @@
   }
 
   .export-page-frame {
-    min-height: 279.4mm;
+    min-height: calc(279.4mm - 16mm);
     border: 0;
     page-break-after: always;
     break-after: page;
+    padding: 12mm 10mm 10mm;
+    box-shadow: none;
   }
 
   .export-page-frame:last-child {
@@ -37,7 +39,11 @@
   .export-stat-pill,
   .evidence-anchor-card,
   .timeline-event-card,
-  .insight-card {
+  .insight-card,
+  .strategic-list-item,
+  .summary-panel,
+  .boundary-panel,
+  .closing-panel {
     break-inside: avoid;
     page-break-inside: avoid;
   }

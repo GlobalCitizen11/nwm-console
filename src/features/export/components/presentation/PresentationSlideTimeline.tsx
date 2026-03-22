@@ -1,6 +1,6 @@
 import type { ExportSemanticData } from "../../types/export";
-import { InsightCardGrid } from "../modules/InsightCardGrid";
 import { SectionTitle } from "../primitives/SectionTitle";
+import { SlideTimeline } from "./SlideTimeline";
 
 export function PresentationSlideTimeline({ data }: { data: ExportSemanticData }) {
   const grouped = [
@@ -30,7 +30,7 @@ export function PresentationSlideTimeline({ data }: { data: ExportSemanticData }
   return (
     <div className="export-stack-lg">
       <SectionTitle label="Slide 4" title="Narrative Progression" subtitle="The sequence from emergence to the current condition." />
-      <InsightCardGrid insights={grouped} columns={3} className="presentation-progression-grid" />
+      <SlideTimeline items={grouped} />
     </div>
   );
 }

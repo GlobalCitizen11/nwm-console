@@ -1,7 +1,7 @@
 import type { ExportSemanticData } from "../../types/export";
 import { SignalDriverGrid } from "../modules/SignalDriverGrid";
-import { ClosingSynthesisBlock } from "../modules/ClosingSynthesisBlock";
 import { SectionTitle } from "../primitives/SectionTitle";
+import { ConclusionBlock } from "./ConclusionBlock";
 
 export function ExecutiveBriefPageConclusion({ data }: { data: ExportSemanticData }) {
   return (
@@ -11,7 +11,7 @@ export function ExecutiveBriefPageConclusion({ data }: { data: ExportSemanticDat
         <SignalDriverGrid insights={data.crossDomainEffects.slice(0, 4)} />
         <SignalDriverGrid insights={data.containmentSignals.slice(0, 4)} />
       </div>
-      <ClosingSynthesisBlock text={data.closingSynthesis} />
+      <ConclusionBlock text={data.closingSynthesis} />
     </div>
   );
 }

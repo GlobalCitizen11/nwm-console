@@ -6,13 +6,13 @@ const splitSentences = (text: string) =>
     .map((sentence) => sentence.trim())
     .filter(Boolean);
 
-export const compressSupportText = (text: string, maxLength = 170) => {
+export const compressSupportText = (text: string, maxLength = 170, maxSentences = 2) => {
   const sentences = splitSentences(text);
   if (sentences.length === 0) {
     return "";
   }
 
-  const firstTwo = sentences.slice(0, 2);
+  const firstTwo = sentences.slice(0, maxSentences);
   let combined = firstTwo.join(" ");
   if (combined.length <= maxLength) {
     return combined;

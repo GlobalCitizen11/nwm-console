@@ -1,6 +1,13 @@
 import type { ExportSemanticData } from "../../types/export";
 import { InsightCardGrid } from "../modules/InsightCardGrid";
+import { DominantStateBlock } from "./DominantStateBlock";
 
 export function BoardOnePagerInsightGrid({ data }: { data: ExportSemanticData }) {
-  return <InsightCardGrid insights={data.keyInsights.slice(0, 4)} columns={4} compact className="board-insight-grid" leadFirst />;
+  const [dominant, ...supporting] = data.keyInsights.slice(0, 4);
+  return (
+    <div className="board-insight-grid">
+      {dominant ? <DominantStateBlock insight={dominant} /> : null}
+      <InsightCardGrid insights={supporting} columns={3} compact className="board-supporting-grid" />
+    </div>
+  );
 }

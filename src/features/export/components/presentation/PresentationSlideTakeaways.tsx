@@ -1,12 +1,12 @@
 import type { ExportSemanticData } from "../../types/export";
-import { InsightCardGrid } from "../modules/InsightCardGrid";
 import { SectionTitle } from "../primitives/SectionTitle";
+import { SlideTakeaways } from "./SlideTakeaways";
 
 export function PresentationSlideTakeaways({ data }: { data: ExportSemanticData }) {
   return (
     <div className="export-stack-lg">
       <SectionTitle label="Slide 3" title="Key Takeaways" subtitle="The dominant read and the two signals that most directly support it." />
-      <InsightCardGrid insights={data.keyInsights.slice(0, 3)} columns={3} className="presentation-takeaways-grid" leadFirst />
+      <SlideTakeaways insights={data.keyInsights.slice(0, 3)} />
     </div>
   );
 }
