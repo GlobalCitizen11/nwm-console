@@ -1,0 +1,1515 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Inception Gate Investor Deck</title>
+    <style>
+      :root {
+        --bg: #f2efe7;
+        --paper: #fbf8f1;
+        --ink: #171512;
+        --muted: #60584f;
+        --line: rgba(23, 21, 18, 0.12);
+        --accent: #a63d1d;
+        --accent-soft: rgba(166, 61, 29, 0.12);
+        --signal: #203d5a;
+        --signal-soft: rgba(32, 61, 90, 0.1);
+        --success: #285943;
+        --warning: #8c5a16;
+        --shadow: 0 22px 60px rgba(34, 26, 17, 0.12);
+        --page-width: 1440px;
+        --deep-ink: #0f1720;
+        --gold: #a77a2f;
+        --cream: #f8f4eb;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        background:
+          radial-gradient(circle at 8% 12%, rgba(166, 61, 29, 0.1), transparent 22%),
+          radial-gradient(circle at 88% 10%, rgba(32, 61, 90, 0.12), transparent 22%),
+          linear-gradient(180deg, #f7f2e8 0%, #eee5d6 100%);
+        color: var(--ink);
+        font-family: "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Palatino, serif;
+      }
+
+      .topbar {
+        position: sticky;
+        top: 0;
+        z-index: 20;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 24px;
+        padding: 14px 24px;
+        background: rgba(251, 248, 241, 0.84);
+        backdrop-filter: blur(14px);
+        border-bottom: 1px solid var(--line);
+      }
+
+      .topbar::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        height: 2px;
+        width: calc(var(--progress, 0) * 100%);
+        background: linear-gradient(90deg, var(--accent), #c07a2b 55%, var(--signal));
+      }
+
+      .brand {
+        display: flex;
+        align-items: baseline;
+        gap: 14px;
+      }
+
+      .brand strong {
+        font-size: 13px;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+      }
+
+      .brand span {
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      .nav {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+        gap: 8px;
+      }
+
+      .nav a {
+        text-decoration: none;
+        color: var(--muted);
+        border: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.55);
+        padding: 6px 10px;
+        border-radius: 999px;
+        font-size: 12px;
+        letter-spacing: 0.04em;
+      }
+
+      .nav a.active {
+        color: var(--ink);
+        background: rgba(32, 61, 90, 0.1);
+        border-color: rgba(32, 61, 90, 0.22);
+      }
+
+      .status {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        color: var(--muted);
+        font-size: 12px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .status strong {
+        color: var(--ink);
+        font-size: 13px;
+      }
+
+      main {
+        padding: 20px 18px 60px;
+      }
+
+      .slides {
+        display: grid;
+        gap: 24px;
+        max-width: var(--page-width);
+        margin: 0 auto;
+        min-width: 0;
+      }
+
+      .slide {
+        min-height: calc(100vh - 110px);
+        background:
+          linear-gradient(180deg, rgba(251, 248, 241, 0.98), rgba(246, 239, 227, 0.98)),
+          linear-gradient(135deg, rgba(255,255,255,0.24), transparent 42%);
+        border: 1px solid rgba(23, 21, 18, 0.08);
+        border-radius: 30px;
+        box-shadow:
+          0 24px 80px rgba(34, 26, 17, 0.11),
+          inset 0 1px 0 rgba(255, 255, 255, 0.55);
+        padding: 28px;
+        display: grid;
+        grid-template-rows: auto auto 1fr auto;
+        scroll-margin-top: 88px;
+        overflow: hidden;
+        position: relative;
+      }
+
+      .slide::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background:
+          linear-gradient(110deg, rgba(255,255,255,0.28), transparent 42%),
+          linear-gradient(0deg, transparent, rgba(255,255,255,0.1));
+        pointer-events: none;
+      }
+
+      .slide::after {
+        content: "";
+        position: absolute;
+        inset: auto 12px 12px auto;
+        width: 240px;
+        height: 240px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(166, 61, 29, 0.1), transparent 68%);
+        pointer-events: none;
+      }
+
+      .slide-head,
+      .slide-body,
+      .slide-foot {
+        position: relative;
+        z-index: 1;
+        min-width: 0;
+      }
+
+      .kicker {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 18px;
+        color: var(--muted);
+        font-size: 12px;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+      }
+
+      .kicker::before {
+        content: "";
+        width: 28px;
+        height: 2px;
+        background: linear-gradient(90deg, var(--accent), var(--gold));
+      }
+
+      h1,
+      h2,
+      h3,
+      p {
+        margin: 0;
+      }
+
+      h1 {
+        max-width: 12ch;
+        font-size: clamp(42px, 7vw, 84px);
+        line-height: 1;
+        letter-spacing: -0.045em;
+        text-wrap: balance;
+        padding-bottom: 0.16em;
+      }
+
+      h2 {
+        max-width: 12ch;
+        font-size: clamp(30px, 4.4vw, 58px);
+        line-height: 1.02;
+        letter-spacing: -0.04em;
+        text-wrap: balance;
+        padding-bottom: 0.1em;
+      }
+
+      .core {
+        margin-top: 16px;
+        max-width: 62rem;
+        color: #2a251f;
+        font-size: clamp(18px, 2.1vw, 27px);
+        line-height: 1.22;
+        text-wrap: pretty;
+      }
+
+      .slide-body {
+        margin-top: 24px;
+        display: grid;
+        grid-template-columns: minmax(0, 1.22fr) minmax(320px, 0.78fr);
+        gap: 22px;
+        align-items: stretch;
+        min-width: 0;
+      }
+
+      .panel {
+        border: 1px solid var(--line);
+        background:
+          linear-gradient(180deg, rgba(255, 255, 255, 0.62), rgba(255, 255, 255, 0.44));
+        border-radius: 22px;
+        padding: 20px;
+        box-shadow: inset 0 1px 0 rgba(255,255,255,0.55);
+        min-width: 0;
+        overflow: hidden;
+      }
+
+      .panel.dense {
+        padding: 16px 18px;
+      }
+
+      .panel h3 {
+        margin-bottom: 14px;
+        font-size: 13px;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+
+      ul {
+        margin: 0;
+        padding-left: 18px;
+        min-width: 0;
+      }
+
+      li {
+        margin: 0 0 12px;
+        font-size: 18px;
+        line-height: 1.28;
+        overflow-wrap: anywhere;
+      }
+
+      .signal-list,
+      .metric-list,
+      .stack,
+      .grid-two,
+      .grid-three {
+        display: grid;
+        gap: 12px;
+        min-width: 0;
+      }
+
+      .grid-two {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .grid-three {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      .chip,
+      .metric,
+      .stack-card,
+      .lane,
+      .proof {
+        border-radius: 18px;
+        border: 1px solid var(--line);
+        padding: 14px 16px;
+        background:
+          linear-gradient(180deg, rgba(255, 255, 255, 0.76), rgba(255, 255, 255, 0.54));
+        box-shadow: inset 0 1px 0 rgba(255,255,255,0.58);
+        min-width: 0;
+        overflow: hidden;
+      }
+
+      .chip strong,
+      .metric strong,
+      .stack-card strong,
+      .lane strong,
+      .proof strong {
+        display: block;
+        margin-bottom: 6px;
+        font-size: 14px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--deep-ink);
+      }
+
+      .chip span,
+      .metric span,
+      .stack-card span,
+      .lane span,
+      .proof span {
+        display: block;
+        font-size: 18px;
+        line-height: 1.2;
+        text-wrap: pretty;
+        overflow-wrap: anywhere;
+      }
+
+      .accent {
+        background:
+          linear-gradient(180deg, rgba(166, 61, 29, 0.13), rgba(166, 61, 29, 0.05)),
+          linear-gradient(135deg, rgba(255,255,255,0.2), transparent 48%);
+      }
+
+      .signal {
+        background:
+          linear-gradient(180deg, rgba(32, 61, 90, 0.14), rgba(32, 61, 90, 0.05)),
+          linear-gradient(135deg, rgba(255,255,255,0.2), transparent 48%);
+      }
+
+      .success {
+        background:
+          linear-gradient(180deg, rgba(40, 89, 67, 0.14), rgba(40, 89, 67, 0.05)),
+          linear-gradient(135deg, rgba(255,255,255,0.18), transparent 48%);
+      }
+
+      .warning {
+        background:
+          linear-gradient(180deg, rgba(140, 90, 22, 0.14), rgba(140, 90, 22, 0.05)),
+          linear-gradient(135deg, rgba(255,255,255,0.18), transparent 48%);
+      }
+
+      .process {
+        display: grid;
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        gap: 10px;
+        min-width: 0;
+      }
+
+      .process .lane {
+        min-height: 150px;
+        align-self: stretch;
+      }
+
+      .process .index {
+        display: inline-block;
+        margin-bottom: 16px;
+        color: var(--accent);
+        font-size: 12px;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+
+      .table {
+        display: grid;
+        gap: 10px;
+        min-width: 0;
+      }
+
+      .table-row {
+        display: grid;
+        grid-template-columns: 1.2fr repeat(5, 1fr);
+        gap: 8px;
+        align-items: stretch;
+        min-width: 0;
+      }
+
+      .cell {
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        padding: 12px;
+        background:
+          linear-gradient(180deg, rgba(255,255,255,0.78), rgba(255,255,255,0.58));
+        font-size: 15px;
+        line-height: 1.22;
+        min-width: 0;
+        overflow: hidden;
+        overflow-wrap: anywhere;
+      }
+
+      .cell.head {
+        font-size: 12px;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+
+      .tick {
+        color: var(--success);
+        font-weight: 700;
+      }
+
+      .cross {
+        color: var(--accent);
+        font-weight: 700;
+      }
+
+      .footer-band {
+        margin-top: 18px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        color: var(--muted);
+        font-size: 13px;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        border-top: 1px solid rgba(23, 21, 18, 0.08);
+        padding-top: 14px;
+      }
+
+      .keyline {
+        margin-top: 12px;
+        width: 168px;
+        height: 3px;
+        background: linear-gradient(90deg, var(--accent), var(--gold), rgba(166, 61, 29, 0.04));
+        border-radius: 999px;
+      }
+
+      .hero-emphasis {
+        margin-top: 18px;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 14px;
+        border-radius: 999px;
+        border: 1px solid rgba(32, 61, 90, 0.14);
+        background: rgba(32, 61, 90, 0.08);
+        color: var(--deep-ink);
+        font-size: 13px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .pager {
+        font-variant-numeric: tabular-nums;
+      }
+
+      .hero {
+        grid-template-columns: minmax(0, 1.28fr) minmax(320px, 0.72fr);
+      }
+
+      .hero-right {
+        display: grid;
+        gap: 12px;
+        align-content: start;
+        min-width: 0;
+      }
+
+      .rail {
+        display: grid;
+        gap: 10px;
+        min-width: 0;
+      }
+
+      .note {
+        font-size: 16px;
+        line-height: 1.3;
+        color: #383128;
+      }
+
+      .command-bar {
+        position: fixed;
+        right: 20px;
+        bottom: 20px;
+        z-index: 24;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 12px;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        background: rgba(251, 248, 241, 0.9);
+        backdrop-filter: blur(14px);
+        box-shadow: 0 10px 24px rgba(34, 26, 17, 0.08);
+        color: var(--muted);
+        font-size: 12px;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+      }
+
+      .command-key {
+        min-width: 26px;
+        padding: 5px 8px;
+        border-radius: 8px;
+        border: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.65);
+        color: var(--ink);
+        text-align: center;
+        font-weight: 700;
+      }
+
+      .voiceover-panel {
+        position: fixed;
+        left: 20px;
+        bottom: 20px;
+        z-index: 24;
+        display: grid;
+        gap: 6px;
+        width: min(280px, calc(100vw - 40px));
+        padding: 10px 12px;
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        background: rgba(251, 248, 241, 0.68);
+        backdrop-filter: blur(10px);
+        box-shadow: 0 10px 24px rgba(34, 26, 17, 0.08);
+        opacity: 0.78;
+        transition: opacity 160ms ease, transform 160ms ease, background-color 160ms ease;
+      }
+
+      .voiceover-panel:hover,
+      .voiceover-panel:focus-within {
+        opacity: 0.97;
+        background: rgba(251, 248, 241, 0.9);
+        transform: translateY(-1px);
+      }
+
+      .voiceover-panel.collapsed {
+        width: auto;
+        min-width: 0;
+      }
+
+      .voiceover-panel.collapsed .voiceover-controls,
+      .voiceover-panel.collapsed .voiceover-hint {
+        display: none;
+      }
+
+      .voiceover-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+      }
+
+      .voiceover-title {
+        display: grid;
+        gap: 4px;
+        min-width: 0;
+      }
+
+      .voiceover-title strong {
+        font-size: 11px;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+
+      .voiceover-title span {
+        font-size: 12px;
+        color: var(--muted);
+        line-height: 1.2;
+      }
+
+      .voiceover-status {
+        font-size: 11px;
+        color: var(--muted);
+      }
+
+      .voiceover-top-actions {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .voiceover-toggle {
+        border: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.62);
+        color: var(--ink);
+        border-radius: 999px;
+        padding: 5px 9px;
+        font-size: 11px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        cursor: pointer;
+      }
+
+      .voiceover-controls {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+      }
+
+      .voiceover-controls button {
+        border: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.62);
+        color: var(--ink);
+        border-radius: 999px;
+        padding: 6px 10px;
+        font-size: 11px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        cursor: pointer;
+      }
+
+      .voiceover-controls button[aria-pressed="true"] {
+        background: rgba(32, 61, 90, 0.1);
+        border-color: rgba(32, 61, 90, 0.22);
+      }
+
+      .voiceover-controls button:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+
+      .voiceover-hint {
+        font-size: 11px;
+        line-height: 1.35;
+        color: var(--muted);
+      }
+
+      @media (max-width: 1100px) {
+        .slide-body,
+        .hero,
+        .table-row,
+        .process,
+        .grid-three,
+        .grid-two {
+          grid-template-columns: 1fr;
+        }
+
+        .slide {
+          min-height: auto;
+        }
+
+        .process .lane {
+          min-height: auto;
+        }
+
+        h1,
+        h2 {
+          max-width: none;
+        }
+      }
+
+      @media (max-width: 760px) {
+        .topbar {
+          padding: 12px 14px;
+          align-items: flex-start;
+          flex-direction: column;
+        }
+
+        .slide {
+          padding: 18px;
+          border-radius: 20px;
+        }
+
+        li,
+        .chip span,
+        .metric span,
+        .stack-card span,
+        .lane span,
+        .proof span {
+          font-size: 16px;
+        }
+
+        .command-bar {
+          display: none;
+        }
+
+        .voiceover-panel {
+          position: static;
+          width: 100%;
+          margin-top: 14px;
+        }
+      }
+
+      @media print {
+        @page {
+          size: 11in 8.5in;
+          margin: 0;
+        }
+
+        html,
+        body {
+          background: #fff;
+          width: 11in;
+          margin: 0;
+          padding: 0;
+        }
+
+        .topbar,
+        .command-bar,
+        .voiceover-panel,
+        #qa-report {
+          display: none;
+        }
+
+        main {
+          padding: 0;
+        }
+
+        .slides {
+          gap: 0;
+          max-width: none;
+        }
+
+        .slide {
+          width: 11in;
+          min-height: 8.5in;
+          height: 8.5in;
+          border: none;
+          border-radius: 0;
+          box-shadow: none;
+          page-break-after: always;
+          break-after: page;
+          padding: 0.58in 0.56in;
+          overflow: hidden;
+        }
+
+        .slide:last-child {
+          page-break-after: auto;
+          break-after: auto;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="brand">
+        <strong>Inception Gate</strong>
+        <span>Narrative Intelligence Infrastructure • Series Seed • $6M</span>
+      </div>
+      <div class="status">
+        <span>Viewing</span>
+        <strong id="current-slide">01 / 14</strong>
+      </div>
+      <nav class="nav">
+        <a href="#s1">1</a>
+        <a href="#s2">2</a>
+        <a href="#s3">3</a>
+        <a href="#s4">4</a>
+        <a href="#s5">5</a>
+        <a href="#s6">6</a>
+        <a href="#s7">7</a>
+        <a href="#s8">8</a>
+        <a href="#s9">9</a>
+        <a href="#s10">10</a>
+        <a href="#s11">11</a>
+        <a href="#s12">12</a>
+        <a href="#s13">13</a>
+        <a href="#s14">14</a>
+      </nav>
+    </header>
+
+    <main>
+      <div class="slides">
+        <section class="slide" id="s1">
+          <div class="slide-head">
+            <div class="kicker">Investor Deck</div>
+            <h1>The Missing Layer in Institutional Decision-Making</h1>
+            <p class="core">Institutions already fund data, software, and expert analysis. They still lack a governed system that turns fragmented signal into decision-grade narrative judgment.</p>
+            <div class="keyline"></div>
+            <div class="hero-emphasis">Institutional Decision Layer • Not Another Analytics Tool</div>
+          </div>
+          <div class="slide-body hero">
+            <div class="panel accent">
+              <h3>Decision Chain</h3>
+              <div class="grid-two">
+                <div class="stack-card"><strong>Data Sources</strong><span>Reports, feeds, signals, internal documents</span></div>
+                <div class="stack-card"><strong>Analysis Tools</strong><span>BI, models, dashboards, external research</span></div>
+                <div class="stack-card warning"><strong>Broken Middle</strong><span>Human synthesis bottleneck under pressure</span></div>
+                <div class="stack-card success"><strong>Executive Decision</strong><span>Capital, policy, strategy, operating action</span></div>
+              </div>
+            </div>
+            <div class="hero-right">
+              <div class="proof accent"><strong>Core Claim</strong><span>Narrative failure, not data scarcity, is the institutional bottleneck.</span></div>
+              <div class="proof"><strong>Implication</strong><span>Whoever owns institutional synthesis owns the decision layer.</span></div>
+              <div class="proof signal"><strong>Why It Matters</strong><span>The budget already exists. The operating layer does not.</span></div>
+            </div>
+          </div>
+          <div class="footer-band"><span>Category Definition</span><span class="pager">01 / 14</span></div>
+        </section>
+
+        <section class="slide" id="s2">
+          <div class="slide-head">
+            <div class="kicker">Problem</div>
+            <h2>The Problem Is Coherence, Not Collection</h2>
+            <p class="core">Institutions do not fail because signal is missing. They fail because interpretation is fragmented across tools, teams, vendors, and disconnected narrative artifacts.</p>
+            <div class="keyline"></div>
+          </div>
+          <div class="slide-body">
+            <div class="panel">
+              <h3>Operational Failures</h3>
+              <ul>
+                <li>Inputs are fragmented across internal and external systems.</li>
+                <li>Executive teams receive conflicting reads with weak evidence traceability.</li>
+                <li>Critical decisions slow down or default to the most forceful internal story.</li>
+                <li>The cost appears as delay, misalignment, and expensive reversals.</li>
+              </ul>
+            </div>
+            <div class="panel signal">
+              <h3>Pressure Objects</h3>
+              <div class="signal-list">
+                <div class="chip"><strong>Delay</strong><span>Decision windows close before consensus forms.</span></div>
+                <div class="chip"><strong>Conflict</strong><span>Multiple internal reads compete without adjudication.</span></div>
+                <div class="chip"><strong>No Accountability</strong><span>Judgment is separated from evidence and edit history.</span></div>
+                <div class="chip"><strong>Poor Memory</strong><span>Institutions forget how previous decisions were framed.</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="footer-band"><span>Institutional Pain</span><span class="pager">02 / 14</span></div>
+        </section>
+
+        <section class="slide" id="s3">
+          <div class="slide-head">
+            <div class="kicker">Competition</div>
+            <h2>Existing Solutions Do Not Solve the Decision Layer</h2>
+            <p class="core">Dashboards organize data. Consultants sell episodic interpretation. Generic AI generates language. None becomes a governed narrative system inside the institution.</p>
+            <div class="keyline"></div>
+          </div>
+          <div class="slide-body">
+            <div class="panel">
+              <h3>Competitive Read</h3>
+              <div class="table">
+                <div class="table-row">
+                  <div class="cell head">Category</div>
+                  <div class="cell head">Narratives</div>
+                  <div class="cell head">Traceability</div>
+                  <div class="cell head">Alt Paths</div>
+                  <div class="cell head">Governance</div>
+                  <div class="cell head">Memory</div>
+                </div>
+                <div class="table-row">
+                  <div class="cell">Dashboards / BI</div>
+                  <div class="cell cross">No</div>
+                  <div class="cell tick">Some</div>
+                  <div class="cell cross">No</div>
+                  <div class="cell cross">No</div>
+                  <div class="cell cross">No</div>
+                </div>
+                <div class="table-row">
+                  <div class="cell">Consultancies</div>
+                  <div class="cell tick">Yes</div>
+                  <div class="cell cross">Weak</div>
+                  <div class="cell cross">Rare</div>
+                  <div class="cell cross">No</div>
+                  <div class="cell cross">Episodic</div>
+                </div>
+                <div class="table-row">
+                  <div class="cell">Generic Copilots</div>
+                  <div class="cell tick">Text only</div>
+                  <div class="cell cross">Weak</div>
+                  <div class="cell cross">No</div>
+                  <div class="cell cross">No</div>
+                  <div class="cell cross">No</div>
+                </div>
+                <div class="table-row">
+                  <div class="cell">Inception Gate</div>
+                  <div class="cell tick">Yes</div>
+                  <div class="cell tick">Yes</div>
+                  <div class="cell tick">Yes</div>
+                  <div class="cell tick">Yes</div>
+                  <div class="cell tick">Yes</div>
+                </div>
+              </div>
+            </div>
+            <div class="panel accent">
+              <h3>Why Incumbents Fail</h3>
+              <div class="stack">
+                <div class="stack-card"><strong>Dashboards</strong><span>Summarize metrics without adjudicating contested meaning.</span></div>
+                <div class="stack-card"><strong>Consultants</strong><span>Deliver episodic narratives that do not compound internally.</span></div>
+                <div class="stack-card"><strong>Copilots</strong><span>Generate language without institutional structure or control.</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="footer-band"><span>Why Today’s Stack Breaks</span><span class="pager">03 / 14</span></div>
+        </section>
+
+        <section class="slide" id="s4">
+          <div class="slide-head">
+            <div class="kicker">Product</div>
+            <h2>Inception Gate Is Narrative Intelligence Infrastructure</h2>
+            <p class="core">A governed narrative computation engine that converts fragmented evidence into structured, auditable, decision-grade institutional output.</p>
+            <div class="keyline"></div>
+          </div>
+          <div class="slide-body">
+            <div class="panel signal">
+              <h3>System</h3>
+              <div class="process">
+                <div class="lane"><span class="index">Inputs</span><strong>Internal Sources</strong><span>Memos, briefings, reports, analyst notes</span></div>
+                <div class="lane"><span class="index">Inputs</span><strong>External Sources</strong><span>Feeds, policy, regulatory, market, research</span></div>
+                <div class="lane accent"><span class="index">Computation</span><strong>Narrative Engine</strong><span>Entities, claims, pressures, contradictions, scenarios</span></div>
+                <div class="lane"><span class="index">Governance</span><strong>Review Layer</strong><span>Confidence logic, approvals, edit history, auditability</span></div>
+                <div class="lane success"><span class="index">Outputs</span><strong>Decision Surfaces</strong><span>Executive briefs, alerts, scenario paths, memory</span></div>
+              </div>
+            </div>
+            <div class="panel">
+              <h3>What It Means</h3>
+              <ul>
+                <li>Not a dashboard tool.</li>
+                <li>Not a data platform.</li>
+                <li>Not an LLM wrapper.</li>
+                <li>The decision layer for governed institutional synthesis.</li>
+              </ul>
+            </div>
+          </div>
+          <div class="footer-band"><span>Category Architecture</span><span class="pager">04 / 14</span></div>
+        </section>
+
+        <section class="slide" id="s5">
+          <div class="slide-head">
+            <div class="kicker">Workflow</div>
+            <h2>What the Product Actually Does</h2>
+            <p class="core">The product operationalizes synthesis from fragmented evidence to reviewed narrative output inside a repeatable institutional workflow.</p>
+            <div class="keyline"></div>
+          </div>
+          <div class="slide-body">
+            <div class="panel">
+              <h3>Processing Flow</h3>
+              <div class="process">
+                <div class="lane"><span class="index">01</span><strong>Ingest</strong><span>Pull documents, feeds, and analyst inputs into a governed evidence layer.</span></div>
+                <div class="lane"><span class="index">02</span><strong>Structure</strong><span>Classify entities, themes, claims, time horizons, pressures, and conflicts.</span></div>
+                <div class="lane"><span class="index">03</span><strong>Compute</strong><span>Detect narrative shifts, broken assumptions, and plausible alternate paths.</span></div>
+                <div class="lane"><span class="index">04</span><strong>Generate</strong><span>Create briefs, signal grids, alerting, and action-oriented summaries.</span></div>
+                <div class="lane"><span class="index">05</span><strong>Remember</strong><span>Store reviewed outputs, edits, and outcomes for institutional memory.</span></div>
+              </div>
+            </div>
+            <div class="panel accent">
+              <h3>Output Set</h3>
+              <div class="stack">
+                <div class="stack-card"><strong>Executive Brief</strong><span>What changed, why it matters, where risk concentrates, what to do now.</span></div>
+                <div class="stack-card"><strong>Scenario Paths</strong><span>Primary and alternate paths with triggers, confidence, and implications.</span></div>
+                <div class="stack-card"><strong>Decision Log</strong><span>Institutional memory tied to evidence, review, and outcome.</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="footer-band"><span>System Mechanics</span><span class="pager">05 / 14</span></div>
+        </section>
+
+        <section class="slide" id="s6">
+          <div class="slide-head">
+            <div class="kicker">Experience</div>
+            <h2>From Fragmented Inputs to Decision-Grade Output</h2>
+            <p class="core">Users do not interact with a chatbot. They operate a governed workflow that resolves what changed, why it matters, where uncertainty sits, and what action follows.</p>
+            <div class="keyline"></div>
+          </div>
+          <div class="slide-body">
+            <div class="panel">
+              <h3>Persona Flow</h3>
+              <div class="grid-three">
+                <div class="stack-card"><strong>Analyst</strong><span>Reviews evidence clusters and proposed narrative shifts.</span></div>
+                <div class="stack-card signal"><strong>Manager</strong><span>Compares primary and alternate paths with trigger logic.</span></div>
+                <div class="stack-card success"><strong>Executive</strong><span>Receives compressed briefs tied to evidence and action.</span></div>
+              </div>
+            </div>
+            <div class="panel signal">
+              <h3>User Result</h3>
+              <ul>
+                <li>Faster refresh after major new inputs.</li>
+                <li>Fewer conflicting versions of the operating read.</li>
+                <li>Clear evidence binding for trust and audit.</li>
+                <li>Institutional memory that compounds every decision cycle.</li>
+              </ul>
+            </div>
+          </div>
+          <div class="footer-band"><span>Governed UX</span><span class="pager">06 / 14</span></div>
+        </section>
+
+        <section class="slide" id="s7">
+          <div class="slide-head">
+            <div class="kicker">Customers</div>
+            <h2>First Paying Customers and Initial ICPs</h2>
+            <p class="core">The first customer is not broad enterprise IT. It is the team already paying to reduce ambiguity in high-stakes decision environments.</p>
+            <div class="keyline"></div>
+          </div>
+          <div class="slide-body">
+            <div class="panel">
+              <h3>Initial ICPs</h3>
+              <div class="grid-three">
+                <div class="stack-card">
+                  <strong>Enterprise Strategy</strong>
+                  <span>Buyer: CSO / CRO</span>
+                  <span>User: strategy, risk, chief of staff teams</span>
+                </div>
+                <div class="stack-card signal">
+                  <strong>Financial Institutions</strong>
+                  <span>Buyer: CRO / Head of Investment Risk</span>
+                  <span>User: policy, macro, risk, CIO office</span>
+                </div>
+                <div class="stack-card warning">
+                  <strong>Public Sector</strong>
+                  <span>Buyer: program executive / intelligence lead</span>
+                  <span>User: analysts, policy staff, briefing teams</span>
+                </div>
+              </div>
+            </div>
+            <div class="panel accent">
+              <h3>Likely First Buyer</h3>
+              <div class="proof"><strong>Profile</strong><span>Head of Geopolitical Risk or CSO-sponsored strategy lead with active ambiguity costs and discretionary budget.</span></div>
+              <div class="proof"><strong>Budget Source</strong><span>Strategy, risk, intelligence, compliance, or external advisory reallocation.</span></div>
+              <div class="proof"><strong>Urgency</strong><span>Highest when volatility compresses executive decision windows.</span></div>
+            </div>
+          </div>
+          <div class="footer-band"><span>Who Pays First</span><span class="pager">07 / 14</span></div>
+        </section>
+
+        <section class="slide" id="s8">
+          <div class="slide-head">
+            <div class="kicker">Pilots</div>
+            <h2>Real Pilot Programs, Not Innovation Theater</h2>
+            <p class="core">The wedge is a paid pilot tied to a live decision problem, defined outputs, measurable workflow value, and a clear path to annual platform adoption.</p>
+            <div class="keyline"></div>
+          </div>
+          <div class="slide-body">
+            <div class="panel">
+              <h3>First Sellable Package</h3>
+              <div class="metric-list">
+                <div class="metric accent"><strong>Offer</strong><span>Narrative Intelligence Pilot</span></div>
+                <div class="metric"><strong>Scope</strong><span>One decision domain • one sponsor • 5-15 primary users</span></div>
+                <div class="metric signal"><strong>Price</strong><span>$200K-$400K for 6-12 weeks</span></div>
+                <div class="metric success"><strong>Conversion</strong><span>$500K-$1.5M annual platform contract</span></div>
+              </div>
+            </div>
+            <div class="panel warning">
+              <h3>Conversion Thresholds</h3>
+              <ul>
+                <li>Used in at least one live executive or committee workflow by week 4-6.</li>
+                <li>Brief preparation time drops by at least 30%.</li>
+                <li>Customer continues using outputs without founder dependence.</li>
+                <li>Sponsor expands into at least one adjacent workflow or domain.</li>
+              </ul>
+            </div>
+          </div>
+          <div class="footer-band"><span>Commercial Wedge</span><span class="pager">08 / 14</span></div>
+        </section>
+
+        <section class="slide" id="s9">
+          <div class="slide-head">
+            <div class="kicker">GTM</div>
+            <h2>Founder-Led, High-Trust, Narrow Wedge</h2>
+            <p class="core">Go-to-market begins with founder-led sales into a small set of high-value institutional accounts, then expands by workflow depth and operating surface.</p>
+            <div class="keyline"></div>
+          </div>
+          <div class="slide-body">
+            <div class="panel signal">
+              <h3>Sales Motion</h3>
+              <div class="grid-two">
+                <div class="stack-card"><strong>Qualify</strong><span>2-4 weeks to confirm sponsor urgency and bounded scope.</span></div>
+                <div class="stack-card"><strong>Close Pilot</strong><span>6-10 weeks when budget and alignment exist.</span></div>
+                <div class="stack-card"><strong>Convert</strong><span>4-9 months from pilot start to annual platform.</span></div>
+                <div class="stack-card success"><strong>Expand</strong><span>Risk -> strategy -> regulatory -> board prep.</span></div>
+              </div>
+            </div>
+            <div class="panel">
+              <h3>Entry Wedge</h3>
+              <ul>
+                <li>Start with one domain where fragmented interpretation already creates visible cost.</li>
+                <li>Deliver outputs inside an existing executive or committee cadence.</li>
+                <li>Sell against existing strategy, risk, intelligence, and advisory budgets.</li>
+                <li>Expand by adjacent workflows, stakeholder groups, and domain packages.</li>
+              </ul>
+            </div>
+          </div>
+          <div class="footer-band"><span>Distribution Logic</span><span class="pager">09 / 14</span></div>
+        </section>
+
+        <section class="slide" id="s10">
+          <div class="slide-head">
+            <div class="kicker">Market</div>
+            <h2>Market Logic: Where the Budget Comes From</h2>
+            <p class="core">This is a budget reallocation story before it becomes a new software line item.</p>
+            <div class="keyline"></div>
+          </div>
+          <div class="slide-body">
+            <div class="panel">
+              <h3>Bottom-Up Account Logic</h3>
+              <div class="grid-two">
+                <div class="stack-card"><strong>125</strong><span>Global enterprises with concentrated geopolitical, regulatory, or strategy complexity</span></div>
+                <div class="stack-card signal"><strong>75</strong><span>Regulated financial institutions with active policy and market interpretation needs</span></div>
+                <div class="stack-card warning"><strong>25-50</strong><span>Public-sector or quasi-public strategic programs with senior briefing requirements</span></div>
+                <div class="stack-card success"><strong>10</strong><span>Converted accounts at ~$750K blended ACV create a credible early company</span></div>
+              </div>
+            </div>
+            <div class="panel accent">
+              <h3>Budget Sources</h3>
+              <div class="stack">
+                <div class="stack-card"><strong>Advisory</strong><span>External consulting and intelligence spend</span></div>
+                <div class="stack-card"><strong>Workflow</strong><span>Strategy, research, risk, and policy tooling</span></div>
+                <div class="stack-card"><strong>Headcount</strong><span>Analyst augmentation and manual synthesis cost</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="footer-band"><span>Bottom-Up Framing</span><span class="pager">10 / 14</span></div>
+        </section>
+
+        <section class="slide" id="s11">
+          <div class="slide-head">
+            <div class="kicker">Moat</div>
+            <h2>Why This Wins: Compounding Defensibility</h2>
+            <p class="core">Defensibility comes from structured narrative systems embedded in workflow and improved through institutional learning loops, not from model access.</p>
+            <div class="keyline"></div>
+          </div>
+          <div class="slide-body">
+            <div class="panel signal">
+              <h3>Moat Layers</h3>
+              <div class="stack">
+                <div class="stack-card"><strong>Data Model</strong><span>Narrative ontology and evidence graph bind claims to sources and outcomes.</span></div>
+                <div class="stack-card"><strong>Workflow</strong><span>Embedded into recurring executive, risk, and strategy operating cadence.</span></div>
+                <div class="stack-card"><strong>Institutional Embedding</strong><span>Becomes the record of how the institution interprets change.</span></div>
+                <div class="stack-card"><strong>Learning Loops</strong><span>Reviewed narratives and outcomes improve future system behavior.</span></div>
+                <div class="stack-card"><strong>Switching Cost</strong><span>Replacing the platform means losing decision history, trust, and structured memory.</span></div>
+              </div>
+            </div>
+            <div class="panel">
+              <h3>IP Direction</h3>
+              <ul>
+                <li>Narrative state modeling</li>
+                <li>Evidence-to-claim traceability</li>
+                <li>Conflict and alternative-path computation</li>
+                <li>Governance-grade audit architecture</li>
+              </ul>
+            </div>
+          </div>
+          <div class="footer-band"><span>Compounding Advantage</span><span class="pager">11 / 14</span></div>
+        </section>
+
+        <section class="slide" id="s12">
+          <div class="slide-head">
+            <div class="kicker">Roadmap</div>
+            <h2>Roadmap from Seed to Series A</h2>
+            <p class="core">Seed funds product hardening and commercial proof. Series A requires repeatable conversion, embedded workflow usage, and expanding contract value.</p>
+            <div class="keyline"></div>
+          </div>
+          <div class="slide-body">
+            <div class="panel">
+              <h3>Build Path</h3>
+              <div class="stack">
+                <div class="stack-card"><strong>Today</strong><span>MVP supports ingestion, structured narrative generation, review workflow, and premium outputs.</span></div>
+                <div class="stack-card signal"><strong>With $6M</strong><span>Harden governance, domain models, integrations, deployment reliability, and pilot execution.</span></div>
+                <div class="stack-card success"><strong>Series A Gate</strong><span>Repeatable pilot conversion, embedded workflow retention, and multi-account ACV growth.</span></div>
+              </div>
+            </div>
+            <div class="panel accent">
+              <h3>18-24 Month Proof</h3>
+              <ul>
+                <li>3-5 paid pilots completed successfully</li>
+                <li>2-3 meaningful annual contracts converted</li>
+                <li>$1.5M-$3M in contracted ARR or ARR-equivalent value</li>
+                <li>Clear ACV expansion within accounts</li>
+              </ul>
+            </div>
+          </div>
+          <div class="footer-band"><span>Financing Proof Chain</span><span class="pager">12 / 14</span></div>
+        </section>
+
+        <section class="slide" id="s13">
+          <div class="slide-head">
+            <div class="kicker">Capital</div>
+            <h2>Use of Funds: What $6M Unlocks</h2>
+            <p class="core">This capital is not for broad scaling. It is for building the product and proof set required to make institutional adoption undeniable.</p>
+            <div class="keyline"></div>
+          </div>
+          <div class="slide-body">
+            <div class="panel">
+              <h3>Allocation</h3>
+              <div class="grid-two">
+                <div class="metric accent"><strong>45%</strong><span>Product and engineering</span></div>
+                <div class="metric"><strong>20%</strong><span>Pilot delivery and implementation</span></div>
+                <div class="metric signal"><strong>20%</strong><span>Key hires</span></div>
+                <div class="metric success"><strong>15%</strong><span>GTM and design-partner development</span></div>
+              </div>
+            </div>
+            <div class="panel warning">
+              <h3>Capital Unlocks</h3>
+              <div class="stack">
+                <div class="stack-card"><strong>Product Hardening</strong><span>Move from MVP to institutional pilot-grade reliability.</span></div>
+                <div class="stack-card"><strong>Reference Accounts</strong><span>Fund the first credible, reusable deployments.</span></div>
+                <div class="stack-card"><strong>Series A Evidence</strong><span>Retention, conversion, and workflow depth that investors can underwrite.</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="footer-band"><span>Seed Deployment</span><span class="pager">13 / 14</span></div>
+        </section>
+
+        <section class="slide" id="s14">
+          <div class="slide-head">
+            <div class="kicker">Team + Risk</div>
+            <h2>Team, Milestones, and the Hard Truth</h2>
+            <p class="core">This company works only if the team can combine institutional judgment, narrative design, and production AI systems into a trusted operating layer.</p>
+            <div class="keyline"></div>
+          </div>
+          <div class="slide-body">
+            <div class="panel">
+              <h3>Required Team Shape</h3>
+              <div class="grid-three">
+                <div class="stack-card"><strong>Institutional Operator</strong><span>Knows how real organizations decide under pressure.</span></div>
+                <div class="stack-card signal"><strong>AI Systems Builder</strong><span>Can build governed production systems, not toy AI features.</span></div>
+                <div class="stack-card accent"><strong>Narrative Product Architect</strong><span>Can turn executive-grade synthesis into software infrastructure.</span></div>
+              </div>
+            </div>
+            <div class="panel warning">
+              <h3>What Must Be True / What Kills It</h3>
+              <div class="stack">
+                <div class="stack-card success"><strong>Must Be True</strong><span>Paying references, converted contracts, workflow retention, measurable decision impact.</span></div>
+                <div class="stack-card warning"><strong>Kills The Company</strong><span>Low trust, non-converting pilots, or a product that collapses back into bespoke services.</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="footer-band"><span>Execution Standard</span><span class="pager">14 / 14</span></div>
+        </section>
+      </div>
+    </main>
+
+    <div class="command-bar">
+      <span class="command-key">←</span>
+      <span class="command-key">→</span>
+      <span>Navigate Slides</span>
+      <span class="command-key">P</span>
+      <span>Print</span>
+    </div>
+
+    <aside class="voiceover-panel collapsed" id="voiceover-panel">
+      <div class="voiceover-top">
+        <div class="voiceover-title">
+          <strong>Voiceover</strong>
+          <span id="voiceover-slide-label">Slide audio unavailable</span>
+        </div>
+        <div class="voiceover-top-actions">
+          <div class="voiceover-status" id="voiceover-status">Idle</div>
+          <button class="voiceover-toggle" id="voiceover-toggle" aria-expanded="false">Open</button>
+        </div>
+      </div>
+      <div class="voiceover-controls">
+        <button id="voiceover-play">Play</button>
+        <button id="voiceover-pause" disabled>Pause</button>
+        <button id="voiceover-restart" disabled>Restart</button>
+        <button id="voiceover-auto" aria-pressed="false">Auto Advance</button>
+      </div>
+      <div class="voiceover-hint" id="voiceover-hint">
+        Generate audio locally with <code>npm run deck:voiceover</code>. Files load from <code>docs/audio/inception-gate/</code>.
+      </div>
+    </aside>
+
+    <script>
+      const slides = Array.from(document.querySelectorAll(".slide"));
+      const navLinks = Array.from(document.querySelectorAll(".nav a"));
+      const currentSlide = document.getElementById("current-slide");
+      const topbar = document.querySelector(".topbar");
+      const voiceoverSlideLabel = document.getElementById("voiceover-slide-label");
+      const voiceoverStatus = document.getElementById("voiceover-status");
+      const voiceoverHint = document.getElementById("voiceover-hint");
+      const voiceoverPanel = document.getElementById("voiceover-panel");
+      const voiceoverToggle = document.getElementById("voiceover-toggle");
+      const playButton = document.getElementById("voiceover-play");
+      const pauseButton = document.getElementById("voiceover-pause");
+      const restartButton = document.getElementById("voiceover-restart");
+      const autoButton = document.getElementById("voiceover-auto");
+      let narrationData = null;
+      let activeAudio = null;
+      let activeAudioIndex = -1;
+      let autoAdvanceEnabled = false;
+      let audioLoading = false;
+      let voiceoverCollapsed = true;
+
+      function getActiveSlideIndex() {
+        return Math.max(0, navLinks.findIndex((link) => link.classList.contains("active")));
+      }
+
+      function setVoiceoverStatus(message) {
+        voiceoverStatus.textContent = message;
+      }
+
+      function getSlideNarration(index) {
+        if (!narrationData?.slides?.length) return null;
+        return narrationData.slides.find((slide) => slide.slideId === slides[index]?.id) ?? null;
+      }
+
+      function updateVoiceoverUi(index) {
+        const narration = getSlideNarration(index);
+        const hasAudio = Boolean(narration?.audioPath);
+        voiceoverSlideLabel.textContent = narration ? narration.title : "Slide audio unavailable";
+        playButton.disabled = !hasAudio || audioLoading;
+        pauseButton.disabled = !activeAudio || activeAudio.paused || activeAudioIndex !== index;
+        restartButton.disabled = !hasAudio || audioLoading;
+        autoButton.setAttribute("aria-pressed", autoAdvanceEnabled ? "true" : "false");
+        voiceoverPanel.classList.toggle("collapsed", voiceoverCollapsed);
+        voiceoverToggle.setAttribute("aria-expanded", String(!voiceoverCollapsed));
+        voiceoverToggle.textContent = voiceoverCollapsed ? "Open" : "Hide";
+
+        if (!narrationData) {
+          voiceoverHint.innerHTML = "Generate audio locally with <code>npm run deck:voiceover</code>. Files load from <code>docs/audio/inception-gate/</code>.";
+          return;
+        }
+
+        voiceoverHint.textContent = narration?.audioPath
+          ? `Current file: ${narration.audioPath}`
+          : "Narration is defined, but no audio file is mapped for this slide.";
+      }
+
+      function setActiveSlide(index) {
+        const total = slides.length;
+        currentSlide.textContent = `${String(index + 1).padStart(2, "0")} / ${String(total).padStart(2, "0")}`;
+        navLinks.forEach((link, linkIndex) => {
+          link.classList.toggle("active", linkIndex === index);
+        });
+        topbar.style.setProperty("--progress", (index + 1) / total);
+        updateVoiceoverUi(index);
+      }
+
+      const observer = new IntersectionObserver(
+        (entries) => {
+          const visible = entries
+            .filter((entry) => entry.isIntersecting)
+            .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+          if (!visible) return;
+          const index = slides.indexOf(visible.target);
+          if (index >= 0) setActiveSlide(index);
+        },
+        { threshold: [0.35, 0.6, 0.8] }
+      );
+
+      slides.forEach((slide) => observer.observe(slide));
+
+      function scrollToSlide(index) {
+        if (index < 0 || index >= slides.length) return;
+        slides[index].scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+
+      function stopAudio(resetPosition = true) {
+        if (!activeAudio) return;
+        activeAudio.pause();
+        if (resetPosition) {
+          activeAudio.currentTime = 0;
+        }
+        pauseButton.disabled = true;
+      }
+
+      async function loadAudioForSlide(index) {
+        const narration = getSlideNarration(index);
+        if (!narration?.audioPath) {
+          setVoiceoverStatus("Unavailable");
+          return null;
+        }
+
+        if (activeAudio && activeAudioIndex === index) {
+          return activeAudio;
+        }
+
+        stopAudio(true);
+        activeAudio = null;
+        activeAudioIndex = -1;
+        audioLoading = true;
+        updateVoiceoverUi(index);
+        setVoiceoverStatus("Loading");
+
+        const audio = new Audio(narration.audioPath);
+        audio.preload = "auto";
+        audio.onended = () => {
+          setVoiceoverStatus("Ended");
+          pauseButton.disabled = true;
+          if (autoAdvanceEnabled && index < slides.length - 1) {
+            scrollToSlide(index + 1);
+            window.setTimeout(() => playSlideAudio(index + 1, true), 420);
+          }
+        };
+        audio.onerror = () => {
+          setVoiceoverStatus("Missing audio");
+          playButton.disabled = true;
+          pauseButton.disabled = true;
+          restartButton.disabled = true;
+        };
+
+        activeAudio = audio;
+        activeAudioIndex = index;
+        audioLoading = false;
+        updateVoiceoverUi(index);
+        return audio;
+      }
+
+      async function playSlideAudio(index, restart = false) {
+        const audio = await loadAudioForSlide(index);
+        if (!audio) return;
+        try {
+          if (restart) {
+            audio.currentTime = 0;
+          }
+          await audio.play();
+          setVoiceoverStatus("Playing");
+          pauseButton.disabled = false;
+        } catch {
+          setVoiceoverStatus("Tap play");
+        }
+      }
+
+      async function loadNarration() {
+        try {
+          const response = await fetch("./inception-gate-deck-narration.json", { cache: "no-store" });
+          if (!response.ok) {
+            throw new Error("Narration manifest unavailable");
+          }
+          narrationData = await response.json();
+          setVoiceoverStatus("Ready");
+        } catch {
+          narrationData = null;
+          setVoiceoverStatus("No assets");
+        }
+        setActiveSlide(0);
+      }
+
+      function buildQaReport() {
+        const selector = ".panel, .chip, .metric, .stack-card, .lane, .proof, .cell, h1, h2, p, li";
+        const report = slides.map((slide, index) => {
+          const overflows = Array.from(slide.querySelectorAll(selector))
+            .map((el) => ({
+              tag: el.className || el.tagName,
+              overflowY: el.scrollHeight - el.clientHeight,
+              overflowX: el.scrollWidth - el.clientWidth,
+              text: (el.textContent || "").trim().replace(/\s+/g, " ").slice(0, 90),
+            }))
+            .filter((item) => item.overflowY > 2 || item.overflowX > 2);
+
+          return {
+            slide: index + 1,
+            title: slide.querySelector("h1,h2")?.textContent?.trim() || "",
+            slideOverflowY: slide.scrollHeight - slide.clientHeight,
+            overflowCount: overflows.length,
+            overflows: overflows.slice(0, 10),
+          };
+        });
+
+        const pre = document.createElement("pre");
+        pre.id = "qa-report";
+        pre.style.whiteSpace = "pre-wrap";
+        pre.style.fontSize = "12px";
+        pre.style.padding = "16px";
+        pre.style.margin = "0";
+        pre.textContent = JSON.stringify(report, null, 2);
+        document.body.appendChild(pre);
+      }
+
+      loadNarration();
+
+      document.addEventListener("keydown", (event) => {
+        const activeIndex = getActiveSlideIndex();
+        if (event.key === "ArrowRight" || event.key === "PageDown" || event.key === " ") {
+          event.preventDefault();
+          scrollToSlide(Math.min(activeIndex + 1, slides.length - 1));
+        }
+        if (event.key === "ArrowLeft" || event.key === "PageUp") {
+          event.preventDefault();
+          scrollToSlide(Math.max(activeIndex - 1, 0));
+        }
+        if (event.key.toLowerCase() === "p") {
+          event.preventDefault();
+          window.print();
+        }
+      });
+
+      playButton.addEventListener("click", () => {
+        playSlideAudio(getActiveSlideIndex(), false);
+      });
+
+      pauseButton.addEventListener("click", () => {
+        if (!activeAudio) return;
+        stopAudio(false);
+        setVoiceoverStatus("Paused");
+        updateVoiceoverUi(getActiveSlideIndex());
+      });
+
+      restartButton.addEventListener("click", () => {
+        playSlideAudio(getActiveSlideIndex(), true);
+      });
+
+      autoButton.addEventListener("click", () => {
+        autoAdvanceEnabled = !autoAdvanceEnabled;
+        updateVoiceoverUi(getActiveSlideIndex());
+      });
+
+      voiceoverToggle.addEventListener("click", () => {
+        voiceoverCollapsed = !voiceoverCollapsed;
+        updateVoiceoverUi(getActiveSlideIndex());
+      });
+
+      if (new URLSearchParams(window.location.search).get("qa") === "1") {
+        window.addEventListener("load", () => {
+          window.setTimeout(buildQaReport, 150);
+        });
+      }
+    </script>
+  </body>
+</html>

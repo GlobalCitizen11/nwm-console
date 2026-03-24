@@ -1,0 +1,91 @@
+{
+  "deckTitle": "Inception Gate Investor Deck Voiceover",
+  "voice": "coral",
+  "model": "gpt-4o-mini-tts",
+  "slides": [
+    {
+      "slideId": "s1",
+      "title": "The Missing Layer in Institutional Decision-Making",
+      "audioPath": "audio/inception-gate/s01.mp3",
+      "script": "The opening claim is category-defining. Institutions already pay for data, analytics, and expert interpretation. What they still do not have is a system that turns fragmented signal into decision-grade narrative judgment. Inception Gate is trying to own that missing layer. If that layer becomes systemically embedded, it is not a feature. It is an institutional operating surface."
+    },
+    {
+      "slideId": "s2",
+      "title": "The Problem Is Coherence, Not Collection",
+      "audioPath": "audio/inception-gate/s02.mp3",
+      "script": "The problem is not data scarcity. It is coherence under pressure. Institutions already receive more signal than they can resolve through dashboards, memoranda, analyst notes, and vendor reporting. The failure occurs when those inputs do not compress into a trusted operating read quickly enough. That is where delay, internal conflict, and expensive reversals begin. This company is aimed directly at that bottleneck."
+    },
+    {
+      "slideId": "s3",
+      "title": "Existing Solutions Do Not Solve the Decision Layer",
+      "audioPath": "audio/inception-gate/s03.mp3",
+      "script": "The competitive setup is important because the budgets already exist. Dashboards organize information. Consultants sell episodic interpretation. Generic AI produces language without institutional control. None of those systems becomes a governed narrative layer with evidence traceability, memory, and workflow embedding. That leaves the category commercially open even though customers are already spending heavily around it."
+    },
+    {
+      "slideId": "s4",
+      "title": "Inception Gate Is Narrative Intelligence Infrastructure",
+      "audioPath": "audio/inception-gate/s04.mp3",
+      "script": "This is where the company either looks serious or collapses into AI wallpaper. The positioning has to hold. Inception Gate is not a dashboard, not a data platform, and not an LLM wrapper. It is narrative intelligence infrastructure. The system ingests fragmented evidence, structures claims and entities, computes narrative state, and produces governed institutional outputs. The value is not generation alone. It is controlled interpretation at operating speed."
+    },
+    {
+      "slideId": "s5",
+      "title": "What the Product Actually Does",
+      "audioPath": "audio/inception-gate/s05.mp3",
+      "script": "This workflow matters because investors will test whether the company is building software or simply packaging premium services. Inception Gate ingests fragmented inputs, structures them within a common evidence model, computes narrative shifts and pressure patterns, generates primary and alternate interpretations, and stores reviewed outputs as institutional memory. If that loop works repeatedly, the product becomes a real operating system for synthesis."
+    },
+    {
+      "slideId": "s6",
+      "title": "From Fragmented Inputs to Decision-Grade Output",
+      "audioPath": "audio/inception-gate/s06.mp3",
+      "script": "The user experience is deliberately not chat-first. Analysts review evidence clusters and proposed narrative changes. Managers compare primary and alternate paths with explicit trigger conditions. Executives receive compressed briefings linked to evidence and action. That matters because the product has to feel like governed workflow infrastructure, not a conversational layer draped over existing ambiguity."
+    },
+    {
+      "slideId": "s7",
+      "title": "First Paying Customers and Initial ICPs",
+      "audioPath": "audio/inception-gate/s07.mp3",
+      "script": "The first customer is not broad enterprise IT. It is the team already paying to reduce ambiguity in a high-stakes setting. That includes enterprise strategy and geopolitical risk functions, regulated financial institutions with interpretation-heavy workflows, and selected public-sector programs. The likely first buyer is an executive sponsor with an active ambiguity problem and an existing budget path. That makes the first sale believable."
+    },
+    {
+      "slideId": "s8",
+      "title": "Real Pilot Programs, Not Innovation Theater",
+      "audioPath": "audio/inception-gate/s08.mp3",
+      "script": "The commercial wedge is a paid pilot, not a vague platform promise. The pilot is scoped to one live decision domain, one sponsor, and a bounded operating group. It runs for six to twelve weeks and produces decision-ready outputs on a real cadence. Success is measurable. The workflow has to be used, briefing time has to fall, and the sponsor has to want expansion. That is the path from concept to contract."
+    },
+    {
+      "slideId": "s9",
+      "title": "Founder-Led, High-Trust, Narrow Wedge",
+      "audioPath": "audio/inception-gate/s09.mp3",
+      "script": "The go-to-market motion should be founder-led because the first sale is trust-sensitive, strategic, and relatively high ACV. The company needs to start with a limited number of high-value institutional accounts, land through one live workflow, and then expand through adjacent decision surfaces. That keeps the initial motion executable while preserving the economics required for a venture-backed outcome."
+    },
+    {
+      "slideId": "s10",
+      "title": "Market Logic: Where the Budget Comes From",
+      "audioPath": "audio/inception-gate/s10.mp3",
+      "script": "This is not a generic total addressable market slide. It is a budget reallocation argument. The spend already exists across strategy, risk, intelligence, compliance, and external advisory categories. The beachhead is a finite named-account universe where ambiguity costs are high and decision value is substantial. The important investor point is that a relatively small number of converted accounts can support a credible early institutional software company."
+    },
+    {
+      "slideId": "s11",
+      "title": "Why This Wins: Compounding Defensibility",
+      "audioPath": "audio/inception-gate/s11.mp3",
+      "script": "The moat argument cannot rest on model access. It has to rest on structure and embedding. Inception Gate can build a proprietary narrative ontology, an evidence graph, institutional memory, workflow integration, and learning loops from reviewed usage. Over time, the product becomes harder to remove because it is no longer just software. It becomes part of how the institution interprets change and governs action."
+    },
+    {
+      "slideId": "s12",
+      "title": "Roadmap from Seed to Series A",
+      "audioPath": "audio/inception-gate/s12.mp3",
+      "script": "The seed round is for product hardening and commercial proof, not broad scaling. The company needs to complete pilots, convert a portion of them into meaningful annual contracts, and demonstrate that workflow retention and account expansion are real. Series A should be raised on durable product behavior and repeatable commercial evidence. Category excitement may open the conversation, but it should not carry the financing."
+    },
+    {
+      "slideId": "s13",
+      "title": "Use of Funds: What $6M Unlocks",
+      "audioPath": "audio/inception-gate/s13.mp3",
+      "script": "The use of funds should read as disciplined and venture-rational. Most of the capital goes into product and engineering, followed by pilot delivery, key hires, and a focused founder-led go-to-market effort. The unlock is clear: harden the system, win reference accounts, prove conversion, and generate the retention and contract evidence required for the next round."
+    },
+    {
+      "slideId": "s14",
+      "title": "Team, Milestones, and the Hard Truth",
+      "audioPath": "audio/inception-gate/s14.mp3",
+      "script": "The final slide has to answer two questions cleanly: why this team, and what breaks if the thesis is wrong. The company only works if the team can combine institutional judgment, narrative design, and production AI systems into a trusted operating layer. If trust does not form, pilots do not convert, or the product collapses back into bespoke services, the company stalls. Making that explicit increases the credibility of the rest of the deck."
+    }
+  ]
+}
