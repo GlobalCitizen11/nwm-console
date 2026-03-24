@@ -85,18 +85,21 @@ This company wins if it combines three capabilities most teams do not hold toget
 ## Investor Deck
 
 ### Slide 1 — The Missing Layer In Institutional Decision-Making
-**Core message:** Institutions already fund data, software, and expert analysis. They still lack a governed system that turns fragmented signal into decision-grade narrative judgment.
+**Core message:** Narrative World Modeling is a state adjudication system. Institutions already fund data, software, and expert analysis. They still lack a governed system that turns fragmented signal into decision-grade narrative judgment.
 
 **Supporting bullets**
-- Data abundance has not reduced decision confusion.
-- High-stakes decisions still depend on fragmented synthesis.
-- Narrative failure, not data scarcity, is the bottleneck.
-- Inception Gate becomes the decision layer between signal and action.
+- Patent-pending narrative state adjudication system.
+- Transforms narrative artifacts into an auditable, phase-classified representation of system state.
+- Structured pipeline: world boundary -> ingestion -> state vector -> temporal coherence -> orientation -> proof binding -> phase adjudication.
+- Output is an adjudicated narrative state with traceable structural descriptors.
+- To build trust and a strong foundational infrastructure, the system produces state adjudication only. At this time, it does not predict, recommend, optimize, or interpret intent.
 
 **Visual direction**
-- A horizontal operating chain: `Data sources -> Analysis tools -> Human synthesis bottleneck -> Executive decision`
-- Highlight the broken middle with a red fracture band.
-- Position Inception Gate as the replacement for the fragmented synthesis layer.
+- Centered system statement under the title.
+- Main visual as a clean horizontal pipeline:
+  `Narrative World Boundary -> Artifact Ingestion -> Narrative State Vector -> Temporal Coherence -> State Orientation -> Proof Objects -> PAL -> Adjudicated Narrative State`
+- Supporting functional blocks for world definition, artifact processing, state construction, temporal coherence, orientation, proof binding, and phase adjudication.
+- Bottom strip listing the output set and a footer constraint stating that, to build trust and a strong foundational infrastructure, the system produces state adjudication only and does not, at this time, predict, recommend, optimize, or interpret intent.
 
 ### Slide 2 — The Problem Is Coherence, Not Collection
 **Core message:** Institutions do not fail because signal is missing. They fail because interpretation is fragmented across tools, teams, vendors, and disconnected narrative artifacts.
@@ -232,6 +235,7 @@ This company wins if it combines three capabilities most teams do not hold toget
 **Visual direction**
 - Layered moat stack: `Data structure`, `Workflow`, `Governance`, `Learning loop`, `Switching cost`
 - Each layer should show how it deepens over time.
+- Include patent-pending narrative state adjudication architecture in the IP layer.
 
 ### Slide 12 — Roadmap From Seed To Series A
 **Core message:** Seed funds product hardening and commercial proof. Series A requires repeatable conversion, embedded workflow usage, and expanding contract value.
@@ -460,6 +464,7 @@ Inception Gate turns fragmented institutional inputs into structured narratives 
 - Switching cost rises with workflow breadth and institutional dependency
 
 ### 6. IP Direction
+- Patent-pending narrative state adjudication architecture
 - Narrative state modeling
 - Evidence-to-claim traceability systems
 - Conflict and alternative-path computation

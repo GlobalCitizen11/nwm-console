@@ -433,8 +433,8 @@
       }
 
       #s3 .cell.head {
-        font-size: 9px;
-        letter-spacing: 0.03em;
+        font-size: 8px;
+        letter-spacing: 0.01em;
         white-space: nowrap;
         text-wrap: nowrap;
         font-weight: 700;
@@ -442,6 +442,8 @@
         background:
           linear-gradient(180deg, rgba(32, 61, 90, 0.16), rgba(32, 61, 90, 0.08));
         border-color: rgba(32, 61, 90, 0.18);
+        padding-left: 8px;
+        padding-right: 8px;
       }
 
       .tick {
@@ -674,6 +676,133 @@
         color: #383128;
       }
 
+      .system-statement {
+        max-width: 980px;
+        margin: 18px auto 0;
+        padding: 14px 18px;
+        border: 1px solid rgba(32, 61, 90, 0.14);
+        border-radius: 18px;
+        background: rgba(32, 61, 90, 0.07);
+        color: var(--deep-ink);
+        font-size: 20px;
+        line-height: 1.2;
+        text-align: center;
+        text-wrap: balance;
+      }
+
+      .system-pipeline {
+        display: grid;
+        grid-template-columns: repeat(8, minmax(0, 1fr));
+        gap: 14px;
+        align-items: stretch;
+        max-width: 1260px;
+        margin: 0 auto;
+      }
+
+      .system-stage {
+        position: relative;
+        border: 1px solid var(--line);
+        border-radius: 20px;
+        padding: 16px 10px;
+        background: linear-gradient(180deg, rgba(255,255,255,0.82), rgba(255,255,255,0.64));
+        min-width: 0;
+        display: grid;
+        align-content: center;
+        min-height: 86px;
+      }
+
+      .system-stage:not(:last-child)::after {
+        content: "→";
+        position: absolute;
+        right: -13px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--muted);
+        font-size: 20px;
+        font-weight: 700;
+      }
+
+      .system-stage strong {
+        display: block;
+        font-size: 11px;
+        line-height: 1.1;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        color: var(--deep-ink);
+        text-align: center;
+        text-wrap: balance;
+      }
+
+      .system-blocks {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 12px;
+      }
+
+      .system-block {
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        padding: 14px 15px;
+        background: linear-gradient(180deg, rgba(255,255,255,0.8), rgba(255,255,255,0.62));
+        min-width: 0;
+      }
+
+      .system-block strong {
+        display: block;
+        margin-bottom: 6px;
+        font-size: 12px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--deep-ink);
+      }
+
+      .system-block span,
+      .output-list li,
+      .system-footer {
+        font-size: 15px;
+        line-height: 1.18;
+      }
+
+      .output-list {
+        display: grid;
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        gap: 10px;
+        padding-left: 0;
+        list-style: none;
+      }
+
+      .output-list li {
+        margin: 0;
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        padding: 12px 14px;
+        background: rgba(255,255,255,0.74);
+      }
+
+      .system-footer {
+        color: var(--muted);
+        text-align: center;
+      }
+
+      #s1 .slide-head {
+        text-align: center;
+      }
+
+      #s1 h1,
+      #s1 .core,
+      #s1 .keyline {
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      #s1 .core {
+        max-width: 980px;
+      }
+
+      #s1 .keyline {
+        width: 220px;
+      }
+
       #s1 .panel h3,
       #s4 .panel h3,
       #s8 .panel h3,
@@ -865,6 +994,9 @@
       @media (max-width: 1100px) {
         .slide-body,
         .hero,
+        .system-pipeline,
+        .system-blocks,
+        .output-list,
         .decision-chain,
         .architecture-grid,
         .architecture-stage,
@@ -1212,58 +1344,90 @@
         }
 
         #s1 .core {
-          max-width: 8.8in;
+          max-width: 9.1in;
         }
 
         #s1 .slide-body {
-          margin-top: 0.1in;
+          margin-top: 0.08in;
           align-items: center;
           align-content: center;
         }
 
-        #s1 .hero {
-          grid-template-columns: minmax(0, 1.32fr) minmax(2.28in, 0.68fr);
-          gap: 0.1in;
-        }
-
         #s1 .panel {
-          padding: 0.11in;
+          padding: 0.1in;
         }
 
-        #s1 .proof,
-        #s1 .stack-card {
-          padding: 0.09in 0.1in;
+        #s1 .system-statement {
+          max-width: 8.7in;
+          margin-top: 0.12in;
+          padding: 0.08in 0.12in;
+          border-radius: 0.16in;
+          font-size: 0.175in;
+          line-height: 1.14;
         }
 
-        #s1 .proof span,
-        #s1 .stack-card span {
+        #s1 .system-pipeline {
+          grid-template-columns: repeat(8, minmax(0, 1fr));
+          gap: 0.045in;
+          max-width: none;
+        }
+
+        #s1 .system-stage {
+          padding: 0.075in 0.045in;
+          border-radius: 0.12in;
+          min-height: 0.78in;
+        }
+
+        #s1 .system-stage:not(:last-child)::after {
+          right: -0.075in;
           font-size: 0.15in;
-          line-height: 1.08;
         }
 
-        #s1 .decision-chain {
+        #s1 .system-stage strong {
+          font-size: 0.074in;
+          line-height: 1.02;
+          letter-spacing: 0.03em;
+        }
+
+        #s1 .system-blocks {
           grid-template-columns: repeat(4, minmax(0, 1fr));
-          gap: 0.06in;
+          gap: 0.05in;
         }
 
-        #s1 .decision-node {
-          padding: 0.09in;
-          border-radius: 0.14in;
+        #s1 .system-block {
+          padding: 0.075in 0.08in;
+          border-radius: 0.12in;
         }
 
-        #s1 .decision-node:not(:last-child)::after {
-          right: -0.09in;
-          font-size: 0.2in;
+        #s1 .system-block strong {
+          font-size: 0.082in;
+          margin-bottom: 0.025in;
+          letter-spacing: 0.05em;
         }
 
-        #s1 .decision-node strong {
-          font-size: 0.105in;
-          margin-bottom: 0.03in;
-        }
-
-        #s1 .decision-node span {
-          font-size: 0.125in;
+        #s1 .system-block span,
+        #s1 .output-list li,
+        #s1 .system-footer {
+          font-size: 0.108in;
           line-height: 1.06;
+        }
+
+        #s1 .output-list {
+          grid-template-columns: repeat(5, minmax(0, 1fr));
+          gap: 0.045in;
+        }
+
+        #s1 .output-list li {
+          padding: 0.065in 0.07in;
+          border-radius: 0.11in;
+        }
+
+        #s1 .system-footer {
+          margin-top: 0.01in;
+        }
+
+        #s1 .footer-band {
+          margin-top: 0.05in;
         }
 
         #s3 .slide-body {
@@ -1944,37 +2108,73 @@
             <h1>The Missing Layer in Institutional Decision-Making</h1>
             <p class="core">Institutions already fund data, software, and expert analysis. They still lack a governed system that turns fragmented signal into decision-grade narrative judgment.</p>
             <div class="keyline"></div>
-            <div class="hero-emphasis">Institutional Decision Layer • Not Another Analytics Tool</div>
+            <div class="hero-emphasis">Patent-Pending Narrative State Adjudication System</div>
+            <div class="system-statement">A governed state adjudication system for turning fragmented narrative artifacts into an auditable representation of system state.</div>
           </div>
-          <div class="slide-body hero">
+          <div class="slide-body" style="grid-template-columns: 1fr;">
             <div class="panel accent">
-              <h3>Decision Chain</h3>
-              <div class="decision-chain">
-                <div class="decision-node">
-                  <strong>Signal Inputs</strong>
-                  <span>Reports, feeds, analyst notes, internal documents</span>
+              <h3>System Pipeline</h3>
+              <div class="system-pipeline">
+                <div class="system-stage"><strong>Narrative World Boundary</strong></div>
+                <div class="system-stage"><strong>Artifact Ingestion</strong></div>
+                <div class="system-stage"><strong>Narrative State Vector</strong></div>
+                <div class="system-stage"><strong>Temporal Coherence</strong></div>
+                <div class="system-stage"><strong>State Orientation</strong></div>
+                <div class="system-stage"><strong>Proof Objects</strong></div>
+                <div class="system-stage"><strong>PAL</strong></div>
+                <div class="system-stage success"><strong>Adjudicated Narrative State</strong></div>
+              </div>
+            </div>
+            <div class="panel">
+              <h3>Core Functions</h3>
+              <div class="system-blocks">
+                <div class="system-block">
+                  <strong>Narrative World Definition</strong>
+                  <span>Defines system boundaries, scope, time, and inclusion criteria.</span>
                 </div>
-                <div class="decision-node">
-                  <strong>Tool Layer</strong>
-                  <span>BI, models, dashboards, external research, fragmented software</span>
+                <div class="system-block">
+                  <strong>Artifact Processing</strong>
+                  <span>Ingests artifacts as structural memory with preserved provenance.</span>
                 </div>
-                <div class="decision-node break">
-                  <strong>Broken Middle</strong>
-                  <span>Human synthesis bottleneck under pressure, conflict, and time compression</span>
+                <div class="system-block">
+                  <strong>State Construction</strong>
+                  <span>Encodes system structure into a Narrative State Vector.</span>
                 </div>
-                <div class="decision-node target">
-                  <strong>Decision Layer</strong>
-                  <span>Governed narrative judgment tied directly to executive action</span>
+                <div class="system-block signal">
+                  <strong>Temporal Coherence</strong>
+                  <span>Maintains continuity across time within a unified manifold.</span>
+                </div>
+                <div class="system-block">
+                  <strong>Orientation</strong>
+                  <span>Describes density, structural momentum, synchronization, and reversibility.</span>
+                </div>
+                <div class="system-block">
+                  <strong>Proof Binding</strong>
+                  <span>Links all state descriptors to source artifacts for auditability.</span>
+                </div>
+                <div class="system-block warning">
+                  <strong>Phase Adjudication</strong>
+                  <span>PAL classifies system phase based on structural conditions.</span>
+                </div>
+                <div class="system-block success">
+                  <strong>Output State</strong>
+                  <span>Produces an adjudicated narrative state representation.</span>
                 </div>
               </div>
             </div>
-            <div class="hero-right">
-              <div class="proof accent"><strong>Core Claim</strong><span>Narrative failure, not data scarcity, is the institutional bottleneck.</span></div>
-              <div class="proof"><strong>Implication</strong><span>Whoever owns institutional synthesis owns the decision layer.</span></div>
-              <div class="proof signal"><strong>Why It Matters</strong><span>The budget already exists. The operating layer does not.</span></div>
+            <div class="panel signal">
+              <h3>Adjudicated Narrative State Includes</h3>
+              <ul class="output-list">
+                <li>Narrative World definition</li>
+                <li>Narrative State Vector</li>
+                <li>Structural descriptors</li>
+                <li>Phase classification</li>
+                <li>Proof Object traceability</li>
+              </ul>
             </div>
+            <div class="system-footer">To build trust and a strong foundational infrastructure, the system produces state adjudication only. At this time, it does not predict, recommend, optimize, or interpret intent.</div>
           </div>
-          <div class="footer-band"><span>Category Definition</span><span class="pager">01 / 14</span></div>
+          <div class="footer-band"><span>State Adjudication System</span><span class="pager">01 / 14</span></div>
         </section>
 
         <section class="slide" id="s2">
@@ -2375,6 +2575,7 @@
             <div class="panel">
               <h3>IP Direction</h3>
               <ul>
+                <li>Patent-pending narrative state adjudication architecture</li>
                 <li>Narrative state modeling</li>
                 <li>Evidence-to-claim traceability</li>
                 <li>Conflict and alternative-path computation</li>
