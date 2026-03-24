@@ -12,6 +12,7 @@ function doPost(e) {
         'last_name',
         'company',
         'email',
+        'source',
         'page_url',
         'user_agent',
       ]);
@@ -23,6 +24,7 @@ function doPost(e) {
       payload.lastName || '',
       payload.company || '',
       payload.email || '',
+      payload.source || '',
       payload.pageUrl || '',
       payload.userAgent || '',
     ]);

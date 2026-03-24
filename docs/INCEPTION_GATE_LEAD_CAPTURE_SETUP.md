@@ -10,6 +10,7 @@ Use this to send deck-entry leads into the Google Sheet you shared:
 - `last_name`
 - `company`
 - `email`
+- `source`
 - `page_url`
 - `user_agent`
 - `timestamp`

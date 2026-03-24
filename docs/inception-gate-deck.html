@@ -2953,6 +2953,7 @@
       let voiceoverCollapsed = false;
       const gateStorageKey = "inception-gate-access-record";
       const gateWebhookUrl = "https://script.google.com/macros/s/AKfycbwKVVz597JC3XpCBZ33mJBG5XwUM2um7qvwHuOKygqN9iPqc-GJzAKX0IMtPZFUoSiFrQ/exec";
+      const gateLeadSource = "inception_gate_investor_deck";
 
       function isLocalViewer() {
         const host = window.location.hostname;
@@ -2978,19 +2979,27 @@
 
       async function sendLeadToWebhook(lead) {
         if (!gateWebhookUrl) return;
+        const payload = {
+          ...lead,
+          source: gateLeadSource,
+          pageUrl: window.location.href,
+          userAgent: navigator.userAgent,
+          capturedAt: new Date().toISOString(),
+        };
+        console.info("[Inception Gate] submitting lead", {
+          email: payload.email,
+          company: payload.company,
+          source: payload.source,
+        });
         await fetch(gateWebhookUrl, {
           method: "POST",
           mode: "no-cors",
           headers: {
             "Content-Type": "text/plain;charset=utf-8",
           },
-          body: JSON.stringify({
-            ...lead,
-            pageUrl: window.location.href,
-            userAgent: navigator.userAgent,
-            capturedAt: new Date().toISOString(),
-          }),
+          body: JSON.stringify(payload),
         });
+        console.info("[Inception Gate] lead submitted");
       }
 
       function unlockDeck() {
@@ -3220,6 +3229,7 @@
         try {
           await sendLeadToWebhook(lead);
         } catch {
+          console.error("[Inception Gate] lead submission failed");
           gateError.textContent = "Lead capture is not available right now. Please try again.";
           return;
         }
