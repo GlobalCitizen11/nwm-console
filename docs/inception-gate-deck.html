@@ -710,6 +710,9 @@
           width: 11in;
           margin: 0;
           padding: 0;
+          color: #111;
+          -webkit-print-color-adjust: exact;
+          print-color-adjust: exact;
         }
 
         .topbar,
@@ -728,22 +731,725 @@
           max-width: none;
         }
 
+        .slide::before,
+        .slide::after {
+          display: none;
+        }
+
         .slide {
           width: 11in;
           min-height: 8.5in;
           height: 8.5in;
+          display: grid;
+          grid-template-rows: auto auto minmax(0, 1fr) auto;
           border: none;
           border-radius: 0;
           box-shadow: none;
+          background: #fff;
           page-break-after: always;
           break-after: page;
           padding: 0.58in 0.56in;
           overflow: hidden;
         }
 
+        h1 {
+          font-size: 0.9in;
+          line-height: 0.96;
+          letter-spacing: -0.045em;
+          padding-bottom: 0.08in;
+        }
+
+        h2 {
+          font-size: 0.55in;
+          line-height: 0.98;
+          letter-spacing: -0.038em;
+          padding-bottom: 0.05in;
+        }
+
+        .core {
+          margin-top: 0.12in;
+          max-width: none;
+          font-size: 0.21in;
+          line-height: 1.18;
+        }
+
+        .slide-body {
+          margin-top: 0.2in;
+          gap: 0.16in;
+          min-height: 0;
+          align-self: stretch;
+          align-content: stretch;
+        }
+
+        .slide-body > .panel {
+          height: 100%;
+        }
+
+        .panel {
+          padding: 0.14in;
+          border-radius: 0.18in;
+        }
+
+        .panel h3 {
+          margin-bottom: 0.08in;
+          font-size: 0.14in;
+          letter-spacing: 0.1em;
+        }
+
+        .grid-two,
+        .grid-three,
+        .signal-list,
+        .metric-list,
+        .stack,
+        .process,
+        .table {
+          gap: 0.09in;
+        }
+
+        .table-row {
+          gap: 0.07in;
+        }
+
+        .chip,
+        .metric,
+        .stack-card,
+        .lane,
+        .proof,
+        .cell {
+          padding: 0.11in 0.13in;
+          border-radius: 0.16in;
+        }
+
+        .chip strong,
+        .metric strong,
+        .stack-card strong,
+        .lane strong,
+        .proof strong {
+          margin-bottom: 0.04in;
+          font-size: 0.13in;
+          letter-spacing: 0.07em;
+        }
+
+        .chip span,
+        .metric span,
+        .stack-card span,
+        .lane span,
+        .proof span {
+          font-size: 0.18in;
+          line-height: 1.16;
+        }
+
+        .process .lane {
+          min-height: 1.2in;
+        }
+
+        .process .index {
+          margin-bottom: 0.08in;
+          font-size: 0.11in;
+        }
+
+        ul {
+          padding-left: 0.18in;
+        }
+
+        li {
+          margin-bottom: 0.08in;
+          font-size: 0.18in;
+          line-height: 1.2;
+        }
+
+        .cell {
+          font-size: 0.15in;
+          line-height: 1.18;
+        }
+
+        .cell.head {
+          font-size: 0.11in;
+        }
+
+        .kicker {
+          margin-bottom: 0.12in;
+          font-size: 0.11in;
+          letter-spacing: 0.14em;
+        }
+
+        .hero-emphasis {
+          margin-top: 0.12in;
+          padding: 0.08in 0.12in;
+          font-size: 0.12in;
+        }
+
+        .keyline {
+          margin-top: 0.08in;
+          width: 1.35in;
+          height: 0.04in;
+        }
+
+        .footer-band {
+          margin-top: 0.12in;
+          padding-top: 0.1in;
+          font-size: 0.11in;
+        }
+
+        .kicker,
+        .panel h3,
+        .footer-band,
+        .cell.head,
+        .chip strong,
+        .metric strong,
+        .stack-card strong,
+        .lane strong,
+        .proof strong {
+          color: #4b463f;
+        }
+
+        .core,
+        .chip span,
+        .metric span,
+        .stack-card span,
+        .lane span,
+        .proof span,
+        .cell,
+        li {
+          color: #161311;
+        }
+
+        .keyline {
+          background: #a63d1d;
+        }
+
+        .hero-emphasis {
+          background: #f4f0e8;
+          border-color: #d6cec3;
+          color: #2b2722;
+        }
+
+        .panel,
+        .chip,
+        .metric,
+        .stack-card,
+        .lane,
+        .proof,
+        .cell {
+          background: #fff;
+          box-shadow: none;
+          border-color: #d5cec4;
+        }
+
+        .panel.accent,
+        .accent {
+          background: #f6eee7;
+          border-color: #ddcabc;
+        }
+
+        .panel.signal,
+        .signal {
+          background: #edf3f8;
+          border-color: #cbd9e5;
+        }
+
+        .panel.success,
+        .success {
+          background: #eef5f1;
+          border-color: #cbdccf;
+        }
+
+        .panel.warning,
+        .warning {
+          background: #f7f0e5;
+          border-color: #e1d0b2;
+        }
+
+        .proof,
+        .stack-card,
+        .lane,
+        .chip,
+        .metric,
+        .cell,
+        .panel {
+          background-image: none;
+        }
+
+        .footer-band {
+          border-top-color: #d8d0c5;
+        }
+
         .slide:last-child {
           page-break-after: auto;
           break-after: auto;
+        }
+
+        #s1 h1 {
+          max-width: 8.2in;
+          font-size: 0.8in;
+          line-height: 0.94;
+        }
+
+        #s1 .core {
+          max-width: 8.8in;
+        }
+
+        #s1 .slide-body {
+          margin-top: 0.14in;
+        }
+
+        #s1 .hero {
+          grid-template-columns: minmax(0, 1.38fr) minmax(2.2in, 0.62fr);
+        }
+
+        #s1 .proof span,
+        #s1 .stack-card span {
+          font-size: 0.16in;
+        }
+
+        #s3 .slide-body {
+          grid-template-columns: minmax(0, 1.5fr) minmax(1.95in, 0.5fr);
+          gap: 0.09in;
+        }
+
+        #s3 .panel {
+          padding: 0.1in;
+        }
+
+        #s3 .table {
+          gap: 0.05in;
+        }
+
+        #s3 .table-row {
+          gap: 0.04in;
+        }
+
+        #s3 .cell {
+          padding: 0.06in 0.065in;
+          font-size: 0.115in;
+          line-height: 1.08;
+        }
+
+        #s3 .cell.head {
+          font-size: 0.088in;
+        }
+
+        #s3 .stack {
+          gap: 0.05in;
+        }
+
+        #s3 .stack-card {
+          padding: 0.075in 0.085in;
+        }
+
+        #s3 .stack-card span {
+          font-size: 0.132in;
+          line-height: 1.08;
+        }
+
+        #s4 .slide-body {
+          grid-template-columns: minmax(0, 1.48fr) minmax(2.05in, 0.52fr);
+          gap: 0.11in;
+        }
+
+        #s4 .panel {
+          padding: 0.11in;
+        }
+
+        #s4 .process,
+        #s5 .process {
+          gap: 0.06in;
+        }
+
+        #s4 .process .lane,
+        #s5 .process .lane {
+          min-height: 1.02in;
+          padding: 0.09in 0.1in;
+        }
+
+        #s4 .lane span,
+        #s5 .lane span {
+          font-size: 0.15in;
+          line-height: 1.14;
+        }
+
+        #s4 .process {
+          gap: 0.045in;
+        }
+
+        #s4 .process .lane {
+          min-height: 0.92in;
+          padding: 0.07in 0.08in;
+        }
+
+        #s4 .process .index {
+          margin-bottom: 0.04in;
+          font-size: 0.095in;
+        }
+
+        #s4 .lane strong {
+          font-size: 0.11in;
+        }
+
+        #s4 .lane span {
+          font-size: 0.132in;
+          line-height: 1.08;
+        }
+
+        #s4 ul {
+          padding-left: 0.16in;
+        }
+
+        #s4 li {
+          font-size: 0.155in;
+          line-height: 1.14;
+          margin-bottom: 0.06in;
+        }
+
+        #s5 .slide-body {
+          grid-template-columns: minmax(0, 1.34fr) minmax(2.35in, 0.66fr);
+          gap: 0.12in;
+        }
+
+        #s5 .process {
+          gap: 0.05in;
+        }
+
+        #s5 .process .lane {
+          min-height: 0.94in;
+          padding: 0.08in 0.09in;
+        }
+
+        #s5 .process .index {
+          margin-bottom: 0.05in;
+        }
+
+        #s5 .lane strong {
+          font-size: 0.12in;
+        }
+
+        #s5 .lane span {
+          font-size: 0.138in;
+          line-height: 1.1;
+        }
+
+        #s5 .panel.accent {
+          padding: 0.12in;
+        }
+
+        #s5 .stack {
+          gap: 0.06in;
+        }
+
+        #s5 .stack-card {
+          padding: 0.09in 0.1in;
+        }
+
+        #s5 .stack-card strong {
+          font-size: 0.12in;
+          margin-bottom: 0.03in;
+        }
+
+        #s5 .stack-card span {
+          font-size: 0.145in;
+          line-height: 1.12;
+        }
+
+        #s7 .grid-three,
+        #s14 .grid-three {
+          gap: 0.08in;
+        }
+
+        #s7 .stack-card span,
+        #s14 .stack-card span {
+          font-size: 0.155in;
+        }
+
+        #s10 .grid-two {
+          gap: 0.08in;
+        }
+
+        #s10 .stack-card span,
+        #s11 .stack-card span,
+        #s12 .stack-card span,
+        #s13 .stack-card span,
+        #s14 .stack-card span {
+          font-size: 0.165in;
+        }
+
+        #s11 .stack,
+        #s12 .stack,
+        #s13 .stack,
+        #s14 .stack {
+          gap: 0.07in;
+        }
+
+        #s11 .slide-body,
+        #s12 .slide-body {
+          grid-template-columns: minmax(0, 1.34fr) minmax(2.25in, 0.66fr);
+          gap: 0.12in;
+        }
+
+        #s11 .panel,
+        #s12 .panel {
+          padding: 0.11in;
+        }
+
+        #s11 .stack,
+        #s12 .stack {
+          gap: 0.055in;
+        }
+
+        #s11 .stack-card,
+        #s12 .stack-card {
+          padding: 0.085in 0.095in;
+        }
+
+        #s11 .stack-card strong,
+        #s12 .stack-card strong {
+          font-size: 0.115in;
+          margin-bottom: 0.03in;
+        }
+
+        #s11 .stack-card span,
+        #s12 .stack-card span {
+          font-size: 0.145in;
+          line-height: 1.1;
+        }
+
+        #s11 li,
+        #s12 li {
+          font-size: 0.16in;
+          line-height: 1.14;
+          margin-bottom: 0.06in;
+        }
+
+        #s2 h2,
+        #s7 h2,
+        #s8 h2,
+        #s9 h2,
+        #s10 h2 {
+          font-size: 0.49in;
+        }
+
+        #s2 .core,
+        #s7 .core,
+        #s8 .core,
+        #s9 .core,
+        #s10 .core {
+          font-size: 0.185in;
+          line-height: 1.12;
+        }
+
+        #s2 .slide-body,
+        #s7 .slide-body,
+        #s8 .slide-body,
+        #s9 .slide-body,
+        #s10 .slide-body {
+          margin-top: 0.14in;
+          gap: 0.1in;
+        }
+
+        #s2 .panel,
+        #s7 .panel,
+        #s8 .panel,
+        #s9 .panel,
+        #s10 .panel {
+          padding: 0.11in;
+        }
+
+        #s2 li,
+        #s7 li,
+        #s8 li,
+        #s9 li,
+        #s10 li {
+          font-size: 0.16in;
+          line-height: 1.12;
+          margin-bottom: 0.06in;
+        }
+
+        #s2 .chip span,
+        #s7 .stack-card span,
+        #s8 .metric span,
+        #s9 .stack-card span,
+        #s10 .stack-card span,
+        #s10 .metric span,
+        #s10 .proof span {
+          font-size: 0.152in;
+          line-height: 1.1;
+        }
+
+        #s3 .slide-body {
+          grid-template-columns: minmax(0, 1.62fr) minmax(1.84in, 0.38fr);
+          gap: 0.08in;
+          margin-top: 0.15in;
+          align-items: stretch;
+        }
+
+        #s3 .panel:first-child,
+        #s3 .panel.accent {
+          padding: 0.105in;
+        }
+
+        #s3 .panel:first-child {
+          padding-bottom: 0.17in;
+        }
+
+        #s3 .panel.accent .stack {
+          gap: 0.06in;
+        }
+
+        #s3 .panel.accent .stack-card {
+          padding: 0.095in 0.1in;
+        }
+
+        #s3 .panel.accent .stack-card strong {
+          font-size: 0.112in;
+          margin-bottom: 0.035in;
+        }
+
+        #s3 .panel.accent .stack-card span {
+          font-size: 0.132in;
+          line-height: 1.08;
+        }
+
+        #s3 .table {
+          height: 100%;
+          gap: 0.055in;
+          align-content: stretch;
+          padding-bottom: 0.18in;
+          box-sizing: border-box;
+        }
+
+        #s3 .table-row {
+          grid-template-columns: 1.22fr repeat(5, 0.9fr);
+          gap: 0.05in;
+          align-items: stretch;
+        }
+
+        #s3 .table-row .cell {
+          padding: 0.065in 0.055in 0.12in;
+          font-size: 0.106in;
+          line-height: 1.06;
+          border-radius: 0.08in;
+          display: flex;
+          align-items: flex-start;
+          justify-content: center;
+          text-align: center;
+          overflow: visible;
+          word-break: break-word;
+          text-wrap: balance;
+          min-height: 0.54in;
+          box-sizing: border-box;
+        }
+
+        #s3 .table-row .cell:first-child {
+          justify-content: flex-start;
+          text-align: left;
+          font-size: 0.114in;
+          font-weight: 700;
+          padding-left: 0.07in;
+          min-height: 0.54in;
+        }
+
+        #s3 .table-row .cell.head {
+          font-size: 0.084in;
+          line-height: 1.04;
+          letter-spacing: 0.08em;
+          text-transform: uppercase;
+          align-items: center;
+          min-height: 0.34in;
+        }
+
+        #s3 .table-row:last-child .cell {
+          padding-bottom: 0.16in;
+          min-height: 0.62in;
+        }
+
+        #s4 h2 {
+          font-size: 0.47in;
+        }
+
+        #s4 .core {
+          font-size: 0.18in;
+          line-height: 1.1;
+        }
+
+        #s4 .slide-body {
+          margin-top: 0.12in;
+          grid-template-columns: minmax(0, 1.58fr) minmax(1.85in, 0.42fr);
+          gap: 0.08in;
+        }
+
+        #s4 .panel {
+          padding: 0.095in;
+        }
+
+        #s4 .process {
+          gap: 0.035in;
+        }
+
+        #s4 .process .lane {
+          min-height: 0.82in;
+          padding: 0.06in 0.065in;
+        }
+
+        #s4 .lane strong {
+          font-size: 0.1in;
+        }
+
+        #s4 .lane span {
+          font-size: 0.118in;
+          line-height: 1.04;
+        }
+
+        #s4 li {
+          font-size: 0.145in;
+          line-height: 1.08;
+          margin-bottom: 0.045in;
+        }
+
+        #s7 .grid-three {
+          gap: 0.06in;
+        }
+
+        #s7 .stack-card,
+        #s8 .metric,
+        #s9 .stack-card,
+        #s10 .stack-card {
+          padding: 0.08in 0.09in;
+        }
+
+        #s7 .stack-card strong,
+        #s8 .metric strong,
+        #s9 .stack-card strong,
+        #s10 .stack-card strong {
+          font-size: 0.115in;
+        }
+
+        #s8 .metric-list,
+        #s9 .grid-two,
+        #s10 .grid-two {
+          gap: 0.06in;
+        }
+
+        #s9 .stack-card span,
+        #s10 .stack-card span {
+          font-size: 0.145in;
+        }
+
+        #s10 .slide-body {
+          grid-template-columns: minmax(0, 1.4fr) minmax(2.05in, 0.5fr);
+        }
+
+        #s11 .slide-body,
+        #s12 .slide-body {
+          margin-top: 0.16in;
+        }
+
+        #s13 .slide-body {
+          margin-top: 0.04in;
+          grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+          gap: 0.1in;
+        }
+
+        #s13 .panel {
+          padding: 0.11in;
         }
       }
     </style>
