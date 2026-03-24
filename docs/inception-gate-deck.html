@@ -47,6 +47,153 @@
         font-family: "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Palatino, serif;
       }
 
+      body.gate-locked {
+        overflow: hidden;
+      }
+
+      body.gate-locked .topbar,
+      body.gate-locked main,
+      body.gate-locked .command-bar,
+      body.gate-locked .voiceover-panel {
+        filter: blur(16px);
+        pointer-events: none;
+        user-select: none;
+      }
+
+      .access-gate {
+        position: fixed;
+        inset: 0;
+        z-index: 100;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        padding: 28px;
+        background:
+          linear-gradient(180deg, rgba(10, 16, 22, 0.3), rgba(10, 16, 22, 0.52)),
+          radial-gradient(circle at 20% 20%, rgba(166, 61, 29, 0.16), transparent 24%),
+          radial-gradient(circle at 80% 14%, rgba(32, 61, 90, 0.2), transparent 28%);
+        backdrop-filter: blur(12px);
+      }
+
+      body.gate-locked .access-gate {
+        display: flex;
+      }
+
+      .gate-card {
+        width: min(560px, 100%);
+        border: 1px solid rgba(255, 255, 255, 0.26);
+        border-radius: 28px;
+        padding: 28px 28px 24px;
+        background:
+          linear-gradient(180deg, rgba(251, 248, 241, 0.96), rgba(243, 236, 224, 0.96)),
+          linear-gradient(135deg, rgba(255, 255, 255, 0.24), transparent 42%);
+        box-shadow:
+          0 32px 100px rgba(18, 18, 18, 0.28),
+          inset 0 1px 0 rgba(255, 255, 255, 0.54);
+      }
+
+      .gate-kicker {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 18px;
+        color: var(--muted);
+        font-size: 12px;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+      }
+
+      .gate-kicker::before {
+        content: "";
+        width: 28px;
+        height: 2px;
+        background: linear-gradient(90deg, var(--accent), var(--gold));
+      }
+
+      .gate-card h2 {
+        max-width: none;
+        font-size: clamp(34px, 5vw, 52px);
+      }
+
+      .gate-copy {
+        margin-top: 14px;
+        color: #2a251f;
+        font-size: 18px;
+        line-height: 1.3;
+      }
+
+      .gate-form {
+        margin-top: 20px;
+        display: grid;
+        gap: 12px;
+      }
+
+      .gate-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+      }
+
+      .gate-label {
+        font-size: 12px;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+
+      .gate-input {
+        width: 100%;
+        border: 1px solid rgba(23, 21, 18, 0.14);
+        border-radius: 16px;
+        padding: 14px 16px;
+        background: rgba(255, 255, 255, 0.78);
+        color: var(--ink);
+        font: inherit;
+        font-size: 18px;
+      }
+
+      .gate-input:focus {
+        outline: 2px solid rgba(32, 61, 90, 0.24);
+        outline-offset: 2px;
+        border-color: rgba(32, 61, 90, 0.34);
+      }
+
+      .gate-actions {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+
+      .gate-meta,
+      .gate-error {
+        font-size: 14px;
+        line-height: 1.25;
+      }
+
+      .gate-meta {
+        color: var(--muted);
+      }
+
+      .gate-error {
+        color: #8d2f16;
+        min-height: 1.2em;
+      }
+
+      .gate-submit {
+        border: 0;
+        border-radius: 999px;
+        padding: 12px 18px;
+        background: linear-gradient(90deg, var(--signal), #2a5275);
+        color: #f8f4eb;
+        font: inherit;
+        font-size: 14px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        cursor: pointer;
+      }
+
       .topbar {
         position: sticky;
         top: 0;
@@ -784,6 +931,23 @@
         text-align: center;
       }
 
+      .contact-strip {
+        margin-top: 14px;
+        padding: 12px 16px;
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        background: rgba(255, 255, 255, 0.62);
+        color: var(--muted);
+        font-size: 14px;
+        line-height: 1.2;
+        text-align: center;
+      }
+
+      .contact-strip strong {
+        color: var(--deep-ink);
+        font-weight: 700;
+      }
+
       #s1 .slide-head {
         text-align: center;
       }
@@ -1024,6 +1188,19 @@
       }
 
       @media (max-width: 760px) {
+        .access-gate {
+          padding: 18px;
+        }
+
+        .gate-card {
+          padding: 22px 20px 18px;
+          border-radius: 24px;
+        }
+
+        .gate-grid {
+          grid-template-columns: 1fr;
+        }
+
         .topbar {
           padding: 12px 14px;
           align-items: flex-start;
@@ -1073,6 +1250,7 @@
         }
 
         .topbar,
+        .access-gate,
         .command-bar,
         .voiceover-panel,
         #qa-report {
@@ -2069,10 +2247,53 @@
         #s14 .slide-body {
           margin-top: 0.1in;
         }
+
+        .contact-strip {
+          margin-top: 0.07in;
+          padding: 0.07in 0.1in;
+          border-radius: 0.14in;
+          font-size: 0.122in;
+          line-height: 1.08;
+        }
       }
     </style>
   </head>
   <body>
+    <div class="access-gate" id="access-gate" aria-hidden="true">
+      <div class="gate-card">
+        <div class="gate-kicker">Private Access</div>
+        <h2>Enter the presentation.</h2>
+        <p class="gate-copy">This deck is shared through a controlled web portal. Enter your details to continue to the Inception Gate investor presentation.</p>
+        <form class="gate-form" id="access-gate-form">
+          <div class="gate-grid">
+            <div>
+              <label class="gate-label" for="gate-first-name">First Name</label>
+              <input class="gate-input" id="gate-first-name" name="firstName" type="text" autocomplete="given-name" placeholder="First name" required />
+            </div>
+            <div>
+              <label class="gate-label" for="gate-last-name">Last Name</label>
+              <input class="gate-input" id="gate-last-name" name="lastName" type="text" autocomplete="family-name" placeholder="Last name" required />
+            </div>
+          </div>
+          <div>
+            <label class="gate-label" for="gate-company">Company</label>
+            <input class="gate-input" id="gate-company" name="company" type="text" autocomplete="organization" placeholder="Institution or company" required />
+          </div>
+          <div>
+            <label class="gate-label" for="gate-email">Email</label>
+            <input class="gate-input" id="gate-email" name="email" type="email" inputmode="email" autocomplete="email" placeholder="name@institution.com" required />
+          </div>
+          <div class="gate-actions">
+            <div>
+              <div class="gate-error" id="gate-error"></div>
+              <div class="gate-meta">Localhost remains open for internal review. Deployed access requires name, company, and email.</div>
+            </div>
+            <button class="gate-submit" type="submit">Enter Deck</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
     <header class="topbar">
       <div class="brand">
         <strong>Inception Gate</strong>
@@ -2117,12 +2338,12 @@
               <div class="system-pipeline">
                 <div class="system-stage"><strong>Narrative World Boundary</strong></div>
                 <div class="system-stage"><strong>Artifact Ingestion</strong></div>
-                <div class="system-stage"><strong>Narrative State Vector</strong></div>
+                <div class="system-stage"><strong>Structured State Representation</strong></div>
                 <div class="system-stage"><strong>Temporal Coherence</strong></div>
                 <div class="system-stage"><strong>State Orientation</strong></div>
-                <div class="system-stage"><strong>Proof Objects</strong></div>
+                <div class="system-stage"><strong>Evidence Traceability</strong></div>
                 <div class="system-stage"><strong>PAL</strong></div>
-                <div class="system-stage success"><strong>Adjudicated Narrative State</strong></div>
+                <div class="system-stage success"><strong>Adjudicated System State</strong></div>
               </div>
             </div>
             <div class="panel">
@@ -2138,7 +2359,7 @@
                 </div>
                 <div class="system-block">
                   <strong>State Construction</strong>
-                  <span>Encodes system structure into a Narrative State Vector.</span>
+                  <span>Encodes system structure into a structured state representation.</span>
                 </div>
                 <div class="system-block signal">
                   <strong>Temporal Coherence</strong>
@@ -2158,18 +2379,18 @@
                 </div>
                 <div class="system-block success">
                   <strong>Output State</strong>
-                  <span>Produces an adjudicated narrative state representation.</span>
+                  <span>Produces an adjudicated system-state representation.</span>
                 </div>
               </div>
             </div>
             <div class="panel signal">
-              <h3>Adjudicated Narrative State Includes</h3>
+              <h3>Adjudicated System State Includes</h3>
               <ul class="output-list">
                 <li>Narrative World definition</li>
-                <li>Narrative State Vector</li>
+                <li>Structured state representation</li>
                 <li>Structural descriptors</li>
                 <li>Phase classification</li>
-                <li>Proof Object traceability</li>
+                <li>Evidence traceability</li>
               </ul>
             </div>
             <div class="system-footer">To build trust, the system produces state adjudication only. At this time, it does not predict, recommend, optimize, or interpret intent.</div>
@@ -2670,6 +2891,7 @@
               </div>
             </div>
           </div>
+          <div class="contact-strip">For a demo or white paper, contact <strong>marques@a2xfoundry.com</strong>.</div>
           <div class="footer-band"><span>Founder-Market Fit</span><span class="pager">14 / 14</span></div>
         </section>
       </div>
@@ -2679,11 +2901,9 @@
       <span class="command-key">←</span>
       <span class="command-key">→</span>
       <span>Navigate Slides</span>
-      <span class="command-key">P</span>
-      <span>Print</span>
     </div>
 
-    <aside class="voiceover-panel collapsed" id="voiceover-panel">
+    <aside class="voiceover-panel" id="voiceover-panel">
       <div class="voiceover-top">
         <div class="voiceover-title">
           <strong>Voiceover</strong>
@@ -2691,7 +2911,7 @@
         </div>
         <div class="voiceover-top-actions">
           <div class="voiceover-status" id="voiceover-status">Idle</div>
-          <button class="voiceover-toggle" id="voiceover-toggle" aria-expanded="false">Open</button>
+          <button class="voiceover-toggle" id="voiceover-toggle" aria-expanded="true">Hide</button>
         </div>
       </div>
       <div class="voiceover-controls">
@@ -2710,6 +2930,13 @@
       const navLinks = Array.from(document.querySelectorAll(".nav a"));
       const currentSlide = document.getElementById("current-slide");
       const topbar = document.querySelector(".topbar");
+      const accessGate = document.getElementById("access-gate");
+      const accessGateForm = document.getElementById("access-gate-form");
+      const gateFirstNameInput = document.getElementById("gate-first-name");
+      const gateLastNameInput = document.getElementById("gate-last-name");
+      const gateCompanyInput = document.getElementById("gate-company");
+      const gateEmailInput = document.getElementById("gate-email");
+      const gateError = document.getElementById("gate-error");
       const voiceoverSlideLabel = document.getElementById("voiceover-slide-label");
       const voiceoverStatus = document.getElementById("voiceover-status");
       const voiceoverHint = document.getElementById("voiceover-hint");
@@ -2724,7 +2951,74 @@
       let activeAudioIndex = -1;
       let autoAdvanceEnabled = true;
       let audioLoading = false;
-      let voiceoverCollapsed = true;
+      let voiceoverCollapsed = false;
+      const gateStorageKey = "inception-gate-access-record";
+      const gateWebhookUrl = "https://script.google.com/macros/s/AKfycbwKVVz597JC3XpCBZ33mJBG5XwUM2um7qvwHuOKygqN9iPqc-GJzAKX0IMtPZFUoSiFrQ/exec";
+
+      function isLocalViewer() {
+        const host = window.location.hostname;
+        return host === "localhost" || host === "127.0.0.1" || host === "::1" || host === "";
+      }
+
+      function readStoredLead() {
+        try {
+          const raw = window.localStorage.getItem(gateStorageKey);
+          return raw ? JSON.parse(raw) : null;
+        } catch {
+          return null;
+        }
+      }
+
+      function storeAccessLead(lead) {
+        try {
+          window.localStorage.setItem(gateStorageKey, JSON.stringify(lead));
+        } catch {
+          // Storage can fail in private browsing; unlock anyway for this session.
+        }
+      }
+
+      async function sendLeadToWebhook(lead) {
+        if (!gateWebhookUrl) return;
+        await fetch(gateWebhookUrl, {
+          method: "POST",
+          mode: "no-cors",
+          headers: {
+            "Content-Type": "text/plain;charset=utf-8",
+          },
+          body: JSON.stringify({
+            ...lead,
+            pageUrl: window.location.href,
+            userAgent: navigator.userAgent,
+            capturedAt: new Date().toISOString(),
+          }),
+        });
+      }
+
+      function unlockDeck() {
+        document.body.classList.remove("gate-locked");
+        accessGate.setAttribute("aria-hidden", "true");
+      }
+
+      function lockDeck() {
+        document.body.classList.add("gate-locked");
+        accessGate.setAttribute("aria-hidden", "false");
+      }
+
+      function initializeAccessGate() {
+        if (isLocalViewer()) {
+          unlockDeck();
+          return;
+        }
+
+        const savedLead = readStoredLead();
+        if (savedLead?.email) {
+          unlockDeck();
+          return;
+        }
+
+        lockDeck();
+        window.setTimeout(() => gateFirstNameInput.focus(), 60);
+      }
 
       function getActiveSlideIndex() {
         return Math.max(0, navLinks.findIndex((link) => link.classList.contains("active")));
@@ -2849,8 +3143,9 @@
             audio.currentTime = 0;
           }
           await audio.play();
+          voiceoverCollapsed = true;
           setVoiceoverStatus("Playing");
-          pauseButton.disabled = false;
+          updateVoiceoverUi(index);
         } catch {
           setVoiceoverStatus("Tap play");
         }
@@ -2903,8 +3198,42 @@
       }
 
       loadNarration();
+      initializeAccessGate();
+
+      accessGateForm.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        const firstName = gateFirstNameInput.value.trim();
+        const lastName = gateLastNameInput.value.trim();
+        const company = gateCompanyInput.value.trim();
+        const email = gateEmailInput.value.trim();
+        const isValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+        const lead = { firstName, lastName, company, email };
+
+        if (!firstName || !lastName || !company || !isValidEmail) {
+          gateError.textContent = "Enter first name, last name, company, and a valid email to continue.";
+          if (!firstName) gateFirstNameInput.focus();
+          else if (!lastName) gateLastNameInput.focus();
+          else if (!company) gateCompanyInput.focus();
+          else gateEmailInput.focus();
+          return;
+        }
+
+        try {
+          await sendLeadToWebhook(lead);
+        } catch {
+          gateError.textContent = "Lead capture is not available right now. Please try again.";
+          return;
+        }
+
+        gateError.textContent = "";
+        storeAccessLead(lead);
+        unlockDeck();
+      });
 
       document.addEventListener("keydown", (event) => {
+        if (document.body.classList.contains("gate-locked")) {
+          return;
+        }
         const activeIndex = getActiveSlideIndex();
         if (event.key === "ArrowRight" || event.key === "PageDown" || event.key === " ") {
           event.preventDefault();
@@ -2913,10 +3242,6 @@
         if (event.key === "ArrowLeft" || event.key === "PageUp") {
           event.preventDefault();
           scrollToSlide(Math.max(activeIndex - 1, 0));
-        }
-        if (event.key.toLowerCase() === "p") {
-          event.preventDefault();
-          window.print();
         }
       });
 
