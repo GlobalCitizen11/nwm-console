@@ -92,7 +92,7 @@ This company wins if it combines three capabilities most teams do not hold toget
 - Transforms narrative artifacts into an auditable, phase-classified representation of system state.
 - Structured pipeline: world boundary -> ingestion -> state vector -> temporal coherence -> orientation -> proof binding -> phase adjudication.
 - Output is an adjudicated narrative state with traceable structural descriptors.
-- To build trust and a strong foundational infrastructure, the system produces state adjudication only. At this time, it does not predict, recommend, optimize, or interpret intent.
+- To build trust, the system produces state adjudication only. At this time, it does not predict, recommend, optimize, or interpret intent.
 
 **Visual direction**
 - Centered system statement under the title.
