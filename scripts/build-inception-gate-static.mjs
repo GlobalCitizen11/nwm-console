@@ -1,7 +1,8 @@
 import { cp, mkdir, rm, writeFile } from "node:fs/promises";
 import path from "node:path";
+import process from "node:process";
 
-const rootDir = path.resolve("/Users/globalpoppasmurf/nwm-console");
+const rootDir = process.cwd();
 const publicDeckDir = path.join(rootDir, "public", "inception-gate");
 const distDir = path.join(rootDir, "dist");
 const distDeckDir = path.join(distDir, "inception-gate");

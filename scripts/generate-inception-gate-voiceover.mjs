@@ -2,7 +2,7 @@ import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import process from "node:process";
 
-const rootDir = path.resolve("/Users/globalpoppasmurf/nwm-console");
+const rootDir = process.cwd();
 const narrationPath = path.join(rootDir, "docs", "inception-gate-deck-narration.json");
 const envPath = path.join(rootDir, ".env.local");
 
