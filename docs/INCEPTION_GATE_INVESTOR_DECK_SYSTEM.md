@@ -164,12 +164,13 @@ This company wins if it combines three capabilities most teams do not hold toget
 - Show a progression from raw evidence to governed narrative to decision brief.
 
 ### Slide 7 — First Paying Customers And Initial ICPs
-**Core message:** The first customer is not broad enterprise IT. It is the team already paying to reduce ambiguity in high-stakes decision environments.
+**Core message:** The first customer is not broad enterprise IT. It is the institutional team already carrying ambiguity cost inside a recurring high-stakes decision cycle.
 
 **Supporting bullets**
 - **ICP 1:** Global enterprise strategy and geopolitical risk teams at Fortune 500 firms.
 - **ICP 2:** Public-sector intelligence and policy coordination units.
 - **ICP 3:** Regulated financial institutions managing geopolitical, regulatory, and market interpretation.
+- Each ICP has visible pain inside a live executive, committee, or briefing workflow.
 - First buyer signs because ambiguity is already costly and budget already exists.
 
 **Visual direction**
@@ -177,13 +178,13 @@ This company wins if it combines three capabilities most teams do not hold toget
 - Add a bottom strip naming the likely first paying customer profile: `Head of Geopolitical Risk / CSO-sponsored pilot`.
 
 ### Slide 8 — Real Pilot Programs, Not Innovation Theater
-**Core message:** The wedge is a paid pilot tied to a live decision problem, defined outputs, measurable workflow value, and a clear path to annual platform adoption.
+**Core message:** The first sale is a paid pilot tied to one live decision cadence, one accountable sponsor, and outputs that enter recurring executive workflow.
 
 **Supporting bullets**
 - 6-12 week scoped deployments around a live decision problem.
 - Paid pilot price: **$200K-$400K**
-- Deliverables include narrative monitoring, executive briefs, alternative path analysis, and decision logs.
-- Conversion occurs when the system becomes part of recurring decision workflow.
+- Pilot archetypes: geopolitical risk briefing, strategy decision support, regulatory interpretation.
+- Conversion occurs when the system enters a live workflow, reduces prep time, and expands into an adjacent decision surface.
 
 **Visual direction**
 - Pilot architecture panel with four cells: `Scope`, `Data sources`, `Outputs`, `Conversion gate`
@@ -209,6 +210,7 @@ This company wins if it combines three capabilities most teams do not hold toget
 - Beachhead spend sits inside strategy, intelligence, risk, compliance, and external advisory budgets.
 - Customers already spend millions on fragmented human synthesis and episodic external interpretation.
 - Initial market entry targets a narrow set of institutions with high ambiguity cost and large decision value.
+- 10 converted accounts at roughly **$750K** blended ACV support a credible early institutional software company.
 - Expansion pathways extend into adjacent decision domains once the narrative layer is embedded.
 
 **Visual direction**
@@ -245,13 +247,14 @@ This company wins if it combines three capabilities most teams do not hold toget
 - Mark proof gates: `Pilot`, `Conversion`, `Expansion`, `Retention`.
 
 ### Slide 13 — Use Of Funds: What $6M Unlocks
-**Core message:** This capital is not for broad scaling. It is for building the product and proof set required to make institutional adoption undeniable.
+**Core message:** This capital buys proof, not experimentation. It hardens the platform, funds live pilots, and produces the commercial evidence required for the next round.
 
 **Supporting bullets**
 - **Product and engineering:** harden platform, ontology, review system, integrations, security posture.
 - **Pilot delivery:** implementation support, domain packaging, customer success, design-partner execution.
 - **Hiring:** applied AI, product engineering, design systems, institutional solutions, founder-support GTM.
 - **GTM:** founder-led pipeline development, reference account conversion, and targeted account penetration.
+- Capital unlocks: product hardening, 3-5 pilot deployments, and Series A-grade conversion evidence.
 
 **Visual direction**
 - Allocation bar with directional split:
@@ -261,18 +264,21 @@ This company wins if it combines three capabilities most teams do not hold toget
   - `15% GTM`
 - Right rail: `Capital unlocks -> 3-5 pilots, 2-3 annual conversions, referenceable proof`
 
-### Slide 14 — Team, Milestones, And The Hard Truth
-**Core message:** This company works only if the team can combine institutional judgment, narrative design, and production AI systems into a trusted operating layer.
+### Slide 14 — Why This Founder
+**Core message:** Marques Anderson sits at the intersection of systems, strategy, and institutional decision-making. Inception Gate comes from repeated exposure to the same structural failure: institutions collect signal faster than they can turn it into coherent judgment.
 
 **Supporting bullets**
-- The founding edge must combine institutional decision fluency with technical execution.
-- The company needs credibility with buyers who do not tolerate toy AI.
-- In 18-24 months, what must be true: paying references, converted contracts, workflow retention, and measurable decision impact.
-- What kills the company if wrong: low trust, non-converting pilots, or product behavior that collapses back into bespoke services.
+- Worked inside strategy and consulting environments shaped by Fortune 50 operating realities, where decisions move through layered institutional constraints.
+- Saw the same structural failure repeatedly: abundant data, fragmented interpretation, slow internal coherence, and expensive decision drift under pressure.
+- Built conviction around how decisions are actually made across operations, policy, and economic systems, not how they are summarized in reporting decks.
+- Inception Gate is the direct response to that pattern: the missing layer that structures interpretation before ambiguity becomes operational cost.
 
 **Visual direction**
-- Left side: team capability blocks: `Institutional operator`, `AI systems builder`, `Narrative/product architect`
-- Right side: milestone stack and failure box.
+- Left panel: founder identity block `Marques Anderson | Founder` with a four-part narrative stack showing observed patterns and the origin of the company.
+- Right panel: two capability cards:
+  - `Sees the problem differently`
+  - `Can build the solution`
+- Bottom/right final signal card: `Not building tools. Building decision infrastructure.`
 
 ## Product System Definition
 

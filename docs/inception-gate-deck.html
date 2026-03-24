@@ -400,6 +400,18 @@
         min-width: 0;
       }
 
+      #s3 .table-row {
+        grid-template-columns: 1.34fr repeat(5, 0.93fr);
+      }
+
+      #s3 .cell:first-child {
+        font-size: 14px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: clip;
+        letter-spacing: -0.01em;
+      }
+
       .cell {
         border: 1px solid var(--line);
         border-radius: 16px;
@@ -414,10 +426,22 @@
       }
 
       .cell.head {
-        font-size: 12px;
-        letter-spacing: 0.1em;
+        font-size: 11px;
+        letter-spacing: 0.08em;
         text-transform: uppercase;
         color: var(--muted);
+      }
+
+      #s3 .cell.head {
+        font-size: 9px;
+        letter-spacing: 0.03em;
+        white-space: nowrap;
+        text-wrap: nowrap;
+        font-weight: 700;
+        color: #243746;
+        background:
+          linear-gradient(180deg, rgba(32, 61, 90, 0.16), rgba(32, 61, 90, 0.08));
+        border-color: rgba(32, 61, 90, 0.18);
       }
 
       .tick {
@@ -482,6 +506,162 @@
         min-width: 0;
       }
 
+      .decision-chain {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 14px;
+        align-items: stretch;
+      }
+
+      .decision-node {
+        position: relative;
+        border: 1px solid var(--line);
+        border-radius: 20px;
+        padding: 18px 16px 16px;
+        background:
+          linear-gradient(180deg, rgba(255,255,255,0.84), rgba(255,255,255,0.66));
+        box-shadow: inset 0 1px 0 rgba(255,255,255,0.58);
+        min-width: 0;
+      }
+
+      .decision-node:not(:last-child)::after {
+        content: "→";
+        position: absolute;
+        right: -14px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--muted);
+        font-size: 24px;
+        font-weight: 700;
+      }
+
+      .decision-node strong,
+      .architecture-stage strong,
+      .pilot-card strong,
+      .market-step strong {
+        display: block;
+        margin-bottom: 6px;
+        font-size: 14px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--deep-ink);
+      }
+
+      .decision-node span,
+      .architecture-stage span,
+      .pilot-card span,
+      .market-step span {
+        display: block;
+        font-size: 16px;
+        line-height: 1.18;
+        overflow-wrap: anywhere;
+      }
+
+      .decision-node.break {
+        background:
+          linear-gradient(180deg, rgba(140, 90, 22, 0.16), rgba(140, 90, 22, 0.06));
+        border-color: rgba(140, 90, 22, 0.2);
+      }
+
+      .decision-node.target {
+        background:
+          linear-gradient(180deg, rgba(40, 89, 67, 0.16), rgba(40, 89, 67, 0.06));
+        border-color: rgba(40, 89, 67, 0.2);
+      }
+
+      .architecture-flow {
+        display: grid;
+        gap: 14px;
+      }
+
+      .architecture-stage {
+        display: grid;
+        grid-template-columns: 140px 1fr;
+        gap: 14px;
+        align-items: stretch;
+        border: 1px solid var(--line);
+        border-radius: 20px;
+        padding: 16px;
+        background:
+          linear-gradient(180deg, rgba(255,255,255,0.82), rgba(255,255,255,0.68));
+        box-shadow: inset 0 1px 0 rgba(255,255,255,0.54);
+      }
+
+      .architecture-label {
+        border-radius: 16px;
+        padding: 14px 12px;
+        background:
+          linear-gradient(180deg, rgba(32, 61, 90, 0.12), rgba(32, 61, 90, 0.06));
+        border: 1px solid rgba(32, 61, 90, 0.14);
+        display: grid;
+        align-content: center;
+        font-size: 12px;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+
+      .architecture-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 12px;
+      }
+
+      .architecture-grid.two {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .pilot-board {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 14px;
+      }
+
+      .pilot-card {
+        border: 1px solid var(--line);
+        border-radius: 20px;
+        padding: 16px 15px 14px;
+        background:
+          linear-gradient(180deg, rgba(255,255,255,0.84), rgba(255,255,255,0.68));
+        box-shadow: inset 0 1px 0 rgba(255,255,255,0.56);
+        min-width: 0;
+      }
+
+      .pilot-card .subline,
+      .market-step .subline {
+        margin-top: 6px;
+        color: var(--muted);
+        font-size: 12px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .market-ladder {
+        display: grid;
+        gap: 12px;
+      }
+
+      .market-step {
+        display: grid;
+        grid-template-columns: 96px 1fr;
+        gap: 14px;
+        align-items: center;
+        border: 1px solid var(--line);
+        border-radius: 20px;
+        padding: 16px;
+        background:
+          linear-gradient(180deg, rgba(255,255,255,0.84), rgba(255,255,255,0.68));
+        box-shadow: inset 0 1px 0 rgba(255,255,255,0.56);
+        min-width: 0;
+      }
+
+      .market-num {
+        font-size: 34px;
+        line-height: 1;
+        letter-spacing: -0.04em;
+        color: var(--deep-ink);
+      }
+
       .rail {
         display: grid;
         gap: 10px;
@@ -492,6 +672,46 @@
         font-size: 16px;
         line-height: 1.3;
         color: #383128;
+      }
+
+      #s1 .panel h3,
+      #s4 .panel h3,
+      #s8 .panel h3,
+      #s10 .panel h3 {
+        margin-bottom: 16px;
+      }
+
+      #s1 .decision-node.target strong,
+      #s8 .pilot-card.success strong,
+      #s10 .market-step.success strong {
+        color: #173b2d;
+      }
+
+      #s1 .decision-node.break strong {
+        color: #6d4610;
+      }
+
+      #s4 .architecture-stage:nth-child(2) {
+        border-color: rgba(32, 61, 90, 0.16);
+      }
+
+      #s4 .architecture-stage:nth-child(2) .architecture-label {
+        background:
+          linear-gradient(180deg, rgba(166, 61, 29, 0.12), rgba(166, 61, 29, 0.05));
+        border-color: rgba(166, 61, 29, 0.14);
+      }
+
+      #s8 .pilot-card.success,
+      #s10 .market-step.success {
+        border-color: rgba(40, 89, 67, 0.2);
+        background:
+          linear-gradient(180deg, rgba(40, 89, 67, 0.14), rgba(40, 89, 67, 0.06)),
+          linear-gradient(180deg, rgba(255,255,255,0.8), rgba(255,255,255,0.68));
+      }
+
+      #s8 .pilot-card.signal,
+      #s10 .market-step.signal {
+        border-color: rgba(32, 61, 90, 0.18);
       }
 
       .command-bar {
@@ -645,6 +865,11 @@
       @media (max-width: 1100px) {
         .slide-body,
         .hero,
+        .decision-chain,
+        .architecture-grid,
+        .architecture-stage,
+        .pilot-board,
+        .market-step,
         .table-row,
         .process,
         .grid-three,
@@ -741,7 +966,7 @@
           min-height: 8.5in;
           height: 8.5in;
           display: grid;
-          grid-template-rows: auto auto minmax(0, 1fr) auto;
+          grid-template-rows: auto minmax(0, 1fr) auto;
           border: none;
           border-radius: 0;
           box-shadow: none;
@@ -777,7 +1002,7 @@
           margin-top: 0.2in;
           gap: 0.16in;
           min-height: 0;
-          align-self: stretch;
+          align-self: center;
           align-content: stretch;
         }
 
@@ -886,9 +1111,10 @@
         }
 
         .footer-band {
-          margin-top: 0.12in;
+          margin-top: 0.08in;
           padding-top: 0.1in;
           font-size: 0.11in;
+          align-self: end;
         }
 
         .kicker,
@@ -990,16 +1216,54 @@
         }
 
         #s1 .slide-body {
-          margin-top: 0.14in;
+          margin-top: 0.1in;
+          align-items: center;
+          align-content: center;
         }
 
         #s1 .hero {
-          grid-template-columns: minmax(0, 1.38fr) minmax(2.2in, 0.62fr);
+          grid-template-columns: minmax(0, 1.32fr) minmax(2.28in, 0.68fr);
+          gap: 0.1in;
+        }
+
+        #s1 .panel {
+          padding: 0.11in;
+        }
+
+        #s1 .proof,
+        #s1 .stack-card {
+          padding: 0.09in 0.1in;
         }
 
         #s1 .proof span,
         #s1 .stack-card span {
-          font-size: 0.16in;
+          font-size: 0.15in;
+          line-height: 1.08;
+        }
+
+        #s1 .decision-chain {
+          grid-template-columns: repeat(4, minmax(0, 1fr));
+          gap: 0.06in;
+        }
+
+        #s1 .decision-node {
+          padding: 0.09in;
+          border-radius: 0.14in;
+        }
+
+        #s1 .decision-node:not(:last-child)::after {
+          right: -0.09in;
+          font-size: 0.2in;
+        }
+
+        #s1 .decision-node strong {
+          font-size: 0.105in;
+          margin-bottom: 0.03in;
+        }
+
+        #s1 .decision-node span {
+          font-size: 0.125in;
+          line-height: 1.06;
         }
 
         #s3 .slide-body {
@@ -1026,7 +1290,7 @@
         }
 
         #s3 .cell.head {
-          font-size: 0.088in;
+          font-size: 0.074in;
         }
 
         #s3 .stack {
@@ -1317,7 +1581,7 @@
         }
 
         #s3 .table-row {
-          grid-template-columns: 1.22fr repeat(5, 0.9fr);
+          grid-template-columns: 1.34fr repeat(5, 0.86fr);
           gap: 0.05in;
           align-items: stretch;
         }
@@ -1341,10 +1605,22 @@
         #s3 .table-row .cell:first-child {
           justify-content: flex-start;
           text-align: left;
-          font-size: 0.114in;
+          font-size: 0.102in;
           font-weight: 700;
           padding-left: 0.07in;
           min-height: 0.54in;
+          white-space: nowrap;
+          letter-spacing: -0.01em;
+        }
+
+        #s3 .table-row .cell.head {
+          font-size: 0.068in;
+          letter-spacing: 0.04em;
+          line-height: 1.02;
+          font-weight: 700;
+          color: #243746;
+          background: #e7eef4;
+          border-color: #c7d5e1;
         }
 
         #s3 .table-row .cell.head {
@@ -1378,6 +1654,40 @@
 
         #s4 .panel {
           padding: 0.095in;
+        }
+
+        #s4 .architecture-flow {
+          gap: 0.06in;
+        }
+
+        #s4 .architecture-stage {
+          grid-template-columns: 0.95in 1fr;
+          gap: 0.06in;
+          padding: 0.08in;
+          border-radius: 0.14in;
+        }
+
+        #s4 .architecture-label {
+          padding: 0.06in;
+          font-size: 0.085in;
+          letter-spacing: 0.1em;
+        }
+
+        #s4 .architecture-grid {
+          gap: 0.05in;
+        }
+
+        #s4 .architecture-grid .stack-card {
+          padding: 0.07in 0.08in;
+        }
+
+        #s4 .architecture-grid .stack-card strong {
+          font-size: 0.1in;
+        }
+
+        #s4 .architecture-grid .stack-card span {
+          font-size: 0.118in;
+          line-height: 1.05;
         }
 
         #s4 .process {
@@ -1451,6 +1761,150 @@
         #s13 .panel {
           padding: 0.11in;
         }
+
+        #s7 .slide-body {
+          grid-template-columns: minmax(0, 1fr) minmax(0, 0.94fr);
+          gap: 0.1in;
+          margin-top: 0.12in;
+          align-items: center;
+          align-content: center;
+        }
+
+        #s7 .panel {
+          padding: 0.1in;
+          display: grid;
+          align-content: center;
+        }
+
+        #s7 .grid-three {
+          gap: 0.045in;
+        }
+
+        #s7 .stack-card,
+        #s7 .proof {
+          padding: 0.072in 0.082in;
+        }
+
+        #s7 .stack-card strong,
+        #s7 .proof strong {
+          font-size: 0.106in;
+          margin-bottom: 0.028in;
+        }
+
+        #s7 .stack-card span,
+        #s7 .proof span {
+          font-size: 0.13in;
+          line-height: 1.07;
+        }
+
+        #s8 .slide-body,
+        #s14 .slide-body {
+          grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+          gap: 0.1in;
+          margin-top: 0.12in;
+          align-items: center;
+          align-content: center;
+        }
+
+        #s8 .panel,
+        #s14 .panel {
+          padding: 0.1in;
+          display: grid;
+          align-content: center;
+        }
+
+        #s8 .metric-list,
+        #s8 .stack,
+        #s14 .stack {
+          gap: 0.05in;
+        }
+
+        #s8 .metric,
+        #s8 .stack-card,
+        #s14 .stack-card {
+          padding: 0.075in 0.085in;
+        }
+
+        #s8 .metric strong,
+        #s8 .stack-card strong,
+        #s14 .stack-card strong {
+          font-size: 0.108in;
+          margin-bottom: 0.03in;
+        }
+
+        #s8 .metric span,
+        #s8 .stack-card span,
+        #s14 .stack-card span {
+          font-size: 0.136in;
+          line-height: 1.08;
+        }
+
+        #s8 .pilot-board {
+          gap: 0.06in;
+        }
+
+        #s8 .pilot-card {
+          padding: 0.075in 0.085in;
+          border-radius: 0.14in;
+        }
+
+        #s8 .pilot-card strong {
+          font-size: 0.108in;
+          margin-bottom: 0.03in;
+        }
+
+        #s8 .pilot-card span {
+          font-size: 0.13in;
+          line-height: 1.07;
+        }
+
+        #s8 .pilot-card .subline {
+          font-size: 0.082in;
+          margin-top: 0.04in;
+        }
+
+        #s10 .market-ladder {
+          gap: 0.055in;
+        }
+
+        #s10 .market-step {
+          grid-template-columns: 0.82in 1fr;
+          gap: 0.07in;
+          padding: 0.08in 0.09in;
+          border-radius: 0.14in;
+        }
+
+        #s10 .market-num {
+          font-size: 0.28in;
+        }
+
+        #s10 .market-step strong {
+          font-size: 0.108in;
+          margin-bottom: 0.03in;
+        }
+
+        #s10 .market-step span {
+          font-size: 0.132in;
+          line-height: 1.07;
+        }
+
+        #s10 .market-step .subline {
+          font-size: 0.082in;
+          margin-top: 0.035in;
+        }
+
+        #s14 h2 {
+          font-size: 0.47in;
+        }
+
+        #s14 .core {
+          font-size: 0.172in;
+          line-height: 1.08;
+        }
+
+        #s14 .slide-body {
+          margin-top: 0.1in;
+        }
       }
     </style>
   </head>
@@ -1495,11 +1949,23 @@
           <div class="slide-body hero">
             <div class="panel accent">
               <h3>Decision Chain</h3>
-              <div class="grid-two">
-                <div class="stack-card"><strong>Data Sources</strong><span>Reports, feeds, signals, internal documents</span></div>
-                <div class="stack-card"><strong>Analysis Tools</strong><span>BI, models, dashboards, external research</span></div>
-                <div class="stack-card warning"><strong>Broken Middle</strong><span>Human synthesis bottleneck under pressure</span></div>
-                <div class="stack-card success"><strong>Executive Decision</strong><span>Capital, policy, strategy, operating action</span></div>
+              <div class="decision-chain">
+                <div class="decision-node">
+                  <strong>Signal Inputs</strong>
+                  <span>Reports, feeds, analyst notes, internal documents</span>
+                </div>
+                <div class="decision-node">
+                  <strong>Tool Layer</strong>
+                  <span>BI, models, dashboards, external research, fragmented software</span>
+                </div>
+                <div class="decision-node break">
+                  <strong>Broken Middle</strong>
+                  <span>Human synthesis bottleneck under pressure, conflict, and time compression</span>
+                </div>
+                <div class="decision-node target">
+                  <strong>Decision Layer</strong>
+                  <span>Governed narrative judgment tied directly to executive action</span>
+                </div>
               </div>
             </div>
             <div class="hero-right">
@@ -1616,12 +2082,30 @@
           <div class="slide-body">
             <div class="panel signal">
               <h3>System</h3>
-              <div class="process">
-                <div class="lane"><span class="index">Inputs</span><strong>Internal Sources</strong><span>Memos, briefings, reports, analyst notes</span></div>
-                <div class="lane"><span class="index">Inputs</span><strong>External Sources</strong><span>Feeds, policy, regulatory, market, research</span></div>
-                <div class="lane accent"><span class="index">Computation</span><strong>Narrative Engine</strong><span>Entities, claims, pressures, contradictions, scenarios</span></div>
-                <div class="lane"><span class="index">Governance</span><strong>Review Layer</strong><span>Confidence logic, approvals, edit history, auditability</span></div>
-                <div class="lane success"><span class="index">Outputs</span><strong>Decision Surfaces</strong><span>Executive briefs, alerts, scenario paths, memory</span></div>
+              <div class="architecture-flow">
+                <div class="architecture-stage">
+                  <div class="architecture-label">Inputs</div>
+                  <div class="architecture-grid">
+                    <div class="stack-card"><strong>Internal</strong><span>Memos, briefings, reports, analyst notes</span></div>
+                    <div class="stack-card"><strong>External</strong><span>Feeds, policy, regulatory, market, research</span></div>
+                    <div class="stack-card"><strong>User Layer</strong><span>Hypotheses, annotations, watchlists, decision criteria</span></div>
+                  </div>
+                </div>
+                <div class="architecture-stage">
+                  <div class="architecture-label">Narrative Computation</div>
+                  <div class="architecture-grid">
+                    <div class="stack-card accent"><strong>Structure</strong><span>Entities, claims, themes, time horizons, contradictions</span></div>
+                    <div class="stack-card signal"><strong>Compute</strong><span>Narrative state, pressure shifts, alternative paths, broken assumptions</span></div>
+                    <div class="stack-card"><strong>Govern</strong><span>Confidence logic, approvals, edit history, auditability</span></div>
+                  </div>
+                </div>
+                <div class="architecture-stage">
+                  <div class="architecture-label">Decision Outputs</div>
+                  <div class="architecture-grid two">
+                    <div class="stack-card success"><strong>Operating Surfaces</strong><span>Executive briefs, alerts, scenario paths, monitoring strips</span></div>
+                    <div class="stack-card"><strong>Institutional Memory</strong><span>Reviewed outputs, decision logs, outcome-linked narrative history</span></div>
+                  </div>
+                </div>
               </div>
             </div>
             <div class="panel">
@@ -1700,7 +2184,7 @@
           <div class="slide-head">
             <div class="kicker">Customers</div>
             <h2>First Paying Customers and Initial ICPs</h2>
-            <p class="core">The first customer is not broad enterprise IT. It is the team already paying to reduce ambiguity in high-stakes decision environments.</p>
+            <p class="core">The first customer is not broad enterprise IT. It is the institutional team already carrying ambiguity cost inside a recurring high-stakes decision cycle.</p>
             <div class="keyline"></div>
           </div>
           <div class="slide-body">
@@ -1711,16 +2195,19 @@
                   <strong>Enterprise Strategy</strong>
                   <span>Buyer: CSO / CRO</span>
                   <span>User: strategy, risk, chief of staff teams</span>
+                  <span>Pain: board and executive decisions run on fragmented market, policy, and competitor reads.</span>
                 </div>
                 <div class="stack-card signal">
                   <strong>Financial Institutions</strong>
                   <span>Buyer: CRO / Head of Investment Risk</span>
                   <span>User: policy, macro, risk, CIO office</span>
+                  <span>Pain: capital, exposure, and allocation calls require continuous interpretation under volatility.</span>
                 </div>
                 <div class="stack-card warning">
                   <strong>Public Sector</strong>
                   <span>Buyer: program executive / intelligence lead</span>
                   <span>User: analysts, policy staff, briefing teams</span>
+                  <span>Pain: senior briefings must compress fast-moving inputs without losing traceability or accountability.</span>
                 </div>
               </div>
             </div>
@@ -1738,7 +2225,7 @@
           <div class="slide-head">
             <div class="kicker">Pilots</div>
             <h2>Real Pilot Programs, Not Innovation Theater</h2>
-            <p class="core">The wedge is a paid pilot tied to a live decision problem, defined outputs, measurable workflow value, and a clear path to annual platform adoption.</p>
+            <p class="core">The first sale is a paid pilot tied to one live decision cadence, one accountable sponsor, and outputs that enter recurring executive workflow.</p>
             <div class="keyline"></div>
           </div>
           <div class="slide-body">
@@ -1752,13 +2239,29 @@
               </div>
             </div>
             <div class="panel warning">
-              <h3>Conversion Thresholds</h3>
-              <ul>
-                <li>Used in at least one live executive or committee workflow by week 4-6.</li>
-                <li>Brief preparation time drops by at least 30%.</li>
-                <li>Customer continues using outputs without founder dependence.</li>
-                <li>Sponsor expands into at least one adjacent workflow or domain.</li>
-              </ul>
+              <h3>Pilot Program Board</h3>
+              <div class="pilot-board">
+                <div class="pilot-card">
+                  <strong>Geopolitical Risk Briefing</strong>
+                  <span>Weekly narrative brief, trigger watchlist, executive update pack</span>
+                  <div class="subline">8-12 weeks • executive cadence</div>
+                </div>
+                <div class="pilot-card signal">
+                  <strong>Strategy Decision Support</strong>
+                  <span>Scenario paths, assumption tracking, committee briefing materials</span>
+                  <div class="subline">6-10 weeks • decision forum</div>
+                </div>
+                <div class="pilot-card">
+                  <strong>Regulatory Interpretation</strong>
+                  <span>Signal monitoring, impact briefs, escalation log</span>
+                  <div class="subline">6-12 weeks • monitoring cadence</div>
+                </div>
+                <div class="pilot-card success">
+                  <strong>Conversion Gate</strong>
+                  <span>Live workflow usage by week 4-6, 30%+ prep-time reduction, adjacent expansion</span>
+                  <div class="subline">Annual platform trigger</div>
+                </div>
+              </div>
             </div>
           </div>
           <div class="footer-band"><span>Commercial Wedge</span><span class="pager">08 / 14</span></div>
@@ -1804,11 +2307,39 @@
           <div class="slide-body">
             <div class="panel">
               <h3>Bottom-Up Account Logic</h3>
-              <div class="grid-two">
-                <div class="stack-card"><strong>125</strong><span>Global enterprises with concentrated geopolitical, regulatory, or strategy complexity</span></div>
-                <div class="stack-card signal"><strong>75</strong><span>Regulated financial institutions with active policy and market interpretation needs</span></div>
-                <div class="stack-card warning"><strong>25-50</strong><span>Public-sector or quasi-public strategic programs with senior briefing requirements</span></div>
-                <div class="stack-card success"><strong>10</strong><span>Converted accounts at ~$750K blended ACV create a credible early company</span></div>
+              <div class="market-ladder">
+                <div class="market-step">
+                  <div class="market-num">125</div>
+                  <div>
+                    <strong>Enterprise Beachhead</strong>
+                    <span>Global enterprises with concentrated geopolitical, regulatory, or strategy complexity</span>
+                    <div class="subline">Initial named-account universe</div>
+                  </div>
+                </div>
+                <div class="market-step signal">
+                  <div class="market-num">75</div>
+                  <div>
+                    <strong>Financial Institutions</strong>
+                    <span>Regulated institutions with active policy, market, and exposure interpretation needs</span>
+                    <div class="subline">Existing high-cost ambiguity budgets</div>
+                  </div>
+                </div>
+                <div class="market-step warning">
+                  <div class="market-num">25-50</div>
+                  <div>
+                    <strong>Public Programs</strong>
+                    <span>Public-sector and quasi-public strategic programs with senior briefing requirements</span>
+                    <div class="subline">High-value constrained deployments</div>
+                  </div>
+                </div>
+                <div class="market-step success">
+                  <div class="market-num">10</div>
+                  <div>
+                    <strong>Series A Support Case</strong>
+                    <span>Converted accounts at roughly $750K blended ACV support a credible early institutional software company</span>
+                    <div class="subline">Proof before scale</div>
+                  </div>
+                </div>
               </div>
             </div>
             <div class="panel accent">
@@ -1887,7 +2418,7 @@
           <div class="slide-head">
             <div class="kicker">Capital</div>
             <h2>Use of Funds: What $6M Unlocks</h2>
-            <p class="core">This capital is not for broad scaling. It is for building the product and proof set required to make institutional adoption undeniable.</p>
+            <p class="core">This capital buys proof, not experimentation. It hardens the platform, funds live pilots, and produces the commercial evidence required for the next round.</p>
             <div class="keyline"></div>
           </div>
           <div class="slide-body">
@@ -1903,9 +2434,9 @@
             <div class="panel warning">
               <h3>Capital Unlocks</h3>
               <div class="stack">
-                <div class="stack-card"><strong>Product Hardening</strong><span>Move from MVP to institutional pilot-grade reliability.</span></div>
-                <div class="stack-card"><strong>Reference Accounts</strong><span>Fund the first credible, reusable deployments.</span></div>
-                <div class="stack-card"><strong>Series A Evidence</strong><span>Retention, conversion, and workflow depth that investors can underwrite.</span></div>
+                <div class="stack-card"><strong>Product Hardening</strong><span>Governance, reliability, and deployment quality required for institutional use.</span></div>
+                <div class="stack-card"><strong>Pilot Throughput</strong><span>3-5 live deployments with reusable delivery motion and reference value.</span></div>
+                <div class="stack-card"><strong>Series A Evidence</strong><span>Converted contracts, retained workflow usage, and expanding ACV investors can underwrite.</span></div>
               </div>
             </div>
           </div>
@@ -1914,29 +2445,31 @@
 
         <section class="slide" id="s14">
           <div class="slide-head">
-            <div class="kicker">Team + Risk</div>
-            <h2>Team, Milestones, and the Hard Truth</h2>
-            <p class="core">This company works only if the team can combine institutional judgment, narrative design, and production AI systems into a trusted operating layer.</p>
+            <div class="kicker">Founder</div>
+            <h2>Why This Founder</h2>
+            <p class="core">Marques Anderson sits at the intersection of systems, strategy, and institutional decision-making. Inception Gate comes from repeated exposure to the same structural failure: institutions collect signal faster than they can turn it into coherent judgment.</p>
             <div class="keyline"></div>
           </div>
           <div class="slide-body">
             <div class="panel">
-              <h3>Required Team Shape</h3>
-              <div class="grid-three">
-                <div class="stack-card"><strong>Institutional Operator</strong><span>Knows how real organizations decide under pressure.</span></div>
-                <div class="stack-card signal"><strong>AI Systems Builder</strong><span>Can build governed production systems, not toy AI features.</span></div>
-                <div class="stack-card accent"><strong>Narrative Product Architect</strong><span>Can turn executive-grade synthesis into software infrastructure.</span></div>
+              <h3>Marques Anderson | Founder</h3>
+              <div class="stack">
+                <div class="stack-card"><span>Worked across strategy and consulting environments shaped by Fortune 50 operating realities, where decisions move through layered institutional constraints rather than clean analytical models.</span></div>
+                <div class="stack-card signal"><span>Saw the same failure repeatedly: abundant data, fragmented interpretation, slow internal coherence, and expensive decision drift under pressure.</span></div>
+                <div class="stack-card accent"><span>Built conviction around how decisions are actually made across operations, policy, and economic systems, not how they are summarized in reporting decks.</span></div>
+                <div class="stack-card success"><span>Inception Gate is the direct response to that pattern: the missing layer that structures interpretation before ambiguity becomes operational cost.</span></div>
               </div>
             </div>
-            <div class="panel warning">
-              <h3>What Must Be True / What Kills It</h3>
+            <div class="panel accent">
+              <h3>Unique Advantage</h3>
               <div class="stack">
-                <div class="stack-card success"><strong>Must Be True</strong><span>Paying references, converted contracts, workflow retention, measurable decision impact.</span></div>
-                <div class="stack-card warning"><strong>Kills The Company</strong><span>Low trust, non-converting pilots, or a product that collapses back into bespoke services.</span></div>
+                <div class="stack-card"><strong>Sees the problem differently</strong><span>Approaches the market from an institutional and systems perspective, with attention to how decisions behave under real-world constraint, not idealized process maps.</span></div>
+                <div class="stack-card signal"><strong>Can build the solution</strong><span>Combines strategy, systems thinking, and cross-domain synthesis to turn ambiguity into usable frameworks, with proprietary narrative-intelligence methods and patent direction behind the platform.</span></div>
+                <div class="stack-card success"><strong>Unfair Advantage</strong><span>Not building tools. Building decision infrastructure. Not analyzing data. Structuring interpretation so institutions can act with clarity under uncertainty.</span></div>
               </div>
             </div>
           </div>
-          <div class="footer-band"><span>Execution Standard</span><span class="pager">14 / 14</span></div>
+          <div class="footer-band"><span>Founder-Market Fit</span><span class="pager">14 / 14</span></div>
         </section>
       </div>
     </main>
@@ -1964,7 +2497,7 @@
         <button id="voiceover-play">Play</button>
         <button id="voiceover-pause" disabled>Pause</button>
         <button id="voiceover-restart" disabled>Restart</button>
-        <button id="voiceover-auto" aria-pressed="false">Auto Advance</button>
+        <button id="voiceover-auto" aria-pressed="true">Auto Advance</button>
       </div>
       <div class="voiceover-hint" id="voiceover-hint">
         Generate audio locally with <code>npm run deck:voiceover</code>. Files load from <code>docs/audio/inception-gate/</code>.
@@ -1988,7 +2521,7 @@
       let narrationData = null;
       let activeAudio = null;
       let activeAudioIndex = -1;
-      let autoAdvanceEnabled = false;
+      let autoAdvanceEnabled = true;
       let audioLoading = false;
       let voiceoverCollapsed = true;
 
