@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-03-24T22:51:57.175Z",
+  "generatedAt": "2026-03-25T05:41:47.230Z",
   "voice": "coral",
   "model": "gpt-4o-mini-tts",
   "slides": [
@@ -7,85 +7,85 @@
       "slideId": "s1",
       "title": "The Missing Layer in Institutional Decision-Making",
       "audioPath": "audio/inception-gate/s01.mp3",
-      "bytes": 724992
+      "bytes": 685056
     },
     {
       "slideId": "s2",
       "title": "The Problem Is Coherence, Not Collection",
       "audioPath": "audio/inception-gate/s02.mp3",
-      "bytes": 473472
+      "bytes": 460800
     },
     {
       "slideId": "s3",
       "title": "Existing Solutions Do Not Solve the Decision Layer",
       "audioPath": "audio/inception-gate/s03.mp3",
-      "bytes": 435072
+      "bytes": 451968
     },
     {
       "slideId": "s4",
       "title": "Inception Gate Is Narrative Intelligence Infrastructure",
       "audioPath": "audio/inception-gate/s04.mp3",
-      "bytes": 465792
+      "bytes": 458112
     },
     {
       "slideId": "s5",
       "title": "What the Product Actually Does",
       "audioPath": "audio/inception-gate/s05.mp3",
-      "bytes": 458112
+      "bytes": 426624
     },
     {
       "slideId": "s6",
       "title": "From Fragmented Inputs to Decision-Grade Output",
       "audioPath": "audio/inception-gate/s06.mp3",
-      "bytes": 409344
+      "bytes": 415104
     },
     {
       "slideId": "s7",
       "title": "First Paying Customers and Initial ICPs",
       "audioPath": "audio/inception-gate/s07.mp3",
-      "bytes": 586752
+      "bytes": 485760
     },
     {
       "slideId": "s8",
       "title": "Real Pilot Programs, Not Innovation Theater",
       "audioPath": "audio/inception-gate/s08.mp3",
-      "bytes": 589440
+      "bytes": 551424
     },
     {
       "slideId": "s9",
       "title": "Founder-Led, High-Trust, Narrow Wedge",
       "audioPath": "audio/inception-gate/s09.mp3",
-      "bytes": 456576
+      "bytes": 389760
     },
     {
       "slideId": "s10",
       "title": "Market Logic: Where the Budget Comes From",
       "audioPath": "audio/inception-gate/s10.mp3",
-      "bytes": 501120
+      "bytes": 480000
     },
     {
       "slideId": "s11",
       "title": "Why This Wins: Compounding Defensibility",
       "audioPath": "audio/inception-gate/s11.mp3",
-      "bytes": 488064
+      "bytes": 457344
     },
     {
       "slideId": "s12",
       "title": "Roadmap from Seed to Series A",
       "audioPath": "audio/inception-gate/s12.mp3",
-      "bytes": 456576
+      "bytes": 458112
     },
     {
       "slideId": "s13",
       "title": "Use of Funds: What $6M Unlocks",
       "audioPath": "audio/inception-gate/s13.mp3",
-      "bytes": 462336
+      "bytes": 510336
     },
     {
       "slideId": "s14",
       "title": "Why This Founder",
       "audioPath": "audio/inception-gate/s14.mp3",
-      "bytes": 767616
+      "bytes": 759168
     }
   ]
 }

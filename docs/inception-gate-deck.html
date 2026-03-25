@@ -1069,6 +1069,7 @@
       }
 
       .voiceover-panel.collapsed .voiceover-controls,
+      .voiceover-panel.collapsed .voiceover-jump,
       .voiceover-panel.collapsed .voiceover-hint {
         display: none;
       }
@@ -1149,10 +1150,46 @@
         cursor: not-allowed;
       }
 
-      .voiceover-hint {
+      .voiceover-jump {
+        display: grid;
+        grid-template-columns: auto 56px auto;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .voiceover-jump label {
         font-size: 11px;
-        line-height: 1.35;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
         color: var(--muted);
+      }
+
+      .voiceover-jump input {
+        width: 100%;
+        border: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.62);
+        color: var(--ink);
+        border-radius: 999px;
+        padding: 6px 10px;
+        font: inherit;
+        font-size: 12px;
+        text-align: center;
+      }
+
+      .voiceover-jump button {
+        border: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.62);
+        color: var(--ink);
+        border-radius: 999px;
+        padding: 6px 10px;
+        font-size: 11px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        cursor: pointer;
+      }
+
+      .voiceover-hint {
+        display: none;
       }
 
       @media (max-width: 1100px) {
@@ -2919,9 +2956,12 @@
         <button id="voiceover-restart" disabled>Restart</button>
         <button id="voiceover-auto" aria-pressed="true">Auto Advance</button>
       </div>
-      <div class="voiceover-hint" id="voiceover-hint">
-        Generate audio locally with <code>npm run deck:voiceover</code>. Files load from <code>docs/audio/inception-gate/</code>.
+      <div class="voiceover-jump">
+        <label for="voiceover-start-slide">Start from Slide</label>
+        <input id="voiceover-start-slide" type="number" min="1" max="14" step="1" value="1" />
+        <button id="voiceover-start-button" type="button">Go</button>
       </div>
+      <div class="voiceover-hint" id="voiceover-hint" aria-hidden="true"></div>
     </aside>
 
     <script>
@@ -2945,6 +2985,8 @@
       const pauseButton = document.getElementById("voiceover-pause");
       const restartButton = document.getElementById("voiceover-restart");
       const autoButton = document.getElementById("voiceover-auto");
+      const startSlideInput = document.getElementById("voiceover-start-slide");
+      const startSlideButton = document.getElementById("voiceover-start-button");
       let narrationData = null;
       let activeAudio = null;
       let activeAudioIndex = -1;
@@ -3054,18 +3096,14 @@
         voiceoverToggle.textContent = voiceoverCollapsed ? "Open" : "Hide";
 
         if (!narrationData) {
-          voiceoverHint.innerHTML = "Generate audio locally with <code>npm run deck:voiceover</code>. Files load from <code>docs/audio/inception-gate/</code>.";
           return;
         }
-
-        voiceoverHint.textContent = narration?.audioPath
-          ? `Current file: ${narration.audioPath}`
-          : "Narration is defined, but no audio file is mapped for this slide.";
       }
 
       function setActiveSlide(index) {
         const total = slides.length;
         currentSlide.textContent = `${String(index + 1).padStart(2, "0")} / ${String(total).padStart(2, "0")}`;
+        startSlideInput.value = String(index + 1);
         navLinks.forEach((link, linkIndex) => {
           link.classList.toggle("active", linkIndex === index);
         });
@@ -3269,9 +3307,28 @@
         playSlideAudio(getActiveSlideIndex(), true);
       });
 
+      function startFromSelectedSlide() {
+        const raw = Number.parseInt(startSlideInput.value, 10);
+        const targetIndex = Number.isNaN(raw) ? 0 : Math.min(Math.max(raw - 1, 0), slides.length - 1);
+        startSlideInput.value = String(targetIndex + 1);
+        scrollToSlide(targetIndex);
+        window.setTimeout(() => playSlideAudio(targetIndex, true), 420);
+      }
+
       autoButton.addEventListener("click", () => {
         autoAdvanceEnabled = !autoAdvanceEnabled;
         updateVoiceoverUi(getActiveSlideIndex());
+      });
+
+      startSlideButton.addEventListener("click", () => {
+        startFromSelectedSlide();
+      });
+
+      startSlideInput.addEventListener("keydown", (event) => {
+        if (event.key === "Enter") {
+          event.preventDefault();
+          startFromSelectedSlide();
+        }
       });
 
       voiceoverToggle.addEventListener("click", () => {
