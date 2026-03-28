@@ -60,7 +60,7 @@ async function main() {
         model,
         voice,
         format: "mp3",
-        speed: 0.96,
+        speed: 0.93,
         input: slide.script,
       }),
     });

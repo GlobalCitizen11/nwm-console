@@ -5,6 +5,8 @@ import process from "node:process";
 const rootDir = process.cwd();
 const docsDir = path.join(rootDir, "docs");
 const publicDeckDir = path.join(rootDir, "public", "inception-gate");
+const docsAssetsDir = path.join(docsDir, "assets");
+const docsDeckAudioDir = path.join(docsDir, "audio", "inception-gate");
 
 async function main() {
   await rm(publicDeckDir, { recursive: true, force: true });
@@ -27,7 +29,17 @@ async function main() {
     // PDF export is optional for sync. Skip if it has not been generated yet.
   }
 
-  await cp(path.join(docsDir, "audio"), path.join(publicDeckDir, "audio"), { recursive: true });
+  try {
+    await cp(
+      path.join(docsDir, "inception-gate-deck-print.pdf"),
+      path.join(publicDeckDir, "inception-gate-deck-print.pdf"),
+    );
+  } catch {
+    // Print PDF export is optional for sync. Skip if it has not been generated yet.
+  }
+
+  await cp(docsDeckAudioDir, path.join(publicDeckDir, "audio", "inception-gate"), { recursive: true });
+  await cp(docsAssetsDir, path.join(publicDeckDir, "assets"), { recursive: true });
   console.log(`Synced Inception Gate deck assets to ${publicDeckDir}`);
 }
 
