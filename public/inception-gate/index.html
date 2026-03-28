@@ -412,6 +412,7 @@
       .panel h3 {
         margin-bottom: 14px;
         font-size: 13px;
+        line-height: 1.12;
         letter-spacing: 0.12em;
         text-transform: uppercase;
         color: var(--muted);
@@ -423,6 +424,92 @@
         line-height: 1.35;
         color: var(--muted);
         max-width: 58ch;
+      }
+
+      .micro-legend {
+        display: grid;
+        gap: 8px;
+        margin-top: 2px;
+        padding: 10px 12px;
+        border-radius: 16px;
+        border: 1px solid rgba(23, 21, 18, 0.08);
+        background:
+          linear-gradient(180deg, rgba(255, 255, 255, 0.82), rgba(255, 255, 255, 0.62));
+        box-shadow: inset 0 1px 0 rgba(255,255,255,0.68);
+      }
+
+      .micro-legend-title {
+        font-size: 11px;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+
+      .micro-legend-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px 10px;
+      }
+
+      .micro-legend-item {
+        display: grid;
+        gap: 2px;
+        min-width: 0;
+        padding: 6px 8px;
+        border-radius: 12px;
+        border-left: 2px solid transparent;
+      }
+
+      .micro-legend-item strong {
+        font-size: 12px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--deep-ink);
+      }
+
+      .micro-legend-item span {
+        font-size: 13px;
+        line-height: 1.25;
+        color: var(--muted);
+        text-wrap: pretty;
+      }
+
+      .micro-legend-item.voice-focus {
+        border-color: rgba(192, 122, 43, 0.18) !important;
+        border-left-color: rgba(192, 122, 43, 0.72) !important;
+        background: linear-gradient(90deg, rgba(192, 122, 43, 0.12), rgba(192, 122, 43, 0.04));
+        box-shadow:
+          inset 0 0 0 1px rgba(192, 122, 43, 0.16),
+          0 6px 14px rgba(34, 26, 17, 0.04);
+        transform: none;
+      }
+
+      .micro-legend-item.voice-focus strong {
+        color: var(--accent);
+      }
+
+      .micro-legend-item.voice-focus span {
+        color: var(--ink);
+      }
+
+      [data-voice-key] {
+        transition:
+          border-color 180ms ease,
+          box-shadow 180ms ease,
+          background 180ms ease,
+          transform 180ms ease;
+      }
+
+      .voice-focus {
+        border-color: rgba(192, 122, 43, 0.55) !important;
+        background:
+          linear-gradient(180deg, rgba(192, 122, 43, 0.22), rgba(192, 122, 43, 0.1)),
+          linear-gradient(180deg, rgba(255, 255, 255, 0.82), rgba(255, 255, 255, 0.58));
+        box-shadow:
+          0 0 0 3px rgba(192, 122, 43, 0.26),
+          0 24px 42px rgba(34, 26, 17, 0.12),
+          inset 0 1px 0 rgba(255, 255, 255, 0.68);
+        transform: translateY(-2px) scale(1.01);
       }
 
       ul {
@@ -845,10 +932,93 @@
         text-wrap: balance;
       }
 
+      .opening-thesis {
+        display: grid;
+        gap: 10px;
+      }
+
+      .opening-thesis-item {
+        display: grid;
+        gap: 3px;
+        padding: 10px 12px;
+        border-radius: 16px;
+        border: 1px solid rgba(23, 21, 18, 0.08);
+        background:
+          linear-gradient(180deg, rgba(255, 255, 255, 0.82), rgba(255, 255, 255, 0.62));
+      }
+
+      .opening-thesis-item span {
+        font-size: 11px;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+
+      .opening-thesis-item strong {
+        font-size: 15px;
+        line-height: 1.16;
+        color: var(--deep-ink);
+        text-wrap: balance;
+      }
+
+      .opening-board {
+        border: 1px solid var(--line);
+        border-radius: 28px;
+        padding: 18px;
+        background:
+          linear-gradient(180deg, rgba(255, 255, 255, 0.68), rgba(255, 255, 255, 0.5)),
+          linear-gradient(135deg, rgba(32, 61, 90, 0.06), rgba(166, 61, 29, 0.04));
+        box-shadow:
+          inset 0 1px 0 rgba(255,255,255,0.62),
+          0 18px 34px rgba(34, 26, 17, 0.06);
+        display: grid;
+        grid-template-columns: minmax(0, 1.04fr) minmax(0, 0.96fr) minmax(250px, 0.62fr);
+        gap: 16px;
+        min-width: 0;
+      }
+
+      .opening-zone {
+        min-width: 0;
+      }
+
+      .opening-zone h3 {
+        margin-bottom: 14px;
+      }
+
+      .opening-engine {
+        grid-column: 1 / 4;
+        padding-bottom: 14px;
+        border-bottom: 1px solid rgba(23, 21, 18, 0.08);
+      }
+
+      .opening-side {
+        display: grid;
+        gap: 14px;
+        align-content: start;
+      }
+
+      .engine-header {
+        display: grid;
+        gap: 6px;
+        margin-bottom: 14px;
+      }
+
+      .engine-header h3 {
+        margin: 0;
+      }
+
+      .engine-subtitle {
+        margin: 0;
+        max-width: 540px;
+        color: rgba(56, 49, 40, 0.82);
+        font-size: 14px;
+        line-height: 1.18;
+      }
+
       .system-pipeline {
         display: grid;
-        grid-template-columns: repeat(6, minmax(0, 1fr));
-        gap: 14px;
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        gap: 12px;
         align-items: stretch;
         max-width: 1260px;
         margin: 0 auto;
@@ -858,33 +1028,72 @@
         position: relative;
         border: 1px solid var(--line);
         border-radius: 20px;
-        padding: 16px 10px;
-        background: linear-gradient(180deg, rgba(255,255,255,0.82), rgba(255,255,255,0.64));
+        padding: 16px 14px 14px;
+        background: linear-gradient(180deg, rgba(255,255,255,0.86), rgba(255,255,255,0.66));
         min-width: 0;
         display: grid;
-        align-content: center;
-        min-height: 86px;
+        align-content: start;
+        gap: 8px;
+        min-height: 146px;
+      }
+
+      .system-stage::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border-radius: inherit;
+        pointer-events: none;
+        box-shadow: inset 0 1px 0 rgba(255,255,255,0.52);
       }
 
       .system-stage:not(:last-child)::after {
         content: "→";
         position: absolute;
-        right: -13px;
-        top: 50%;
-        transform: translateY(-50%);
-        color: var(--muted);
-        font-size: 20px;
+        right: -10px;
+        top: 24px;
+        color: rgba(56, 49, 40, 0.42);
+        font-size: 16px;
+        font-weight: 700;
+      }
+
+      .system-step-number {
+        display: inline-flex;
+        width: fit-content;
+        align-items: center;
+        justify-content: center;
+        padding: 4px 8px;
+        border-radius: 999px;
+        background: rgba(32, 61, 90, 0.08);
+        color: rgba(32, 61, 90, 0.88);
+        font-size: 10px;
+        line-height: 1;
+        letter-spacing: 0.14em;
         font-weight: 700;
       }
 
       .system-stage strong {
         display: block;
         font-size: 11px;
-        line-height: 1.1;
-        letter-spacing: 0.05em;
+        line-height: 1.06;
+        letter-spacing: 0.07em;
         text-transform: uppercase;
         color: var(--deep-ink);
-        text-align: center;
+        text-wrap: balance;
+      }
+
+      .system-stage p {
+        margin: 0;
+        font-size: 14px;
+        line-height: 1.16;
+        color: #231f1a;
+        text-wrap: balance;
+      }
+
+      .system-stage span {
+        display: block;
+        font-size: 12px;
+        line-height: 1.14;
+        color: rgba(56, 49, 40, 0.78);
         text-wrap: balance;
       }
 
@@ -1097,12 +1306,54 @@
         gap: 14px;
       }
 
+      #s1 {
+        position: relative;
+        isolation: isolate;
+        overflow: hidden;
+      }
+
+      #s1::before,
+      #s1::after {
+        content: "";
+        position: absolute;
+        pointer-events: none;
+        z-index: 0;
+        filter: blur(2px);
+      }
+
+      #s1::before {
+        width: 420px;
+        height: 420px;
+        right: -120px;
+        top: -110px;
+        background: radial-gradient(circle, rgba(32, 61, 90, 0.12) 0%, rgba(32, 61, 90, 0.04) 42%, rgba(32, 61, 90, 0) 72%);
+      }
+
+      #s1::after {
+        width: 340px;
+        height: 340px;
+        left: -120px;
+        bottom: -100px;
+        background: radial-gradient(circle, rgba(192, 122, 43, 0.12) 0%, rgba(192, 122, 43, 0.04) 44%, rgba(192, 122, 43, 0) 74%);
+      }
+
       #s1 .slide-head {
+        position: relative;
+        z-index: 1;
         display: grid;
-        grid-template-columns: minmax(0, 1.2fr) minmax(300px, 0.8fr);
-        gap: 22px;
-        align-items: end;
+        grid-template-columns: minmax(0, 1.56fr) minmax(260px, 0.44fr);
+        gap: 20px;
+        align-items: start;
         text-align: left;
+        padding: 22px 24px 18px;
+        border: 1px solid rgba(23, 21, 18, 0.08);
+        border-radius: 30px;
+        background:
+          linear-gradient(180deg, rgba(255, 255, 255, 0.78), rgba(248, 242, 234, 0.54)),
+          linear-gradient(135deg, rgba(32, 61, 90, 0.08), rgba(192, 122, 43, 0.03));
+        box-shadow:
+          inset 0 1px 0 rgba(255,255,255,0.7),
+          0 20px 42px rgba(36, 30, 24, 0.06);
       }
 
       #s1 h1,
@@ -1113,40 +1364,310 @@
       }
 
       #s1 h1 {
-        max-width: 8.4ch;
+        max-width: 11.8ch;
+        font-size: clamp(54px, 4.6vw, 76px);
+        line-height: 0.93;
+        letter-spacing: -0.055em;
       }
 
       #s1 .core {
-        max-width: 23ch;
+        max-width: 39ch;
+        margin-top: 16px;
+        font-size: clamp(18px, 1.85vw, 24px);
+        line-height: 1.2;
+        color: #2e2821;
       }
 
       #s1 .keyline {
-        width: 220px;
+        width: 140px;
+        margin-top: 16px;
       }
 
       #s1 .hero-right {
-        align-content: end;
+        display: grid;
+        align-content: stretch;
       }
 
       #s1 .hero-right .panel {
         height: 100%;
+        padding: 18px 18px 16px;
+        border: 1px solid rgba(23, 21, 18, 0.08);
+        border-radius: 24px;
+        background:
+          linear-gradient(180deg, rgba(255,255,255,0.82), rgba(255,255,255,0.6)),
+          linear-gradient(160deg, rgba(32, 61, 90, 0.04), rgba(32, 61, 90, 0));
+        box-shadow:
+          inset 0 1px 0 rgba(255,255,255,0.6),
+          0 12px 24px rgba(36, 30, 24, 0.04);
+        overflow: hidden;
+        position: relative;
+      }
+
+      #s1 .hero-right .panel::before {
+        content: "";
+        position: absolute;
+        left: 18px;
+        right: 18px;
+        top: 0;
+        height: 3px;
+        border-radius: 999px;
+        background: linear-gradient(90deg, rgba(32, 61, 90, 0.68), rgba(192, 122, 43, 0.38));
+      }
+
+      #s1 .hero-right .panel h3 {
+        position: relative;
+        z-index: 2;
+        display: inline-block;
+        margin-bottom: 12px;
+        padding-right: 0;
+        background: transparent;
       }
 
       #s1 .system-statement {
-        max-width: none;
-        margin: 16px 0 0;
+        max-width: 44ch;
+        margin: 18px 0 0;
+        padding: 12px 0 0 16px;
+        border: 0;
+        border-left: 2px solid rgba(192, 122, 43, 0.38);
+        border-radius: 0;
+        background: transparent;
+        font-size: 22px;
+        line-height: 1.18;
         text-align: left;
+        position: relative;
+      }
+
+      #s1 .system-statement::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 54px;
+        height: 2px;
+        border-radius: 999px;
+        background: linear-gradient(90deg, rgba(192, 122, 43, 0.72), rgba(192, 122, 43, 0));
       }
 
       #s1 .slide-body {
-        grid-template-columns: minmax(0, 1.42fr) minmax(300px, 0.58fr);
-        margin-top: 18px;
+        position: relative;
+        z-index: 1;
+        grid-template-columns: minmax(0, 1fr);
+        margin-top: 16px;
         align-items: start;
+        align-content: start;
+        gap: 0;
       }
 
-      #s1 .panel.signal .stack,
-      #s1 .panel.warning .stack {
-        gap: 10px;
+      #s1 .opening-side,
+      #s1 .opening-positioning .stack {
+        gap: 8px;
+      }
+
+      #s1 .opening-side {
+        justify-items: end;
+        padding-left: 10px;
+      }
+
+      #s1 .opening-positioning {
+        width: min(100%, 236px);
+        margin-left: auto;
+      }
+
+      #s1 .opening-positioning h3 {
+        text-align: left;
+      }
+
+      #s1 .opening-board {
+        position: relative;
+        overflow: hidden;
+        grid-template-columns: minmax(0, 1.02fr) minmax(0, 0.98fr) minmax(250px, 0.58fr);
+        padding: 18px;
+        border-radius: 28px;
+        gap: 14px;
+        background:
+          linear-gradient(180deg, rgba(255, 255, 255, 0.74), rgba(249, 244, 236, 0.56)),
+          linear-gradient(135deg, rgba(32, 61, 90, 0.07), rgba(192, 122, 43, 0.05));
+        box-shadow:
+          inset 0 1px 0 rgba(255,255,255,0.7),
+          0 20px 36px rgba(36, 30, 24, 0.05);
+      }
+
+      #s1 .opening-board::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        background:
+          radial-gradient(circle at 14% 12%, rgba(255,255,255,0.44), rgba(255,255,255,0) 28%),
+          radial-gradient(circle at 86% 88%, rgba(32, 61, 90, 0.05), rgba(32, 61, 90, 0) 30%);
+      }
+
+      #s1 .opening-zone,
+      #s1 .opening-side {
+        position: relative;
+        z-index: 1;
+      }
+
+      #s1 .opening-outputs .system-blocks {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      #s1 .engine-header {
+        gap: 4px;
+        margin-bottom: 12px;
+      }
+
+      #s1 .engine-subtitle {
+        font-size: 13px;
+        line-height: 1.14;
+      }
+
+      #s1 .opening-engine .system-pipeline {
+        gap: 8px;
+      }
+
+      #s1 .opening-zone h3 {
+        margin-bottom: 10px;
+        font-size: 11px;
+        letter-spacing: 0.14em;
+        color: rgba(56, 49, 40, 0.66);
+      }
+
+      #s1 .hero-emphasis {
+        margin-top: 18px;
+        padding: 0;
+        border: 0;
+        border-radius: 0;
+        background: transparent;
+        color: var(--accent);
+        font-size: 11px;
+        letter-spacing: 0.14em;
+      }
+
+      #s1 .opening-thesis {
+        gap: 8px;
+      }
+
+      #s1 .opening-thesis-item {
+        padding: 8px 0 12px;
+        border: 0;
+        border-bottom: 1px solid rgba(23, 21, 18, 0.08);
+        border-radius: 0;
+        background: transparent;
+      }
+
+      #s1 .opening-thesis-item:last-child {
+        padding-bottom: 0;
+        border-bottom: 0;
+      }
+
+      #s1 .opening-thesis-item span {
+        font-size: 10px;
+        letter-spacing: 0.14em;
+      }
+
+      #s1 .opening-thesis-item strong {
+        font-size: 14px;
+        line-height: 1.16;
+      }
+
+      #s1 .system-stage {
+        min-height: 132px;
+        padding: 12px 10px 11px;
+        border-radius: 16px;
+        gap: 6px;
+        background:
+          linear-gradient(180deg, rgba(255,255,255,0.9), rgba(255,255,255,0.68)),
+          linear-gradient(145deg, rgba(32, 61, 90, 0.035), rgba(192, 122, 43, 0.03));
+        box-shadow: inset 0 1px 0 rgba(255,255,255,0.56);
+      }
+
+      #s1 .system-stage:not(:last-child)::after {
+        right: -8px;
+        top: 20px;
+        font-size: 14px;
+      }
+
+      #s1 .system-step-number {
+        padding: 3px 7px;
+        font-size: 9px;
+      }
+
+      #s1 .system-stage strong {
+        font-size: 9px;
+        line-height: 1.06;
+      }
+
+      #s1 .system-stage p {
+        font-size: 12px;
+        line-height: 1.14;
+      }
+
+      #s1 .system-stage span {
+        font-size: 11px;
+        line-height: 1.12;
+      }
+
+      #s1 .system-block {
+        padding: 12px 13px;
+        border-radius: 16px;
+        background:
+          linear-gradient(180deg, rgba(255,255,255,0.88), rgba(255,255,255,0.66)),
+          linear-gradient(145deg, rgba(32, 61, 90, 0.03), rgba(192, 122, 43, 0.02));
+      }
+
+      #s1 .system-block strong {
+        margin-bottom: 4px;
+        font-size: 12px;
+      }
+
+      #s1 .system-block span,
+      #s1 .opening-why .stack-card span,
+      #s1 .opening-positioning .stack-card span {
+        font-size: 15px;
+        line-height: 1.14;
+      }
+
+      #s1 .opening-positioning .stack-card {
+        padding: 12px 13px;
+        border-radius: 16px;
+        background:
+          linear-gradient(180deg, rgba(255,255,255,0.88), rgba(255,255,255,0.66)),
+          linear-gradient(145deg, rgba(32, 61, 90, 0.03), rgba(192, 122, 43, 0.02));
+      }
+
+      #s1 .opening-positioning .stack-card.warning {
+        background:
+          linear-gradient(180deg, rgba(255, 247, 236, 0.96), rgba(255, 244, 231, 0.82)),
+          linear-gradient(145deg, rgba(192, 122, 43, 0.08), rgba(192, 122, 43, 0.02));
+      }
+
+      #s1 .opening-positioning .stack-card strong {
+        margin-bottom: 4px;
+        font-size: 12px;
+      }
+
+      #s2 .impact-panel {
+        grid-column: 1 / -1;
+      }
+
+      #s2 .impact-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 12px;
+      }
+
+      #s2 .impact-grid .stack-card {
+        padding: 13px 14px;
+      }
+
+      #s2 .impact-grid .stack-card strong {
+        margin-bottom: 4px;
+      }
+
+      #s2 .impact-grid .stack-card span {
+        font-size: 16px;
+        line-height: 1.14;
       }
 
       #s1 .system-footer {
@@ -1838,9 +2359,10 @@
         }
 
         #s1 .slide-head {
-          grid-template-columns: minmax(0, 1.3fr) minmax(2.2in, 0.7fr);
-          gap: 0.12in;
-          align-items: end;
+          grid-template-columns: minmax(0, 1.54fr) minmax(1.72in, 0.46fr);
+          gap: 0.09in;
+          align-items: start;
+          padding-bottom: 0.075in;
         }
 
         #s1 .hero-right {
@@ -1848,24 +2370,31 @@
         }
 
         #s1 .hero-right .panel {
-          padding: 0.1in;
+          padding: 0.085in 0.09in 0.08in;
+        }
+
+        #s1 .hero-right .panel h3 {
+          padding-right: 0.05in;
         }
 
         #s1 .slide-body {
           margin-top: 0.07in;
-          grid-template-columns: minmax(0, 1.45fr) minmax(2.18in, 0.55fr);
-          gap: 0.08in;
+          grid-template-columns: minmax(0, 1fr);
+          gap: 0;
           align-items: start;
           align-content: start;
         }
 
-        #s1 .panel {
-          padding: 0.1in;
+        #s1 .opening-board {
+          grid-template-columns: minmax(0, 1.02fr) minmax(0, 0.98fr) minmax(1.56in, 0.54fr);
+          gap: 0.05in;
+          padding: 0.095in;
+          border-radius: 0.18in;
         }
 
         #s1 .system-statement {
-          max-width: none;
-          margin-top: 0.1in;
+          max-width: 4.7in;
+          margin-top: 0.08in;
           padding: 0.08in 0.12in;
           border-radius: 0.16in;
           font-size: 0.17in;
@@ -1873,32 +2402,82 @@
           text-align: left;
         }
 
-        #s1 .system-pipeline {
-          grid-template-columns: repeat(6, minmax(0, 1fr));
+        #s1 .opening-thesis {
           gap: 0.045in;
+        }
+
+        #s1 .opening-thesis-item {
+          padding: 0.06in 0.07in;
+          border-radius: 0.12in;
+        }
+
+        #s1 .opening-thesis-item span {
+          font-size: 0.072in;
+        }
+
+        #s1 .opening-thesis-item strong {
+          font-size: 0.115in;
+          line-height: 1.08;
+        }
+
+        #s1 .engine-header {
+          gap: 0.02in;
+          margin-bottom: 0.06in;
+        }
+
+        #s1 .engine-subtitle {
+          font-size: 0.1in;
+          line-height: 1.1;
+          max-width: 4.8in;
+        }
+
+        #s1 .system-pipeline {
+          grid-template-columns: repeat(5, minmax(0, 1fr));
+          gap: 0.04in;
           max-width: none;
         }
 
+        #s1 .opening-engine {
+          padding-bottom: 0.07in;
+        }
+
         #s1 .system-stage {
-          padding: 0.075in 0.045in;
+          padding: 0.075in 0.06in 0.065in;
           border-radius: 0.12in;
-          min-height: 0.78in;
+          min-height: 1.08in;
+          gap: 0.03in;
         }
 
         #s1 .system-stage:not(:last-child)::after {
-          right: -0.075in;
-          font-size: 0.15in;
+          right: -0.06in;
+          top: 0.17in;
+          font-size: 0.11in;
+        }
+
+        #s1 .system-step-number {
+          padding: 0.02in 0.045in;
+          font-size: 0.065in;
         }
 
         #s1 .system-stage strong {
-          font-size: 0.074in;
-          line-height: 1.02;
+          font-size: 0.072in;
+          line-height: 1.04;
           letter-spacing: 0.03em;
         }
 
+        #s1 .system-stage p {
+          font-size: 0.09in;
+          line-height: 1.1;
+        }
+
+        #s1 .system-stage span {
+          font-size: 0.078in;
+          line-height: 1.08;
+        }
+
         #s1 .system-blocks {
-          grid-template-columns: repeat(4, minmax(0, 1fr));
-          gap: 0.05in;
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+          gap: 0.045in;
         }
 
         #s1 .system-block {
@@ -2465,6 +3044,29 @@
           padding: 0.075in 0.085in;
         }
 
+        #s6 .micro-legend {
+          margin-top: 0.01in;
+          padding: 0.07in 0.08in;
+          gap: 0.04in;
+        }
+
+        #s6 .micro-legend-grid {
+          gap: 0.045in 0.05in;
+        }
+
+        #s6 .micro-legend-title {
+          font-size: 8.5px;
+        }
+
+        #s6 .micro-legend-item strong {
+          font-size: 9px;
+        }
+
+        #s6 .micro-legend-item span {
+          font-size: 9.5px;
+          line-height: 1.16;
+        }
+
         #s6 .stack-card strong,
         #s13 .metric strong,
         #s13 .stack-card strong {
@@ -2718,106 +3320,120 @@
       <div class="slides">
         <section class="slide" id="s1">
           <div class="slide-head">
-            <div>
+            <div data-voice-key="headline">
               <div class="kicker">Investor Deck</div>
               <h1>The Missing Layer in Institutional Decision-Making</h1>
               <p class="core">Institutions already fund data, software, and expert analysis. They still lack a governed system that turns fragmented signal into decision-grade narrative judgment.</p>
               <div class="keyline"></div>
               <div class="hero-emphasis">What The Product Does</div>
-              <div class="system-statement">This platform turns complex data into strategic narratives and scenario plans that help institutions make better decisions faster. Behind it is a patent-pending strategic narrative engine that converts fragmented signal into a governed strategic read.</div>
+              <div class="system-statement">This platform turns complex data into strategic narratives and scenario plans that help institutions make better decisions faster. Behind it is a patent-pending strategic narrative engine that converts fragmented signal into governed system state.</div>
             </div>
             <div class="hero-right">
-              <div class="panel signal dense">
+              <div class="panel signal dense" data-voice-key="investor-read">
                 <h3>Investor Read</h3>
-                <div class="stack">
-                  <div class="stack-card">
-                    <strong>Category</strong>
-                    <span>Scenario planning platform for institutions built on a patent-pending strategic narrative engine.</span>
+                <div class="opening-thesis">
+                  <div class="opening-thesis-item">
+                    <span>Category</span>
+                    <strong>Scenario planning platform for institutions.</strong>
                   </div>
-                  <div class="stack-card">
-                    <strong>Why Different</strong>
-                    <span>Tracks narrative through space and time, then adjudicates conflicting signals into one governed strategic state.</span>
+                  <div class="opening-thesis-item">
+                    <span>Difference</span>
+                    <strong>Turns fragmented signal into one governed strategic state.</strong>
                   </div>
-                  <div class="stack-card success">
-                    <strong>Defensibility</strong>
-                    <span>Patent-pending core, traceable workflow, and decision memory create durable switching cost.</span>
+                  <div class="opening-thesis-item">
+                    <span>Defensibility</span>
+                    <strong>Traceable workflow and decision memory compound over time.</strong>
                   </div>
                 </div>
               </div>
             </div>
           </div>
           <div class="slide-body">
-            <div class="panel accent">
-              <h3>How the Engine Works</h3>
-              <div class="system-pipeline">
-                <div class="system-stage"><strong>Signal Ingestion</strong></div>
-                <div class="system-stage"><strong>State Adjudication</strong></div>
-                <div class="system-stage"><strong>Traceable Narrative</strong></div>
-                <div class="system-stage"><strong>Scenario Computation</strong></div>
-                <div class="system-stage"><strong>Live Alerts</strong></div>
-                <div class="system-stage success"><strong>Decision Memory</strong></div>
-              </div>
-            </div>
-            <div class="panel signal">
-              <h3>Why It Matters</h3>
-              <div class="stack">
-                <div class="stack-card">
-                  <strong>Faster Reading</strong>
-                  <span>Turns scattered information into one strategic view leadership can act on.</span>
+            <div class="opening-board">
+              <div class="opening-zone opening-engine" data-voice-key="engine">
+                <div class="engine-header">
+                  <h3>How the Engine Works</h3>
+                  <p class="engine-subtitle">From fragmented signals to governed system state</p>
                 </div>
-                <div class="stack-card">
-                  <strong>Better Alignment</strong>
-                  <span>Gives teams a shared narrative instead of competing versions of what is happening.</span>
-                </div>
-                <div class="stack-card success">
-                  <strong>Institutional Fit</strong>
-                  <span>Supports source links, review steps, and a lasting record of decisions and updates.</span>
-                </div>
-              </div>
-            </div>
-            <div class="panel">
-              <h3>Clear Product Outputs</h3>
-              <div class="system-blocks">
-                <div class="system-block">
-                  <strong>Strategic Briefs</strong>
-                  <span>What changed, why it matters, and what leadership should watch.</span>
-                </div>
-                <div class="system-block">
-                  <strong>Scenario Planning</strong>
-                  <span>Base case, upside, downside, and the triggers that move between them.</span>
-                </div>
-                <div class="system-block">
-                  <strong>Signal Analysis</strong>
-                  <span>Ranks the developments most likely to affect the institution.</span>
-                </div>
-                <div class="system-block signal">
-                  <strong>Real-Time Alerts</strong>
-                  <span>Flags material changes as events emerge.</span>
-                </div>
-                <div class="system-block">
-                  <strong>Action Summaries</strong>
-                  <span>Converts analysis into direct next steps for leaders and operators.</span>
-                </div>
-                <div class="system-block">
-                  <strong>Decision Memory</strong>
-                  <span>Preserves assumptions, outputs, and outcomes over time.</span>
+                <div class="system-pipeline">
+                  <div class="system-stage">
+                    <div class="system-step-number">01</div>
+                    <strong>Signal Ingestion</strong>
+                    <p>Capture real-world inputs across markets, policy, institutions, and media.</p>
+                    <span>Continuously gathers high-volume, multi-source signals.</span>
+                  </div>
+                  <div class="system-stage">
+                    <div class="system-step-number">02</div>
+                    <strong>Structured Interpretation</strong>
+                    <p>Translate unstructured information into consistent, comparable inputs.</p>
+                    <span>Standardizes inputs into a unified analytical framework.</span>
+                  </div>
+                  <div class="system-stage">
+                    <div class="system-step-number">03</div>
+                    <strong>System State Modeling</strong>
+                    <p>Map signals into a live representation of the environment.</p>
+                    <span>Maintains a real-time view of system conditions.</span>
+                  </div>
+                  <div class="system-stage">
+                    <div class="system-step-number">04</div>
+                    <strong>Phase &amp; Shift Detection</strong>
+                    <p>Identify when the system is stable, building pressure, or changing regime.</p>
+                    <span>Detects meaningful shifts before they become obvious.</span>
+                  </div>
+                  <div class="system-stage success">
+                    <div class="system-step-number">05</div>
+                    <strong>Governed Output</strong>
+                    <p>Deliver clear, auditable insights for decision-makers.</p>
+                    <span>Produces structured, traceable outputs for leadership.</span>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div class="panel warning">
-              <h3>Positioning</h3>
-              <div class="stack">
-                <div class="stack-card">
-                  <strong>Patent-Pending Core</strong>
-                  <span>Transforms fragmented signals into one governed strategic read.</span>
+              <div class="opening-zone opening-outputs" data-voice-key="outputs">
+                <h3>Clear Product Outputs</h3>
+                <div class="system-blocks">
+                  <div class="system-block">
+                    <strong>Strategic Briefs</strong>
+                    <span>What changed, why it matters, and what leadership should watch.</span>
+                  </div>
+                  <div class="system-block">
+                    <strong>Scenario Planning</strong>
+                    <span>Base case, upside, downside, and the triggers that move between them.</span>
+                  </div>
+                  <div class="system-block">
+                    <strong>Signal Analysis</strong>
+                    <span>Ranks the developments most likely to affect the institution.</span>
+                  </div>
+                  <div class="system-block signal">
+                    <strong>Real-Time Alerts</strong>
+                    <span>Flags material changes as events emerge.</span>
+                  </div>
+                  <div class="system-block">
+                    <strong>Action Summaries</strong>
+                    <span>Converts analysis into direct next steps for leaders and operators.</span>
+                  </div>
+                  <div class="system-block">
+                    <strong>Decision Memory</strong>
+                    <span>Preserves assumptions, outputs, and outcomes over time.</span>
+                  </div>
                 </div>
-                <div class="stack-card">
-                  <strong>Category-Defining Product</strong>
-                  <span>Purpose-built decision infrastructure for institutions operating under uncertainty.</span>
-                </div>
-                <div class="stack-card warning">
-                  <strong>Why It Wins</strong>
-                  <span>Turns narrative into computable state, not just generated language.</span>
+              </div>
+              <div class="opening-side">
+                <div class="opening-zone opening-positioning" data-voice-key="positioning">
+                  <h3>Positioning</h3>
+                  <div class="stack">
+                    <div class="stack-card">
+                      <strong>Governed Strategic Read</strong>
+                      <span>Transforms fragmented signals into one coherent institutional state.</span>
+                    </div>
+                    <div class="stack-card">
+                      <strong>Category-Defining Product</strong>
+                      <span>Purpose-built decision infrastructure for institutions operating under uncertainty.</span>
+                    </div>
+                    <div class="stack-card warning">
+                      <strong>Why It Wins</strong>
+                      <span>Turns narrative into computable state, not just generated language.</span>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -2849,6 +3465,23 @@
                 <div class="chip"><strong>Conflicting Narratives</strong><span>Multiple internal views compete without a clear operating picture.</span></div>
                 <div class="chip"><strong>Missed Signals</strong><span>Important changes are buried inside noise and fragmented research.</span></div>
                 <div class="chip"><strong>No Decision Memory</strong><span>Teams lose track of prior assumptions, choices, and outcomes.</span></div>
+              </div>
+            </div>
+            <div class="panel accent impact-panel">
+              <h3>Why It Matters</h3>
+              <div class="impact-grid">
+                <div class="stack-card">
+                  <strong>Faster Reading</strong>
+                  <span>Leadership gets one strategic view instead of scattered analysis.</span>
+                </div>
+                <div class="stack-card">
+                  <strong>Better Alignment</strong>
+                  <span>Teams operate from a shared read instead of debating source material.</span>
+                </div>
+                <div class="stack-card success">
+                  <strong>Institutional Fit</strong>
+                  <span>Source links, review steps, and decision memory stay inside the workflow.</span>
+                </div>
               </div>
             </div>
           </div>
@@ -2924,14 +3557,14 @@
           <div class="slide-head">
             <div class="kicker">Product</div>
             <h2>A Scenario Planning Platform for Institutions</h2>
-            <p class="core">Inception Gate works like an AI Bloomberg for strategists, but its category-defining difference is a patent-pending engine that turns fragmented signal into computable narrative state.</p>
+            <p class="core">Inception Gate works like an AI Bloomberg for strategists, but its category-defining difference is the engine that turns fragmented signal into computable narrative state.</p>
             <div class="keyline"></div>
           </div>
           <div class="slide-body">
-            <div class="panel signal">
+            <div class="panel signal" data-voice-key="architecture">
               <h3>Platform Architecture</h3>
               <div class="architecture-flow">
-                <div class="architecture-stage">
+                <div class="architecture-stage" data-voice-key="data-signals">
                   <div class="architecture-label">Data Signals</div>
                   <div class="architecture-grid">
                     <div class="stack-card"><strong>Internal</strong><span>Memos, briefs, team notes, reports, and committee materials</span></div>
@@ -2939,15 +3572,15 @@
                     <div class="stack-card"><strong>User Input</strong><span>Questions, watchlists, assumptions, and decision priorities</span></div>
                   </div>
                 </div>
-                <div class="architecture-stage">
-                  <div class="architecture-label">Patent-Pending Strategic Narrative Engine</div>
+                <div class="architecture-stage" data-voice-key="engine-stage">
+                  <div class="architecture-label">Strategic Narrative Engine</div>
                   <div class="architecture-grid">
                     <div class="stack-card accent"><strong>Model</strong><span>Maps narrative into state variables, pressure relationships, and transition rules.</span></div>
                     <div class="stack-card signal"><strong>Adjudicate</strong><span>Resolves conflicting signals into one governed strategic state.</span></div>
                     <div class="stack-card"><strong>Compute</strong><span>Tracks narrative metabolism across actors, geographies, and time.</span></div>
                   </div>
                 </div>
-                <div class="architecture-stage">
+                <div class="architecture-stage" data-voice-key="strategic-outputs">
                   <div class="architecture-label">Strategic Outputs</div>
                   <div class="architecture-grid two">
                     <div class="stack-card success"><strong>Operating Surfaces</strong><span>Briefs, scenarios, signal analysis, alerts, and action summaries.</span></div>
@@ -2956,12 +3589,12 @@
                 </div>
               </div>
             </div>
-            <div class="panel">
+            <div class="panel" data-voice-key="positioning-panel">
               <h3>Clear Positioning</h3>
               <ul>
                 <li>Scenario planning platform for institutions.</li>
                 <li>Built for strategy, risk, intelligence, and executive teams.</li>
-                <li>Patent-pending core technology tracks how narratives form, spread, fragment, sediment, and dissolve.</li>
+                <li>Core technology tracks how narratives form, spread, fragment, sediment, and dissolve.</li>
               </ul>
             </div>
           </div>
@@ -3003,45 +3636,82 @@
           <div class="slide-head">
             <div class="kicker">Outputs</div>
             <h2>What Customers Actually Receive</h2>
-            <p class="core">The value is not more content. It is a governed strategic read across many narratives, with clear continuation signals, reversal signals, and institutional implications.</p>
+            <p class="core">The value is not more content. It is a governed strategic read that converts fragmented inputs into a quantified narrative-state signal before consensus framing catches up.</p>
             <div class="keyline"></div>
           </div>
           <div class="slide-body">
-            <div class="panel">
-              <h3>Illustrative Output | Iran War | As of March 27, 2026</h3>
-              <p class="section-note">Iran is one example. The same narrative-state system can track geopolitical conflict, regulation, supply chains, elections, markets, and institutional risk formation across high-leverage environments.</p>
+            <div class="panel" data-voice-key="signal-panel">
+              <h3>NWM Signal | Iran Energy System Entering Compression Window (30-90 Days)</h3>
+              <p class="section-note">Iran is one example. The same narrative-state system tracks high-leverage environments across geopolitics, regulation, supply chains, markets, and institutional risk formation.</p>
               <div class="grid-two">
-                <div class="stack-card">
-                  <strong>Adjudicated State</strong>
-                  <span>The conflict is shifting into economic containment, not military resolution.</span>
-                  <span>Iran's leverage is the ability to keep shipping, insurance, and energy assumptions unstable.</span>
+                <div class="stack-card" data-voice-key="nci">
+                  <strong>Signal Input | Narrative Cohesion Index</strong>
+                  <span>NCI on supply-security and selective-flow disruption rose +44% over 18 days.</span>
+                  <span>Signal density across sanctions, shipping, and energy-risk inputs increased +57% over the same window.</span>
                 </div>
-                <div class="stack-card signal">
-                  <strong>What the Market Misses</strong>
-                  <span>The key variable is not strike count. It is whether commercial normalcy returns before allied tolerance erodes.</span>
-                  <span>The center of gravity has moved to maritime access, insurance pricing, and cost persistence.</span>
+                <div class="stack-card signal" data-voice-key="scr">
+                  <strong>Signal Input | Signal Convergence Rate</strong>
+                  <span>SCR accelerated 1.8x as divergence spread narrowed from 0.68 to 0.21.</span>
+                  <span>Compression velocity is running +31% week over week as sanctions signaling, freight commentary, and policy language tighten into one axis.</span>
                 </div>
-                <div class="stack-card success">
-                  <strong>Continuation Signals</strong>
-                  <span>Shipping restrictions persist, mediation stays inconclusive, and buyers push for carve-outs over settlement.</span>
-                  <span>That keeps oil, freight, and board-level contingency planning structurally elevated.</span>
+                <div class="stack-card success" data-voice-key="actor-alignment">
+                  <strong>Signal Input | Actor Alignment Score</strong>
+                  <span>3 of 5 system-critical actor clusters are now inside the same interpretive band.</span>
+                  <span>Iran maritime posture, China safe-passage behavior, and insurer-routing signals are converging faster than U.S. diplomacy and Gulf producer messaging.</span>
                 </div>
-                <div class="stack-card warning">
-                  <strong>Reversal Signals</strong>
-                  <span>Verified Hormuz reopening terms, a durable deconfliction channel, and normalization in routing and insurance posture.</span>
-                  <span>That would mark a real state change, not a headline bounce.</span>
+                <div class="stack-card warning" data-voice-key="volatility-gap">
+                  <strong>Signal Input | Narrative Volatility Gap</strong>
+                  <span>The Narrative Volatility Gap widened to 0.37 as structural signals outpaced policy and market interpretation layers.</span>
+                  <span>Interpretive Bandwidth Collapse is pushing the dominant frame toward flow disruption, not fast normalization.</span>
+                </div>
+              </div>
+              <div class="micro-legend">
+                <div class="micro-legend-title">NWM Acronym Legend</div>
+                <div class="micro-legend-grid">
+                  <div class="micro-legend-item" data-voice-key="nci">
+                    <strong>NCI</strong>
+                    <span>Narrative Cohesion Index: how strongly signal clusters organize around one dominant frame.</span>
+                  </div>
+                  <div class="micro-legend-item" data-voice-key="scr">
+                    <strong>SCR</strong>
+                    <span>Signal Convergence Rate: how quickly previously separate inputs begin reinforcing the same read.</span>
+                  </div>
+                  <div class="micro-legend-item" data-voice-key="actor-alignment">
+                    <strong>AAS</strong>
+                    <span>Actor Alignment Score: how many critical actors are moving inside the same interpretive band.</span>
+                  </div>
+                  <div class="micro-legend-item" data-voice-key="volatility-gap">
+                    <strong>NVG</strong>
+                    <span>Narrative Volatility Gap: the distance between structural signal formation and market interpretation.</span>
+                  </div>
                 </div>
               </div>
             </div>
-            <div class="panel signal">
-              <h3>What Only This Product Surfaces</h3>
-              <p class="section-note">In practice, this is analogous to an AI Bloomberg terminal for high-leverage narrative environments: not just showing movement, but computing what it means, what sustains it, and what changes the read.</p>
+            <div class="panel signal" data-voice-key="system-panel">
+              <h3>System Readout</h3>
+              <p class="section-note">This is analogous to an AI Bloomberg terminal for high-leverage narrative environments: not just showing movement, but computing what it means, what sustains it, and what changes the read.</p>
               <div class="stack">
-                <div class="stack-card"><strong>Pressure Transfer</strong><span>Shows how military events convert into shipping, insurance, energy, and planning pressure.</span></div>
-                <div class="stack-card"><strong>Scenario Drift</strong><span>Tracks when the base case changes before consensus headlines catch up.</span></div>
-                <div class="stack-card"><strong>Decision Triggers</strong><span>Separates noise from the few signals that should force a new executive read.</span></div>
-                <div class="stack-card"><strong>Evidence Binding</strong><span>Ties each judgment to source movement, revision history, and review workflow.</span></div>
-                <div class="stack-card"><strong>Implication Chain</strong><span>Connects the read to exposure maps, routing choices, capital posture, and board updates.</span></div>
+                <div class="stack-card" data-voice-key="system-read">
+                  <strong>System Read</strong>
+                  <span>The system detects a Narrative-State Transition from fragmented conflict inputs to a coherent energy-control regime.</span>
+                  <span>Signal Fragmentation to Convergence is visible across sanctions signaling, maritime routing, deterrence posture, and policy interpretation layers.</span>
+                  <span>This is pre-volatility structure: the Narrative Compression Window is forming before physical normalization or durable de-escalation.</span>
+                </div>
+                <div class="stack-card" data-voice-key="why-matters">
+                  <strong>Why It Matters</strong>
+                  <span>When compression forms before routing and insurance normalize, repricing usually migrates from freight and policy exceptions into crude, LNG, and board-level risk posture.</span>
+                  <span>The institutional edge is seeing that state change before consensus language locks in.</span>
+                </div>
+                <div class="stack-card" data-voice-key="scenario-paths">
+                  <strong>Scenario Paths</strong>
+                  <span>1. Controlled passage plus sanctions hardening - persistent energy premium and widening two-tier access narrative.</span>
+                  <span>2. Deterrence failure plus regional energy strikes - accelerated repricing, insurer withdrawal, and narrative lock-in around systemic supply insecurity.</span>
+                  <span>3. Diplomatic deconfliction without routing normalization - temporary price relief with elevated fragility and a still-open volatility gap.</span>
+                </div>
+                <div class="stack-card success" data-voice-key="confidence">
+                  <strong>Confidence</strong>
+                  <span>Moderate-High. Source quality is strong and cross-domain convergence is real, but trigger timing and state duration remain unresolved.</span>
+                </div>
               </div>
             </div>
           </div>
@@ -3097,7 +3767,7 @@
             <div class="keyline"></div>
           </div>
           <div class="slide-body">
-            <div class="panel">
+            <div class="panel" data-voice-key="commercial-model">
               <h3>Commercial Model</h3>
               <div class="metric-list">
                 <div class="metric accent"><strong>Monthly Pricing</strong><span>$50K-$90K for the first institutional deployment</span></div>
@@ -3106,7 +3776,7 @@
                 <div class="metric success"><strong>Initial Scope</strong><span>15-50 senior strategists, analysts, and decision-makers around one critical planning workflow</span></div>
               </div>
             </div>
-            <div class="panel warning">
+            <div class="panel warning" data-voice-key="gtm-panel">
               <h3>Customer Segments and GTM</h3>
               <div class="stack">
                 <div class="stack-card"><strong>Segments</strong><span>Fortune 500 strategy teams, financial institutions, and public-sector policy or intelligence groups.</span></div>
@@ -3210,20 +3880,20 @@
           <div class="slide-head">
             <div class="kicker">Moat</div>
             <h2>Why Customers Stay</h2>
-            <p class="core">Defensibility starts with a patent-pending model of narrative state and compounds through traceable workflow and decision memory.</p>
+            <p class="core">Defensibility starts with a patent-pending model of narrative state and compounds through traceable workflow, decision memory, and embedded institutional use.</p>
             <div class="keyline"></div>
           </div>
           <div class="slide-body">
-            <div class="panel signal">
+            <div class="panel signal" data-voice-key="defensibility-layers">
               <h3>Defensibility Layers</h3>
               <div class="stack">
-                <div class="stack-card"><strong>Patent-Pending Core</strong><span>Models narrative as structured state and tracks its metabolism from emergence to sedimentation and dissolution.</span></div>
+                <div class="stack-card"><strong>Patent-Pending Core</strong><span>Models narrative as structured state, making the core logic harder to replicate than a summary layer or prompt workflow.</span></div>
                 <div class="stack-card"><strong>Traceable Workflow</strong><span>Connects outputs to sources, review steps, and revision history.</span></div>
                 <div class="stack-card"><strong>Decision Memory</strong><span>Stores assumptions, alerts, scenarios, and outcomes in one system.</span></div>
                 <div class="stack-card"><strong>Switching Cost</strong><span>Replacing it means rebuilding the logic, process, history, and trust layer.</span></div>
               </div>
             </div>
-            <div class="panel">
+            <div class="panel" data-voice-key="inherently-different">
               <h3>Why It Is Inherently Different</h3>
               <ul>
                 <li>Competes on governed interpretation, not generic text generation.</li>
@@ -3303,7 +3973,7 @@
             <div class="keyline"></div>
           </div>
           <div class="slide-body">
-            <div class="panel">
+            <div class="panel" data-voice-key="founder-panel">
               <h3>Marques Anderson | Founder</h3>
               <div class="stack">
                 <div class="stack-card"><span>Worked close to strategy, consulting, and institutional decision environments shaped by Fortune 50 realities.</span></div>
@@ -3312,7 +3982,7 @@
                 <div class="stack-card success"><span>The company turns that repeated institutional failure into product infrastructure.</span></div>
               </div>
             </div>
-            <div class="panel accent">
+            <div class="panel accent" data-voice-key="unique-advantage">
               <h3>Unique Advantage</h3>
               <div class="stack">
                 <div class="stack-card"><strong>Institutional Pattern Recognition</strong><span>Understands where ambiguity creates cost inside real organizations.</span></div>
@@ -3384,6 +4054,10 @@
       let narrationData = null;
       let activeAudio = null;
       let activeAudioIndex = -1;
+      let activeVoiceCue = "";
+      let playbackIndex = -1;
+      let pendingAdvanceTimeout = null;
+      let suppressObserverUntil = 0;
       let autoAdvanceEnabled = true;
       let audioLoading = false;
       let voiceoverCollapsed = false;
@@ -3465,6 +4139,9 @@
       }
 
       function getActiveSlideIndex() {
+        if (playbackIndex >= 0) {
+          return playbackIndex;
+        }
         return Math.max(0, navLinks.findIndex((link) => link.classList.contains("active")));
       }
 
@@ -3475,6 +4152,58 @@
       function getSlideNarration(index) {
         if (!narrationData?.slides?.length) return null;
         return narrationData.slides.find((slide) => slide.slideId === slides[index]?.id) ?? null;
+      }
+
+      function clearPendingAdvance() {
+        if (pendingAdvanceTimeout) {
+          window.clearTimeout(pendingAdvanceTimeout);
+          pendingAdvanceTimeout = null;
+        }
+      }
+
+      function clearVoiceFocus() {
+        document.querySelectorAll(".voice-focus").forEach((element) => {
+          element.classList.remove("voice-focus");
+        });
+        activeVoiceCue = "";
+      }
+
+      function setVoiceFocus(index, key) {
+        const cueId = `${slides[index]?.id || "slide"}:${key || ""}`;
+        if (activeVoiceCue === cueId) return;
+
+        clearVoiceFocus();
+        if (!key) return;
+
+        const targets = slides[index]?.querySelectorAll(`[data-voice-key="${key}"]`) || [];
+        targets.forEach((target) => target.classList.add("voice-focus"));
+        const primaryTarget = targets[0];
+        if (primaryTarget) {
+          suppressObserverUntil = Date.now() + 900;
+          window.requestAnimationFrame(() => {
+            primaryTarget.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "nearest" });
+          });
+        }
+        activeVoiceCue = cueId;
+      }
+
+      function updateVoiceCue(index, currentTime) {
+        const cues = getSlideNarration(index)?.cues || [];
+        if (!cues.length) {
+          clearVoiceFocus();
+          return;
+        }
+
+        let activeCue = null;
+        for (const cue of cues) {
+          if (currentTime >= cue.at) {
+            activeCue = cue;
+          } else {
+            break;
+          }
+        }
+
+        setVoiceFocus(index, activeCue?.key || "");
       }
 
       function updateVoiceoverUi(index) {
@@ -3507,6 +4236,9 @@
 
       const observer = new IntersectionObserver(
         (entries) => {
+          if (playbackIndex >= 0 || pendingAdvanceTimeout || Date.now() < suppressObserverUntil) {
+            return;
+          }
           const visible = entries
             .filter((entry) => entry.isIntersecting)
             .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
@@ -3521,14 +4253,22 @@
 
       function scrollToSlide(index) {
         if (index < 0 || index >= slides.length) return;
-        slides[index].scrollIntoView({ behavior: "smooth", block: "start" });
+        suppressObserverUntil = Date.now() + 1200;
+        setActiveSlide(index);
+        const top = slides[index].getBoundingClientRect().top + window.scrollY - 88;
+        window.scrollTo({ top: Math.max(top, 0), behavior: "smooth" });
       }
 
-      function stopAudio(resetPosition = true) {
+      function stopAudio(resetPosition = true, clearPlayback = true) {
+        clearPendingAdvance();
         if (!activeAudio) return;
         activeAudio.pause();
         if (resetPosition) {
           activeAudio.currentTime = 0;
+          clearVoiceFocus();
+        }
+        if (clearPlayback) {
+          playbackIndex = -1;
         }
         pauseButton.disabled = true;
       }
@@ -3544,7 +4284,7 @@
           return activeAudio;
         }
 
-        stopAudio(true);
+        stopAudio(true, false);
         activeAudio = null;
         activeAudioIndex = -1;
         audioLoading = true;
@@ -3554,14 +4294,28 @@
         const audio = new Audio(narration.audioPath);
         audio.preload = "auto";
         audio.onended = () => {
+          clearVoiceFocus();
           setVoiceoverStatus("Ended");
           pauseButton.disabled = true;
+          activeAudio = null;
+          activeAudioIndex = -1;
           if (autoAdvanceEnabled && index < slides.length - 1) {
-            scrollToSlide(index + 1);
-            window.setTimeout(() => playSlideAudio(index + 1, true), 420);
+            const nextIndex = index + 1;
+            playbackIndex = nextIndex;
+            scrollToSlide(nextIndex);
+            pendingAdvanceTimeout = window.setTimeout(() => {
+              pendingAdvanceTimeout = null;
+              playSlideAudio(nextIndex, true);
+            }, 650);
+            return;
           }
+          playbackIndex = -1;
+        };
+        audio.ontimeupdate = () => {
+          updateVoiceCue(index, audio.currentTime);
         };
         audio.onerror = () => {
+          clearVoiceFocus();
           setVoiceoverStatus("Missing audio");
           playButton.disabled = true;
           pauseButton.disabled = true;
@@ -3576,17 +4330,24 @@
       }
 
       async function playSlideAudio(index, restart = false) {
+        clearPendingAdvance();
+        playbackIndex = index;
+        scrollToSlide(index);
         const audio = await loadAudioForSlide(index);
         if (!audio) return;
         try {
           if (restart) {
             audio.currentTime = 0;
           }
+          playbackIndex = index;
+          setActiveSlide(index);
+          updateVoiceCue(index, audio.currentTime);
           await audio.play();
           voiceoverCollapsed = true;
           setVoiceoverStatus("Playing");
           updateVoiceoverUi(index);
         } catch {
+          playbackIndex = -1;
           setVoiceoverStatus("Tap play");
         }
       }
@@ -3692,7 +4453,8 @@
 
       pauseButton.addEventListener("click", () => {
         if (!activeAudio) return;
-        stopAudio(false);
+        stopAudio(false, false);
+        playbackIndex = activeAudioIndex;
         setVoiceoverStatus("Paused");
         updateVoiceoverUi(getActiveSlideIndex());
       });
@@ -3738,3 +4500,10 @@
     </script>
   </body>
 </html>
+      #s6 .micro-legend {
+        margin-top: 2px;
+      }
+
+      #s6 .micro-legend-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }

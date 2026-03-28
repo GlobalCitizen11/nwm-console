@@ -7,7 +7,13 @@
       "slideId": "s1",
       "title": "The Missing Layer in Institutional Decision-Making",
       "audioPath": "audio/inception-gate/s01.mp3",
-      "script": "Inception Gate turns fragmented signal into strategic narratives and scenario plans institutions can act on. The belief behind the company is simple: institutions need a clearer read before the moment passes. This deck explains why that decision layer has been missing, and why it matters now."
+      "script": "Inception Gate gives institutions a governed strategic read, then turns that read into scenarios, briefs, and alerts leaders can act on. A patent-pending engine sits underneath it, resolving fragmented signals into one coherent system state. That is the missing layer between raw information and executive judgment.",
+      "cues": [
+        { "at": 0, "key": "headline" },
+        { "at": 7, "key": "investor-read" },
+        { "at": 13, "key": "engine" },
+        { "at": 18, "key": "positioning" }
+      ]
     },
     {
       "slideId": "s2",
@@ -25,7 +31,14 @@
       "slideId": "s4",
       "title": "A Scenario Planning Platform for Institutions",
       "audioPath": "audio/inception-gate/s04.mp3",
-      "script": "Think of the product as strategic infrastructure. Fragmented inputs go in. A governed institutional read comes out, followed by scenarios, briefs, and alerts. The key point is that it behaves like infrastructure, not like a one-off prompt."
+      "script": "Think of the product as strategic infrastructure. Fragmented inputs go in. A governed institutional read comes out, followed by scenarios, briefs, and alerts. The key point is that it behaves like infrastructure, not like a one-off prompt.",
+      "cues": [
+        { "at": 0, "key": "architecture" },
+        { "at": 4, "key": "data-signals" },
+        { "at": 8, "key": "engine-stage" },
+        { "at": 13, "key": "strategic-outputs" },
+        { "at": 17, "key": "positioning-panel" }
+      ]
     },
     {
       "slideId": "s5",
@@ -37,7 +50,18 @@
       "slideId": "s6",
       "title": "What Customers Actually Receive",
       "audioPath": "audio/inception-gate/s06.mp3",
-      "script": "This is one example of what the product can track. Iran is not the point by itself. The point is that the narrative-state system can follow many high-leverage environments and define the current strategic state, what sustains it, and what would genuinely change the read. In that sense, it is analogous to an AI Bloomberg terminal for narrative conditions that institutions need to understand before they act."
+      "script": "Ee-ron is one example, but it is a useful one because the inputs are noisy, fast-moving, and spread across several domains at once. Start with the headline: entering a compression window means many separate inputs are beginning to tell the same story, and the system expects that story to harden over the next thirty to ninety days. The Narrative Cohesion Index tells you whether the discussion is organizing around one frame. Here, that frame is energy flow risk. The Signal Convergence Rate tells you how quickly previously disconnected signals are starting to agree. The Actor Alignment Score tells you whether important players are moving into the same interpretive band, which matters because aligned behavior is often what forces markets and policy teams to update. The Narrative Volatility Gap tells you that the structure of the situation is tightening faster than the market's explanation of it. The system read then turns those inputs into a decision-grade view: this is shifting from a military event set into an energy-control regime. For a strategist, that changes what to monitor, how to brief leadership, and when to prepare for repricing, routing changes, or policy escalation. The scenario paths show what would confirm, accelerate, or break the read. The confidence line tells you how hard to lean in today. That is the core product behavior, but the system expands far beyond this one use case.",
+      "cues": [
+        { "at": 0, "key": "signal-panel" },
+        { "at": 9, "key": "nci" },
+        { "at": 18, "key": "scr" },
+        { "at": 28, "key": "actor-alignment" },
+        { "at": 39, "key": "volatility-gap" },
+        { "at": 50, "key": "system-read" },
+        { "at": 63, "key": "why-matters" },
+        { "at": 74, "key": "scenario-paths" },
+        { "at": 87, "key": "confidence" }
+      ]
     },
     {
       "slideId": "s7",
@@ -49,7 +73,13 @@
       "slideId": "s8",
       "title": "GTM and Pricing",
       "audioPath": "audio/inception-gate/s08.mp3",
-      "script": "The go-to-market motion begins narrowly on purpose. One budget owner. One important workflow. Pricing that reflects the value of faster judgment. Once the product becomes part of a team's regular planning cadence, expansion becomes a natural next step."
+      "script": "The go-to-market motion begins narrowly on purpose. One budget owner. One important workflow. Pricing that reflects the value of faster judgment. Once the product becomes part of a team's regular planning cadence, expansion becomes a natural next step.",
+      "cues": [
+        { "at": 0, "key": "gtm-panel" },
+        { "at": 6, "key": "commercial-model" },
+        { "at": 12, "key": "gtm-panel" },
+        { "at": 17, "key": "gtm-panel" }
+      ]
     },
     {
       "slideId": "s9",
@@ -67,7 +97,13 @@
       "slideId": "s11",
       "title": "Why Customers Stay",
       "audioPath": "audio/inception-gate/s11.mp3",
-      "script": "The moat is not access to models. It is the combination of a proprietary narrative model, a traceable workflow, and accumulated decision memory. That is a very different claim from a generic AI product. Over time, the system becomes harder to replace because it is no longer just software. It becomes part of how the institution interprets change."
+      "script": "The moat is not access to models. It is a patent-pending narrative-state model, a traceable workflow, and accumulated decision memory working together. That is a very different claim from a generic AI product. Over time, the system becomes harder to replace because it is no longer just software. It becomes part of how the institution interprets change.",
+      "cues": [
+        { "at": 0, "key": "defensibility-layers" },
+        { "at": 8, "key": "defensibility-layers" },
+        { "at": 14, "key": "inherently-different" },
+        { "at": 21, "key": "defensibility-layers" }
+      ]
     },
     {
       "slideId": "s12",
@@ -85,7 +121,14 @@
       "slideId": "s14",
       "title": "Why This Founder",
       "audioPath": "audio/inception-gate/s14.mp3",
-      "script": "Marcus Anderson is the right founder for this category because he has seen the failure up close: signal everywhere, but no shared institutional read strong enough to guide action. He is not building an AI wrapper. He is building a decision layer that can move from strategy into risk, policy, investment, and eventually every level where institutions need a clearer read before they act. That is what category creation looks like here. For a demo or white paper, contact marques@a2xfoundry.com."
+      "script": "Marcus Anderson is the right founder for this category because he has seen the failure up close: signal everywhere, but no shared institutional read strong enough to guide action. He is not building an AI wrapper. He is building a decision layer that can move from strategy into risk, policy, investment, and eventually every level where institutions need a clearer read before they act. That is what category creation looks like here. For a demo or white paper, contact marques@a2xfoundry.com.",
+      "cues": [
+        { "at": 0, "key": "founder-panel" },
+        { "at": 10, "key": "founder-panel" },
+        { "at": 17, "key": "unique-advantage" },
+        { "at": 27, "key": "unique-advantage" },
+        { "at": 33, "key": "founder-panel" }
+      ]
     }
   ]
 }
