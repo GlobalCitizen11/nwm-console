@@ -7,7 +7,7 @@
       "slideId": "s1",
       "title": "The Missing Layer in Institutional Decision-Making",
       "audioPath": "audio/inception-gate/s01.mp3",
-      "script": "Inception Gate gives institutions a governed strategic read, then turns that read into scenarios, briefs, and alerts leaders can act on. A patent-pending engine sits underneath it, resolving fragmented signals into one coherent system state. That is the missing layer between raw information and executive judgment.",
+      "script": "Institutions already pay for data, software, and expert analysis. What they still lack is a system that turns all of that into one clear read. Inception Gate does that by organizing fragmented inputs into a traceable operating view leaders can actually use.",
       "cues": [
         { "at": 0, "key": "headline" },
         { "at": 7, "key": "investor-read" },
@@ -19,19 +19,19 @@
       "slideId": "s2",
       "title": "Institutions Have More Data Than Decision Clarity",
       "audioPath": "audio/inception-gate/s02.mp3",
-      "script": "The core insight here is that modern institutions are not short on information. They are short on shared judgment. By the time teams align on what events mean, the window to act is often narrower, costlier, or already gone."
+      "script": "Most institutions do not lack information. They lack a fast, shared interpretation of what that information means. When teams cannot align on the read, decisions slow down, drift, or get made too late."
     },
     {
       "slideId": "s3",
       "title": "Current Tools Stop Short of Decision-Making",
       "audioPath": "audio/inception-gate/s03.mp3",
-      "script": "That is where the current stack breaks. Dashboards show movement. Consultants interpret in bursts. Generic AI produces language on demand. None gives an institution a durable strategic read it can trust, revisit, and build on."
+      "script": "This is where the current stack breaks. Dashboards help collect information. Consultants help in bursts. Scenario planning helps teams think through possible futures. Generic AI helps generate text. None gives the institution a live, governed system that updates the current read as new evidence arrives."
     },
     {
       "slideId": "s4",
-      "title": "A Scenario Planning Platform for Institutions",
+      "title": "A Live Decision System, Not Scenario Planning Software",
       "audioPath": "audio/inception-gate/s04.mp3",
-      "script": "Think of the product as strategic infrastructure. Fragmented inputs go in. A governed institutional read comes out, followed by scenarios, briefs, and alerts. The key point is that it behaves like infrastructure, not like a one-off prompt.",
+      "script": "This is the key distinction. Scenario planning is usually a periodic exercise. Teams define a few futures, discuss implications, and revisit them later. Inception Gate is an operating product. It ingests live evidence, updates the current read, compares alternate paths, and shows what would change the read.",
       "cues": [
         { "at": 0, "key": "architecture" },
         { "at": 4, "key": "data-signals" },
@@ -44,13 +44,13 @@
       "slideId": "s5",
       "title": "How Information Moves Through the Platform",
       "audioPath": "audio/inception-gate/s05.mp3",
-      "script": "This is where the system becomes tangible. A strategist starts with the live surface, moves back through time to understand how the read formed, and then converts that into a brief, a scenario plan, or an alert. The experience is simple. Monitor. Replay. Decide."
+      "script": "The workflow is straightforward. Teams monitor the live picture, replay how the read developed, and turn that into briefs, path comparisons, and alerts. The product is built for recurring decisions, not one-off analysis."
     },
     {
       "slideId": "s6",
       "title": "What Customers Actually Receive",
       "audioPath": "audio/inception-gate/s06.mp3",
-      "script": "Ee-ron is one example, but it is a useful one because the inputs are noisy, fast-moving, and spread across several domains at once. Start with the headline: entering a compression window means many separate inputs are beginning to tell the same story, and the system expects that story to harden over the next thirty to ninety days. The Narrative Cohesion Index tells you whether the discussion is organizing around one frame. Here, that frame is energy flow risk. The Signal Convergence Rate tells you how quickly previously disconnected signals are starting to agree. The Actor Alignment Score tells you whether important players are moving into the same interpretive band, which matters because aligned behavior is often what forces markets and policy teams to update. The Narrative Volatility Gap tells you that the structure of the situation is tightening faster than the market's explanation of it. The system read then turns those inputs into a decision-grade view: this is shifting from a military event set into an energy-control regime. For a strategist, that changes what to monitor, how to brief leadership, and when to prepare for repricing, routing changes, or policy escalation. The scenario paths show what would confirm, accelerate, or break the read. The confidence line tells you how hard to lean in today. That is the core product behavior, but the system expands far beyond this one use case.",
+      "script": "Iran is just one example, but it shows the product clearly. The system pulls noisy signals into one view, highlights the main read, shows alternate paths, and makes clear what would strengthen or weaken that read. Instead of forcing leaders to read dozens of disconnected updates, it gives them a short, evidence-linked brief that answers what changed, why it matters, where risk is concentrated, what to do now, and what would change the read.",
       "cues": [
         { "at": 0, "key": "signal-panel" },
         { "at": 9, "key": "nci" },
@@ -67,13 +67,13 @@
       "slideId": "s7",
       "title": "Who Buys First",
       "audioPath": "audio/inception-gate/s07.mp3",
-      "script": "The first buyer is usually the team already paying for ambiguity. Strategy, risk, policy, or investment leadership. They are not looking for another dashboard. They are looking for faster alignment before they brief executives, move capital, or change posture."
+      "script": "The first buyer is usually the team already paying for ambiguity: strategy, risk, policy, or investment leadership. They are not looking for another dashboard. They want faster alignment before they brief executives, move capital, or change posture."
     },
     {
       "slideId": "s8",
       "title": "GTM and Pricing",
       "audioPath": "audio/inception-gate/s08.mp3",
-      "script": "The go-to-market motion begins narrowly on purpose. One budget owner. One important workflow. Pricing that reflects the value of faster judgment. Once the product becomes part of a team's regular planning cadence, expansion becomes a natural next step.",
+      "script": "Go to market starts narrow on purpose. One sponsor. One workflow. One paid pilot. If the product reduces briefing time and improves alignment inside a real planning or risk cycle, the account can expand from there.",
       "cues": [
         { "at": 0, "key": "gtm-panel" },
         { "at": 6, "key": "commercial-model" },
@@ -85,19 +85,19 @@
       "slideId": "s9",
       "title": "Land, Prove Value, Expand",
       "audioPath": "audio/inception-gate/s09.mp3",
-      "script": "The commercial motion stays disciplined. Land in one high-stakes workflow. Prove value quickly. Then expand into adjacent teams and reporting surfaces. That matters because it keeps execution focused while preserving the economics of a large institutional account."
+      "script": "The commercial motion stays disciplined. Land in one high-stakes workflow. Prove value quickly. Then expand into adjacent teams and reporting surfaces. That keeps execution focused while preserving the economics of a large institutional account."
     },
     {
       "slideId": "s10",
       "title": "Budget Already Exists",
       "audioPath": "audio/inception-gate/s10.mp3",
-      "script": "The market does not need a new budget category. The spend is already there across consulting, research, risk tooling, and analyst time. The opportunity is to consolidate that fragmented spend into one system of judgment."
+      "script": "The market does not need a new budget category. The spend already exists across consulting, research, risk tooling, and analyst time. The opportunity is to consolidate that fragmented spend into one decision system."
     },
     {
       "slideId": "s11",
       "title": "Why Customers Stay",
       "audioPath": "audio/inception-gate/s11.mp3",
-      "script": "The moat is not access to models. It is a patent-pending narrative-state model, a traceable workflow, and accumulated decision memory working together. That is a very different claim from a generic AI product. Over time, the system becomes harder to replace because it is no longer just software. It becomes part of how the institution interprets change.",
+      "script": "The moat is not model access. It is the combination of a structured decision model, a traceable workflow, and accumulated decision memory. Over time, the system becomes harder to replace because it becomes part of how the institution interprets change.",
       "cues": [
         { "at": 0, "key": "defensibility-layers" },
         { "at": 8, "key": "defensibility-layers" },
@@ -109,19 +109,19 @@
       "slideId": "s12",
       "title": "What We Need to Prove Before Series A",
       "audioPath": "audio/inception-gate/s12.mp3",
-      "script": "The Series A case rests on a short list of proof points. Customers need to deploy, stay, and expand. If the company can show paid institutional accounts, strong retention, and visible leadership usage, the financing case becomes much stronger."
+      "script": "The Series A case rests on a short list of proof points. Customers need to deploy, stay, and expand. If the company can show paid institutional accounts, strong retention, and visible leadership usage, the financing case gets much stronger."
     },
     {
       "slideId": "s13",
       "title": "How the $6M Seed Is Deployed",
       "audioPath": "audio/inception-gate/s13.mp3",
-      "script": "This use of funds is about proof, not experimentation. Most of the capital goes into product and data, because that is what deepens the system and improves the outputs. The balance goes into winning the first accounts and building the delivery capacity to keep them."
+      "script": "This use of funds is about proof, not experimentation. Most of the capital goes into product and data because that is what improves the system and the outputs. The rest goes into winning the first accounts and building the delivery capacity to keep them."
     },
     {
       "slideId": "s14",
       "title": "Why This Founder",
       "audioPath": "audio/inception-gate/s14.mp3",
-      "script": "Marcus Anderson is the right founder for this category because he has seen the failure up close: signal everywhere, but no shared institutional read strong enough to guide action. He is not building an AI wrapper. He is building a decision layer that can move from strategy into risk, policy, investment, and eventually every level where institutions need a clearer read before they act. That is what category creation looks like here. For a demo or white paper, contact marques@a2xfoundry.com.",
+      "script": "Marques Anderson is the right founder for this category because he has seen the failure up close: signal everywhere, but no shared institutional read strong enough to guide action. He is not building an AI wrapper. He is building a decision layer that can move from strategy into risk, policy, and investment wherever institutions need a clearer read before they act. For a demo or white paper, contact marques@a2xfoundry.com.",
       "cues": [
         { "at": 0, "key": "founder-panel" },
         { "at": 10, "key": "founder-panel" },
