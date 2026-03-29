@@ -1,4 +1,3 @@
-import { Buffer } from "node:buffer";
 import chromium from "@sparticuz/chromium";
 import { chromium as playwright } from "playwright-core";
 import type { ExportMode } from "../../src/features/export/types/export";
