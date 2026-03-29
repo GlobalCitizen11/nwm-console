@@ -1,3 +1,5 @@
+import process from "node:process";
+
 type VercelRequest = {
   method?: string;
   body?: unknown;
