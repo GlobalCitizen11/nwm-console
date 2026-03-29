@@ -1,4 +1,9 @@
 import type { BriefingState } from "../../../types";
+import type { VoiceBriefIntelligence } from "../../../types/voiceBriefIntelligence";
+import type {
+  ExecutiveBriefFieldPack as NewExecutiveBriefFieldPack,
+  ExecutiveBriefSpec as NewExecutiveBriefSpec,
+} from "../../../types/executiveBriefSpec";
 
 export type ExportMode = "executive-brief" | "presentation-brief" | "board-onepager";
 export type DensityMode = "compact" | "standard" | "expanded";
@@ -132,6 +137,8 @@ export interface ExportPreviewBundle {
   mode: ExportMode;
   data: ExportSemanticData;
   canonicalSummary: CanonicalExportSummary;
+  intelligenceSource: "canonical-assisted";
+  voiceIntelligence?: VoiceBriefIntelligence;
   contentByMode: ExportContentByMode;
   htmlByMode: Record<ExportMode, string>;
   qaByMode: Record<ExportMode, ExportQaResult>;
@@ -143,6 +150,205 @@ export interface CanonicalEvidenceAnchor {
   id: string;
   shortTitle: string;
   shortSubtitle: string;
+}
+
+export type ToneType =
+  | "directive"
+  | "analytical"
+  | "interpretive"
+  | "predictive"
+  | "signal"
+  | "explanatory"
+  | "framing"
+  | "declarative";
+
+export type RenderStyle = "headline" | "paragraph" | "bullet" | "chip" | "row" | "list" | "strip";
+
+export type FallbackBehavior = "omit" | "compress" | "replace-with-default";
+
+export interface FieldRule<T> {
+  value: T;
+  required: boolean;
+  maxWords?: number;
+  minWords?: number;
+  minItems?: number;
+  maxItems?: number;
+  tone: ToneType;
+  renderStyle: RenderStyle;
+  placement: string;
+  fallback: FallbackBehavior;
+}
+
+export interface BoardOnePagerFieldPack {
+  topInterpretation: string;
+  boardRead: string[];
+  decisionHeadline: string;
+  signalGrid: Array<{ label: string; value: string; direction: string; implication: string }>;
+  decisionBullets: string[];
+  dominantPath: string;
+  primaryPressure: string;
+  riskConcentrations: string[];
+  inflectionPaths: string[];
+  monitoringTriggers: string[];
+  readShiftSignals: string[];
+  containedSpreadSplit: Array<{ label: string; value: string }>;
+  evidenceAnchors: CanonicalEvidenceAnchor[];
+}
+
+export interface EvidenceSignal {
+  code: string;
+  signal: string;
+}
+
+export interface ExecutiveEvidenceSignal extends EvidenceSignal {
+  significance: string;
+}
+
+export interface SignalGridItem {
+  domain: "coordination" | "allocation" | "infrastructure" | "markets";
+  state: string;
+  direction: "up" | "down" | "flat";
+  implication: string;
+}
+
+export interface BoardOnePagerSpec {
+  header: {
+    scenarioTitle: FieldRule<string>;
+    replayMonthLabel: FieldRule<string>;
+    confidentialityLabel: FieldRule<string>;
+  };
+  stateBand: {
+    phase: FieldRule<string>;
+    density: FieldRule<string>;
+    momentum: FieldRule<string>;
+    reversibility: FieldRule<string>;
+    stateInterpretation: FieldRule<string>;
+  };
+  boardRead: {
+    headline: FieldRule<string>;
+    summary: FieldRule<string>;
+  };
+  decisionBox: {
+    title: FieldRule<string>;
+    actions: FieldRule<string[]>;
+  };
+  dominantPath: {
+    statement: FieldRule<string>;
+  };
+  primaryPressure: {
+    statement: FieldRule<string>;
+  };
+  riskConcentration: {
+    items: FieldRule<string[]>;
+  };
+  inflectionPaths: {
+    continuation: FieldRule<string>;
+    reversal: FieldRule<string>;
+    acceleration?: FieldRule<string>;
+  };
+  triggers: {
+    items: FieldRule<string[]>;
+  };
+  evidenceSignals: {
+    items: FieldRule<EvidenceSignal[]>;
+  };
+  signalGrid: {
+    items: FieldRule<SignalGridItem[]>;
+  };
+}
+
+export interface ExecutiveBriefFieldPack {
+  systemStrip: Array<{ label: string; value: string }>;
+  assumptionsUnderStrain: string[];
+  containedVsSpreading: Array<{ label: string; value: string }>;
+  decisionFrames: {
+    whatChanged: string;
+    invalidates: string[];
+    costOfDelay: string;
+  };
+  systemStateOverview: ExecutiveBriefSectionContent;
+  narrativeDevelopment: ExecutiveBriefSectionContent;
+  structuralInterpretation: ExecutiveBriefSectionContent;
+  forwardOrientation: ExecutiveBriefSectionContent;
+  strategicPositioning: ExecutiveBriefSectionContent;
+  evidenceAnchors: ExecutiveBriefSectionContent;
+}
+
+export interface LegacyExecutiveBriefSpec {
+  cover: {
+    scenarioTitle: FieldRule<string>;
+    replayMonthLabel: FieldRule<string>;
+    phase: FieldRule<string>;
+    density: FieldRule<string>;
+    momentum: FieldRule<string>;
+    reversibility: FieldRule<string>;
+    executiveHeadline: FieldRule<string>;
+  };
+  systemState: {
+    title: FieldRule<string>;
+    summary: FieldRule<string>;
+    sidebarInsight: FieldRule<string>;
+  };
+  narrativeProgression: {
+    title: FieldRule<string>;
+    summary: FieldRule<string>;
+    sidebarInsight: FieldRule<string>;
+  };
+  structuralRead: {
+    title: FieldRule<string>;
+    summary: FieldRule<string>;
+    sidebarInsight: FieldRule<string>;
+  };
+  forwardView: {
+    title: FieldRule<string>;
+    summary: FieldRule<string>;
+    sidebarInsight: FieldRule<string>;
+  };
+  decisionPosture: {
+    title: FieldRule<string>;
+    summary: FieldRule<string>;
+    sidebarInsight: FieldRule<string>;
+    actions?: FieldRule<string[]>;
+  };
+  evidenceBase: {
+    title: FieldRule<string>;
+    intro: FieldRule<string>;
+    items: FieldRule<ExecutiveEvidenceSignal[]>;
+  };
+}
+
+export type PresentationSlideType =
+  | "title"
+  | "system-state"
+  | "key-risk"
+  | "pressure"
+  | "path"
+  | "decision"
+  | "triggers"
+  | "evidence"
+  | "close";
+
+export interface PresentationSlideSpec {
+  slideType: FieldRule<PresentationSlideType>;
+  title: FieldRule<string>;
+  subtitle?: FieldRule<string>;
+  bullets: FieldRule<string[]>;
+  presenterNote?: FieldRule<string>;
+}
+
+export interface PresentationBriefFieldPack {
+  titleSlide: PresentationSlideContent;
+  systemStateSlide: PresentationSlideContent;
+  keyJudgmentsSlide: PresentationSlideContent;
+  progressionSlide: PresentationSlideContent;
+  inflectionSlide: PresentationSlideContent;
+  impactSlide: PresentationSlideContent;
+  pathwaysSlide: PresentationSlideContent;
+  monitoringSlide: PresentationSlideContent;
+}
+
+export interface PresentationBriefSpec {
+  slides: PresentationSlideSpec[];
 }
 
 export interface CanonicalExportSummary {
@@ -199,8 +405,8 @@ export interface ExecutiveBriefContent {
   timestamp: string;
   confidentialityLabel: string;
   boundedWorld: string;
-  systemStrip: Array<{ label: string; value: string }>;
-  sections: ExecutiveBriefSectionContent[];
+  spec: NewExecutiveBriefSpec;
+  fieldPack: NewExecutiveBriefFieldPack;
 }
 
 export interface BoardOnePagerContent {
@@ -209,10 +415,21 @@ export interface BoardOnePagerContent {
   timestamp: string;
   confidentialityLabel: string;
   boundedWorld: string;
-  currentStateSummary: string;
-  implicationsSummary: string;
-  monitoringSummary: string;
-  signalStack: Array<{ label: string; value: string; support?: string }>;
+  systemStrip: Array<{ label: string; value: string }>;
+  spec: BoardOnePagerSpec;
+  fieldPack: BoardOnePagerFieldPack;
+  topInterpretation: string;
+  boardRead: string[];
+  decisionHeadline: string;
+  signalGrid: Array<{ label: string; value: string; direction: string; implication: string }>;
+  decisionBullets: string[];
+  dominantPath: string;
+  primaryPressure: string;
+  riskConcentrations: string[];
+  nextChangeSignals: string[];
+  monitoringTriggers: string[];
+  readShiftSignals: string[];
+  containedSpreadSplit: Array<{ label: string; value: string }>;
   evidenceAnchors: CanonicalEvidenceAnchor[];
 }
 
@@ -221,6 +438,7 @@ export interface PresentationSlideContent {
   title: string;
   headline: string;
   bullets: string[];
+  signalStrip?: Array<{ label: string; value: string }>;
 }
 
 export interface PresentationBriefContent {
@@ -228,6 +446,8 @@ export interface PresentationBriefContent {
   replayMonth: string;
   timestamp: string;
   confidentialityLabel: string;
+  spec: PresentationBriefSpec;
+  fieldPack: PresentationBriefFieldPack;
   slides: PresentationSlideContent[];
 }
 

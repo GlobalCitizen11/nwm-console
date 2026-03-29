@@ -55,11 +55,6 @@ export function ExportPreviewRoute() {
           </div>
         </div>
         <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
-          {payload.qa.issues.length > 0 ? (
-            <div style={{ fontSize: 12, color: "#d9b768" }}>{payload.qa.issues.length} layout warning{payload.qa.issues.length === 1 ? "" : "s"}</div>
-          ) : (
-            <div style={{ fontSize: 12, color: "#86c08a" }}>Layout QA passed</div>
-          )}
           <button
             style={{
               borderRadius: 999,

@@ -2,19 +2,22 @@ import { renderToStaticMarkup } from "react-dom/server";
 import exportBaseCss from "./styles/export-base.css?raw";
 import exportPrintCss from "./styles/export-print.css?raw";
 import type { CanonicalExportSummary, ExportContentByMode, ExportMode, ExportPreviewBundle, ExportQaResult, ExportSemanticData } from "./types/export";
+import type { VoiceBriefIntelligence } from "../../types/voiceBriefIntelligence";
 import { buildPdfFilename } from "./utils/pdfMetadata";
 import { ExportRouter } from "./ExportRouter";
+import { exportTokenCssText } from "./design-tokens/cssVariables";
 import { exportLayouts } from "./config/exportLayouts";
 import { buildCanonicalSummary } from "./utils/canonicalSummary";
 import { renderBoardOnePager, renderExecutiveBrief, renderPresentationBrief } from "./utils/renderArtifactContent";
 import { validateBoardOnePager, validateCanonicalSummary, validateExecutiveBrief, validatePresentationBrief } from "./utils/validateArtifacts";
+import { buildAssistedIntelligenceFromSummary } from "../../lib/artifactSpecBuilders";
 
 const renderModeHtml = (mode: ExportMode, contentByMode: ExportContentByMode) => `<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <style>${exportBaseCss}\n${exportPrintCss}</style>
+    <style>${exportTokenCssText}\n${exportBaseCss}\n${exportPrintCss}</style>
   </head>
   <body class="export-root export-root--${mode} export-root--${exportLayouts[mode].orientation}">
     <div class="export-document export-document--${mode} export-document--${exportLayouts[mode].orientation}">${renderToStaticMarkup(
@@ -25,13 +28,14 @@ const renderModeHtml = (mode: ExportMode, contentByMode: ExportContentByMode) =>
 
 const buildArtifactContent = (
   summary: CanonicalExportSummary,
+  assistedIntelligence: VoiceBriefIntelligence,
 ): {
   contentByMode: ExportContentByMode;
   qaByMode: Record<ExportMode, ExportQaResult>;
 } => {
-  const board = renderBoardOnePager(summary);
-  const executive = renderExecutiveBrief(summary);
-  const presentation = renderPresentationBrief(summary);
+  const board = renderBoardOnePager(summary, assistedIntelligence);
+  const executive = renderExecutiveBrief(summary, assistedIntelligence);
+  const presentation = renderPresentationBrief(summary, assistedIntelligence);
 
   return {
     contentByMode: {
@@ -57,8 +61,9 @@ export const buildExportBundle = ({
   month: number;
 }): ExportPreviewBundle => {
   const canonicalSummary = buildCanonicalSummary(data);
+  const assistedIntelligence = buildAssistedIntelligenceFromSummary(canonicalSummary);
   const canonicalQa = validateCanonicalSummary(canonicalSummary);
-  const { contentByMode, qaByMode: contentQaByMode } = buildArtifactContent(canonicalSummary);
+  const { contentByMode, qaByMode: contentQaByMode } = buildArtifactContent(canonicalSummary, assistedIntelligence);
 
   const htmlByMode = {
     "executive-brief": renderModeHtml("executive-brief", contentByMode),
@@ -75,6 +80,8 @@ export const buildExportBundle = ({
     mode: "executive-brief",
     data,
     canonicalSummary,
+    intelligenceSource: "canonical-assisted",
+    voiceIntelligence: assistedIntelligence,
     contentByMode,
     htmlByMode,
     qaByMode: {

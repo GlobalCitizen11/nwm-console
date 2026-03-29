@@ -3,5 +3,401 @@
   display: grid;
   place-items: center;
   text-align: center;
-  padding: 24px;
+  padding: var(--space-lg);
+}
+
+.export-preview-empty-card {
+  width: min(560px, 100%);
+  display: grid;
+  gap: var(--space-xs);
+  padding: 20px 22px;
+  border: 1px solid color-mix(in srgb, var(--color-border-strong) 88%, transparent);
+  border-radius: var(--radius-md);
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--color-bg-panel) 98%, transparent), color-mix(in srgb, var(--color-bg-panel-soft) 94%, transparent));
+  box-shadow: var(--shadow-subtle);
+}
+
+.export-preview-shell {
+  background:
+    radial-gradient(circle at top left, color-mix(in srgb, var(--color-accent-primary) 7%, transparent), transparent 24%),
+    linear-gradient(180deg, color-mix(in srgb, var(--color-bg-preview) 96%, #04070b), color-mix(in srgb, var(--color-bg-page-alt) 96%, #02050a));
+}
+
+.export-preview-toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  padding: 10px 24px 0;
+  border: 0;
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--color-bg-preview) 94%, transparent) 0%, color-mix(in srgb, var(--color-bg-preview) 82%, transparent) 68%, transparent 100%);
+  box-shadow: none;
+  backdrop-filter: blur(12px);
+}
+
+.export-preview-toolbar-inner {
+  width: min(1440px, calc(100vw - 48px));
+  margin: 0 auto;
+  display: grid;
+  gap: 10px;
+  padding: 12px 14px 10px;
+  border: 1px solid color-mix(in srgb, var(--color-border-strong) 80%, transparent);
+  border-radius: 10px;
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--color-bg-panel) 99%, transparent), color-mix(in srgb, var(--color-bg-panel-soft) 97%, transparent));
+  box-shadow:
+    0 18px 36px rgba(0, 0, 0, 0.18),
+    0 0 0 1px color-mix(in srgb, var(--color-accent-primary) 5%, transparent),
+    inset 0 1px 0 color-mix(in srgb, var(--color-text-primary) 3%, transparent);
+  position: relative;
+  overflow: hidden;
+}
+
+.export-preview-toolbar-inner::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    color-mix(in srgb, var(--color-accent-primary) 36%, transparent) 18%,
+    color-mix(in srgb, var(--color-text-primary) 8%, transparent) 50%,
+    color-mix(in srgb, var(--color-accent-primary) 28%, transparent) 82%,
+    transparent 100%
+  );
+  pointer-events: none;
+}
+
+.export-preview-toolbar-copy {
+  display: grid;
+  gap: 2px;
+  max-width: 640px;
+}
+
+.export-preview-title {
+  margin: 0;
+  font-size: 20px;
+  line-height: 1.04;
+  letter-spacing: -0.024em;
+  font-weight: 620;
+}
+
+.export-preview-toolbar-rail {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 6px;
+}
+
+.export-preview-toolbar-rail .status-chip {
+  gap: 1px;
+  padding: 6px 8px;
+  border-radius: 7px;
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--color-bg-panel-wash) 98%, transparent), color-mix(in srgb, var(--color-bg-page-alt) 92%, transparent));
+  box-shadow: inset 0 1px 0 color-mix(in srgb, var(--color-text-primary) 1.5%, transparent);
+}
+
+.export-preview-toolbar-rail .status-chip:nth-child(1) {
+  border-color: color-mix(in srgb, var(--color-category-market) 28%, var(--color-border-standard));
+}
+
+.export-preview-toolbar-rail .status-chip:nth-child(2) {
+  border-color: color-mix(in srgb, var(--color-category-strategy) 30%, var(--color-border-standard));
+}
+
+.export-preview-toolbar-rail .status-chip:nth-child(3) {
+  border-color: color-mix(in srgb, var(--color-category-pressure) 28%, var(--color-border-standard));
+}
+
+.export-preview-toolbar-rail .status-chip:nth-child(4) {
+  border-color: color-mix(in srgb, var(--color-category-infrastructure) 24%, var(--color-border-standard));
+}
+
+.export-preview-toolbar-rail .status-chip-label {
+  font-size: 8px;
+  letter-spacing: 0.16em;
+}
+
+.export-preview-toolbar-rail .status-chip-value {
+  font-size: 11px;
+  line-height: 1.15;
+  font-weight: 600;
+}
+
+.export-preview-toolbar-controls {
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+  flex-wrap: wrap;
+  align-items: center;
+  padding-top: 8px;
+  border-top: 1px solid color-mix(in srgb, var(--color-border-subtle) 70%, transparent);
+}
+
+.export-mode-tabs {
+  padding: 2px;
+  border: 1px solid color-mix(in srgb, var(--color-border-standard) 72%, transparent);
+  border-radius: 8px;
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--color-bg-panel-wash) 94%, transparent), color-mix(in srgb, var(--color-bg-page-alt) 88%, transparent));
+  box-shadow: inset 0 1px 0 color-mix(in srgb, var(--color-text-primary) 2%, transparent);
+}
+
+.export-mode-tab {
+  border-radius: 6px;
+  border-color: transparent;
+  background: transparent;
+  padding: 7px 10px;
+  font-size: 10px;
+  line-height: 1.1;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  font-weight: 620;
+  color: var(--color-text-tertiary);
+}
+
+.export-mode-tab:hover {
+  border-color: color-mix(in srgb, var(--color-border-strong) 28%, transparent);
+  background: color-mix(in srgb, var(--color-bg-panel) 64%, transparent);
+  color: var(--color-text-primary);
+}
+
+.export-mode-tab.is-active {
+  border-color: color-mix(in srgb, var(--color-border-emphasis) 58%, transparent);
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--color-bg-panel) 96%, transparent), color-mix(in srgb, var(--color-bg-panel-soft) 92%, transparent));
+  color: var(--color-text-primary);
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--color-accent-primary) 12%, transparent),
+    0 8px 18px rgba(0, 0, 0, 0.12);
+}
+
+.export-preview-statusRow {
+  justify-content: flex-end;
+}
+
+.export-preview-status {
+  padding: 7px 10px;
+  border: 1px solid color-mix(in srgb, var(--color-border-standard) 72%, transparent);
+  border-radius: 7px;
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--color-bg-panel-wash) 96%, transparent), color-mix(in srgb, var(--color-bg-page-alt) 88%, transparent));
+  font-size: 10px;
+  line-height: 1.1;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  font-weight: 620;
+}
+
+.export-preview-stage {
+  width: min(1440px, calc(100vw - 48px));
+  margin: 0 auto;
+  padding: 10px 0 28px;
+  display: grid;
+  gap: 16px;
+}
+
+.export-preview-canvas {
+  padding: 18px;
+  border: 1px solid color-mix(in srgb, var(--color-border-strong) 80%, transparent);
+  border-radius: 14px;
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--color-bg-panel-wash) 94%, transparent), color-mix(in srgb, var(--color-bg-page-alt) 94%, transparent));
+  box-shadow:
+    0 24px 54px rgba(0, 0, 0, 0.24),
+    inset 0 1px 0 color-mix(in srgb, var(--color-text-primary) 2%, transparent);
+}
+
+.export-debug-grid {
+  display: grid;
+  gap: var(--space-md);
+  margin: 0 auto var(--space-xxl);
+  width: 100%;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.export-debug-card {
+  border: 1px solid color-mix(in srgb, var(--color-border-strong) 88%, transparent);
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--color-bg-panel) 96%, transparent), color-mix(in srgb, var(--color-bg-panel-soft) 92%, transparent));
+  padding: var(--space-md);
+  border-radius: var(--radius-sm);
+  overflow: auto;
+  box-shadow: var(--shadow-subtle);
+}
+
+@media (max-width: 980px) {
+  .export-preview-toolbar-inner,
+  .export-preview-stage {
+    width: min(100vw - 24px, 100%);
+  }
+
+  .export-preview-toolbar {
+    padding: 8px 12px 0;
+  }
+
+  .export-preview-toolbar-rail {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .export-preview-toolbar-controls {
+    align-items: stretch;
+  }
+
+  .export-preview-statusRow {
+    justify-content: stretch;
+  }
+
+  .export-debug-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.export-debug-pre {
+  margin: 0;
+  white-space: pre-wrap;
+  word-break: break-word;
+  font-family: var(--font-mono);
+  font-size: var(--type-meta-size);
+  line-height: 1.5;
+  color: var(--color-text-secondary);
+}
+
+@media screen {
+  @media (prefers-reduced-motion: no-preference) {
+    .export-preview-canvas {
+      --motion-fast: 160ms;
+      --motion-medium: 280ms;
+      --motion-slow: 820ms;
+      --motion-ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+
+    .export-preview-canvas .signal-card,
+    .export-preview-canvas .insight-rail-card,
+    .export-preview-canvas .executive-compact-row,
+    .export-preview-canvas .board-compact-row,
+    .export-preview-canvas .board-compact-cluster,
+    .export-preview-canvas .presentation-slide-bullets li,
+    .export-preview-canvas .export-debug-card {
+      transition:
+        transform var(--motion-fast) var(--motion-ease),
+        border-color var(--motion-fast) var(--motion-ease),
+        box-shadow var(--motion-fast) var(--motion-ease),
+        background-color var(--motion-fast) var(--motion-ease);
+    }
+
+    .export-preview-canvas .signal-card:hover,
+    .export-preview-canvas .insight-rail-card:hover,
+    .export-preview-canvas .executive-compact-row:hover,
+    .export-preview-canvas .board-compact-row:hover,
+    .export-preview-canvas .board-compact-cluster:hover,
+    .export-preview-canvas .presentation-slide-bullets li:hover,
+    .export-preview-canvas .decision-box:hover,
+    .export-preview-canvas .pressure-bar:hover {
+      transform: translateY(-1px);
+      border-color: color-mix(in srgb, var(--color-border-strong) 90%, var(--color-accent-primary) 26%);
+      box-shadow:
+        0 10px 24px rgba(0, 0, 0, 0.18),
+        0 0 0 1px color-mix(in srgb, var(--color-accent-primary) 12%, transparent);
+    }
+
+    .export-preview-canvas .signal-card,
+    .export-preview-canvas .presentation-signal-chip,
+    .export-preview-canvas .executive-signal-module,
+    .export-preview-canvas .board-system-pill {
+      opacity: 0;
+      transform: translateY(3px);
+      animation: preview-fade-up var(--motion-medium) var(--motion-ease) forwards;
+    }
+
+    .export-preview-canvas .signal-card:nth-child(2),
+    .export-preview-canvas .presentation-signal-chip:nth-child(2),
+    .export-preview-canvas .executive-signal-module:nth-child(2),
+    .export-preview-canvas .board-system-pill:nth-child(2) {
+      animation-delay: 40ms;
+    }
+
+    .export-preview-canvas .signal-card:nth-child(3),
+    .export-preview-canvas .presentation-signal-chip:nth-child(3),
+    .export-preview-canvas .executive-signal-module:nth-child(3),
+    .export-preview-canvas .board-system-pill:nth-child(3) {
+      animation-delay: 80ms;
+    }
+
+    .export-preview-canvas .signal-card:nth-child(4),
+    .export-preview-canvas .presentation-signal-chip:nth-child(4),
+    .export-preview-canvas .executive-signal-module:nth-child(4),
+    .export-preview-canvas .board-system-pill:nth-child(4) {
+      animation-delay: 120ms;
+    }
+
+    .export-preview-canvas .decision-box {
+      animation: preview-decision-glow 2.4s ease-out 120ms 1;
+      transition:
+        transform var(--motion-fast) var(--motion-ease),
+        box-shadow var(--motion-fast) var(--motion-ease),
+        border-color var(--motion-fast) var(--motion-ease);
+    }
+
+    .export-preview-canvas .pressure-bar-track::-webkit-progress-value {
+      background-size: 140% 100%;
+      animation:
+        preview-fade-up var(--motion-medium) var(--motion-ease) forwards,
+        preview-pressure-sweep 900ms var(--motion-ease) 1;
+    }
+
+    .export-preview-canvas .pressure-bar-track::-moz-progress-bar {
+      background-size: 140% 100%;
+      animation:
+        preview-fade-up var(--motion-medium) var(--motion-ease) forwards,
+        preview-pressure-sweep 900ms var(--motion-ease) 1;
+    }
+
+    @keyframes preview-fade-up {
+      from {
+        opacity: 0;
+        transform: translateY(3px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes preview-decision-glow {
+      0% {
+        box-shadow:
+          0 0 0 0 color-mix(in srgb, var(--color-accent-warning) 0%, transparent),
+          inset 0 0 0 1px color-mix(in srgb, var(--color-accent-warning) 10%, transparent);
+      }
+
+      35% {
+        box-shadow:
+          0 0 0 5px color-mix(in srgb, var(--color-accent-warning) 8%, transparent),
+          0 10px 20px color-mix(in srgb, var(--color-accent-warning) 10%, transparent),
+          inset 0 0 0 1px color-mix(in srgb, var(--color-accent-warning) 18%, transparent);
+      }
+
+      100% {
+        box-shadow:
+          0 0 0 0 color-mix(in srgb, var(--color-accent-warning) 0%, transparent),
+          inset 0 0 0 1px color-mix(in srgb, var(--color-accent-warning) 10%, transparent);
+      }
+    }
+
+    @keyframes preview-pressure-sweep {
+      0% {
+        filter: brightness(1.12);
+        background-position: -24px 0;
+      }
+
+      100% {
+        filter: brightness(1);
+        background-position: 0 0;
+      }
+    }
+  }
 }

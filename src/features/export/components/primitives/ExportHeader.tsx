@@ -1,5 +1,6 @@
 import type { ExportMetadata } from "../../types/export";
 import { DataBadge } from "./DataBadge";
+import { ArtifactHeaderBand } from "./ArtifactHeaderBand";
 
 export function ExportHeader({
   title,
@@ -12,28 +13,35 @@ export function ExportHeader({
   metadata: ExportMetadata;
   modeLabel: string;
 }) {
+  const meta = [
+    { key: "Scenario", value: metadata.scenarioName },
+    { key: "Role", value: modeLabel, tone: "accent" as const },
+    { key: "Replay Month", value: metadata.asOf },
+    { key: "Phase", value: metadata.phase },
+  ];
+
   return (
-    <header className="export-header">
-      <div className="export-system-bar">
-        <span>{metadata.scenarioName}</span>
-        <span>{metadata.phase}</span>
-        <span>{metadata.asOf}</span>
-        <span>{modeLabel}</span>
-      </div>
-      <div className="export-header-main">
-        <div className="export-header-copy">
-          <p className="export-meta-label">{modeLabel}</p>
-          <h1>{title}</h1>
-          <p className="export-subtitle">{subtitle}</p>
-        </div>
-        <div className="export-header-side">
+    <ArtifactHeaderBand
+      className="export-header"
+      label={modeLabel}
+      title={title}
+      subtitle={subtitle}
+      meta={meta}
+      side={
+        <>
           <DataBadge tone="neutral">{metadata.confidentiality}</DataBadge>
-          <div className="export-header-meta">
-            <span>{metadata.boundedWorld}</span>
-            <span>{metadata.generatedAt}</span>
+          <div className="export-header-meta-grid">
+            <div className="export-header-meta">
+              <span>Boundary</span>
+              <span>{metadata.boundedWorld}</span>
+            </div>
+            <div className="export-header-meta">
+              <span>Generated</span>
+              <span>{metadata.generatedAt}</span>
+            </div>
           </div>
-        </div>
-      </div>
-    </header>
+        </>
+      }
+    />
   );
 }

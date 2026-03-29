@@ -54,7 +54,9 @@ describe("export pipeline", () => {
     const qa = validateExecutiveBrief(executive);
 
     expect(qa.ok).toBe(true);
-    expect(executive.sections).toHaveLength(6);
+    expect(executive.fieldPack.pageModel.page1).toEqual(["header", "systemStateOverview"]);
+    expect(executive.fieldPack.pageModel.page2).toEqual(["narrativeDevelopment", "structuralInterpretation"]);
+    expect(executive.fieldPack.pageModel.page3).toEqual(["forwardOrientation", "strategicPositioning", "evidenceBase"]);
   });
 
   it("builds a presentation brief that passes validation", () => {

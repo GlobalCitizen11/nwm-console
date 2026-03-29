@@ -97,8 +97,8 @@ This company wins if it combines three capabilities most teams do not hold toget
 **Visual direction**
 - Centered system statement under the title.
 - Main visual as a clean horizontal pipeline:
-  `Narrative World Boundary -> Artifact Ingestion -> Narrative State Vector -> Temporal Coherence -> State Orientation -> Proof Objects -> PAL -> Adjudicated Narrative State`
-- Supporting functional blocks for world definition, artifact processing, state construction, temporal coherence, orientation, proof binding, and phase adjudication.
+  `Narrative World Boundary -> Artifact Ingestion -> Structured State Representation -> Temporal Coherence -> State Orientation -> Evidence Traceability -> PAL -> Adjudicated System State`
+- Supporting functional blocks for world definition, artifact processing, state construction, temporal coherence, orientation, evidence binding, and phase adjudication.
 - Bottom strip listing the output set and a footer constraint stating that, to build trust and a strong foundational infrastructure, the system produces state adjudication only and does not, at this time, predict, recommend, optimize, or interpret intent.
 
 ### Slide 2 — The Problem Is Coherence, Not Collection
@@ -283,6 +283,7 @@ This company wins if it combines three capabilities most teams do not hold toget
   - `Sees the problem differently`
   - `Can build the solution`
 - Bottom/right final signal card: `Not building tools. Building decision infrastructure.`
+- Closing contact strip: `For a demo or white paper, contact marques@a2xfoundry.com.`
 
 ## Product System Definition
 

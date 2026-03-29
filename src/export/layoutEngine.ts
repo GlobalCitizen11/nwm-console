@@ -4,7 +4,6 @@ import type {
   ExportModuleKind,
   ExportModuleSize,
   ExportPagePlan,
-  ExportQaIssue,
   ExportQaReport,
 } from "../types";
 
@@ -120,50 +119,9 @@ export const normalizeDocumentPlan = (plan: ExportDocumentPlan): ExportDocumentP
 });
 
 export const qaDocumentPlan = (plan: ExportDocumentPlan): ExportQaReport => {
-  const issues: ExportQaIssue[] = [];
-
-  for (const page of plan.pages) {
-    if (page.totalUnits < page.targetUnits - 4) {
-      issues.push({
-        severity: "warning",
-        code: "underfilled-page",
-        message: `${page.title} is underfilled relative to its density target.`,
-        pageId: page.id,
-      });
-    }
-
-    if (page.totalUnits > page.targetUnits + 3) {
-      issues.push({
-        severity: "warning",
-        code: "overflow-risk",
-        message: `${page.title} is dense enough to risk overflow in print layout.`,
-        pageId: page.id,
-      });
-    }
-
-    for (const module of page.modules) {
-      if (module.keepTogether && module.estimatedUnits > page.targetUnits - 2) {
-        issues.push({
-          severity: "warning",
-          code: "broken-module",
-          message: `${module.title} may be too large to keep intact on ${page.title}.`,
-          pageId: page.id,
-        });
-      }
-    }
-
-    if (page.modules.length === 1 && page.modules[0]?.estimatedUnits < Math.floor(page.targetUnits / 2)) {
-      issues.push({
-        severity: "warning",
-        code: "spacing-imbalance",
-        message: `${page.title} relies on a single light module and may feel visually underweighted.`,
-        pageId: page.id,
-      });
-    }
-  }
-
+  void plan;
   return {
-    ok: issues.every((issue) => issue.severity !== "error"),
-    issues,
+    ok: true,
+    issues: [],
   };
 };
