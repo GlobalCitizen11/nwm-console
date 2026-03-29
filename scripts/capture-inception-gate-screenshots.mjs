@@ -56,7 +56,7 @@ async function main() {
   for (const shot of shots) {
     console.log(`capture:shot:${shot.name}`);
     if (shot.mode === "viewport") {
-      await page.evaluate(() => window.scrollTo(0, 0));
+      await page.evaluate(() => globalThis.scrollTo(0, 0));
       await page.screenshot({
         path: path.join(outputDir, shot.name),
         clip: {
