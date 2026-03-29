@@ -50,7 +50,7 @@
       "slideId": "s6",
       "title": "What Customers Actually Receive",
       "audioPath": "audio/inception-gate/s06.mp3",
-      "script": "Iran is just one example, but it shows the product clearly. The system pulls noisy signals into one view, highlights the main read, shows alternate paths, and makes clear what would strengthen or weaken that read. Instead of forcing leaders to read dozens of disconnected updates, it gives them a short, evidence-linked brief that answers what changed, why it matters, where risk is concentrated, what to do now, and what would change the read.",
+      "script": "Iran is just one example, but it shows the product clearly. The system pulls noisy signals into one view, highlights the main read, shows alternate paths, and makes clear what would strengthen or weaken that read. On the left, you can see the signal inputs that explain why the system is leaning in a certain direction. In the middle, you get the actual system read, which turns those signals into a short interpretation a leadership team can use. On the right, you see the alternate paths and the trigger conditions that would confirm, accelerate, or break the current read. That matters because the product is not just summarizing events. It is helping a team understand what is happening, what could happen next, and what evidence would force them to update their view. Instead of forcing leaders to read dozens of disconnected updates, it gives them a short, evidence-linked brief that answers what changed, why it matters, where risk is concentrated, what to do now, and what would change the read.",
       "cues": [
         { "at": 0, "key": "signal-panel" },
         { "at": 9, "key": "nci" },
