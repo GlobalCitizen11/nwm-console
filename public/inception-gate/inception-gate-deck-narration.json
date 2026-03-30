@@ -8,7 +8,7 @@
       "slideId": "s1",
       "title": "The Missing Layer in Institutional Decision-Making",
       "audioPath": "audio/inception-gate/s01.mp3",
-      "script": "Let me start with the core idea. Most institutions already pay for data, software, and expert analysis. But even with all of that, they still do not have one system that turns those inputs into a clear, accountable read. That work still happens by hand across decks, meetings, analyst judgment, and last-minute briefing prep. What we are building with Inception Gate is the missing layer in the middle. It turns fragmented signals into one operating view leaders can actually use.",
+      "script": "Let me start with the core idea. Institutions already pay for data, software, and expert analysis. And yet, even with all of that, they still do not have one system that turns those inputs into a clear, accountable read. That work still happens by hand across decks, meetings, analyst judgment, and last-minute briefing prep. What we are building with Inception Gate is the missing layer in the middle. It turns fragmented signals into one operating view leaders can actually use.",
       "cues": [
         { "at": 0, "key": "headline" },
         { "at": 7, "key": "investor-read" },
@@ -51,7 +51,7 @@
       "slideId": "s6",
       "title": "What Customers Actually Receive",
       "audioPath": "audio/inception-gate/s06.mp3",
-      "script": "This is what the customer actually gets. Iran is just one example, but it is a useful one because it shows the whole product on one screen. On the left are the incoming signals. In the middle, the system turns those signals into a current read a leadership team can actually use. On the right, it lays out the alternate paths and the trigger conditions that would confirm, accelerate, or break that read. That is really the point of the product. I am not trying to build a system that just summarizes events. I want a team to be able to look at this and understand what is happening now, what could happen next, and what evidence would force them to update their view. Instead of reading dozens of disconnected updates, leaders get a short, evidence-linked brief that tells them what changed, why it matters, where risk is building, what to do now, and what would change the read.",
+      "script": "This is what the customer actually gets. Iran is just one example, but it shows the whole product on one screen. On the left are the incoming signals. In the middle, the system turns those signals into a current read a leadership team can actually use. On the right, it shows the alternate paths and the trigger conditions that would confirm, accelerate, or break that read. That is really the point. I am not trying to build a system that just summarizes events. I want a team to look at this and understand what is happening now, what could happen next, and what evidence would force them to update their view. Instead of reading dozens of disconnected updates, leaders get a short, evidence-linked brief that tells them what changed, why it matters, where risk is building, what to do now, and what would change the read.",
       "cues": [
         { "at": 0, "key": "signal-panel" },
         { "at": 9, "key": "nci" },
@@ -123,7 +123,7 @@
       "title": "Why This Founder",
       "audioPath": "audio/inception-gate/s14.mp3",
       "script": "And I will close with this. This is personal for me. I have seen this failure up close: signal everywhere, but no shared institutional read strong enough to guide action. I am not building an AI wrapper. I am building a decision layer for strategy, risk, policy, and investment teams that need a clearer read before they act. For a demo or white paper, contact marques@a2xfoundry.com.",
-      "voiceScript": "And I will close with this. This is personal for me. I have seen this failure up close: signal everywhere, but no shared institutional read strong enough to guide action. I am not building an AI wrapper. I am building a decision layer for strategy, risk, policy, and investment teams that need a clearer read before they act. For a demo or white paper, contact marques@a2xfoundry.com.",
+      "voiceScript": "And I'll close with this. This is personal for me. I've seen this failure up close: signal everywhere, but no shared institutional read strong enough to guide action. I'm not building an AI wrapper. I'm building a decision layer for strategy, risk, policy, and investment teams that need a clearer read before they act. For a demo or white paper, contact marques@a2xfoundry.com.",
       "cues": [
         { "at": 0, "key": "founder-panel" },
         { "at": 10, "key": "founder-panel" },
