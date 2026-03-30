@@ -138,6 +138,7 @@ function getProviderConfig(narration, env) {
 }
 
 async function generateOpenAiSpeech(slide, config) {
+  const voiceInput = slide.voiceScript || slide.script;
   const response = await fetch("https://api.openai.com/v1/audio/speech", {
     method: "POST",
     headers: {
@@ -149,7 +150,7 @@ async function generateOpenAiSpeech(slide, config) {
       voice: config.voice,
       format: "mp3",
       speed: config.speed,
-      input: slide.script,
+      input: voiceInput,
     }),
   });
 
@@ -162,6 +163,7 @@ async function generateOpenAiSpeech(slide, config) {
 }
 
 async function generateElevenLabsSpeech(slide, config) {
+  const voiceInput = slide.voiceScript || slide.script;
   const query = new URLSearchParams({ output_format: config.outputFormat });
   const response = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${config.voiceId}?${query.toString()}`, {
     method: "POST",
@@ -171,7 +173,7 @@ async function generateElevenLabsSpeech(slide, config) {
       Accept: "audio/mpeg",
     },
     body: JSON.stringify({
-      text: slide.script,
+      text: voiceInput,
       model_id: config.model,
       ...(config.languageCode ? { language_code: config.languageCode } : {}),
       ...(config.voiceSettings ? { voice_settings: config.voiceSettings } : {}),
