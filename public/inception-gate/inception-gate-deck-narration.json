@@ -8,7 +8,7 @@
       "slideId": "s1",
       "title": "The Missing Layer in Institutional Decision-Making",
       "audioPath": "audio/inception-gate/s01.mp3",
-      "script": "Most institutions already pay for data, software, and expert analysis. But even with all of that, they still do not have one system that turns those inputs into a clear, accountable read. Today that work still gets done by hand across decks, meetings, analyst judgment, and last-minute briefing prep. Inception Gate sits in that gap. It pulls fragmented signals into one operating view, so leaders get something they can actually use to make a decision.",
+      "script": "Here is the core idea. Most institutions already pay for data, software, and expert analysis. But even with all of that, they still do not have one system that turns those inputs into a clear, accountable read. That work still gets done by hand across decks, meetings, analyst judgment, and last-minute briefing prep. Inception Gate sits in that gap. It turns fragmented signals into one operating view leaders can actually use.",
       "cues": [
         { "at": 0, "key": "headline" },
         { "at": 7, "key": "investor-read" },
@@ -20,19 +20,19 @@
       "slideId": "s2",
       "title": "Institutions Have More Data Than Decision Clarity",
       "audioPath": "audio/inception-gate/s02.mp3",
-      "script": "So the problem is not missing information. It is missing shared interpretation. When teams cannot align quickly on what the signals actually mean, decisions slow down, drift, or get made after the window has already moved."
+      "script": "So the real problem is not missing information. It is missing shared interpretation. When teams cannot align quickly on what the signals actually mean, decisions slow down, drift, or happen after the window has already moved."
     },
     {
       "slideId": "s3",
       "title": "Current Tools Stop Short of Decision-Making",
       "audioPath": "audio/inception-gate/s03.mp3",
-      "script": "Once you look at it that way, the gap in the current stack is pretty easy to see. Dashboards help collect and monitor information, but they do not tell a team what it means. Consultants can bring judgment, but only in bursts. Scenario planning is useful, but it usually sits outside the live workflow. And generic AI can produce language fast, but it does not create a governed operating read. Inception Gate is built to fill that exact gap."
+      "script": "And once you look at it that way, the gap in the current stack is pretty easy to see. Dashboards help collect and monitor information, but they do not tell a team what it means. Consultants can bring judgment, but only in bursts. Scenario planning is useful, but it usually sits outside the live workflow. And generic AI can produce language fast, but it still does not create a governed operating read. Inception Gate is built to fill that exact gap."
     },
     {
       "slideId": "s4",
       "title": "A Live Decision System, Not Scenario Planning Software",
       "audioPath": "audio/inception-gate/s04.mp3",
-      "script": "That brings us to the product. Scenario planning is usually a periodic exercise. Inception Gate is something a team uses continuously. It takes in live evidence, updates the current read, compares alternate paths, and shows what would actually cause the read to change. So this is not planning software. It is a live decision system.",
+      "script": "That brings us to the product itself. Scenario planning is usually a periodic exercise. Inception Gate is something a team uses continuously. It takes in live evidence, updates the current read, compares alternate paths, and shows what would actually cause the read to change. So this is not planning software. It is a live decision system.",
       "cues": [
         { "at": 0, "key": "architecture" },
         { "at": 4, "key": "data-signals" },
@@ -45,13 +45,13 @@
       "slideId": "s5",
       "title": "How Information Moves Through the Platform",
       "audioPath": "audio/inception-gate/s05.mp3",
-      "script": "Here is how the workflow works in practice. Teams watch the live picture, trace how the read was formed, and turn that into briefs, path comparisons, and alerts. The point is to support recurring decision cycles, not one-off analysis."
+      "script": "In practice, the workflow is simple. Teams watch the live picture, trace how the read was formed, and turn that into briefs, path comparisons, and alerts. The point is to support recurring decision cycles, not one-off analysis."
     },
     {
       "slideId": "s6",
       "title": "What Customers Actually Receive",
       "audioPath": "audio/inception-gate/s06.mp3",
-      "script": "This is what the customer actually gets. Iran is just one example, but it is a useful one because it shows the full product in one screen. On the left, you have the signals coming in. In the middle, the system turns those signals into a current read that a leadership team can actually use. On the right, it lays out the alternate paths and the trigger conditions that would confirm, accelerate, or break that read. That is the key difference. The product is not just summarizing events. It is helping a team understand what is happening now, what could happen next, and what evidence would force them to update their view. Instead of reading dozens of disconnected updates, leaders get a short, evidence-linked brief that tells them what changed, why it matters, where risk is building, what to do now, and what would change the read.",
+      "script": "This is what the customer actually gets. Iran is just one example, but it is a useful one because it shows the full product on one screen. On the left, you have the incoming signals. In the middle, the system turns those signals into a current read that a leadership team can actually use. On the right, it lays out the alternate paths and the trigger conditions that would confirm, accelerate, or break that read. That is the point. The product is not just summarizing events. It is helping a team understand what is happening now, what could happen next, and what evidence would force them to update their view. Instead of reading dozens of disconnected updates, leaders get a short, evidence-linked brief that tells them what changed, why it matters, where risk is building, what to do now, and what would change the read.",
       "cues": [
         { "at": 0, "key": "signal-panel" },
         { "at": 9, "key": "nci" },
@@ -74,7 +74,7 @@
       "slideId": "s8",
       "title": "GTM and Pricing",
       "audioPath": "audio/inception-gate/s08.mp3",
-      "script": "Go to market starts narrow on purpose. The first sale is not a broad enterprise rollout. It is one sponsor, one workflow, and one paid pilot tied to a live decision cycle. That makes the value easy to see: faster briefing, faster alignment, and a better operating read inside an existing strategy, risk, or policy workflow. If the pilot works, expansion from that foothold becomes much easier to justify.",
+      "script": "We go to market in a very focused way. The first sale is not a broad enterprise rollout. It is one sponsor, one workflow, and one paid pilot tied to a live decision cycle. That makes the value easy to see: faster briefing, faster alignment, and a better operating read inside an existing strategy, risk, or policy workflow. If the pilot works, expansion from that foothold becomes much easier to justify.",
       "cues": [
         { "at": 0, "key": "gtm-panel" },
         { "at": 6, "key": "commercial-model" },
@@ -92,13 +92,13 @@
       "slideId": "s10",
       "title": "Budget Already Exists",
       "audioPath": "audio/inception-gate/s10.mp3",
-      "script": "That only works because the budget is already there. This is not about inventing a brand-new software line item. Institutions already spend real money on consulting, research, risk tooling, and analyst time to solve the same synthesis problem in fragmented ways. The pitch is simple: take that scattered spend and replace it with one decision system that gets more useful over time. That is why the first wedge is believable, and why the expansion story holds up."
+      "script": "And the reason that motion works is that the budget is already there. This is not about inventing a brand-new software line item. Institutions already spend real money on consulting, research, risk tooling, and analyst time to solve the same synthesis problem in fragmented ways. The pitch is simple: take that scattered spend and replace it with one decision system that gets more useful over time. That is why the first wedge is believable, and why the expansion story holds up."
     },
     {
       "slideId": "s11",
       "title": "Why Customers Stay",
       "audioPath": "audio/inception-gate/s11.mp3",
-      "script": "If the company lands well, customers have a reason to stay. The moat is not raw model access. It is the combination of a structured decision model, a traceable workflow, and decision memory that compounds over time. The longer a team uses the system, the harder it is to pull it back out.",
+      "script": "If the product lands well, customers have a reason to stay. The moat is not raw model access. It is the combination of a structured decision model, a traceable workflow, and decision memory that compounds over time. The longer a team uses the system, the harder it is to pull it back out.",
       "cues": [
         { "at": 0, "key": "defensibility-layers" },
         { "at": 8, "key": "defensibility-layers" },
