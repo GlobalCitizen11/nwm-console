@@ -73,7 +73,7 @@
       "slideId": "s8",
       "title": "GTM and Pricing",
       "audioPath": "audio/inception-gate/s08.mp3",
-      "script": "Go to market starts narrow on purpose. One sponsor. One workflow. One paid pilot. Pricing is tied to faster briefing, faster alignment, and better decision support inside a real planning or risk cycle.",
+      "script": "Go to market starts narrow on purpose. The first sale is not a broad enterprise rollout. It is one sponsor, one workflow, and one paid pilot tied to a live decision cycle. Pricing works because the value is concrete: faster briefing, faster alignment, and a better operating read inside a strategy, risk, or policy workflow. If the pilot proves that value, expansion from that foothold becomes much more believable.",
       "cues": [
         { "at": 0, "key": "gtm-panel" },
         { "at": 6, "key": "commercial-model" },
@@ -91,7 +91,7 @@
       "slideId": "s10",
       "title": "Budget Already Exists",
       "audioPath": "audio/inception-gate/s10.mp3",
-      "script": "That model works because the budget already exists. Institutions already spend on consulting, research, risk tooling, and analyst time. The opportunity is to consolidate that fragmented spend into one decision system."
+      "script": "That model works because the budget already exists. This is not a story about creating a brand-new software line item. Institutions already spend heavily on consulting, research, risk tooling, and analyst time to solve the same synthesis problem in fragmented ways. The budget case is simple: replace scattered spend with one decision system that becomes more useful over time. That is why the first wedge is believable and why the expansion story is credible."
     },
     {
       "slideId": "s11",
