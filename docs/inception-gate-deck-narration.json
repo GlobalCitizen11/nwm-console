@@ -68,13 +68,13 @@
       "slideId": "s7",
       "title": "Who Buys First",
       "audioPath": "audio/inception-gate/s07.mp3",
-      "script": "If that is the product, the first buyer is fairly clear. It is the leader already paying for ambiguity: strategy, risk, policy, communications, or investment leadership. They do not need another dashboard. They need one trusted read before they brief executives, move capital, change posture, or message into a fragile environment. That is why the first wedge is strong. These teams already feel the cost of fragmented interpretation, and they already have budget tied to high-stakes decisions."
+      "script": "If that is the product, the first buyer is fairly clear. It is the executive already accountable for turning ambiguity into a board-ready call on timing, risk, capital, or posture. That usually means strategy, risk, policy, communications, or investment leadership. They do not need another dashboard. They need one trusted read before a visible decision window closes. That is why the first wedge is strong. These teams already own the cost of fragmented interpretation, and they already control budget tied to high-stakes decisions."
     },
     {
       "slideId": "s8",
       "title": "GTM and Pricing",
       "audioPath": "audio/inception-gate/s08.mp3",
-      "script": "Go to market stays very focused. The first sale is not a broad enterprise rollout. It is one sponsor, one workflow, and one paid pilot tied to a live decision cycle. That makes the value easy to see: earlier detection, faster briefing, faster alignment, and a clearer operating read inside an existing strategy, risk, or policy workflow. If the pilot works, expansion becomes much easier to justify, because the product is already proving itself inside a real decision cadence with real executive consequences.",
+      "script": "Go to market stays very focused. The first sale is not a broad enterprise rollout. It is one accountable sponsor, one critical workflow, and one paid deployment tied to a live decision cycle. That keeps the ask concrete and the proof visible. The customer can judge value against real outputs: earlier detection, faster briefing, faster alignment, and a cleaner operating read inside an existing workflow. If that first cycle works, expansion becomes much easier to justify because the product has already earned its place in a real decision cadence.",
       "cues": [
         { "at": 0, "key": "gtm-panel" },
         { "at": 6, "key": "commercial-model" },
@@ -86,19 +86,19 @@
       "slideId": "s9",
       "title": "Land, Prove Value, Expand",
       "audioPath": "audio/inception-gate/s09.mp3",
-      "script": "From there, the motion stays disciplined. The company lands in one high-stakes workflow, proves value quickly, and then expands into adjacent teams, reporting surfaces, and decision cycles inside the same account. In practice, proof looks like this: briefing cycles compress, teams align around the same map of reality, state changes become easier to explain and defend, and important phase shifts trigger earlier action. That is how one workflow turns into infrastructure."
+      "script": "From there, the motion stays disciplined. The company lands in one high-stakes workflow, proves value quickly, and then expands into adjacent teams and decision cycles inside the same account. The proof standard is practical. Briefing cycles should compress. Cross-functional teams should align around the same state instead of arguing over source material. Recommendations should be easier to explain and defend. And important phase shifts should trigger action before consensus catches up. That is how one workflow turns into infrastructure."
     },
     {
       "slideId": "s10",
       "title": "Budget Already Exists",
       "audioPath": "audio/inception-gate/s10.mp3",
-      "script": "And the reason that motion works is that the budget is already there. This is not about inventing a brand-new software line item. Institutions already spend real money on consulting, research, risk tooling, communications support, and analyst time to solve the same synthesis problem in fragmented ways. The pitch is simple: replace scattered interpretation spend with one governed decision system that gets more useful over time. That improves timing, sharpens capital allocation, and reduces the cost of slow or misaligned calls. That is why the first wedge is believable, and why the expansion story holds up."
+      "script": "And the reason that motion works is that the budget is already there. This is a budget-conversion story, not a budget-creation story. Institutions already spend real money on consulting, research, risk tooling, communications support, and analyst time to solve the same synthesis problem in fragmented ways. The pitch is simple: replace scattered interpretation spend with one governed decision system that gets more useful over time. That improves timing, sharpens capital allocation, and lowers the cost of slow or misaligned calls. That is why the first wedge is believable, and why the expansion story holds up."
     },
     {
       "slideId": "s11",
       "title": "Why Customers Stay",
       "audioPath": "audio/inception-gate/s11.mp3",
-      "script": "If the product lands well, customers have a reason to stay. The moat is not raw model access. It is the combination of a structured decision model, proof objects, living archive, and embedded workflow that compounds over time. Every decision can be explained, defended, and audited. Every state transition becomes part of institutional memory. And the longer a team uses the system, the more it starts to function like a narrative intelligence layer inside the organization, not just a software tool.",
+      "script": "If the product lands well, customers have a reason to stay. The moat is not raw model access. It is what happens when the system becomes part of live workflow. The decision model, proof objects, and living archive start to compound together. Every decision can be explained, defended, and audited. Every state transition becomes institutional memory. And replacing the product means rebuilding the logic, the workflow, the history, and the trust layer across multiple teams. That is why this can become a narrative intelligence layer inside the organization, not just a software tool.",
       "cues": [
         { "at": 0, "key": "defensibility-layers" },
         { "at": 8, "key": "defensibility-layers" },
