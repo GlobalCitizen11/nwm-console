@@ -1,0 +1,4525 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Inception Gate Investor Deck</title>
+    <style>
+      :root {
+        --bg: #f2efe7;
+        --paper: #fbf8f1;
+        --ink: #171512;
+        --muted: #60584f;
+        --line: rgba(23, 21, 18, 0.12);
+        --accent: #a63d1d;
+        --accent-soft: rgba(166, 61, 29, 0.12);
+        --signal: #203d5a;
+        --signal-soft: rgba(32, 61, 90, 0.1);
+        --success: #285943;
+        --warning: #8c5a16;
+        --shadow: 0 22px 60px rgba(34, 26, 17, 0.12);
+        --page-width: 1440px;
+        --deep-ink: #0f1720;
+        --gold: #a77a2f;
+        --cream: #f8f4eb;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        background:
+          radial-gradient(circle at 8% 12%, rgba(166, 61, 29, 0.1), transparent 22%),
+          radial-gradient(circle at 88% 10%, rgba(32, 61, 90, 0.12), transparent 22%),
+          linear-gradient(180deg, #f7f2e8 0%, #eee5d6 100%);
+        color: var(--ink);
+        font-family: "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Palatino, serif;
+      }
+
+      body.gate-locked {
+        overflow: hidden;
+      }
+
+      body.gate-locked .topbar,
+      body.gate-locked main,
+      body.gate-locked .command-bar,
+      body.gate-locked .voiceover-panel {
+        filter: blur(16px);
+        pointer-events: none;
+        user-select: none;
+      }
+
+      .access-gate {
+        position: fixed;
+        inset: 0;
+        z-index: 100;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        padding: 28px;
+        background:
+          linear-gradient(180deg, rgba(10, 16, 22, 0.3), rgba(10, 16, 22, 0.52)),
+          radial-gradient(circle at 20% 20%, rgba(166, 61, 29, 0.16), transparent 24%),
+          radial-gradient(circle at 80% 14%, rgba(32, 61, 90, 0.2), transparent 28%);
+        backdrop-filter: blur(12px);
+      }
+
+      body.gate-locked .access-gate {
+        display: flex;
+      }
+
+      .gate-card {
+        width: min(560px, 100%);
+        border: 1px solid rgba(255, 255, 255, 0.26);
+        border-radius: 28px;
+        padding: 28px 28px 24px;
+        background:
+          linear-gradient(180deg, rgba(251, 248, 241, 0.96), rgba(243, 236, 224, 0.96)),
+          linear-gradient(135deg, rgba(255, 255, 255, 0.24), transparent 42%);
+        box-shadow:
+          0 32px 100px rgba(18, 18, 18, 0.28),
+          inset 0 1px 0 rgba(255, 255, 255, 0.54);
+      }
+
+      .gate-kicker {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 18px;
+        color: var(--muted);
+        font-size: 12px;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+      }
+
+      .gate-kicker::before {
+        content: "";
+        width: 28px;
+        height: 2px;
+        background: linear-gradient(90deg, var(--accent), var(--gold));
+      }
+
+      .gate-card h2 {
+        max-width: none;
+        font-size: clamp(34px, 5vw, 52px);
+      }
+
+      .gate-copy {
+        margin-top: 14px;
+        color: #2a251f;
+        font-size: 18px;
+        line-height: 1.3;
+      }
+
+      .gate-form {
+        margin-top: 20px;
+        display: grid;
+        gap: 12px;
+      }
+
+      .gate-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+      }
+
+      .gate-label {
+        font-size: 12px;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+
+      .gate-input {
+        width: 100%;
+        border: 1px solid rgba(23, 21, 18, 0.14);
+        border-radius: 16px;
+        padding: 14px 16px;
+        background: rgba(255, 255, 255, 0.78);
+        color: var(--ink);
+        font: inherit;
+        font-size: 18px;
+      }
+
+      .gate-input:focus {
+        outline: 2px solid rgba(32, 61, 90, 0.24);
+        outline-offset: 2px;
+        border-color: rgba(32, 61, 90, 0.34);
+      }
+
+      .gate-actions {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+
+      .gate-meta,
+      .gate-error {
+        font-size: 14px;
+        line-height: 1.25;
+      }
+
+      .gate-meta {
+        color: var(--muted);
+      }
+
+      .gate-error {
+        color: #8d2f16;
+        min-height: 1.2em;
+      }
+
+      .gate-submit {
+        border: 0;
+        border-radius: 999px;
+        padding: 12px 18px;
+        background: linear-gradient(90deg, var(--signal), #2a5275);
+        color: #f8f4eb;
+        font: inherit;
+        font-size: 14px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        cursor: pointer;
+      }
+
+      .topbar {
+        position: sticky;
+        top: 0;
+        z-index: 20;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 24px;
+        padding: 14px 24px;
+        background: rgba(251, 248, 241, 0.84);
+        backdrop-filter: blur(14px);
+        border-bottom: 1px solid var(--line);
+      }
+
+      .topbar::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        height: 2px;
+        width: calc(var(--progress, 0) * 100%);
+        background: linear-gradient(90deg, var(--accent), #c07a2b 55%, var(--signal));
+      }
+
+      .brand {
+        display: flex;
+        align-items: baseline;
+        gap: 14px;
+      }
+
+      .brand strong {
+        font-size: 13px;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+      }
+
+      .brand span {
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      .nav {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+        gap: 8px;
+      }
+
+      .nav a {
+        text-decoration: none;
+        color: var(--muted);
+        border: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.55);
+        padding: 6px 10px;
+        border-radius: 999px;
+        font-size: 12px;
+        letter-spacing: 0.04em;
+      }
+
+      .nav a.active {
+        color: var(--ink);
+        background: rgba(32, 61, 90, 0.1);
+        border-color: rgba(32, 61, 90, 0.22);
+      }
+
+      .status {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        color: var(--muted);
+        font-size: 12px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .status strong {
+        color: var(--ink);
+        font-size: 13px;
+      }
+
+      main {
+        padding: 20px 18px 60px;
+      }
+
+      .slides {
+        display: grid;
+        gap: 24px;
+        max-width: var(--page-width);
+        margin: 0 auto;
+        min-width: 0;
+      }
+
+      .slide {
+        min-height: calc(100vh - 110px);
+        background:
+          linear-gradient(180deg, rgba(251, 248, 241, 0.98), rgba(246, 239, 227, 0.98)),
+          linear-gradient(135deg, rgba(255,255,255,0.24), transparent 42%);
+        border: 1px solid rgba(23, 21, 18, 0.08);
+        border-radius: 30px;
+        box-shadow:
+          0 24px 80px rgba(34, 26, 17, 0.11),
+          inset 0 1px 0 rgba(255, 255, 255, 0.55);
+        padding: 28px;
+        display: grid;
+        grid-template-rows: auto auto 1fr auto;
+        scroll-margin-top: 88px;
+        overflow: hidden;
+        position: relative;
+      }
+
+      .slide::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background:
+          linear-gradient(110deg, rgba(255,255,255,0.28), transparent 42%),
+          linear-gradient(0deg, transparent, rgba(255,255,255,0.1));
+        pointer-events: none;
+      }
+
+      .slide::after {
+        content: "";
+        position: absolute;
+        inset: auto 12px 12px auto;
+        width: 240px;
+        height: 240px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(166, 61, 29, 0.1), transparent 68%);
+        pointer-events: none;
+      }
+
+      .slide-head,
+      .slide-body,
+      .slide-foot {
+        position: relative;
+        z-index: 1;
+        min-width: 0;
+      }
+
+      .kicker {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 18px;
+        color: var(--muted);
+        font-size: 12px;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+      }
+
+      .kicker::before {
+        content: "";
+        width: 28px;
+        height: 2px;
+        background: linear-gradient(90deg, var(--accent), var(--gold));
+      }
+
+      h1,
+      h2,
+      h3,
+      p {
+        margin: 0;
+      }
+
+      h1 {
+        max-width: 12ch;
+        font-size: clamp(42px, 7vw, 84px);
+        line-height: 1;
+        letter-spacing: -0.045em;
+        text-wrap: balance;
+        padding-bottom: 0.16em;
+      }
+
+      h2 {
+        max-width: 12ch;
+        font-size: clamp(30px, 4.4vw, 58px);
+        line-height: 1.02;
+        letter-spacing: -0.04em;
+        text-wrap: balance;
+        padding-bottom: 0.1em;
+      }
+
+      .core {
+        margin-top: 16px;
+        max-width: 62rem;
+        color: #2a251f;
+        font-size: clamp(18px, 2.1vw, 27px);
+        line-height: 1.22;
+        text-wrap: pretty;
+      }
+
+      .slide-body {
+        margin-top: 24px;
+        display: grid;
+        grid-template-columns: minmax(0, 1.22fr) minmax(320px, 0.78fr);
+        gap: 22px;
+        align-items: stretch;
+        min-width: 0;
+      }
+
+      .panel {
+        border: 1px solid var(--line);
+        background:
+          linear-gradient(180deg, rgba(255, 255, 255, 0.62), rgba(255, 255, 255, 0.44));
+        border-radius: 22px;
+        padding: 20px;
+        box-shadow: inset 0 1px 0 rgba(255,255,255,0.55);
+        min-width: 0;
+        overflow: hidden;
+      }
+
+      .panel.dense {
+        padding: 16px 18px;
+      }
+
+      .panel h3 {
+        margin-bottom: 14px;
+        font-size: 13px;
+        line-height: 1.12;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+
+      .section-note {
+        margin: -2px 0 14px;
+        font-size: 14px;
+        line-height: 1.35;
+        color: var(--muted);
+        max-width: 58ch;
+      }
+
+      .micro-legend {
+        display: grid;
+        gap: 8px;
+        margin-top: 2px;
+        padding: 10px 12px;
+        border-radius: 16px;
+        border: 1px solid rgba(23, 21, 18, 0.08);
+        background:
+          linear-gradient(180deg, rgba(255, 255, 255, 0.82), rgba(255, 255, 255, 0.62));
+        box-shadow: inset 0 1px 0 rgba(255,255,255,0.68);
+      }
+
+      .micro-legend-title {
+        font-size: 11px;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+
+      .micro-legend-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px 10px;
+      }
+
+      .micro-legend-item {
+        display: grid;
+        gap: 2px;
+        min-width: 0;
+        padding: 6px 8px;
+        border-radius: 12px;
+        border-left: 2px solid transparent;
+      }
+
+      .micro-legend-item strong {
+        font-size: 12px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--deep-ink);
+      }
+
+      .micro-legend-item span {
+        font-size: 13px;
+        line-height: 1.25;
+        color: var(--muted);
+        text-wrap: pretty;
+      }
+
+      .micro-legend-item.voice-focus {
+        border-color: rgba(192, 122, 43, 0.18) !important;
+        border-left-color: rgba(192, 122, 43, 0.72) !important;
+        background: linear-gradient(90deg, rgba(192, 122, 43, 0.12), rgba(192, 122, 43, 0.04));
+        box-shadow:
+          inset 0 0 0 1px rgba(192, 122, 43, 0.16),
+          0 6px 14px rgba(34, 26, 17, 0.04);
+        transform: none;
+      }
+
+      .micro-legend-item.voice-focus strong {
+        color: var(--accent);
+      }
+
+      .micro-legend-item.voice-focus span {
+        color: var(--ink);
+      }
+
+      [data-voice-key] {
+        transition:
+          border-color 180ms ease,
+          box-shadow 180ms ease,
+          background 180ms ease,
+          transform 180ms ease;
+      }
+
+      .voice-focus {
+        border-color: rgba(192, 122, 43, 0.55) !important;
+        background:
+          linear-gradient(180deg, rgba(192, 122, 43, 0.22), rgba(192, 122, 43, 0.1)),
+          linear-gradient(180deg, rgba(255, 255, 255, 0.82), rgba(255, 255, 255, 0.58));
+        box-shadow:
+          0 0 0 3px rgba(192, 122, 43, 0.26),
+          0 24px 42px rgba(34, 26, 17, 0.12),
+          inset 0 1px 0 rgba(255, 255, 255, 0.68);
+        transform: translateY(-2px) scale(1.01);
+      }
+
+      ul {
+        margin: 0;
+        padding-left: 18px;
+        min-width: 0;
+      }
+
+      li {
+        margin: 0 0 12px;
+        font-size: 18px;
+        line-height: 1.28;
+        overflow-wrap: anywhere;
+      }
+
+      .signal-list,
+      .metric-list,
+      .stack,
+      .grid-two,
+      .grid-three {
+        display: grid;
+        gap: 12px;
+        min-width: 0;
+      }
+
+      .grid-two {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .grid-three {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      .chip,
+      .metric,
+      .stack-card,
+      .lane,
+      .proof {
+        border-radius: 18px;
+        border: 1px solid var(--line);
+        padding: 14px 16px;
+        background:
+          linear-gradient(180deg, rgba(255, 255, 255, 0.76), rgba(255, 255, 255, 0.54));
+        box-shadow: inset 0 1px 0 rgba(255,255,255,0.58);
+        min-width: 0;
+        overflow: hidden;
+      }
+
+      .chip strong,
+      .metric strong,
+      .stack-card strong,
+      .lane strong,
+      .proof strong {
+        display: block;
+        margin-bottom: 6px;
+        font-size: 14px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--deep-ink);
+      }
+
+      .chip span,
+      .metric span,
+      .stack-card span,
+      .lane span,
+      .proof span {
+        display: block;
+        font-size: 18px;
+        line-height: 1.2;
+        text-wrap: pretty;
+        overflow-wrap: anywhere;
+      }
+
+      .accent {
+        background:
+          linear-gradient(180deg, rgba(166, 61, 29, 0.13), rgba(166, 61, 29, 0.05)),
+          linear-gradient(135deg, rgba(255,255,255,0.2), transparent 48%);
+      }
+
+      .signal {
+        background:
+          linear-gradient(180deg, rgba(32, 61, 90, 0.14), rgba(32, 61, 90, 0.05)),
+          linear-gradient(135deg, rgba(255,255,255,0.2), transparent 48%);
+      }
+
+      .success {
+        background:
+          linear-gradient(180deg, rgba(40, 89, 67, 0.14), rgba(40, 89, 67, 0.05)),
+          linear-gradient(135deg, rgba(255,255,255,0.18), transparent 48%);
+      }
+
+      .warning {
+        background:
+          linear-gradient(180deg, rgba(140, 90, 22, 0.14), rgba(140, 90, 22, 0.05)),
+          linear-gradient(135deg, rgba(255,255,255,0.18), transparent 48%);
+      }
+
+      .process {
+        display: grid;
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        gap: 10px;
+        min-width: 0;
+      }
+
+      .process .lane {
+        min-height: 150px;
+        align-self: stretch;
+      }
+
+      .process .index {
+        display: inline-block;
+        margin-bottom: 16px;
+        color: var(--accent);
+        font-size: 12px;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+
+      .table {
+        display: grid;
+        gap: 10px;
+        min-width: 0;
+      }
+
+      .table-row {
+        display: grid;
+        grid-template-columns: 1.2fr repeat(5, 1fr);
+        gap: 8px;
+        align-items: stretch;
+        min-width: 0;
+      }
+
+      #s3 .table-row {
+        grid-template-columns: 1.34fr repeat(5, 0.93fr);
+      }
+
+      #s3 .cell:first-child {
+        font-size: 14px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: clip;
+        letter-spacing: -0.01em;
+      }
+
+      .cell {
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        padding: 12px;
+        background:
+          linear-gradient(180deg, rgba(255,255,255,0.78), rgba(255,255,255,0.58));
+        font-size: 15px;
+        line-height: 1.22;
+        min-width: 0;
+        overflow: hidden;
+        overflow-wrap: anywhere;
+      }
+
+      .cell.head {
+        font-size: 11px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+
+      #s3 .cell.head {
+        font-size: 8px;
+        letter-spacing: 0.01em;
+        white-space: nowrap;
+        text-wrap: nowrap;
+        font-weight: 700;
+        color: #243746;
+        background:
+          linear-gradient(180deg, rgba(32, 61, 90, 0.16), rgba(32, 61, 90, 0.08));
+        border-color: rgba(32, 61, 90, 0.18);
+        padding-left: 8px;
+        padding-right: 8px;
+      }
+
+      .tick {
+        color: var(--success);
+        font-weight: 700;
+      }
+
+      .cross {
+        color: var(--accent);
+        font-weight: 700;
+      }
+
+      .footer-band {
+        margin-top: 18px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        color: var(--muted);
+        font-size: 13px;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        border-top: 1px solid rgba(23, 21, 18, 0.08);
+        padding-top: 14px;
+      }
+
+      .keyline {
+        margin-top: 12px;
+        width: 168px;
+        height: 3px;
+        background: linear-gradient(90deg, var(--accent), var(--gold), rgba(166, 61, 29, 0.04));
+        border-radius: 999px;
+      }
+
+      .hero-emphasis {
+        margin-top: 18px;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 14px;
+        border-radius: 999px;
+        border: 1px solid rgba(32, 61, 90, 0.14);
+        background: rgba(32, 61, 90, 0.08);
+        color: var(--deep-ink);
+        font-size: 13px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .pager {
+        font-variant-numeric: tabular-nums;
+      }
+
+      .hero {
+        grid-template-columns: minmax(0, 1.28fr) minmax(320px, 0.72fr);
+      }
+
+      .hero-right {
+        display: grid;
+        gap: 12px;
+        align-content: start;
+        min-width: 0;
+      }
+
+      .decision-chain {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 14px;
+        align-items: stretch;
+      }
+
+      .decision-node {
+        position: relative;
+        border: 1px solid var(--line);
+        border-radius: 20px;
+        padding: 18px 16px 16px;
+        background:
+          linear-gradient(180deg, rgba(255,255,255,0.84), rgba(255,255,255,0.66));
+        box-shadow: inset 0 1px 0 rgba(255,255,255,0.58);
+        min-width: 0;
+      }
+
+      .decision-node:not(:last-child)::after {
+        content: "→";
+        position: absolute;
+        right: -14px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--muted);
+        font-size: 24px;
+        font-weight: 700;
+      }
+
+      .decision-node strong,
+      .architecture-stage strong,
+      .pilot-card strong,
+      .market-step strong {
+        display: block;
+        margin-bottom: 6px;
+        font-size: 14px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--deep-ink);
+      }
+
+      .decision-node span,
+      .architecture-stage span,
+      .pilot-card span,
+      .market-step span {
+        display: block;
+        font-size: 16px;
+        line-height: 1.18;
+        overflow-wrap: anywhere;
+      }
+
+      .decision-node.break {
+        background:
+          linear-gradient(180deg, rgba(140, 90, 22, 0.16), rgba(140, 90, 22, 0.06));
+        border-color: rgba(140, 90, 22, 0.2);
+      }
+
+      .decision-node.target {
+        background:
+          linear-gradient(180deg, rgba(40, 89, 67, 0.16), rgba(40, 89, 67, 0.06));
+        border-color: rgba(40, 89, 67, 0.2);
+      }
+
+      .architecture-flow {
+        display: grid;
+        gap: 14px;
+      }
+
+      .architecture-stage {
+        display: grid;
+        grid-template-columns: 140px 1fr;
+        gap: 14px;
+        align-items: stretch;
+        border: 1px solid var(--line);
+        border-radius: 20px;
+        padding: 16px;
+        background:
+          linear-gradient(180deg, rgba(255,255,255,0.82), rgba(255,255,255,0.68));
+        box-shadow: inset 0 1px 0 rgba(255,255,255,0.54);
+      }
+
+      .architecture-label {
+        border-radius: 16px;
+        padding: 14px 12px;
+        background:
+          linear-gradient(180deg, rgba(32, 61, 90, 0.12), rgba(32, 61, 90, 0.06));
+        border: 1px solid rgba(32, 61, 90, 0.14);
+        display: grid;
+        align-content: center;
+        font-size: 12px;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+
+      .architecture-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 12px;
+      }
+
+      .architecture-grid.two {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .pilot-board {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 14px;
+      }
+
+      .pilot-card {
+        border: 1px solid var(--line);
+        border-radius: 20px;
+        padding: 16px 15px 14px;
+        background:
+          linear-gradient(180deg, rgba(255,255,255,0.84), rgba(255,255,255,0.68));
+        box-shadow: inset 0 1px 0 rgba(255,255,255,0.56);
+        min-width: 0;
+      }
+
+      .pilot-card .subline,
+      .market-step .subline {
+        margin-top: 6px;
+        color: var(--muted);
+        font-size: 12px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .market-ladder {
+        display: grid;
+        gap: 12px;
+      }
+
+      .market-step {
+        display: grid;
+        grid-template-columns: 96px 1fr;
+        gap: 14px;
+        align-items: center;
+        border: 1px solid var(--line);
+        border-radius: 20px;
+        padding: 16px;
+        background:
+          linear-gradient(180deg, rgba(255,255,255,0.84), rgba(255,255,255,0.68));
+        box-shadow: inset 0 1px 0 rgba(255,255,255,0.56);
+        min-width: 0;
+      }
+
+      .market-num {
+        font-size: 34px;
+        line-height: 1;
+        letter-spacing: -0.04em;
+        color: var(--deep-ink);
+      }
+
+      .rail {
+        display: grid;
+        gap: 10px;
+        min-width: 0;
+      }
+
+      .note {
+        font-size: 16px;
+        line-height: 1.3;
+        color: #383128;
+      }
+
+      .system-statement {
+        max-width: 980px;
+        margin: 18px auto 0;
+        padding: 14px 18px;
+        border: 1px solid rgba(32, 61, 90, 0.14);
+        border-radius: 18px;
+        background: rgba(32, 61, 90, 0.07);
+        color: var(--deep-ink);
+        font-size: 20px;
+        line-height: 1.2;
+        text-align: center;
+        text-wrap: balance;
+      }
+
+      .opening-thesis {
+        display: grid;
+        gap: 10px;
+      }
+
+      .opening-thesis-item {
+        display: grid;
+        gap: 3px;
+        padding: 10px 12px;
+        border-radius: 16px;
+        border: 1px solid rgba(23, 21, 18, 0.08);
+        background:
+          linear-gradient(180deg, rgba(255, 255, 255, 0.82), rgba(255, 255, 255, 0.62));
+      }
+
+      .opening-thesis-item span {
+        font-size: 11px;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+
+      .opening-thesis-item strong {
+        font-size: 15px;
+        line-height: 1.16;
+        color: var(--deep-ink);
+        text-wrap: balance;
+      }
+
+      .opening-board {
+        border: 1px solid var(--line);
+        border-radius: 28px;
+        padding: 18px;
+        background:
+          linear-gradient(180deg, rgba(255, 255, 255, 0.68), rgba(255, 255, 255, 0.5)),
+          linear-gradient(135deg, rgba(32, 61, 90, 0.06), rgba(166, 61, 29, 0.04));
+        box-shadow:
+          inset 0 1px 0 rgba(255,255,255,0.62),
+          0 18px 34px rgba(34, 26, 17, 0.06);
+        display: grid;
+        grid-template-columns: minmax(0, 1.04fr) minmax(0, 0.96fr) minmax(250px, 0.62fr);
+        gap: 16px;
+        min-width: 0;
+      }
+
+      .opening-zone {
+        min-width: 0;
+      }
+
+      .opening-zone h3 {
+        margin-bottom: 14px;
+      }
+
+      .opening-engine {
+        grid-column: 1 / 4;
+        padding-bottom: 14px;
+        border-bottom: 1px solid rgba(23, 21, 18, 0.08);
+      }
+
+      .opening-side {
+        display: grid;
+        gap: 14px;
+        align-content: start;
+      }
+
+      .engine-header {
+        display: grid;
+        gap: 6px;
+        margin-bottom: 14px;
+      }
+
+      .engine-header h3 {
+        margin: 0;
+      }
+
+      .engine-subtitle {
+        margin: 0;
+        max-width: 540px;
+        color: rgba(56, 49, 40, 0.82);
+        font-size: 14px;
+        line-height: 1.18;
+      }
+
+      .system-pipeline {
+        display: grid;
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        gap: 12px;
+        align-items: stretch;
+        max-width: 1260px;
+        margin: 0 auto;
+      }
+
+      .system-stage {
+        position: relative;
+        border: 1px solid var(--line);
+        border-radius: 20px;
+        padding: 16px 14px 14px;
+        background: linear-gradient(180deg, rgba(255,255,255,0.86), rgba(255,255,255,0.66));
+        min-width: 0;
+        display: grid;
+        align-content: start;
+        gap: 8px;
+        min-height: 146px;
+      }
+
+      .system-stage::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border-radius: inherit;
+        pointer-events: none;
+        box-shadow: inset 0 1px 0 rgba(255,255,255,0.52);
+      }
+
+      .system-stage:not(:last-child)::after {
+        content: "→";
+        position: absolute;
+        right: -10px;
+        top: 24px;
+        color: rgba(56, 49, 40, 0.42);
+        font-size: 16px;
+        font-weight: 700;
+      }
+
+      .system-step-number {
+        display: inline-flex;
+        width: fit-content;
+        align-items: center;
+        justify-content: center;
+        padding: 4px 8px;
+        border-radius: 999px;
+        background: rgba(32, 61, 90, 0.08);
+        color: rgba(32, 61, 90, 0.88);
+        font-size: 10px;
+        line-height: 1;
+        letter-spacing: 0.14em;
+        font-weight: 700;
+      }
+
+      .system-stage strong {
+        display: block;
+        font-size: 11px;
+        line-height: 1.06;
+        letter-spacing: 0.07em;
+        text-transform: uppercase;
+        color: var(--deep-ink);
+        text-wrap: balance;
+      }
+
+      .system-stage p {
+        margin: 0;
+        font-size: 14px;
+        line-height: 1.16;
+        color: #231f1a;
+        text-wrap: balance;
+      }
+
+      .system-stage span {
+        display: block;
+        font-size: 12px;
+        line-height: 1.14;
+        color: rgba(56, 49, 40, 0.78);
+        text-wrap: balance;
+      }
+
+      .system-blocks {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 12px;
+      }
+
+      .system-block {
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        padding: 14px 15px;
+        background: linear-gradient(180deg, rgba(255,255,255,0.8), rgba(255,255,255,0.62));
+        min-width: 0;
+      }
+
+      .system-block strong {
+        display: block;
+        margin-bottom: 6px;
+        font-size: 12px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--deep-ink);
+      }
+
+      .system-block span,
+      .output-list li,
+      .system-footer {
+        font-size: 15px;
+        line-height: 1.18;
+      }
+
+      .output-list {
+        display: grid;
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        gap: 10px;
+        padding-left: 0;
+        list-style: none;
+      }
+
+      .output-list li {
+        margin: 0;
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        padding: 12px 14px;
+        background: rgba(255,255,255,0.74);
+      }
+
+      .system-footer {
+        color: var(--muted);
+        text-align: center;
+      }
+
+      .contact-strip {
+        margin-top: 14px;
+        padding: 12px 16px;
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        background: rgba(255, 255, 255, 0.62);
+        color: var(--muted);
+        font-size: 14px;
+        line-height: 1.2;
+        text-align: center;
+      }
+
+      .contact-strip strong {
+        color: var(--deep-ink);
+        font-weight: 700;
+      }
+
+      .dashboard-mock {
+        display: grid;
+        gap: 12px;
+        min-width: 0;
+      }
+
+      .dashboard-top,
+      .dashboard-main,
+      .dashboard-bottom {
+        display: grid;
+        gap: 10px;
+      }
+
+      .dashboard-top {
+        grid-template-columns: 1.25fr 0.75fr 0.75fr;
+      }
+
+      .dashboard-main {
+        grid-template-columns: 1.15fr 0.85fr;
+      }
+
+      .dashboard-bottom {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      .dashboard-panel {
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        padding: 14px;
+        background:
+          linear-gradient(180deg, rgba(255,255,255,0.82), rgba(255,255,255,0.66));
+        box-shadow: inset 0 1px 0 rgba(255,255,255,0.58);
+        min-width: 0;
+      }
+
+      .dashboard-panel strong {
+        display: block;
+        margin-bottom: 8px;
+        font-size: 12px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--deep-ink);
+      }
+
+      .dashboard-panel span {
+        display: block;
+        font-size: 14px;
+        line-height: 1.18;
+        color: #322c25;
+      }
+
+      .dashboard-panel.tall {
+        min-height: 180px;
+      }
+
+      .dashboard-bars,
+      .dashboard-feed {
+        display: grid;
+        gap: 8px;
+      }
+
+      .dashboard-bar {
+        height: 10px;
+        border-radius: 999px;
+        background: linear-gradient(90deg, rgba(32, 61, 90, 0.85), rgba(166, 61, 29, 0.28));
+      }
+
+      .dashboard-bar.short {
+        width: 52%;
+      }
+
+      .dashboard-bar.medium {
+        width: 74%;
+      }
+
+      .dashboard-bar.light {
+        background: linear-gradient(90deg, rgba(32, 61, 90, 0.22), rgba(166, 61, 29, 0.18));
+      }
+
+      .alert-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        border-radius: 999px;
+        padding: 8px 12px;
+        border: 1px solid rgba(166, 61, 29, 0.18);
+        background: rgba(166, 61, 29, 0.08);
+        color: #5c2b1b;
+        font-size: 12px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .console-shot-grid {
+        display: grid;
+        gap: 12px;
+      }
+
+      .console-shot-frame {
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        padding: 10px;
+        background:
+          linear-gradient(180deg, rgba(16, 23, 31, 0.96), rgba(16, 23, 31, 0.92));
+        box-shadow:
+          inset 0 1px 0 rgba(255,255,255,0.08),
+          0 16px 30px rgba(18, 18, 18, 0.12);
+      }
+
+      .console-shot-frame strong {
+        display: block;
+        margin-bottom: 8px;
+        color: rgba(248, 244, 235, 0.76);
+        font-size: 11px;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+
+      .console-shot {
+        display: block;
+        width: 100%;
+        height: auto;
+        border-radius: 12px;
+        border: 1px solid rgba(255,255,255,0.06);
+      }
+
+      #s5 .slide-body {
+        grid-template-columns: minmax(0, 1.15fr) minmax(340px, 0.85fr);
+        align-items: start;
+      }
+
+      #s5 .console-shot-frame + .console-shot-frame {
+        margin-top: 12px;
+      }
+
+      #s5 .panel.accent {
+        display: grid;
+        align-content: start;
+        gap: 14px;
+      }
+
+      #s1 {
+        position: relative;
+        isolation: isolate;
+        overflow: hidden;
+      }
+
+      #s1::before,
+      #s1::after {
+        content: "";
+        position: absolute;
+        pointer-events: none;
+        z-index: 0;
+        filter: blur(2px);
+      }
+
+      #s1::before {
+        width: 420px;
+        height: 420px;
+        right: -120px;
+        top: -110px;
+        background: radial-gradient(circle, rgba(32, 61, 90, 0.12) 0%, rgba(32, 61, 90, 0.04) 42%, rgba(32, 61, 90, 0) 72%);
+      }
+
+      #s1::after {
+        width: 340px;
+        height: 340px;
+        left: -120px;
+        bottom: -100px;
+        background: radial-gradient(circle, rgba(192, 122, 43, 0.12) 0%, rgba(192, 122, 43, 0.04) 44%, rgba(192, 122, 43, 0) 74%);
+      }
+
+      #s1 .slide-head {
+        position: relative;
+        z-index: 1;
+        display: grid;
+        grid-template-columns: minmax(0, 1.56fr) minmax(260px, 0.44fr);
+        gap: 20px;
+        align-items: start;
+        text-align: left;
+        padding: 22px 24px 18px;
+        border: 1px solid rgba(23, 21, 18, 0.08);
+        border-radius: 30px;
+        background:
+          linear-gradient(180deg, rgba(255, 255, 255, 0.78), rgba(248, 242, 234, 0.54)),
+          linear-gradient(135deg, rgba(32, 61, 90, 0.08), rgba(192, 122, 43, 0.03));
+        box-shadow:
+          inset 0 1px 0 rgba(255,255,255,0.7),
+          0 20px 42px rgba(36, 30, 24, 0.06);
+      }
+
+      #s1 h1,
+      #s1 .core,
+      #s1 .keyline {
+        margin-left: 0;
+        margin-right: 0;
+      }
+
+      #s1 h1 {
+        max-width: 11.8ch;
+        font-size: clamp(54px, 4.6vw, 76px);
+        line-height: 0.93;
+        letter-spacing: -0.055em;
+      }
+
+      #s1 .core {
+        max-width: 39ch;
+        margin-top: 16px;
+        font-size: clamp(18px, 1.85vw, 24px);
+        line-height: 1.2;
+        color: #2e2821;
+      }
+
+      #s1 .keyline {
+        width: 140px;
+        margin-top: 16px;
+      }
+
+      #s1 .hero-right {
+        display: grid;
+        align-content: stretch;
+      }
+
+      #s1 .hero-right .panel {
+        height: 100%;
+        padding: 18px 18px 16px;
+        border: 1px solid rgba(23, 21, 18, 0.08);
+        border-radius: 24px;
+        background:
+          linear-gradient(180deg, rgba(255,255,255,0.82), rgba(255,255,255,0.6)),
+          linear-gradient(160deg, rgba(32, 61, 90, 0.04), rgba(32, 61, 90, 0));
+        box-shadow:
+          inset 0 1px 0 rgba(255,255,255,0.6),
+          0 12px 24px rgba(36, 30, 24, 0.04);
+        overflow: hidden;
+        position: relative;
+      }
+
+      #s1 .hero-right .panel::before {
+        content: "";
+        position: absolute;
+        left: 18px;
+        right: 18px;
+        top: 0;
+        height: 3px;
+        border-radius: 999px;
+        background: linear-gradient(90deg, rgba(32, 61, 90, 0.68), rgba(192, 122, 43, 0.38));
+      }
+
+      #s1 .hero-right .panel h3 {
+        position: relative;
+        z-index: 2;
+        display: inline-block;
+        margin-bottom: 12px;
+        padding-right: 0;
+        background: transparent;
+      }
+
+      #s1 .system-statement {
+        max-width: 44ch;
+        margin: 18px 0 0;
+        padding: 12px 0 0 16px;
+        border: 0;
+        border-left: 2px solid rgba(192, 122, 43, 0.38);
+        border-radius: 0;
+        background: transparent;
+        font-size: 22px;
+        line-height: 1.18;
+        text-align: left;
+        position: relative;
+      }
+
+      #s1 .system-statement::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 54px;
+        height: 2px;
+        border-radius: 999px;
+        background: linear-gradient(90deg, rgba(192, 122, 43, 0.72), rgba(192, 122, 43, 0));
+      }
+
+      #s1 .slide-body {
+        position: relative;
+        z-index: 1;
+        grid-template-columns: minmax(0, 1fr);
+        margin-top: 16px;
+        align-items: start;
+        align-content: start;
+        gap: 0;
+      }
+
+      #s1 .opening-side,
+      #s1 .opening-positioning .stack {
+        gap: 8px;
+      }
+
+      #s1 .opening-side {
+        justify-items: end;
+        padding-left: 10px;
+      }
+
+      #s1 .opening-positioning {
+        width: min(100%, 236px);
+        margin-left: auto;
+      }
+
+      #s1 .opening-positioning h3 {
+        text-align: left;
+      }
+
+      #s1 .opening-board {
+        position: relative;
+        overflow: hidden;
+        grid-template-columns: minmax(0, 1.02fr) minmax(0, 0.98fr) minmax(250px, 0.58fr);
+        padding: 18px;
+        border-radius: 28px;
+        gap: 14px;
+        background:
+          linear-gradient(180deg, rgba(255, 255, 255, 0.74), rgba(249, 244, 236, 0.56)),
+          linear-gradient(135deg, rgba(32, 61, 90, 0.07), rgba(192, 122, 43, 0.05));
+        box-shadow:
+          inset 0 1px 0 rgba(255,255,255,0.7),
+          0 20px 36px rgba(36, 30, 24, 0.05);
+      }
+
+      #s1 .opening-board::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        background:
+          radial-gradient(circle at 14% 12%, rgba(255,255,255,0.44), rgba(255,255,255,0) 28%),
+          radial-gradient(circle at 86% 88%, rgba(32, 61, 90, 0.05), rgba(32, 61, 90, 0) 30%);
+      }
+
+      #s1 .opening-zone,
+      #s1 .opening-side {
+        position: relative;
+        z-index: 1;
+      }
+
+      #s1 .opening-outputs .system-blocks {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      #s1 .engine-header {
+        gap: 4px;
+        margin-bottom: 12px;
+      }
+
+      #s1 .engine-subtitle {
+        font-size: 13px;
+        line-height: 1.14;
+      }
+
+      #s1 .opening-engine .system-pipeline {
+        gap: 8px;
+      }
+
+      #s1 .opening-zone h3 {
+        margin-bottom: 10px;
+        font-size: 11px;
+        letter-spacing: 0.14em;
+        color: rgba(56, 49, 40, 0.66);
+      }
+
+      #s1 .hero-emphasis {
+        margin-top: 18px;
+        padding: 0;
+        border: 0;
+        border-radius: 0;
+        background: transparent;
+        color: var(--accent);
+        font-size: 11px;
+        letter-spacing: 0.14em;
+      }
+
+      #s1 .opening-thesis {
+        gap: 8px;
+      }
+
+      #s1 .opening-thesis-item {
+        padding: 8px 0 12px;
+        border: 0;
+        border-bottom: 1px solid rgba(23, 21, 18, 0.08);
+        border-radius: 0;
+        background: transparent;
+      }
+
+      #s1 .opening-thesis-item:last-child {
+        padding-bottom: 0;
+        border-bottom: 0;
+      }
+
+      #s1 .opening-thesis-item span {
+        font-size: 10px;
+        letter-spacing: 0.14em;
+      }
+
+      #s1 .opening-thesis-item strong {
+        font-size: 14px;
+        line-height: 1.16;
+      }
+
+      #s1 .system-stage {
+        min-height: 132px;
+        padding: 12px 10px 11px;
+        border-radius: 16px;
+        gap: 6px;
+        background:
+          linear-gradient(180deg, rgba(255,255,255,0.9), rgba(255,255,255,0.68)),
+          linear-gradient(145deg, rgba(32, 61, 90, 0.035), rgba(192, 122, 43, 0.03));
+        box-shadow: inset 0 1px 0 rgba(255,255,255,0.56);
+      }
+
+      #s1 .system-stage:not(:last-child)::after {
+        right: -8px;
+        top: 20px;
+        font-size: 14px;
+      }
+
+      #s1 .system-step-number {
+        padding: 3px 7px;
+        font-size: 9px;
+      }
+
+      #s1 .system-stage strong {
+        font-size: 9px;
+        line-height: 1.06;
+      }
+
+      #s1 .system-stage p {
+        font-size: 12px;
+        line-height: 1.14;
+      }
+
+      #s1 .system-stage span {
+        font-size: 11px;
+        line-height: 1.12;
+      }
+
+      #s1 .system-block {
+        padding: 12px 13px;
+        border-radius: 16px;
+        background:
+          linear-gradient(180deg, rgba(255,255,255,0.88), rgba(255,255,255,0.66)),
+          linear-gradient(145deg, rgba(32, 61, 90, 0.03), rgba(192, 122, 43, 0.02));
+      }
+
+      #s1 .system-block strong {
+        margin-bottom: 4px;
+        font-size: 12px;
+      }
+
+      #s1 .system-block span,
+      #s1 .opening-why .stack-card span,
+      #s1 .opening-positioning .stack-card span {
+        font-size: 15px;
+        line-height: 1.14;
+      }
+
+      #s1 .opening-positioning .stack-card {
+        padding: 12px 13px;
+        border-radius: 16px;
+        background:
+          linear-gradient(180deg, rgba(255,255,255,0.88), rgba(255,255,255,0.66)),
+          linear-gradient(145deg, rgba(32, 61, 90, 0.03), rgba(192, 122, 43, 0.02));
+      }
+
+      #s1 .opening-positioning .stack-card.warning {
+        background:
+          linear-gradient(180deg, rgba(255, 247, 236, 0.96), rgba(255, 244, 231, 0.82)),
+          linear-gradient(145deg, rgba(192, 122, 43, 0.08), rgba(192, 122, 43, 0.02));
+      }
+
+      #s1 .opening-positioning .stack-card strong {
+        margin-bottom: 4px;
+        font-size: 12px;
+      }
+
+      #s2 .impact-panel {
+        grid-column: 1 / -1;
+      }
+
+      #s2 .impact-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 12px;
+      }
+
+      #s2 .impact-grid .stack-card {
+        padding: 13px 14px;
+      }
+
+      #s2 .impact-grid .stack-card strong {
+        margin-bottom: 4px;
+      }
+
+      #s2 .impact-grid .stack-card span {
+        font-size: 16px;
+        line-height: 1.14;
+      }
+
+      #s1 .system-footer {
+        text-align: left;
+      }
+
+      #s1 .panel h3,
+      #s4 .panel h3,
+      #s8 .panel h3,
+      #s10 .panel h3 {
+        margin-bottom: 16px;
+      }
+
+      #s6 .slide-body,
+      #s8 .slide-body,
+      #s13 .slide-body {
+        align-items: start;
+      }
+
+      #s6 .slide-body {
+        grid-template-columns: minmax(0, 1.04fr) minmax(340px, 0.96fr);
+        gap: 18px;
+      }
+
+      #s6 .panel,
+      #s8 .panel,
+      #s13 .panel {
+        display: grid;
+        align-content: start;
+        gap: 12px;
+      }
+
+      #s6 .panel h3,
+      #s8 .panel h3,
+      #s13 .panel h3 {
+        margin-bottom: 0;
+      }
+
+      #s6 .grid-two,
+      #s13 .grid-two {
+        gap: 10px;
+      }
+
+      #s6 .stack,
+      #s8 .stack,
+      #s13 .stack {
+        gap: 10px;
+      }
+
+      #s6 .stack-card,
+      #s8 .metric,
+      #s8 .stack-card,
+      #s13 .metric,
+      #s13 .stack-card {
+        padding: 13px 14px;
+      }
+
+      #s6 .stack-card strong,
+      #s8 .metric strong,
+      #s8 .stack-card strong,
+      #s13 .metric strong,
+      #s13 .stack-card strong {
+        margin-bottom: 5px;
+      }
+
+      #s6 .stack-card span,
+      #s8 .metric span,
+      #s8 .stack-card span,
+      #s13 .metric span,
+      #s13 .stack-card span {
+        line-height: 1.12;
+      }
+
+      #s8 .slide-body {
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+        gap: 18px;
+      }
+
+      #s8 .metric-list {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+      }
+
+      #s8 .metric,
+      #s13 .metric {
+        min-height: 118px;
+        display: grid;
+        align-content: start;
+      }
+
+      #s13 .slide-body {
+        grid-template-columns: minmax(0, 1.02fr) minmax(0, 0.98fr);
+        gap: 18px;
+      }
+
+      #s1 .decision-node.target strong,
+      #s8 .pilot-card.success strong,
+      #s10 .market-step.success strong {
+        color: #173b2d;
+      }
+
+      #s1 .decision-node.break strong {
+        color: #6d4610;
+      }
+
+      #s4 .architecture-stage:nth-child(2) {
+        border-color: rgba(32, 61, 90, 0.16);
+      }
+
+      #s4 .architecture-stage:nth-child(2) .architecture-label {
+        background:
+          linear-gradient(180deg, rgba(166, 61, 29, 0.12), rgba(166, 61, 29, 0.05));
+        border-color: rgba(166, 61, 29, 0.14);
+      }
+
+      #s8 .pilot-card.success,
+      #s10 .market-step.success {
+        border-color: rgba(40, 89, 67, 0.2);
+        background:
+          linear-gradient(180deg, rgba(40, 89, 67, 0.14), rgba(40, 89, 67, 0.06)),
+          linear-gradient(180deg, rgba(255,255,255,0.8), rgba(255,255,255,0.68));
+      }
+
+      #s8 .pilot-card.signal,
+      #s10 .market-step.signal {
+        border-color: rgba(32, 61, 90, 0.18);
+      }
+
+      .command-bar {
+        position: fixed;
+        right: 20px;
+        bottom: 20px;
+        z-index: 24;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 12px;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        background: rgba(251, 248, 241, 0.9);
+        backdrop-filter: blur(14px);
+        box-shadow: 0 10px 24px rgba(34, 26, 17, 0.08);
+        color: var(--muted);
+        font-size: 12px;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+      }
+
+      .command-key {
+        min-width: 26px;
+        padding: 5px 8px;
+        border-radius: 8px;
+        border: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.65);
+        color: var(--ink);
+        text-align: center;
+        font-weight: 700;
+      }
+
+      .voiceover-panel {
+        position: fixed;
+        left: 20px;
+        bottom: 20px;
+        z-index: 24;
+        display: grid;
+        gap: 6px;
+        width: min(280px, calc(100vw - 40px));
+        padding: 10px 12px;
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        background: rgba(251, 248, 241, 0.68);
+        backdrop-filter: blur(10px);
+        box-shadow: 0 10px 24px rgba(34, 26, 17, 0.08);
+        opacity: 0.78;
+        transition: opacity 160ms ease, transform 160ms ease, background-color 160ms ease;
+      }
+
+      .voiceover-panel:hover,
+      .voiceover-panel:focus-within {
+        opacity: 0.97;
+        background: rgba(251, 248, 241, 0.9);
+        transform: translateY(-1px);
+      }
+
+      .voiceover-panel.collapsed {
+        width: auto;
+        min-width: 0;
+      }
+
+      .voiceover-panel.collapsed .voiceover-controls,
+      .voiceover-panel.collapsed .voiceover-jump,
+      .voiceover-panel.collapsed .voiceover-hint {
+        display: none;
+      }
+
+      .voiceover-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+      }
+
+      .voiceover-title {
+        display: grid;
+        gap: 4px;
+        min-width: 0;
+      }
+
+      .voiceover-title strong {
+        font-size: 11px;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+
+      .voiceover-title span {
+        font-size: 12px;
+        color: var(--muted);
+        line-height: 1.2;
+      }
+
+      .voiceover-status {
+        font-size: 11px;
+        color: var(--muted);
+      }
+
+      .voiceover-top-actions {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .voiceover-toggle {
+        border: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.62);
+        color: var(--ink);
+        border-radius: 999px;
+        padding: 5px 9px;
+        font-size: 11px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        cursor: pointer;
+      }
+
+      .voiceover-controls {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+      }
+
+      .voiceover-controls button {
+        border: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.62);
+        color: var(--ink);
+        border-radius: 999px;
+        padding: 6px 10px;
+        font-size: 11px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        cursor: pointer;
+      }
+
+      .voiceover-controls button[aria-pressed="true"] {
+        background: rgba(32, 61, 90, 0.1);
+        border-color: rgba(32, 61, 90, 0.22);
+      }
+
+      .voiceover-controls button:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+
+      .voiceover-jump {
+        display: grid;
+        grid-template-columns: auto 56px auto;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .voiceover-jump label {
+        font-size: 11px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+
+      .voiceover-jump input {
+        width: 100%;
+        border: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.62);
+        color: var(--ink);
+        border-radius: 999px;
+        padding: 6px 10px;
+        font: inherit;
+        font-size: 12px;
+        text-align: center;
+      }
+
+      .voiceover-jump button {
+        border: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.62);
+        color: var(--ink);
+        border-radius: 999px;
+        padding: 6px 10px;
+        font-size: 11px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        cursor: pointer;
+      }
+
+      .voiceover-hint {
+        display: none;
+      }
+
+      @media (max-width: 1100px) {
+        .slide-body,
+        .hero,
+        .system-pipeline,
+        .system-blocks,
+        .dashboard-top,
+        .dashboard-main,
+        .dashboard-bottom,
+        .output-list,
+        .decision-chain,
+        .architecture-grid,
+        .architecture-stage,
+        .pilot-board,
+        .market-step,
+        .table-row,
+        .process,
+        .grid-three,
+        .grid-two {
+          grid-template-columns: 1fr;
+        }
+
+        .slide {
+          min-height: auto;
+        }
+
+        .process .lane {
+          min-height: auto;
+        }
+
+        h1,
+        h2 {
+          max-width: none;
+        }
+
+        #s1 .slide-head {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      @media (max-width: 760px) {
+        .access-gate {
+          padding: 18px;
+        }
+
+        .gate-card {
+          padding: 22px 20px 18px;
+          border-radius: 24px;
+        }
+
+        .gate-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .topbar {
+          padding: 12px 14px;
+          align-items: flex-start;
+          flex-direction: column;
+        }
+
+        .slide {
+          padding: 18px;
+          border-radius: 20px;
+        }
+
+        li,
+        .chip span,
+        .metric span,
+        .stack-card span,
+        .lane span,
+        .proof span {
+          font-size: 16px;
+        }
+
+        .command-bar {
+          display: none;
+        }
+
+        .voiceover-panel {
+          position: static;
+          width: 100%;
+          margin-top: 14px;
+        }
+      }
+
+      @media print {
+        @page {
+          size: 11in 8.5in;
+          margin: 0;
+        }
+
+        html,
+        body {
+          background: #fff;
+          width: 11in;
+          margin: 0;
+          padding: 0;
+          color: #111;
+          -webkit-print-color-adjust: exact;
+          print-color-adjust: exact;
+        }
+
+        .topbar,
+        .access-gate,
+        .command-bar,
+        .voiceover-panel,
+        #qa-report {
+          display: none;
+        }
+
+        main {
+          padding: 0;
+        }
+
+        .slides {
+          gap: 0;
+          max-width: none;
+        }
+
+        .slide::before,
+        .slide::after {
+          display: none;
+        }
+
+        .slide {
+          width: 11in;
+          min-height: 8.5in;
+          height: 8.5in;
+          display: grid;
+          grid-template-rows: auto minmax(0, 1fr) auto;
+          border: none;
+          border-radius: 0;
+          box-shadow: none;
+          background: #fff;
+          page-break-after: always;
+          break-after: page;
+          padding: 0.58in 0.56in;
+          overflow: hidden;
+        }
+
+        h1 {
+          font-size: 0.9in;
+          line-height: 0.96;
+          letter-spacing: -0.045em;
+          padding-bottom: 0.08in;
+        }
+
+        h2 {
+          font-size: 0.55in;
+          line-height: 0.98;
+          letter-spacing: -0.038em;
+          padding-bottom: 0.05in;
+        }
+
+        .core {
+          margin-top: 0.12in;
+          max-width: none;
+          font-size: 0.21in;
+          line-height: 1.18;
+        }
+
+        .slide-body {
+          margin-top: 0.2in;
+          gap: 0.16in;
+          min-height: 0;
+          align-self: center;
+          align-content: stretch;
+        }
+
+        .slide-body > .panel {
+          height: 100%;
+        }
+
+        .panel {
+          padding: 0.14in;
+          border-radius: 0.18in;
+        }
+
+        .panel h3 {
+          margin-bottom: 0.08in;
+          font-size: 0.14in;
+          letter-spacing: 0.1em;
+        }
+
+        .grid-two,
+        .grid-three,
+        .signal-list,
+        .metric-list,
+        .stack,
+        .process,
+        .table {
+          gap: 0.09in;
+        }
+
+        .table-row {
+          gap: 0.07in;
+        }
+
+        .chip,
+        .metric,
+        .stack-card,
+        .lane,
+        .proof,
+        .cell {
+          padding: 0.11in 0.13in;
+          border-radius: 0.16in;
+        }
+
+        .chip strong,
+        .metric strong,
+        .stack-card strong,
+        .lane strong,
+        .proof strong {
+          margin-bottom: 0.04in;
+          font-size: 0.13in;
+          letter-spacing: 0.07em;
+        }
+
+        .chip span,
+        .metric span,
+        .stack-card span,
+        .lane span,
+        .proof span {
+          font-size: 0.18in;
+          line-height: 1.16;
+        }
+
+        .process .lane {
+          min-height: 1.2in;
+        }
+
+        .process .index {
+          margin-bottom: 0.08in;
+          font-size: 0.11in;
+        }
+
+        ul {
+          padding-left: 0.18in;
+        }
+
+        li {
+          margin-bottom: 0.08in;
+          font-size: 0.18in;
+          line-height: 1.2;
+        }
+
+        .cell {
+          font-size: 0.15in;
+          line-height: 1.18;
+        }
+
+        .cell.head {
+          font-size: 0.11in;
+        }
+
+        .kicker {
+          margin-bottom: 0.12in;
+          font-size: 0.11in;
+          letter-spacing: 0.14em;
+        }
+
+        .hero-emphasis {
+          margin-top: 0.12in;
+          padding: 0.08in 0.12in;
+          font-size: 0.12in;
+        }
+
+        .keyline {
+          margin-top: 0.08in;
+          width: 1.35in;
+          height: 0.04in;
+        }
+
+        .footer-band {
+          margin-top: 0.08in;
+          padding-top: 0.1in;
+          font-size: 0.11in;
+          align-self: end;
+        }
+
+        .kicker,
+        .panel h3,
+        .footer-band,
+        .cell.head,
+        .chip strong,
+        .metric strong,
+        .stack-card strong,
+        .lane strong,
+        .proof strong {
+          color: #4b463f;
+        }
+
+        .core,
+        .chip span,
+        .metric span,
+        .stack-card span,
+        .lane span,
+        .proof span,
+        .cell,
+        li {
+          color: #161311;
+        }
+
+        .keyline {
+          background: #a63d1d;
+        }
+
+        .hero-emphasis {
+          background: #f4f0e8;
+          border-color: #d6cec3;
+          color: #2b2722;
+        }
+
+        .panel,
+        .chip,
+        .metric,
+        .stack-card,
+        .lane,
+        .proof,
+        .cell {
+          background: #fff;
+          box-shadow: none;
+          border-color: #d5cec4;
+        }
+
+        .panel.accent,
+        .accent {
+          background: #f6eee7;
+          border-color: #ddcabc;
+        }
+
+        .panel.signal,
+        .signal {
+          background: #edf3f8;
+          border-color: #cbd9e5;
+        }
+
+        .panel.success,
+        .success {
+          background: #eef5f1;
+          border-color: #cbdccf;
+        }
+
+        .panel.warning,
+        .warning {
+          background: #f7f0e5;
+          border-color: #e1d0b2;
+        }
+
+        .proof,
+        .stack-card,
+        .lane,
+        .chip,
+        .metric,
+        .cell,
+        .panel {
+          background-image: none;
+        }
+
+        .footer-band {
+          border-top-color: #d8d0c5;
+        }
+
+        .slide:last-child {
+          page-break-after: auto;
+          break-after: auto;
+        }
+
+        #s1 h1 {
+          max-width: 5.3in;
+          font-size: 0.72in;
+          line-height: 0.94;
+        }
+
+        #s1 .core {
+          max-width: 5.3in;
+        }
+
+        #s1 .slide-head {
+          grid-template-columns: minmax(0, 1.54fr) minmax(1.72in, 0.46fr);
+          gap: 0.09in;
+          align-items: start;
+          padding-bottom: 0.075in;
+        }
+
+        #s1 .hero-right {
+          gap: 0.06in;
+        }
+
+        #s1 .hero-right .panel {
+          padding: 0.085in 0.09in 0.08in;
+        }
+
+        #s1 .hero-right .panel h3 {
+          padding-right: 0.05in;
+        }
+
+        #s1 .slide-body {
+          margin-top: 0.07in;
+          grid-template-columns: minmax(0, 1fr);
+          gap: 0;
+          align-items: start;
+          align-content: start;
+        }
+
+        #s1 .opening-board {
+          grid-template-columns: minmax(0, 1.02fr) minmax(0, 0.98fr) minmax(1.56in, 0.54fr);
+          gap: 0.05in;
+          padding: 0.095in;
+          border-radius: 0.18in;
+        }
+
+        #s1 .system-statement {
+          max-width: 4.7in;
+          margin-top: 0.08in;
+          padding: 0.08in 0.12in;
+          border-radius: 0.16in;
+          font-size: 0.17in;
+          line-height: 1.14;
+          text-align: left;
+        }
+
+        #s1 .opening-thesis {
+          gap: 0.045in;
+        }
+
+        #s1 .opening-thesis-item {
+          padding: 0.06in 0.07in;
+          border-radius: 0.12in;
+        }
+
+        #s1 .opening-thesis-item span {
+          font-size: 0.072in;
+        }
+
+        #s1 .opening-thesis-item strong {
+          font-size: 0.115in;
+          line-height: 1.08;
+        }
+
+        #s1 .engine-header {
+          gap: 0.02in;
+          margin-bottom: 0.06in;
+        }
+
+        #s1 .engine-subtitle {
+          font-size: 0.1in;
+          line-height: 1.1;
+          max-width: 4.8in;
+        }
+
+        #s1 .system-pipeline {
+          grid-template-columns: repeat(5, minmax(0, 1fr));
+          gap: 0.04in;
+          max-width: none;
+        }
+
+        #s1 .opening-engine {
+          padding-bottom: 0.07in;
+        }
+
+        #s1 .system-stage {
+          padding: 0.075in 0.06in 0.065in;
+          border-radius: 0.12in;
+          min-height: 1.08in;
+          gap: 0.03in;
+        }
+
+        #s1 .system-stage:not(:last-child)::after {
+          right: -0.06in;
+          top: 0.17in;
+          font-size: 0.11in;
+        }
+
+        #s1 .system-step-number {
+          padding: 0.02in 0.045in;
+          font-size: 0.065in;
+        }
+
+        #s1 .system-stage strong {
+          font-size: 0.072in;
+          line-height: 1.04;
+          letter-spacing: 0.03em;
+        }
+
+        #s1 .system-stage p {
+          font-size: 0.09in;
+          line-height: 1.1;
+        }
+
+        #s1 .system-stage span {
+          font-size: 0.078in;
+          line-height: 1.08;
+        }
+
+        #s1 .system-blocks {
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+          gap: 0.045in;
+        }
+
+        #s1 .system-block {
+          padding: 0.075in 0.08in;
+          border-radius: 0.12in;
+        }
+
+        #s1 .system-block strong {
+          font-size: 0.082in;
+          margin-bottom: 0.025in;
+          letter-spacing: 0.05em;
+        }
+
+        #s1 .system-block span,
+        #s1 .output-list li,
+        #s1 .system-footer {
+          font-size: 0.108in;
+          line-height: 1.06;
+        }
+
+        #s1 .output-list {
+          grid-template-columns: repeat(5, minmax(0, 1fr));
+          gap: 0.045in;
+        }
+
+        #s1 .output-list li {
+          padding: 0.065in 0.07in;
+          border-radius: 0.11in;
+        }
+
+        #s1 .system-footer {
+          margin-top: 0.01in;
+        }
+
+        #s1 .footer-band {
+          margin-top: 0.05in;
+        }
+
+        #s3 .slide-body {
+          grid-template-columns: minmax(0, 1.5fr) minmax(1.95in, 0.5fr);
+          gap: 0.09in;
+        }
+
+        #s3 .panel {
+          padding: 0.1in;
+        }
+
+        #s3 .table {
+          gap: 0.05in;
+        }
+
+        #s3 .table-row {
+          gap: 0.04in;
+        }
+
+        #s3 .cell {
+          padding: 0.06in 0.065in;
+          font-size: 0.115in;
+          line-height: 1.08;
+        }
+
+        #s3 .cell.head {
+          font-size: 0.074in;
+        }
+
+        #s3 .stack {
+          gap: 0.05in;
+        }
+
+        #s3 .stack-card {
+          padding: 0.075in 0.085in;
+        }
+
+        #s3 .stack-card span {
+          font-size: 0.132in;
+          line-height: 1.08;
+        }
+
+        #s4 .slide-body {
+          grid-template-columns: minmax(0, 1.48fr) minmax(2.05in, 0.52fr);
+          gap: 0.11in;
+        }
+
+        #s4 .panel {
+          padding: 0.11in;
+        }
+
+        #s4 .process,
+        #s5 .process {
+          gap: 0.06in;
+        }
+
+        #s4 .process .lane,
+        #s5 .process .lane {
+          min-height: 1.02in;
+          padding: 0.09in 0.1in;
+        }
+
+        #s4 .lane span,
+        #s5 .lane span {
+          font-size: 0.15in;
+          line-height: 1.14;
+        }
+
+        #s4 .process {
+          gap: 0.045in;
+        }
+
+        #s4 .process .lane {
+          min-height: 0.92in;
+          padding: 0.07in 0.08in;
+        }
+
+        #s4 .process .index {
+          margin-bottom: 0.04in;
+          font-size: 0.095in;
+        }
+
+        #s4 .lane strong {
+          font-size: 0.11in;
+        }
+
+        #s4 .lane span {
+          font-size: 0.132in;
+          line-height: 1.08;
+        }
+
+        #s4 ul {
+          padding-left: 0.16in;
+        }
+
+        #s4 li {
+          font-size: 0.155in;
+          line-height: 1.14;
+          margin-bottom: 0.06in;
+        }
+
+        #s5 .slide-body {
+          grid-template-columns: minmax(0, 1.34fr) minmax(2.35in, 0.66fr);
+          gap: 0.12in;
+        }
+
+        #s5 .process {
+          gap: 0.05in;
+        }
+
+        #s5 .process .lane {
+          min-height: 0.94in;
+          padding: 0.08in 0.09in;
+        }
+
+        #s5 .process .index {
+          margin-bottom: 0.05in;
+        }
+
+        #s5 .lane strong {
+          font-size: 0.12in;
+        }
+
+        #s5 .lane span {
+          font-size: 0.138in;
+          line-height: 1.1;
+        }
+
+        #s5 .panel.accent {
+          padding: 0.12in;
+        }
+
+        #s5 .stack {
+          gap: 0.06in;
+        }
+
+        #s5 .stack-card {
+          padding: 0.09in 0.1in;
+        }
+
+        #s5 .stack-card strong {
+          font-size: 0.12in;
+          margin-bottom: 0.03in;
+        }
+
+        #s5 .stack-card span {
+          font-size: 0.145in;
+          line-height: 1.12;
+        }
+
+        #s7 .grid-three,
+        #s14 .grid-three {
+          gap: 0.08in;
+        }
+
+        #s7 .stack-card span,
+        #s14 .stack-card span {
+          font-size: 0.155in;
+        }
+
+        #s10 .grid-two {
+          gap: 0.08in;
+        }
+
+        #s10 .stack-card span,
+        #s11 .stack-card span,
+        #s12 .stack-card span,
+        #s13 .stack-card span,
+        #s14 .stack-card span {
+          font-size: 0.165in;
+        }
+
+        #s11 .stack,
+        #s12 .stack,
+        #s13 .stack,
+        #s14 .stack {
+          gap: 0.07in;
+        }
+
+        #s11 .slide-body,
+        #s12 .slide-body {
+          grid-template-columns: minmax(0, 1.34fr) minmax(2.25in, 0.66fr);
+          gap: 0.12in;
+        }
+
+        #s11 .panel,
+        #s12 .panel {
+          padding: 0.11in;
+        }
+
+        #s11 .stack,
+        #s12 .stack {
+          gap: 0.055in;
+        }
+
+        #s11 .stack-card,
+        #s12 .stack-card {
+          padding: 0.085in 0.095in;
+        }
+
+        #s11 .stack-card strong,
+        #s12 .stack-card strong {
+          font-size: 0.115in;
+          margin-bottom: 0.03in;
+        }
+
+        #s11 .stack-card span,
+        #s12 .stack-card span {
+          font-size: 0.145in;
+          line-height: 1.1;
+        }
+
+        #s11 li,
+        #s12 li {
+          font-size: 0.16in;
+          line-height: 1.14;
+          margin-bottom: 0.06in;
+        }
+
+        #s2 h2,
+        #s7 h2,
+        #s8 h2,
+        #s9 h2,
+        #s10 h2 {
+          font-size: 0.49in;
+        }
+
+        #s2 .core,
+        #s7 .core,
+        #s8 .core,
+        #s9 .core,
+        #s10 .core {
+          font-size: 0.185in;
+          line-height: 1.12;
+        }
+
+        #s2 .slide-body,
+        #s7 .slide-body,
+        #s8 .slide-body,
+        #s9 .slide-body,
+        #s10 .slide-body {
+          margin-top: 0.14in;
+          gap: 0.1in;
+        }
+
+        #s2 .panel,
+        #s7 .panel,
+        #s8 .panel,
+        #s9 .panel,
+        #s10 .panel {
+          padding: 0.11in;
+        }
+
+        #s2 li,
+        #s7 li,
+        #s8 li,
+        #s9 li,
+        #s10 li {
+          font-size: 0.16in;
+          line-height: 1.12;
+          margin-bottom: 0.06in;
+        }
+
+        #s2 .chip span,
+        #s7 .stack-card span,
+        #s8 .metric span,
+        #s9 .stack-card span,
+        #s10 .stack-card span,
+        #s10 .metric span,
+        #s10 .proof span {
+          font-size: 0.152in;
+          line-height: 1.1;
+        }
+
+        #s3 .slide-body {
+          grid-template-columns: minmax(0, 1.62fr) minmax(1.84in, 0.38fr);
+          gap: 0.08in;
+          margin-top: 0.15in;
+          align-items: stretch;
+        }
+
+        #s3 .panel:first-child,
+        #s3 .panel.accent {
+          padding: 0.105in;
+        }
+
+        #s3 .panel:first-child {
+          padding-bottom: 0.17in;
+        }
+
+        #s3 .panel.accent .stack {
+          gap: 0.06in;
+        }
+
+        #s3 .panel.accent .stack-card {
+          padding: 0.095in 0.1in;
+        }
+
+        #s3 .panel.accent .stack-card strong {
+          font-size: 0.112in;
+          margin-bottom: 0.035in;
+        }
+
+        #s3 .panel.accent .stack-card span {
+          font-size: 0.132in;
+          line-height: 1.08;
+        }
+
+        #s3 .table {
+          height: 100%;
+          gap: 0.055in;
+          align-content: stretch;
+          padding-bottom: 0.18in;
+          box-sizing: border-box;
+        }
+
+        #s3 .table-row {
+          grid-template-columns: 1.34fr repeat(5, 0.86fr);
+          gap: 0.05in;
+          align-items: stretch;
+        }
+
+        #s3 .table-row .cell {
+          padding: 0.065in 0.055in 0.12in;
+          font-size: 0.106in;
+          line-height: 1.06;
+          border-radius: 0.08in;
+          display: flex;
+          align-items: flex-start;
+          justify-content: center;
+          text-align: center;
+          overflow: visible;
+          word-break: break-word;
+          text-wrap: balance;
+          min-height: 0.54in;
+          box-sizing: border-box;
+        }
+
+        #s3 .table-row .cell:first-child {
+          justify-content: flex-start;
+          text-align: left;
+          font-size: 0.102in;
+          font-weight: 700;
+          padding-left: 0.07in;
+          min-height: 0.54in;
+          white-space: nowrap;
+          letter-spacing: -0.01em;
+        }
+
+        #s3 .table-row .cell.head {
+          font-size: 0.068in;
+          letter-spacing: 0.04em;
+          line-height: 1.02;
+          font-weight: 700;
+          color: #243746;
+          background: #e7eef4;
+          border-color: #c7d5e1;
+        }
+
+        #s3 .table-row .cell.head {
+          font-size: 0.084in;
+          line-height: 1.04;
+          letter-spacing: 0.08em;
+          text-transform: uppercase;
+          align-items: center;
+          min-height: 0.34in;
+        }
+
+        #s3 .table-row:last-child .cell {
+          padding-bottom: 0.16in;
+          min-height: 0.62in;
+        }
+
+        #s4 h2 {
+          font-size: 0.47in;
+        }
+
+        #s4 .core {
+          font-size: 0.18in;
+          line-height: 1.1;
+        }
+
+        #s4 .slide-body {
+          margin-top: 0.12in;
+          grid-template-columns: minmax(0, 1.58fr) minmax(1.85in, 0.42fr);
+          gap: 0.08in;
+        }
+
+        #s4 .panel {
+          padding: 0.095in;
+        }
+
+        #s4 .architecture-flow {
+          gap: 0.06in;
+        }
+
+        #s4 .architecture-stage {
+          grid-template-columns: 0.95in 1fr;
+          gap: 0.06in;
+          padding: 0.08in;
+          border-radius: 0.14in;
+        }
+
+        #s4 .architecture-label {
+          padding: 0.06in;
+          font-size: 0.085in;
+          letter-spacing: 0.1em;
+        }
+
+        #s4 .architecture-grid {
+          gap: 0.05in;
+        }
+
+        #s4 .architecture-grid .stack-card {
+          padding: 0.07in 0.08in;
+        }
+
+        #s4 .architecture-grid .stack-card strong {
+          font-size: 0.1in;
+        }
+
+        #s4 .architecture-grid .stack-card span {
+          font-size: 0.118in;
+          line-height: 1.05;
+        }
+
+        #s4 .process {
+          gap: 0.035in;
+        }
+
+        #s4 .process .lane {
+          min-height: 0.82in;
+          padding: 0.06in 0.065in;
+        }
+
+        #s4 .lane strong {
+          font-size: 0.1in;
+        }
+
+        #s4 .lane span {
+          font-size: 0.118in;
+          line-height: 1.04;
+        }
+
+        #s4 li {
+          font-size: 0.145in;
+          line-height: 1.08;
+          margin-bottom: 0.045in;
+        }
+
+        #s7 .grid-three {
+          gap: 0.06in;
+        }
+
+        #s7 .stack-card,
+        #s8 .metric,
+        #s9 .stack-card,
+        #s10 .stack-card {
+          padding: 0.08in 0.09in;
+        }
+
+        #s7 .stack-card strong,
+        #s8 .metric strong,
+        #s9 .stack-card strong,
+        #s10 .stack-card strong {
+          font-size: 0.115in;
+        }
+
+        #s8 .metric-list,
+        #s9 .grid-two,
+        #s10 .grid-two {
+          gap: 0.06in;
+        }
+
+        #s9 .stack-card span,
+        #s10 .stack-card span {
+          font-size: 0.145in;
+        }
+
+        #s10 .slide-body {
+          grid-template-columns: minmax(0, 1.4fr) minmax(2.05in, 0.5fr);
+        }
+
+        #s11 .slide-body,
+        #s12 .slide-body {
+          margin-top: 0.16in;
+        }
+
+        #s13 .slide-body {
+          margin-top: 0.05in;
+          grid-template-columns: minmax(0, 1.02fr) minmax(0, 0.98fr);
+          gap: 0.09in;
+        }
+
+        #s13 .panel {
+          padding: 0.105in;
+          display: grid;
+          align-content: start;
+          gap: 0.055in;
+        }
+
+        #s6 .slide-body {
+          grid-template-columns: minmax(0, 1.02fr) minmax(2.08in, 0.98fr);
+          gap: 0.09in;
+          margin-top: 0.11in;
+        }
+
+        #s6 .panel {
+          padding: 0.1in;
+          display: grid;
+          align-content: start;
+          gap: 0.055in;
+        }
+
+        #s6 .grid-two,
+        #s13 .grid-two {
+          gap: 0.055in;
+        }
+
+        #s6 .stack,
+        #s13 .stack {
+          gap: 0.05in;
+        }
+
+        #s6 .stack-card,
+        #s13 .metric,
+        #s13 .stack-card {
+          padding: 0.075in 0.085in;
+        }
+
+        #s6 .micro-legend {
+          margin-top: 0.01in;
+          padding: 0.07in 0.08in;
+          gap: 0.04in;
+        }
+
+        #s6 .micro-legend-grid {
+          gap: 0.045in 0.05in;
+        }
+
+        #s6 .micro-legend-title {
+          font-size: 8.5px;
+        }
+
+        #s6 .micro-legend-item strong {
+          font-size: 9px;
+        }
+
+        #s6 .micro-legend-item span {
+          font-size: 9.5px;
+          line-height: 1.16;
+        }
+
+        #s6 .stack-card strong,
+        #s13 .metric strong,
+        #s13 .stack-card strong {
+          font-size: 0.108in;
+          margin-bottom: 0.028in;
+        }
+
+        #s6 .stack-card span,
+        #s13 .metric span,
+        #s13 .stack-card span {
+          font-size: 0.132in;
+          line-height: 1.08;
+        }
+
+        #s7 .slide-body {
+          grid-template-columns: minmax(0, 1fr) minmax(0, 0.94fr);
+          gap: 0.1in;
+          margin-top: 0.12in;
+          align-items: center;
+          align-content: center;
+        }
+
+        #s7 .panel {
+          padding: 0.1in;
+          display: grid;
+          align-content: center;
+        }
+
+        #s7 .grid-three {
+          gap: 0.045in;
+        }
+
+        #s7 .stack-card,
+        #s7 .proof {
+          padding: 0.072in 0.082in;
+        }
+
+        #s7 .stack-card strong,
+        #s7 .proof strong {
+          font-size: 0.106in;
+          margin-bottom: 0.028in;
+        }
+
+        #s7 .stack-card span,
+        #s7 .proof span {
+          font-size: 0.13in;
+          line-height: 1.07;
+        }
+
+        #s8 .slide-body,
+        #s14 .slide-body {
+          grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+          gap: 0.1in;
+          margin-top: 0.12in;
+          align-items: center;
+          align-content: center;
+        }
+
+        #s8 .panel,
+        #s14 .panel {
+          padding: 0.1in;
+          display: grid;
+          align-content: center;
+        }
+
+        #s8 .slide-body {
+          gap: 0.085in;
+        }
+
+        #s8 .panel {
+          align-content: start;
+          gap: 0.055in;
+        }
+
+        #s8 .metric-list,
+        #s8 .stack,
+        #s14 .stack {
+          gap: 0.05in;
+        }
+
+        #s8 .metric-list {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          gap: 0.05in;
+        }
+
+        #s8 .metric,
+        #s8 .stack-card,
+        #s14 .stack-card {
+          padding: 0.075in 0.085in;
+        }
+
+        #s8 .metric strong,
+        #s8 .stack-card strong,
+        #s14 .stack-card strong {
+          font-size: 0.108in;
+          margin-bottom: 0.03in;
+        }
+
+        #s8 .metric span,
+        #s8 .stack-card span,
+        #s14 .stack-card span {
+          font-size: 0.136in;
+          line-height: 1.08;
+        }
+
+        #s8 .metric {
+          min-height: 0.86in;
+          align-content: start;
+        }
+
+        #s8 .pilot-board {
+          gap: 0.06in;
+        }
+
+        #s8 .pilot-card {
+          padding: 0.075in 0.085in;
+          border-radius: 0.14in;
+        }
+
+        #s8 .pilot-card strong {
+          font-size: 0.108in;
+          margin-bottom: 0.03in;
+        }
+
+        #s8 .pilot-card span {
+          font-size: 0.13in;
+          line-height: 1.07;
+        }
+
+        #s8 .pilot-card .subline {
+          font-size: 0.082in;
+          margin-top: 0.04in;
+        }
+
+        #s10 .market-ladder {
+          gap: 0.055in;
+        }
+
+        #s10 .market-step {
+          grid-template-columns: 0.82in 1fr;
+          gap: 0.07in;
+          padding: 0.08in 0.09in;
+          border-radius: 0.14in;
+        }
+
+        #s10 .market-num {
+          font-size: 0.28in;
+        }
+
+        #s10 .market-step strong {
+          font-size: 0.108in;
+          margin-bottom: 0.03in;
+        }
+
+        #s10 .market-step span {
+          font-size: 0.132in;
+          line-height: 1.07;
+        }
+
+        #s10 .market-step .subline {
+          font-size: 0.082in;
+          margin-top: 0.035in;
+        }
+
+        #s14 h2 {
+          font-size: 0.47in;
+        }
+
+        #s14 .core {
+          font-size: 0.172in;
+          line-height: 1.08;
+        }
+
+        #s14 .slide-body {
+          margin-top: 0.1in;
+        }
+
+        .contact-strip {
+          margin-top: 0.07in;
+          padding: 0.07in 0.1in;
+          border-radius: 0.14in;
+          font-size: 0.122in;
+          line-height: 1.08;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="access-gate" id="access-gate" aria-hidden="true">
+      <div class="gate-card">
+        <div class="gate-kicker">Private Access</div>
+        <h2>Enter the presentation.</h2>
+        <p class="gate-copy">This deck is shared through a controlled web portal. Enter your details to continue to the Inception Gate investor presentation.</p>
+        <form class="gate-form" id="access-gate-form">
+          <div class="gate-grid">
+            <div>
+              <label class="gate-label" for="gate-first-name">First Name</label>
+              <input class="gate-input" id="gate-first-name" name="firstName" type="text" autocomplete="given-name" placeholder="First name" required />
+            </div>
+            <div>
+              <label class="gate-label" for="gate-last-name">Last Name</label>
+              <input class="gate-input" id="gate-last-name" name="lastName" type="text" autocomplete="family-name" placeholder="Last name" required />
+            </div>
+          </div>
+          <div>
+            <label class="gate-label" for="gate-company">Company</label>
+            <input class="gate-input" id="gate-company" name="company" type="text" autocomplete="organization" placeholder="Institution or company" required />
+          </div>
+          <div>
+            <label class="gate-label" for="gate-email">Email</label>
+            <input class="gate-input" id="gate-email" name="email" type="email" inputmode="email" autocomplete="email" placeholder="name@institution.com" required />
+          </div>
+          <div class="gate-actions">
+            <div>
+              <div class="gate-error" id="gate-error"></div>
+            </div>
+            <button class="gate-submit" type="submit">Enter Deck</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <header class="topbar">
+      <div class="brand">
+        <strong>Inception Gate</strong>
+        <span>Scenario Planning Platform • Series Seed • $6M</span>
+      </div>
+      <div class="status">
+        <span>Viewing</span>
+        <strong id="current-slide">01 / 14</strong>
+      </div>
+      <nav class="nav">
+        <a href="#s1">1</a>
+        <a href="#s2">2</a>
+        <a href="#s3">3</a>
+        <a href="#s4">4</a>
+        <a href="#s5">5</a>
+        <a href="#s6">6</a>
+        <a href="#s7">7</a>
+        <a href="#s8">8</a>
+        <a href="#s9">9</a>
+        <a href="#s10">10</a>
+        <a href="#s11">11</a>
+        <a href="#s12">12</a>
+        <a href="#s13">13</a>
+        <a href="#s14">14</a>
+      </nav>
+    </header>
+
+    <main>
+      <div class="slides">
+        <section class="slide" id="s1">
+          <div class="slide-head">
+            <div data-voice-key="headline">
+              <div class="kicker">Investor Deck</div>
+              <h1>The Missing Layer in Institutional Decision-Making</h1>
+              <p class="core">Narrative World Modeling is the first system to treat narrative as a governable state, not fragmented content, sentiment, or media analysis.</p>
+              <div class="keyline"></div>
+              <div class="hero-emphasis">What The Product Does</div>
+              <div class="system-statement">It creates a coherent state space where market, policy, media, cultural, and internal signals are structured, tracked over time, and formally adjudicated into briefs, scenario paths, alerts, proof objects, and decision memory.</div>
+            </div>
+            <div class="hero-right">
+              <div class="panel signal dense" data-voice-key="investor-read">
+                <h3>Investor Read</h3>
+                <div class="opening-thesis">
+                  <div class="opening-thesis-item">
+                    <span>Category</span>
+                    <strong>First narrative intelligence layer for institutions.</strong>
+                  </div>
+                  <div class="opening-thesis-item">
+                    <span>Difference</span>
+                    <strong>Operates on governed system states, not isolated dashboards, analytics streams, or AI outputs.</strong>
+                  </div>
+                  <div class="opening-thesis-item">
+                    <span>Defensibility</span>
+                    <strong>Governed state transitions, proof objects, and living decision memory compound over time.</strong>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="slide-body">
+            <div class="opening-board">
+              <div class="opening-zone opening-engine" data-voice-key="engine">
+                <div class="engine-header">
+                  <h3>How the Engine Works</h3>
+                  <p class="engine-subtitle">From fragmented inputs to a clear operating read</p>
+                </div>
+                <div class="system-pipeline">
+                  <div class="system-stage">
+                    <div class="system-step-number">01</div>
+                    <strong>Signal Ingestion</strong>
+                    <p>Capture the real world across markets, policy, media, culture, and internal context.</p>
+                    <span>Continuously gathers high-volume, cross-domain signals in one system.</span>
+                  </div>
+                  <div class="system-stage">
+                    <div class="system-step-number">02</div>
+                    <strong>Structured Interpretation</strong>
+                    <p>Translate unstructured information into consistent, governable inputs.</p>
+                    <span>Standardizes evidence into one comparable state model.</span>
+                  </div>
+                  <div class="system-stage">
+                    <div class="system-step-number">03</div>
+                    <strong>System State Modeling</strong>
+                    <p>Map signals into a live representation of the operating environment.</p>
+                    <span>Maintains a real-time shared map of system conditions.</span>
+                  </div>
+                  <div class="system-stage">
+                    <div class="system-step-number">04</div>
+                    <strong>Phase &amp; Shift Detection</strong>
+                    <p>Identify when the system is stable, building pressure, or changing regime.</p>
+                    <span>Detects meaningful shifts before they become obvious.</span>
+                  </div>
+                  <div class="system-stage success">
+                    <div class="system-step-number">05</div>
+                    <strong>Governed Output</strong>
+                    <p>Deliver clear, auditable outputs for leadership and operators.</p>
+                    <span>Produces executive-ready decisions with traceable logic.</span>
+                  </div>
+                </div>
+              </div>
+              <div class="opening-zone opening-outputs" data-voice-key="outputs">
+                <h3>Clear Product Outputs</h3>
+                <div class="system-blocks">
+                  <div class="system-block">
+                    <strong>Strategic Briefs</strong>
+                    <span>What changed, why it matters, and what leadership should watch now.</span>
+                  </div>
+                  <div class="system-block">
+                    <strong>Path Comparison</strong>
+                    <span>Main path, alternate paths, and the triggers that would change the state.</span>
+                  </div>
+                  <div class="system-block">
+                    <strong>Narrative Risk Readout</strong>
+                    <span>Flags when trust, perception, or stakeholder belief is shifting in destabilizing ways.</span>
+                  </div>
+                  <div class="system-block signal">
+                    <strong>Real-Time Alerts</strong>
+                    <span>Flags material changes as events emerge.</span>
+                  </div>
+                  <div class="system-block">
+                    <strong>Scenario Simulation</strong>
+                    <span>Lets teams run possible futures before committing capital or posture.</span>
+                  </div>
+                  <div class="system-block">
+                    <strong>Living Archive</strong>
+                    <span>Preserves states, transitions, assumptions, and outcomes over time.</span>
+                  </div>
+                </div>
+              </div>
+              <div class="opening-side">
+                <div class="opening-zone opening-positioning" data-voice-key="positioning">
+                  <h3>Positioning</h3>
+                  <div class="stack">
+                    <div class="stack-card">
+                      <strong>Shared Map of Reality</strong>
+                      <span>Turns fragmented inputs into one evidence-backed operating read for the institution.</span>
+                    </div>
+                    <div class="stack-card">
+                      <strong>Category-Defining Layer</strong>
+                      <span>Purpose-built decision infrastructure for institutions operating under uncertainty.</span>
+                    </div>
+                    <div class="stack-card warning">
+                      <strong>Why It Wins</strong>
+                      <span>Supports recurring governed decisions, not one-time analysis or generated text.</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="footer-band"><span>Category Positioning</span><span class="pager">01 / 14</span></div>
+        </section>
+
+        <section class="slide" id="s2">
+          <div class="slide-head">
+            <div class="kicker">Problem</div>
+            <h2>Institutions Have More Data Than Decision Clarity</h2>
+            <p class="core">The problem is not access to information. It is turning fragmented inputs into a shared interpretation early enough and clearly enough to support high-stakes decisions.</p>
+            <div class="keyline"></div>
+          </div>
+          <div class="slide-body">
+            <div class="panel">
+              <h3>What Breaks Today</h3>
+              <ul>
+                <li>Signals sit across research tools, analyst notes, market feeds, internal reports, and outside advisors.</li>
+                <li>Early shifts in narrative, trust, and structural pressure form before they appear in standard metrics.</li>
+                <li>Different teams tell different stories about the same situation and strategies diverge.</li>
+                <li>Leadership spends too much time aligning on what is happening before deciding what to do.</li>
+              </ul>
+            </div>
+            <div class="panel signal">
+              <h3>Institutional Pain Points</h3>
+              <div class="signal-list">
+                <div class="chip"><strong>Early Shifts Stay Hidden</strong><span>Important changes form before they become visible in dashboards, reports, or market consensus.</span></div>
+                <div class="chip"><strong>Conflicting Narratives</strong><span>Multiple internal views compete without one shared operating picture.</span></div>
+                <div class="chip"><strong>Key-Person Dependence</strong><span>Decision quality depends too much on who is in the room.</span></div>
+                <div class="chip"><strong>No Institutional Memory</strong><span>Teams lose track of prior states, assumptions, choices, and outcomes.</span></div>
+              </div>
+            </div>
+            <div class="panel accent impact-panel">
+              <h3>Why It Matters</h3>
+              <div class="impact-grid">
+                <div class="stack-card">
+                  <strong>Earlier Detection</strong>
+                  <span>Leadership sees phase shifts, trust breaks, and structural pressure sooner.</span>
+                </div>
+                <div class="stack-card">
+                  <strong>Decision Coherence</strong>
+                  <span>Teams operate from the same map of reality instead of debating source material.</span>
+                </div>
+                <div class="stack-card success">
+                  <strong>Executive Clarity</strong>
+                  <span>Leadership gets a cleaner operating read without drowning in analyst noise.</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="footer-band"><span>Institutional Pain</span><span class="pager">02 / 14</span></div>
+        </section>
+
+        <section class="slide" id="s3">
+          <div class="slide-head">
+            <div class="kicker">Competition</div>
+            <h2>Current Tools Stop Short of Decision-Making</h2>
+            <p class="core">Once you define the problem correctly, the gap in the current stack is obvious. Existing tools operate on isolated streams, but none defines a coherent narrative state space that can be measured, adjudicated, and used for live decisions.</p>
+            <div class="keyline"></div>
+          </div>
+          <div class="slide-body">
+            <div class="panel">
+              <h3>Competitive Read</h3>
+              <div class="table">
+                <div class="table-row">
+                  <div class="cell head">Category</div>
+                  <div class="cell head">Strategic Briefs</div>
+                  <div class="cell head">Scenario Plans</div>
+                  <div class="cell head">Alerts</div>
+                  <div class="cell head">Team Workflow</div>
+                  <div class="cell head">Audit Trail</div>
+                </div>
+                <div class="table-row">
+                  <div class="cell">Dashboards / BI</div>
+                  <div class="cell cross">Limited</div>
+                  <div class="cell cross">No</div>
+                  <div class="cell cross">No</div>
+                  <div class="cell tick">Some</div>
+                  <div class="cell cross">No</div>
+                </div>
+                <div class="table-row">
+                  <div class="cell">Consultancies</div>
+                  <div class="cell tick">Yes</div>
+                  <div class="cell cross">Rare</div>
+                  <div class="cell cross">No</div>
+                  <div class="cell cross">No</div>
+                  <div class="cell cross">Weak</div>
+                </div>
+                <div class="table-row">
+                  <div class="cell">Scenario Planning</div>
+                  <div class="cell tick">Yes</div>
+                  <div class="cell tick">Yes</div>
+                  <div class="cell cross">No</div>
+                  <div class="cell cross">No</div>
+                  <div class="cell cross">Weak</div>
+                </div>
+                <div class="table-row">
+                  <div class="cell">Generic AI</div>
+                  <div class="cell tick">Text only</div>
+                  <div class="cell cross">No</div>
+                  <div class="cell cross">No</div>
+                  <div class="cell cross">No</div>
+                  <div class="cell cross">No</div>
+                </div>
+                <div class="table-row">
+                  <div class="cell">Inception Gate</div>
+                  <div class="cell tick">Yes</div>
+                  <div class="cell tick">Yes</div>
+                  <div class="cell tick">Yes</div>
+                  <div class="cell tick">Yes</div>
+                  <div class="cell tick">Yes</div>
+                </div>
+              </div>
+            </div>
+            <div class="panel accent">
+              <h3>Why the Current Stack Breaks</h3>
+              <div class="stack">
+                <div class="stack-card"><strong>Dashboards</strong><span>Operate on metrics and feeds, but not on a governed representation of narrative state.</span></div>
+                <div class="stack-card"><strong>Consultants</strong><span>Provide judgment, but only in bursts that do not persist as institutional state or workflow.</span></div>
+                <div class="stack-card"><strong>Scenario Planning</strong><span>Explores futures, but usually outside the live state of the system and outside ongoing operations.</span></div>
+                <div class="stack-card"><strong>Generic AI</strong><span>Generates language quickly, but not a governed read with traceability, adjudication, and memory.</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="footer-band"><span>Why Today’s Stack Breaks</span><span class="pager">03 / 14</span></div>
+        </section>
+
+        <section class="slide" id="s4">
+          <div class="slide-head">
+            <div class="kicker">Product</div>
+            <h2>A Live Decision System, Not Scenario Planning Software</h2>
+            <p class="core">Scenario planning is periodic. Inception Gate is a live operating system that treats narrative as a governed state, updates it continuously, compares alternate paths, produces proof, and preserves decision memory.</p>
+            <div class="keyline"></div>
+          </div>
+          <div class="slide-body">
+            <div class="panel signal" data-voice-key="architecture">
+              <h3>Platform Architecture</h3>
+              <div class="architecture-flow">
+                <div class="architecture-stage" data-voice-key="data-signals">
+                  <div class="architecture-label">Evidence Inputs</div>
+                  <div class="architecture-grid">
+                    <div class="stack-card"><strong>Internal</strong><span>Memos, briefs, team notes, reports, committee materials, and internal operating data</span></div>
+                    <div class="stack-card"><strong>External</strong><span>Market, policy, regulatory, competitive, geopolitical, media, and cultural feeds</span></div>
+                    <div class="stack-card"><strong>User Input</strong><span>Questions, watchlists, assumptions, capital priorities, and communication priorities</span></div>
+                  </div>
+                </div>
+                <div class="architecture-stage" data-voice-key="engine-stage">
+                  <div class="architecture-label">Decision Engine</div>
+                  <div class="architecture-grid">
+                    <div class="stack-card accent"><strong>Model</strong><span>Maps narrative into structured states, pressure relationships, phases, and transition rules.</span></div>
+                    <div class="stack-card signal"><strong>Adjudicate</strong><span>Resolves conflicting signals into one governed strategic state with proof objects behind it.</span></div>
+                    <div class="stack-card"><strong>Simulate</strong><span>Compares future paths, timing, messaging, and capital implications before commitment.</span></div>
+                  </div>
+                </div>
+                <div class="architecture-stage" data-voice-key="strategic-outputs">
+                  <div class="architecture-label">Decision Outputs</div>
+                  <div class="architecture-grid two">
+                    <div class="stack-card success"><strong>Operating Surfaces</strong><span>Executive briefs, path comparisons, signal analysis, alerts, and action summaries.</span></div>
+                    <div class="stack-card"><strong>Living Archive</strong><span>A running record of states, assumptions, proof objects, outputs, and outcomes.</span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="panel" data-voice-key="positioning-panel">
+              <h3>Clear Positioning</h3>
+              <ul>
+                <li>Scenario planning defines possible futures. Inception Gate updates the current state as reality changes.</li>
+                <li>Built for strategy, risk, intelligence, communications, and executive teams.</li>
+                <li>The product becomes part of recurring workflow, with board-ready, compliance-ready outputs.</li>
+              </ul>
+            </div>
+          </div>
+          <div class="footer-band"><span>Product Positioning</span><span class="pager">04 / 14</span></div>
+        </section>
+
+        <section class="slide" id="s5">
+          <div class="slide-head">
+            <div class="kicker">Product Clarity</div>
+            <h2>How Information Moves Through the Platform</h2>
+            <p class="core">In practice, teams monitor the live picture, replay how the state formed, and turn that into briefs, path comparisons, alerts, and reusable institutional memory.</p>
+            <div class="keyline"></div>
+          </div>
+          <div class="slide-body">
+            <div class="panel">
+              <h3>Landing Surface</h3>
+              <div class="console-shot-frame">
+                <strong>MVP</strong>
+                <img class="console-shot" src="./assets/inception-gate/console-landing.png" alt="Inception Gate landing view with sticky header and signal ticker" />
+              </div>
+            </div>
+            <div class="panel accent">
+              <h3>Time Replay and Workflow</h3>
+              <div class="console-shot-frame">
+                <strong>Timeline Replay</strong>
+                <img class="console-shot" src="./assets/inception-gate/console-time-replay.png" alt="Inception Gate time replay console snapshot" />
+              </div>
+              <div class="stack">
+                <div class="stack-card"><strong>1. Monitor</strong><span>See market, policy, media, cultural, and internal signals together in one operating picture.</span></div>
+                <div class="stack-card"><strong>2. Replay</strong><span>Move through time to see when pressure built, when the state changed, and why.</span></div>
+                <div class="stack-card"><strong>3. Decide</strong><span>Turn that governed read into briefs, path comparisons, alerts, and archive entries.</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="footer-band"><span>Product Workflow</span><span class="pager">05 / 14</span></div>
+        </section>
+
+        <section class="slide" id="s6">
+          <div class="slide-head">
+            <div class="kicker">Outputs</div>
+            <h2>What Customers Actually Receive</h2>
+            <p class="core">This is what the product delivers: a clear system read, the decisions it supports, and the triggers that would change the call.</p>
+            <div class="keyline"></div>
+          </div>
+          <div class="slide-body">
+            <div class="panel" data-voice-key="signal-panel">
+              <h3>NWM Signal | Iran Energy System Entering Compression Window (30-90 Days)</h3>
+              <p class="section-note">Iran is one example. The same workflow can track fast-moving environments across geopolitics, regulation, supply chains, markets, narrative risk, and institutional trust.</p>
+              <div class="grid-two">
+                <div class="stack-card" data-voice-key="nci">
+                  <strong>Signal Input | Dominant Market Story</strong>
+                  <span>The dominant story around supply disruption strengthened +44% over 18 days.</span>
+                  <span>Signal density across sanctions, shipping, and energy-risk inputs increased +57% over the same window.</span>
+                </div>
+                <div class="stack-card signal" data-voice-key="scr">
+                  <strong>Signal Input | Signals Moving Together</strong>
+                  <span>Previously separate signals are now reinforcing the same read 1.8x faster.</span>
+                  <span>Compression velocity is running +31% week over week as sanctions signaling, freight commentary, and policy language tighten into one axis.</span>
+                </div>
+                <div class="stack-card success" data-voice-key="actor-alignment">
+                  <strong>Signal Input | Key Actors Aligning</strong>
+                  <span>3 of 5 system-critical actor clusters are now inside the same interpretive band.</span>
+                  <span>Iran maritime posture, China safe-passage behavior, and insurer-routing signals are converging faster than U.S. diplomacy and Gulf producer messaging.</span>
+                </div>
+                <div class="stack-card warning" data-voice-key="volatility-gap">
+                  <strong>Signal Input | Market Still Behind Risk</strong>
+                  <span>Structural risk is building faster than policy and market interpretation are catching up.</span>
+                  <span>Interpretive Bandwidth Collapse is pushing the dominant frame toward flow disruption, not fast normalization.</span>
+                </div>
+              </div>
+              <div class="micro-legend">
+                <div class="micro-legend-title">What These Signals Mean</div>
+                <div class="micro-legend-grid">
+                  <div class="micro-legend-item" data-voice-key="nci">
+                    <strong>Dominant Market Story</strong>
+                    <span>How strongly the evidence is organizing around one clear explanation of what is happening.</span>
+                  </div>
+                  <div class="micro-legend-item" data-voice-key="scr">
+                    <strong>Signals Moving Together</strong>
+                    <span>How quickly previously separate inputs start reinforcing the same read.</span>
+                  </div>
+                  <div class="micro-legend-item" data-voice-key="actor-alignment">
+                    <strong>Key Actors Aligning</strong>
+                    <span>Whether the most important players are behaving in ways that support the same interpretation.</span>
+                  </div>
+                  <div class="micro-legend-item" data-voice-key="volatility-gap">
+                    <strong>Market Still Behind Risk</strong>
+                    <span>Whether the underlying risk is forming faster than markets and policymakers are pricing it in.</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="panel signal" data-voice-key="system-panel">
+              <h3>System Readout</h3>
+              <p class="section-note">This is not just another signal screen. It shows the current read, why the system believes it, what alternate paths remain open, and what would change the read.</p>
+              <div class="stack">
+                <div class="stack-card" data-voice-key="system-read">
+                  <strong>System Read</strong>
+                  <span>The system detects a Narrative-State Transition from fragmented conflict inputs to a coherent energy-control regime.</span>
+                  <span>Signal Fragmentation to Convergence is visible across sanctions signaling, maritime routing, deterrence posture, and policy interpretation layers.</span>
+                  <span>This is pre-volatility structure: the Narrative Compression Window is forming before physical normalization or durable de-escalation.</span>
+                </div>
+                <div class="stack-card" data-voice-key="why-matters">
+                  <strong>Why It Matters</strong>
+                  <span>When compression forms before routing and insurance normalize, repricing usually migrates from freight and policy exceptions into crude, LNG, and board-level risk posture.</span>
+                  <span>The institutional edge is seeing that state change before consensus language locks in and before trust or market positioning fully reprices around it.</span>
+                </div>
+                <div class="stack-card" data-voice-key="scenario-paths">
+                  <strong>Scenario Paths</strong>
+                  <span>1. Controlled passage plus sanctions hardening - persistent energy premium and widening two-tier access narrative.</span>
+                  <span>2. Deterrence failure plus regional energy strikes - accelerated repricing, insurer withdrawal, and narrative lock-in around systemic supply insecurity.</span>
+                  <span>3. Diplomatic deconfliction without routing normalization - temporary price relief with elevated fragility and a still-open volatility gap.</span>
+                </div>
+                <div class="stack-card" data-voice-key="decision-actions">
+                  <strong>Institutional Decisions</strong>
+                  <span>1. Reprice or reduce exposure to energy, shipping, and regional counterparties before consensus reprices the risk.</span>
+                  <span>2. Secure alternate sourcing, routing, or inventory buffers while access and pricing flexibility still exist.</span>
+                  <span>3. Raise board-level risk posture and align investor, customer, or stakeholder messaging around disruption triggers.</span>
+                </div>
+                <div class="stack-card success" data-voice-key="confidence">
+                  <strong>Confidence</strong>
+                  <span>Moderate-High. Source quality is strong and cross-domain convergence is real, but trigger timing and state duration remain unresolved.</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="footer-band"><span>Customer Outputs</span><span class="pager">06 / 14</span></div>
+        </section>
+
+        <section class="slide" id="s7">
+          <div class="slide-head">
+            <div class="kicker">Customers</div>
+            <h2>Who Buys First</h2>
+            <p class="core">The first buyer is the executive already accountable for turning ambiguity into a board-ready call on timing, risk, capital, or posture.</p>
+            <div class="keyline"></div>
+          </div>
+          <div class="slide-body">
+            <div class="panel">
+              <h3>Initial Customer Segments</h3>
+              <div class="grid-three">
+                <div class="stack-card">
+                  <strong>Enterprise Strategy</strong>
+                  <span>Buyer: CSO / CRO</span>
+                  <span>User: strategy, risk, and chief of staff teams</span>
+                  <span>Use case: board prep, portfolio posture, narrative risk, and path comparison before a strategic move.</span>
+                </div>
+                <div class="stack-card signal">
+                  <strong>Financial Institutions</strong>
+                  <span>Buyer: CRO / Head of Investment Risk</span>
+                  <span>User: policy, macro, risk, CIO office</span>
+                  <span>Use case: capital allocation, exposure management, and early state shifts across policy and markets.</span>
+                </div>
+                <div class="stack-card warning">
+                  <strong>Public Sector</strong>
+                  <span>Buyer: program executive / intelligence lead</span>
+                  <span>User: analysts, policy staff, briefing teams</span>
+                  <span>Use case: senior briefings, policy options, strategic communication, and cross-team alignment in fast-moving environments.</span>
+                </div>
+              </div>
+            </div>
+            <div class="panel accent">
+              <h3>Likely First Buyer</h3>
+              <div class="proof"><strong>Profile</strong><span>Head of strategy, geopolitical risk, policy, or investment oversight with a live briefing mandate and budget control.</span></div>
+              <div class="proof"><strong>Buying Trigger</strong><span>A visible decision window where leadership cannot afford slow synthesis, internal disagreement, or messaging drift.</span></div>
+              <div class="proof"><strong>Budget Source</strong><span>Strategy, risk, intelligence, compliance, communications, or advisory budgets already paying to interpret uncertainty.</span></div>
+            </div>
+          </div>
+          <div class="footer-band"><span>Who Pays First</span><span class="pager">07 / 14</span></div>
+        </section>
+
+        <section class="slide" id="s8">
+          <div class="slide-head">
+            <div class="kicker">Pricing</div>
+            <h2>GTM and Pricing</h2>
+            <p class="core">The first sale is deliberately narrow: one accountable sponsor, one critical workflow, one paid deployment with measurable decision value.</p>
+            <div class="keyline"></div>
+          </div>
+          <div class="slide-body">
+            <div class="panel" data-voice-key="commercial-model">
+              <h3>Commercial Model</h3>
+              <div class="metric-list">
+                <div class="metric accent"><strong>Monthly Pricing</strong><span>$50K-$90K for the first institutional deployment</span></div>
+                <div class="metric"><strong>Target ACV</strong><span>$750K-$1.5M for a core enterprise account</span></div>
+                <div class="metric signal"><strong>Enterprise Upside</strong><span>$2M-$3M+ when multiple teams and leadership workflows are onboard</span></div>
+                <div class="metric success"><strong>Initial Scope</strong><span>15-50 senior strategists, analysts, and decision-makers around one critical workflow</span></div>
+              </div>
+            </div>
+            <div class="panel warning" data-voice-key="gtm-panel">
+              <h3>Customer Segments and GTM</h3>
+              <div class="stack">
+                <div class="stack-card"><strong>Segments</strong><span>Fortune 500 strategy teams, financial institutions, and public-sector policy or intelligence groups.</span></div>
+                <div class="stack-card signal"><strong>How We Sell</strong><span>Sell into one live decision cycle with a named sponsor, fixed cadence, defined outputs, and executive visibility.</span></div>
+                <div class="stack-card"><strong>Land</strong><span>Start with one urgent decision problem where timing, coherence, and traceability matter enough to justify immediate spend.</span></div>
+                <div class="stack-card success"><strong>Expand</strong><span>Expand only after the first cycle proves faster briefings, stronger alignment, and repeat usage by leadership.</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="footer-band"><span>Commercial Model</span><span class="pager">08 / 14</span></div>
+        </section>
+
+        <section class="slide" id="s9">
+          <div class="slide-head">
+            <div class="kicker">GTM</div>
+            <h2>Land, Prove Value, Expand</h2>
+            <p class="core">The expansion path is simple: win one high-stakes workflow, prove operating value fast, then widen into adjacent decisions the institution already runs.</p>
+            <div class="keyline"></div>
+          </div>
+          <div class="slide-body">
+            <div class="panel signal">
+              <h3>Sales Motion</h3>
+              <div class="grid-two">
+                <div class="stack-card"><strong>Qualify</strong><span>Confirm a budget owner, a live decision window, and direct executive exposure if the call goes wrong.</span></div>
+                <div class="stack-card"><strong>Launch</strong><span>Deploy into one strategy, risk, or policy team with a fixed workflow, output set, and review cadence.</span></div>
+                <div class="stack-card"><strong>Renew</strong><span>Renew by proving shorter decision cycles, cleaner alignment, and recurring leadership use.</span></div>
+                <div class="stack-card success"><strong>Expand</strong><span>Move from one workflow into adjacent teams, board reporting, planning cycles, and capital decisions.</span></div>
+              </div>
+            </div>
+            <div class="panel">
+              <h3>What Proves Value</h3>
+              <ul>
+                <li>Leadership briefing cycles compress from days into hours.</li>
+                <li>Cross-functional teams operate from one shared state instead of competing interpretations.</li>
+                <li>State changes, scenarios, and recommendations are logged in a form leadership can defend.</li>
+                <li>Early phase shifts trigger action before consensus language or standard metrics catch up.</li>
+              </ul>
+            </div>
+          </div>
+          <div class="footer-band"><span>Expansion Motion</span><span class="pager">09 / 14</span></div>
+        </section>
+
+        <section class="slide" id="s10">
+          <div class="slide-head">
+            <div class="kicker">Market</div>
+            <h2>Budget Already Exists</h2>
+            <p class="core">This is a budget-conversion story, not a budget-creation story. Institutions already spend heavily to synthesize uncertainty, just without one governed system to hold the work.</p>
+            <div class="keyline"></div>
+          </div>
+          <div class="slide-body">
+            <div class="panel">
+              <h3>Bottom-Up Account Logic</h3>
+              <div class="market-ladder">
+                <div class="market-step">
+                  <div class="market-num">125</div>
+                  <div>
+                    <strong>Enterprise Beachhead</strong>
+                    <span>Global enterprises with concentrated geopolitical, regulatory, communications, or strategy complexity</span>
+                    <div class="subline">Initial named-account universe</div>
+                  </div>
+                </div>
+                <div class="market-step signal">
+                  <div class="market-num">75</div>
+                  <div>
+                    <strong>Financial Institutions</strong>
+                    <span>Regulated institutions with active policy, market, exposure, and capital-allocation interpretation needs</span>
+                    <div class="subline">Existing high-cost ambiguity budgets</div>
+                  </div>
+                </div>
+                <div class="market-step warning">
+                  <div class="market-num">25-50</div>
+                  <div>
+                    <strong>Public Programs</strong>
+                    <span>Public-sector and quasi-public strategic programs with senior briefing requirements</span>
+                    <div class="subline">High-value constrained deployments</div>
+                  </div>
+                </div>
+                <div class="market-step success">
+                  <div class="market-num">10</div>
+                  <div>
+                    <strong>Series A Support Case</strong>
+                    <span>10 enterprise accounts at $750K+ average ACV create a credible early institutional software business</span>
+                    <div class="subline">High-value proof before scale</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="panel accent">
+              <h3>Budget Sources</h3>
+              <div class="stack">
+                <div class="stack-card"><strong>Advisory</strong><span>External consulting, geopolitical intelligence, and premium research spend already used to interpret change.</span></div>
+                <div class="stack-card"><strong>Software</strong><span>Strategy, risk, policy, communications, and workflow tooling budgets supporting the same decision process.</span></div>
+                <div class="stack-card"><strong>Headcount</strong><span>Internal analyst time currently absorbed by synthesis, briefing prep, escalation, and cross-team coordination.</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="footer-band"><span>Bottom-Up Framing</span><span class="pager">10 / 14</span></div>
+        </section>
+
+        <section class="slide" id="s11">
+          <div class="slide-head">
+            <div class="kicker">Moat</div>
+            <h2>Why Customers Stay</h2>
+            <p class="core">If Inception Gate lands inside live workflow, it becomes hard to replace because the customer is not just buying software. They are adopting a patent-pending decision system with compounding institutional memory.</p>
+            <div class="keyline"></div>
+          </div>
+          <div class="slide-body">
+            <div class="panel signal" data-voice-key="defensibility-layers">
+              <h3>Defensibility Layers</h3>
+              <div class="stack">
+                <div class="stack-card"><strong>Patent-Pending Math + Method</strong><span>The math, state-transition logic, and adjudication methodology make the core harder to replicate than a summary layer or prompt workflow.</span></div>
+                <div class="stack-card"><strong>Proof Objects</strong><span>Connect outputs to sources, review steps, and revision history in an auditable chain leadership and compliance can inspect.</span></div>
+                <div class="stack-card"><strong>Living Archive</strong><span>Stores states, alerts, scenarios, and outcomes so the institution builds structural memory over time.</span></div>
+                <div class="stack-card"><strong>Infrastructure Position</strong><span>Replacing it means rebuilding the logic, workflow, history, and trust layer across multiple teams.</span></div>
+              </div>
+            </div>
+            <div class="panel" data-voice-key="inherently-different">
+              <h3>Why It Is Inherently Different</h3>
+              <ul>
+                <li>Competes on governed interpretation, not generic text generation.</li>
+                <li>Produces a traceable strategic state, not isolated answers or summaries.</li>
+                <li>Treats narrative as a measurable and auditable operating domain.</li>
+                <li>Improves as the institution accumulates proof, transitions, and outcomes.</li>
+                <li>Becomes a narrative intelligence layer for recurring decisions under uncertainty.</li>
+              </ul>
+            </div>
+          </div>
+          <div class="footer-band"><span>Defensibility</span><span class="pager">11 / 14</span></div>
+        </section>
+
+        <section class="slide" id="s12">
+          <div class="slide-head">
+            <div class="kicker">Roadmap</div>
+            <h2>What We Need to Prove Before Series A</h2>
+            <p class="core">Before Series A, the company needs to prove one thing clearly: Inception Gate can land as system infrastructure inside institutional accounts, not as a temporary pilot.</p>
+            <div class="keyline"></div>
+          </div>
+          <div class="slide-body">
+            <div class="panel">
+              <h3>Build Path</h3>
+              <div class="stack">
+                <div class="stack-card"><strong>Now</strong><span>Core workflows already support signal ingestion, governed state tracking, strategic briefs, path comparison, alerts, and archive-backed review.</span></div>
+                <div class="stack-card signal"><strong>Next 12-18 Months</strong><span>Harden enterprise controls, deepen source coverage, and extend simulation, governance, and cross-team workflow adoption.</span></div>
+                <div class="stack-card success"><strong>Series A Gate</strong><span>Repeatable deployment, strong retention, executive-level usage, and expansion from one workflow into broader institutional use.</span></div>
+              </div>
+            </div>
+            <div class="panel accent">
+              <h3>18-24 Month Proof Standard</h3>
+              <ul>
+                <li>5-8 paid institutional customers with active recurring use</li>
+                <li>$2M-$4M ARR with strong retention and clean renewal logic</li>
+                <li>Reference accounts where leadership actually uses the outputs</li>
+                <li>Expansion from single-workflow deployments into multi-team or multi-cycle use</li>
+              </ul>
+            </div>
+          </div>
+          <div class="footer-band"><span>Financing Proof Chain</span><span class="pager">12 / 14</span></div>
+        </section>
+
+        <section class="slide" id="s13">
+          <div class="slide-head">
+            <div class="kicker">Capital</div>
+            <h2>How the $6M Seed Is Deployed</h2>
+            <p class="core">The seed round is designed to do one job: turn a strong product thesis into reference accounts, durable workflow adoption, and a credible Series A software case.</p>
+            <div class="keyline"></div>
+          </div>
+          <div class="slide-body">
+            <div class="panel">
+              <h3>Allocation</h3>
+              <div class="grid-two">
+                <div class="metric accent"><strong>40% | $2.4M</strong><span>Engineering and product to harden reporting, path-comparison workflow, permissions, enterprise admin, and review controls.</span></div>
+                <div class="metric"><strong>25% | $1.5M</strong><span>Data infrastructure for source licensing, ingestion reliability, monitoring, alert QA, and resilience across priority domains.</span></div>
+                <div class="metric signal"><strong>20% | $1.2M</strong><span>GTM and sales for design partners, first paid institutional conversions, and a disciplined enterprise selling motion.</span></div>
+                <div class="metric success"><strong>15% | $0.9M</strong><span>Operations for security readiness, implementation, onboarding, support, and institutional delivery discipline.</span></div>
+              </div>
+            </div>
+            <div class="panel warning">
+              <h3>What That Capital Unlocks</h3>
+              <div class="stack">
+                <div class="stack-card"><strong>Product Outcome</strong><span>An enterprise-ready platform with governed reporting, stronger scenario workflows, and institutional controls.</span></div>
+                <div class="stack-card"><strong>Data Outcome</strong><span>Broader source coverage, better monitoring quality, and higher-confidence early-warning signals.</span></div>
+                <div class="stack-card"><strong>Commercial Outcome</strong><span>Reference accounts, paid deployments, and a repeatable enterprise sales motion.</span></div>
+                <div class="stack-card"><strong>Delivery Outcome</strong><span>The implementation, security, and support layer required to retain and expand institutional customers.</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="footer-band"><span>Seed Deployment</span><span class="pager">13 / 14</span></div>
+        </section>
+
+        <section class="slide" id="s14">
+          <div class="slide-head">
+            <div class="kicker">Founder</div>
+            <h2>Why This Founder</h2>
+            <p class="core">The founder case is not charisma. It is having the right pattern recognition to define the product correctly and build a category around it.</p>
+            <div class="keyline"></div>
+          </div>
+          <div class="slide-body">
+            <div class="panel" data-voice-key="founder-panel">
+              <h3>Marques Anderson | Founder</h3>
+              <div class="stack">
+                <div class="stack-card"><span>The company starts from a repeated institutional failure: too much signal, no shared read strong enough to guide action.</span></div>
+                <div class="stack-card signal"><span>That leads to a specific product thesis: build a governed system for early detection, coherence, and auditable decision logic.</span></div>
+                <div class="stack-card accent"><span>The architecture is designed for recurring institutional workflow, not one-off analysis, advisory output, or generated text.</span></div>
+                <div class="stack-card success"><span>The result is a category-level product positioned to become decision infrastructure as AI governance pressure rises.</span></div>
+              </div>
+            </div>
+            <div class="panel accent" data-voice-key="unique-advantage">
+              <h3>Unique Advantage</h3>
+              <div class="stack">
+                <div class="stack-card"><strong>Category Position</strong><span>Frames the company as the first narrative intelligence layer, not another analytics feature or AI wrapper.</span></div>
+                <div class="stack-card signal"><strong>Governance Fit</strong><span>Aligns with enterprise demand for traceable logic, reviewability, and future-ready AI controls.</span></div>
+                <div class="stack-card success"><strong>Right To Build</strong><span>The insight, workflow design, and market framing all point to one coherent product direction.</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="contact-strip">For a demo or white paper, contact <strong>marques@a2xfoundry.com</strong>.</div>
+          <div class="footer-band"><span>Founder-Market Fit</span><span class="pager">14 / 14</span></div>
+        </section>
+      </div>
+    </main>
+
+    <div class="command-bar">
+      <span class="command-key">←</span>
+      <span class="command-key">→</span>
+      <span>Navigate Slides</span>
+    </div>
+
+    <aside class="voiceover-panel" id="voiceover-panel">
+      <div class="voiceover-top">
+        <div class="voiceover-title">
+          <strong>Voiceover</strong>
+          <span id="voiceover-slide-label">Slide audio unavailable</span>
+        </div>
+        <div class="voiceover-top-actions">
+          <div class="voiceover-status" id="voiceover-status">Idle</div>
+          <button class="voiceover-toggle" id="voiceover-toggle" aria-expanded="true">Hide</button>
+        </div>
+      </div>
+      <div class="voiceover-controls">
+        <button id="voiceover-play">Play</button>
+        <button id="voiceover-pause" disabled>Pause</button>
+        <button id="voiceover-restart" disabled>Restart</button>
+        <button id="voiceover-auto" aria-pressed="true">Auto Advance</button>
+      </div>
+      <div class="voiceover-jump">
+        <label for="voiceover-start-slide">Start from Slide</label>
+        <input id="voiceover-start-slide" type="number" min="1" max="14" step="1" value="1" />
+        <button id="voiceover-start-button" type="button">Go</button>
+      </div>
+      <div class="voiceover-hint" id="voiceover-hint" aria-hidden="true"></div>
+    </aside>
+
+    <script>
+      const slides = Array.from(document.querySelectorAll(".slide"));
+      const navLinks = Array.from(document.querySelectorAll(".nav a"));
+      const currentSlide = document.getElementById("current-slide");
+      const topbar = document.querySelector(".topbar");
+      const accessGate = document.getElementById("access-gate");
+      const accessGateForm = document.getElementById("access-gate-form");
+      const gateFirstNameInput = document.getElementById("gate-first-name");
+      const gateLastNameInput = document.getElementById("gate-last-name");
+      const gateCompanyInput = document.getElementById("gate-company");
+      const gateEmailInput = document.getElementById("gate-email");
+      const gateError = document.getElementById("gate-error");
+      const voiceoverSlideLabel = document.getElementById("voiceover-slide-label");
+      const voiceoverStatus = document.getElementById("voiceover-status");
+      const voiceoverHint = document.getElementById("voiceover-hint");
+      const voiceoverPanel = document.getElementById("voiceover-panel");
+      const voiceoverToggle = document.getElementById("voiceover-toggle");
+      const playButton = document.getElementById("voiceover-play");
+      const pauseButton = document.getElementById("voiceover-pause");
+      const restartButton = document.getElementById("voiceover-restart");
+      const autoButton = document.getElementById("voiceover-auto");
+      const startSlideInput = document.getElementById("voiceover-start-slide");
+      const startSlideButton = document.getElementById("voiceover-start-button");
+      let narrationData = null;
+      let activeAudio = null;
+      let activeAudioIndex = -1;
+      let activeVoiceCue = "";
+      let playbackIndex = -1;
+      let pendingAdvanceTimeout = null;
+      let suppressObserverUntil = 0;
+      let autoAdvanceEnabled = true;
+      let audioLoading = false;
+      let voiceoverCollapsed = false;
+      const gateStorageKey = "inception-gate-access-record";
+      const gateWebhookUrl = "https://script.google.com/macros/s/AKfycbwKVVz597JC3XpCBZ33mJBG5XwUM2um7qvwHuOKygqN9iPqc-GJzAKX0IMtPZFUoSiFrQ/exec";
+      const gateLeadSource = "inception_gate_investor_deck";
+
+      function isLocalViewer() {
+        const host = window.location.hostname;
+        return host === "localhost" || host === "127.0.0.1" || host === "::1" || host === "";
+      }
+
+      function readStoredLead() {
+        try {
+          const raw = window.localStorage.getItem(gateStorageKey);
+          return raw ? JSON.parse(raw) : null;
+        } catch {
+          return null;
+        }
+      }
+
+      function storeAccessLead(lead) {
+        try {
+          window.localStorage.setItem(gateStorageKey, JSON.stringify(lead));
+        } catch {
+          // Storage can fail in private browsing; unlock anyway for this session.
+        }
+      }
+
+      async function sendLeadToWebhook(lead) {
+        if (!gateWebhookUrl) return;
+        const payload = {
+          ...lead,
+          source: gateLeadSource,
+          pageUrl: window.location.href,
+          userAgent: navigator.userAgent,
+          capturedAt: new Date().toISOString(),
+        };
+        console.info("[Inception Gate] submitting lead", {
+          email: payload.email,
+          company: payload.company,
+          source: payload.source,
+        });
+        await fetch(gateWebhookUrl, {
+          method: "POST",
+          mode: "no-cors",
+          headers: {
+            "Content-Type": "text/plain;charset=utf-8",
+          },
+          body: JSON.stringify(payload),
+        });
+        console.info("[Inception Gate] lead submitted");
+      }
+
+      function unlockDeck() {
+        document.body.classList.remove("gate-locked");
+        accessGate.setAttribute("aria-hidden", "true");
+      }
+
+      function lockDeck() {
+        document.body.classList.add("gate-locked");
+        accessGate.setAttribute("aria-hidden", "false");
+      }
+
+      function initializeAccessGate() {
+        if (isLocalViewer()) {
+          unlockDeck();
+          return;
+        }
+
+        const savedLead = readStoredLead();
+        if (savedLead?.email) {
+          unlockDeck();
+          return;
+        }
+
+        lockDeck();
+        window.setTimeout(() => gateFirstNameInput.focus(), 60);
+      }
+
+      function getActiveSlideIndex() {
+        if (playbackIndex >= 0) {
+          return playbackIndex;
+        }
+        return Math.max(0, navLinks.findIndex((link) => link.classList.contains("active")));
+      }
+
+      function setVoiceoverStatus(message) {
+        voiceoverStatus.textContent = message;
+      }
+
+      function getSlideNarration(index) {
+        if (!narrationData?.slides?.length) return null;
+        return narrationData.slides.find((slide) => slide.slideId === slides[index]?.id) ?? null;
+      }
+
+      function clearPendingAdvance() {
+        if (pendingAdvanceTimeout) {
+          window.clearTimeout(pendingAdvanceTimeout);
+          pendingAdvanceTimeout = null;
+        }
+      }
+
+      function clearVoiceFocus() {
+        document.querySelectorAll(".voice-focus").forEach((element) => {
+          element.classList.remove("voice-focus");
+        });
+        activeVoiceCue = "";
+      }
+
+      function setVoiceFocus(index, key) {
+        const cueId = `${slides[index]?.id || "slide"}:${key || ""}`;
+        if (activeVoiceCue === cueId) return;
+
+        clearVoiceFocus();
+        if (!key) return;
+
+        const targets = slides[index]?.querySelectorAll(`[data-voice-key="${key}"]`) || [];
+        targets.forEach((target) => target.classList.add("voice-focus"));
+        const primaryTarget = targets[0];
+        if (primaryTarget) {
+          suppressObserverUntil = Date.now() + 900;
+          window.requestAnimationFrame(() => {
+            primaryTarget.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "nearest" });
+          });
+        }
+        activeVoiceCue = cueId;
+      }
+
+      function updateVoiceCue(index, currentTime) {
+        const cues = getSlideNarration(index)?.cues || [];
+        if (!cues.length) {
+          clearVoiceFocus();
+          return;
+        }
+
+        let activeCue = null;
+        for (const cue of cues) {
+          if (currentTime >= cue.at) {
+            activeCue = cue;
+          } else {
+            break;
+          }
+        }
+
+        setVoiceFocus(index, activeCue?.key || "");
+      }
+
+      function updateVoiceoverUi(index) {
+        const narration = getSlideNarration(index);
+        const hasAudio = Boolean(narration?.audioPath);
+        voiceoverSlideLabel.textContent = narration ? narration.title : "Slide audio unavailable";
+        playButton.disabled = !hasAudio || audioLoading;
+        pauseButton.disabled = !activeAudio || activeAudio.paused || activeAudioIndex !== index;
+        restartButton.disabled = !hasAudio || audioLoading;
+        autoButton.setAttribute("aria-pressed", autoAdvanceEnabled ? "true" : "false");
+        voiceoverPanel.classList.toggle("collapsed", voiceoverCollapsed);
+        voiceoverToggle.setAttribute("aria-expanded", String(!voiceoverCollapsed));
+        voiceoverToggle.textContent = voiceoverCollapsed ? "Open" : "Hide";
+
+        if (!narrationData) {
+          return;
+        }
+      }
+
+      function setActiveSlide(index) {
+        const total = slides.length;
+        currentSlide.textContent = `${String(index + 1).padStart(2, "0")} / ${String(total).padStart(2, "0")}`;
+        startSlideInput.value = String(index + 1);
+        navLinks.forEach((link, linkIndex) => {
+          link.classList.toggle("active", linkIndex === index);
+        });
+        topbar.style.setProperty("--progress", (index + 1) / total);
+        updateVoiceoverUi(index);
+      }
+
+      const observer = new IntersectionObserver(
+        (entries) => {
+          if (playbackIndex >= 0 || pendingAdvanceTimeout || Date.now() < suppressObserverUntil) {
+            return;
+          }
+          const visible = entries
+            .filter((entry) => entry.isIntersecting)
+            .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+          if (!visible) return;
+          const index = slides.indexOf(visible.target);
+          if (index >= 0) setActiveSlide(index);
+        },
+        { threshold: [0.35, 0.6, 0.8] }
+      );
+
+      slides.forEach((slide) => observer.observe(slide));
+
+      function scrollToSlide(index) {
+        if (index < 0 || index >= slides.length) return;
+        suppressObserverUntil = Date.now() + 1200;
+        setActiveSlide(index);
+        const top = slides[index].getBoundingClientRect().top + window.scrollY - 88;
+        window.scrollTo({ top: Math.max(top, 0), behavior: "smooth" });
+      }
+
+      function stopAudio(resetPosition = true, clearPlayback = true) {
+        clearPendingAdvance();
+        if (!activeAudio) return;
+        activeAudio.pause();
+        if (resetPosition) {
+          activeAudio.currentTime = 0;
+          clearVoiceFocus();
+        }
+        if (clearPlayback) {
+          playbackIndex = -1;
+        }
+        pauseButton.disabled = true;
+      }
+
+      async function loadAudioForSlide(index) {
+        const narration = getSlideNarration(index);
+        if (!narration?.audioPath) {
+          setVoiceoverStatus("Unavailable");
+          return null;
+        }
+
+        if (activeAudio && activeAudioIndex === index) {
+          return activeAudio;
+        }
+
+        stopAudio(true, false);
+        activeAudio = null;
+        activeAudioIndex = -1;
+        audioLoading = true;
+        updateVoiceoverUi(index);
+        setVoiceoverStatus("Loading");
+
+        const audio = new Audio(narration.audioPath);
+        audio.preload = "auto";
+        audio.onended = () => {
+          clearVoiceFocus();
+          setVoiceoverStatus("Ended");
+          pauseButton.disabled = true;
+          activeAudio = null;
+          activeAudioIndex = -1;
+          if (autoAdvanceEnabled && index < slides.length - 1) {
+            const nextIndex = index + 1;
+            playbackIndex = nextIndex;
+            scrollToSlide(nextIndex);
+            pendingAdvanceTimeout = window.setTimeout(() => {
+              pendingAdvanceTimeout = null;
+              playSlideAudio(nextIndex, true);
+            }, 650);
+            return;
+          }
+          playbackIndex = -1;
+        };
+        audio.ontimeupdate = () => {
+          updateVoiceCue(index, audio.currentTime);
+        };
+        audio.onerror = () => {
+          clearVoiceFocus();
+          setVoiceoverStatus("Missing audio");
+          playButton.disabled = true;
+          pauseButton.disabled = true;
+          restartButton.disabled = true;
+        };
+
+        activeAudio = audio;
+        activeAudioIndex = index;
+        audioLoading = false;
+        updateVoiceoverUi(index);
+        return audio;
+      }
+
+      async function playSlideAudio(index, restart = false) {
+        clearPendingAdvance();
+        playbackIndex = index;
+        scrollToSlide(index);
+        const audio = await loadAudioForSlide(index);
+        if (!audio) return;
+        try {
+          if (restart) {
+            audio.currentTime = 0;
+          }
+          playbackIndex = index;
+          setActiveSlide(index);
+          updateVoiceCue(index, audio.currentTime);
+          await audio.play();
+          voiceoverCollapsed = true;
+          setVoiceoverStatus("Playing");
+          updateVoiceoverUi(index);
+        } catch {
+          playbackIndex = -1;
+          setVoiceoverStatus("Tap play");
+        }
+      }
+
+      async function loadNarration() {
+        try {
+          const response = await fetch("./inception-gate-deck-narration.json", { cache: "no-store" });
+          if (!response.ok) {
+            throw new Error("Narration manifest unavailable");
+          }
+          narrationData = await response.json();
+          setVoiceoverStatus("Ready");
+        } catch {
+          narrationData = null;
+          setVoiceoverStatus("No assets");
+        }
+        setActiveSlide(0);
+      }
+
+      function buildQaReport() {
+        const selector = ".panel, .chip, .metric, .stack-card, .lane, .proof, .cell, h1, h2, p, li";
+        const report = slides.map((slide, index) => {
+          const overflows = Array.from(slide.querySelectorAll(selector))
+            .map((el) => ({
+              tag: el.className || el.tagName,
+              overflowY: el.scrollHeight - el.clientHeight,
+              overflowX: el.scrollWidth - el.clientWidth,
+              text: (el.textContent || "").trim().replace(/\s+/g, " ").slice(0, 90),
+            }))
+            .filter((item) => item.overflowY > 2 || item.overflowX > 2);
+
+          return {
+            slide: index + 1,
+            title: slide.querySelector("h1,h2")?.textContent?.trim() || "",
+            slideOverflowY: slide.scrollHeight - slide.clientHeight,
+            overflowCount: overflows.length,
+            overflows: overflows.slice(0, 10),
+          };
+        });
+
+        const pre = document.createElement("pre");
+        pre.id = "qa-report";
+        pre.style.whiteSpace = "pre-wrap";
+        pre.style.fontSize = "12px";
+        pre.style.padding = "16px";
+        pre.style.margin = "0";
+        pre.textContent = JSON.stringify(report, null, 2);
+        document.body.appendChild(pre);
+      }
+
+      loadNarration();
+      initializeAccessGate();
+
+      accessGateForm.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        const firstName = gateFirstNameInput.value.trim();
+        const lastName = gateLastNameInput.value.trim();
+        const company = gateCompanyInput.value.trim();
+        const email = gateEmailInput.value.trim();
+        const isValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+        const lead = { firstName, lastName, company, email };
+
+        if (!firstName || !lastName || !company || !isValidEmail) {
+          gateError.textContent = "Enter first name, last name, company, and a valid email to continue.";
+          if (!firstName) gateFirstNameInput.focus();
+          else if (!lastName) gateLastNameInput.focus();
+          else if (!company) gateCompanyInput.focus();
+          else gateEmailInput.focus();
+          return;
+        }
+
+        try {
+          await sendLeadToWebhook(lead);
+        } catch {
+          console.error("[Inception Gate] lead submission failed");
+          gateError.textContent = "Lead capture is not available right now. Please try again.";
+          return;
+        }
+
+        gateError.textContent = "";
+        storeAccessLead(lead);
+        unlockDeck();
+      });
+
+      document.addEventListener("keydown", (event) => {
+        if (document.body.classList.contains("gate-locked")) {
+          return;
+        }
+        const activeIndex = getActiveSlideIndex();
+        if (event.key === "ArrowRight" || event.key === "PageDown" || event.key === " ") {
+          event.preventDefault();
+          scrollToSlide(Math.min(activeIndex + 1, slides.length - 1));
+        }
+        if (event.key === "ArrowLeft" || event.key === "PageUp") {
+          event.preventDefault();
+          scrollToSlide(Math.max(activeIndex - 1, 0));
+        }
+      });
+
+      playButton.addEventListener("click", () => {
+        playSlideAudio(getActiveSlideIndex(), false);
+      });
+
+      pauseButton.addEventListener("click", () => {
+        if (!activeAudio) return;
+        stopAudio(false, false);
+        playbackIndex = activeAudioIndex;
+        setVoiceoverStatus("Paused");
+        updateVoiceoverUi(getActiveSlideIndex());
+      });
+
+      restartButton.addEventListener("click", () => {
+        playSlideAudio(getActiveSlideIndex(), true);
+      });
+
+      function startFromSelectedSlide() {
+        const raw = Number.parseInt(startSlideInput.value, 10);
+        const targetIndex = Number.isNaN(raw) ? 0 : Math.min(Math.max(raw - 1, 0), slides.length - 1);
+        startSlideInput.value = String(targetIndex + 1);
+        scrollToSlide(targetIndex);
+        window.setTimeout(() => playSlideAudio(targetIndex, true), 420);
+      }
+
+      autoButton.addEventListener("click", () => {
+        autoAdvanceEnabled = !autoAdvanceEnabled;
+        updateVoiceoverUi(getActiveSlideIndex());
+      });
+
+      startSlideButton.addEventListener("click", () => {
+        startFromSelectedSlide();
+      });
+
+      startSlideInput.addEventListener("keydown", (event) => {
+        if (event.key === "Enter") {
+          event.preventDefault();
+          startFromSelectedSlide();
+        }
+      });
+
+      voiceoverToggle.addEventListener("click", () => {
+        voiceoverCollapsed = !voiceoverCollapsed;
+        updateVoiceoverUi(getActiveSlideIndex());
+      });
+
+      if (new URLSearchParams(window.location.search).get("qa") === "1") {
+        window.addEventListener("load", () => {
+          window.setTimeout(buildQaReport, 150);
+        });
+      }
+    </script>
+  </body>
+</html>
+      #s6 .micro-legend {
+        margin-top: 2px;
+      }
+
+      #s6 .micro-legend-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }

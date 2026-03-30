@@ -16,7 +16,7 @@ export function WorldBoundaryEditor({ world, worldBoundaryContext, onChange }: W
   };
 
   return (
-    <section className="rounded-sm border border-edge bg-panel p-4 shadow-panel">
+    <section className="surface-panel">
       <div className="flex items-start justify-between gap-3">
         <div>
           <p className="text-xs uppercase tracking-[0.22em] text-muted">World Boundary</p>
@@ -42,9 +42,9 @@ export function WorldBoundaryEditor({ world, worldBoundaryContext, onChange }: W
       </div>
       <div className="mt-4 grid gap-3 md:grid-cols-2">
         <label className="block">
-          <span className="mb-2 block text-xs uppercase tracking-[0.18em] text-muted">World name</span>
+          <span className="control-label mb-2 block">World name</span>
           <input
-            className="w-full rounded-sm border border-edge bg-shell px-3 py-2 text-sm text-ink placeholder:text-muted/70"
+            className="control-input w-full placeholder:text-muted/70"
             value={world.name}
             onChange={(event) => update("name", event.target.value)}
             placeholder="Example: Capital Fragmentation Simulation"
@@ -52,9 +52,9 @@ export function WorldBoundaryEditor({ world, worldBoundaryContext, onChange }: W
           <span className="mt-2 block text-xs text-muted">Name the bounded narrative environment you want to observe.</span>
         </label>
         <label className="block">
-          <span className="mb-2 block text-xs uppercase tracking-[0.18em] text-muted">Domain</span>
+          <span className="control-label mb-2 block">Domain</span>
           <input
-            className="w-full rounded-sm border border-edge bg-shell px-3 py-2 text-sm text-ink placeholder:text-muted/70"
+            className="control-input w-full placeholder:text-muted/70"
             value={world.domain}
             onChange={(event) => update("domain", event.target.value)}
             placeholder="Example: Sovereign capital alignment and infrastructure governance"
@@ -62,9 +62,9 @@ export function WorldBoundaryEditor({ world, worldBoundaryContext, onChange }: W
           <span className="mt-2 block text-xs text-muted">Describe the institutional domain or system under analysis.</span>
         </label>
         <label className="block">
-          <span className="mb-2 block text-xs uppercase tracking-[0.18em] text-muted">Geography</span>
+          <span className="control-label mb-2 block">Geography</span>
           <input
-            className="w-full rounded-sm border border-edge bg-shell px-3 py-2 text-sm text-ink placeholder:text-muted/70"
+            className="control-input w-full placeholder:text-muted/70"
             value={world.geography}
             onChange={(event) => update("geography", event.target.value)}
             placeholder="Example: EU / Transatlantic / Bloc competition"
@@ -72,9 +72,9 @@ export function WorldBoundaryEditor({ world, worldBoundaryContext, onChange }: W
           <span className="mt-2 block text-xs text-muted">Specify the geographic scope or jurisdictional boundary.</span>
         </label>
         <label className="block">
-          <span className="mb-2 block text-xs uppercase tracking-[0.18em] text-muted">Time horizon</span>
+          <span className="control-label mb-2 block">Time horizon</span>
           <input
-            className="w-full rounded-sm border border-edge bg-shell px-3 py-2 text-sm text-ink placeholder:text-muted/70"
+            className="control-input w-full placeholder:text-muted/70"
             type="number"
             min={1}
             max={24}
@@ -85,9 +85,9 @@ export function WorldBoundaryEditor({ world, worldBoundaryContext, onChange }: W
           <span className="mt-2 block text-xs text-muted">Set how many months the bounded replay should cover.</span>
         </label>
         <label className="block">
-          <span className="mb-2 block text-xs uppercase tracking-[0.18em] text-muted">Governance mode</span>
+          <span className="control-label mb-2 block">Governance mode</span>
           <select
-            className="w-full rounded-sm border border-edge bg-shell px-3 py-2 text-sm text-ink"
+            className="control-input w-full"
             value={world.governanceMode}
             onChange={(event) => update("governanceMode", event.target.value as WorldDefinition["governanceMode"])}
           >
@@ -98,9 +98,9 @@ export function WorldBoundaryEditor({ world, worldBoundaryContext, onChange }: W
           <span className="mt-2 block text-xs text-muted">Choose the deployment posture and oversight expectation.</span>
         </label>
         <label className="block">
-          <span className="mb-2 block text-xs uppercase tracking-[0.18em] text-muted">Source classes</span>
+          <span className="control-label mb-2 block">Source classes</span>
           <input
-            className="w-full rounded-sm border border-edge bg-shell px-3 py-2 text-sm text-ink placeholder:text-muted/70"
+            className="control-input w-full placeholder:text-muted/70"
             value={(world.sourceClasses ?? []).join(", ")}
             onChange={(event) =>
               update(
@@ -117,9 +117,9 @@ export function WorldBoundaryEditor({ world, worldBoundaryContext, onChange }: W
         </label>
       </div>
       <label className="mt-3 block">
-        <span className="mb-2 block text-xs uppercase tracking-[0.18em] text-muted">Boundary description</span>
+        <span className="control-label mb-2 block">Boundary description</span>
         <textarea
-          className="min-h-24 w-full rounded-sm border border-edge bg-shell px-3 py-2 text-sm text-ink placeholder:text-muted/70"
+          className="control-input min-h-24 w-full placeholder:text-muted/70"
           value={world.boundedDescription}
           onChange={(event) => update("boundedDescription", event.target.value)}
           placeholder="Example: A bounded Narrative World covering sovereign capital allocation, strategic autonomy policy, sanctions infrastructure, and AI industrial governance signals."

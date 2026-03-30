@@ -112,7 +112,7 @@ export function AudioExplainer({
   };
 
   return (
-    <section className="rounded-sm border border-edge bg-panel p-4 shadow-panel">
+    <section className="surface-panel">
       <p className="text-xs uppercase tracking-[0.22em] text-muted">Audio Explainer</p>
       <h3 className="mt-2 text-lg font-semibold text-ink">Section narration and decision-support guidance</h3>
       <p className="mt-2 text-sm leading-6 text-muted">
@@ -121,7 +121,7 @@ export function AudioExplainer({
 
       <div className="mt-4 grid gap-3">
         <select
-          className="rounded-sm border border-edge bg-shell px-3 py-2 text-sm text-ink"
+          className="control-input"
           value={section}
           onChange={(event) => setSection(event.target.value as AudioSection)}
         >
@@ -133,14 +133,14 @@ export function AudioExplainer({
         </select>
         <div className="flex gap-2">
           <button
-            className="rounded-sm border border-edge px-3 py-2 text-sm text-ink hover:border-muted disabled:opacity-50"
+            className="action-button disabled:opacity-50"
             onClick={speak}
             disabled={!supported || speaking}
           >
             Play Audio
           </button>
           <button
-            className="rounded-sm border border-edge px-3 py-2 text-sm text-ink hover:border-muted disabled:opacity-50"
+            className="action-button disabled:opacity-50"
             onClick={stop}
             disabled={!supported || !speaking}
           >
@@ -149,7 +149,7 @@ export function AudioExplainer({
         </div>
       </div>
 
-      <div className="mt-4 rounded-sm border border-edge/80 bg-shell/60 p-4">
+      <div className="surface-panel-subtle mt-4 p-4">
         <p className="text-xs uppercase tracking-[0.18em] text-muted">Narration preview</p>
         <p className="mt-3 text-sm leading-6 text-muted">{script}</p>
       </div>

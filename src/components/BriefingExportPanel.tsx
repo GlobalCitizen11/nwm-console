@@ -37,6 +37,14 @@ const buildExportTag = (point: WorldStatePoint) => {
   return `m${point.month}-${timestamp}`;
 };
 
+const openPreviewRoute = (url: string) => {
+  const previewWindow = window.open(url, "_blank", "noopener,noreferrer");
+  if (previewWindow) {
+    return;
+  }
+  window.location.assign(url);
+};
+
 export function BriefingExportPanel({ scenarioLabel, result, point, currentView, onExport }: BriefingExportPanelProps) {
   const briefingState = extractBriefingState({
     scenarioName: scenarioLabel,
@@ -87,16 +95,21 @@ export function BriefingExportPanel({ scenarioLabel, result, point, currentView,
       scenarioId: currentView.scenarioId,
       month: point.month,
     });
-    const token = saveExportPreviewPayload({
-      ...normalized,
-      mode:
-        artifact === "executive"
-          ? "executive-brief"
-          : artifact === "presentation"
-            ? "presentation-brief"
-            : "board-onepager",
-    });
-    window.open(`${preview.routePath}?token=${encodeURIComponent(token)}`, "_blank");
+    try {
+      const token = saveExportPreviewPayload({
+        ...normalized,
+        mode:
+          artifact === "executive"
+            ? "executive-brief"
+            : artifact === "presentation"
+              ? "presentation-brief"
+              : "board-onepager",
+      });
+      openPreviewRoute(`${preview.routePath}?token=${encodeURIComponent(token)}`);
+    } catch (error) {
+      console.error("Unable to open export preview", error);
+      window.alert("Preview could not be generated. Clear older preview tabs and try again.");
+    }
   };
 
   const exportAuditPacket = () => {
@@ -132,19 +145,6 @@ export function BriefingExportPanel({ scenarioLabel, result, point, currentView,
     );
   };
 
-  const printBrief = () => {
-    onExport?.("print_brief");
-    const token = saveExportPreviewPayload({
-      ...buildExportBundle({
-        data: exportData,
-        scenarioId: currentView.scenarioId,
-        month: point.month,
-      }),
-      mode: "executive-brief",
-    });
-    window.open(`/export/executive-brief?token=${encodeURIComponent(token)}`, "_blank");
-  };
-
   return (
     <section className="surface-panel">
       <div className="flex items-start justify-between gap-4">
@@ -174,14 +174,9 @@ export function BriefingExportPanel({ scenarioLabel, result, point, currentView,
             <p className="text-sm font-medium text-ink">Presentation Brief</p>
             <p className="mt-1 text-sm text-muted">Styled HTML sheet for executive review, meeting prep, or print.</p>
           </div>
-          <div className="flex gap-2">
-            <button className="action-button text-left" onClick={() => openPreview("presentation")}>
-              Preview
-            </button>
-            <button className="action-button text-left" onClick={printBrief}>
-              Print
-            </button>
-          </div>
+          <button className="action-button text-left" onClick={() => openPreview("presentation")}>
+            Preview
+          </button>
         </div>
         <div className="surface-panel-subtle flex items-center justify-between gap-4 p-4">
           <div>

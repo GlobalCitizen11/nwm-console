@@ -198,6 +198,34 @@ export interface ProjectionResult {
   uncertaintyBand: "low" | "medium" | "high";
 }
 
+export type DecisionSimulationActionType =
+  | "de-risk-allocation"
+  | "accelerate-coordination"
+  | "protect-supply-access"
+  | "hold-position";
+
+export interface DecisionSimulationAction {
+  id: DecisionSimulationActionType;
+  label: string;
+  description: string;
+}
+
+export interface DecisionSimulationImpact {
+  summary: string;
+  delta: number;
+  direction: "improves" | "worsens" | "holds";
+}
+
+export interface DecisionSimulationResult {
+  action: DecisionSimulationAction;
+  projectedPhase: string;
+  narrative: DecisionSimulationImpact;
+  risk: DecisionSimulationImpact;
+  capitalFlow: DecisionSimulationImpact;
+  outlookSummary: string;
+  uncertaintyBand: ProjectionResult["uncertaintyBand"];
+}
+
 export interface ActivityLogEntry {
   id: string;
   timestamp: string;

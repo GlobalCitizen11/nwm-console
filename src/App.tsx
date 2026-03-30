@@ -18,6 +18,7 @@ import { ConditionalProjectionPanel } from "./components/ConditionalProjectionPa
 import { HALOPanel } from "./components/HALOPanel";
 import { CurrentStateStrip } from "./components/CurrentStateStrip";
 import { WhatChangedPanel } from "./components/WhatChangedPanel";
+import { TimeProgressionMode } from "./components/TimeProgressionMode";
 import { loadScenarioDataset } from "./data/schema";
 import { runCounterfactualSimulation } from "./engine/counterfactualEngine";
 import { buildConditionalProjection } from "./engine/projectionEngine";
@@ -37,6 +38,9 @@ import { ScenarioImportPanel } from "./components/ScenarioImportPanel";
 import { ActivityLogPanel } from "./components/ActivityLogPanel";
 import { AutoDemoPanel } from "./components/AutoDemoPanel";
 import { ArtifactIngressRibbon } from "./components/ArtifactIngressRibbon";
+import { VoiceBriefPanel } from "./components/VoiceBriefPanel";
+import { VoiceBriefSignalMonitor } from "./components/VoiceBriefSignalMonitor";
+import type { VoiceBriefIntelligence } from "./types/voiceBriefIntelligence";
 
 type Role = "Executive" | "Analyst" | "Oversight" | "Sandbox";
 
@@ -81,6 +85,8 @@ const phaseColor = (phase: string) =>
     "Structural Reclassification": "text-phaseRed",
     "Fragmented Regime": "text-phaseViolet",
   }[phase] ?? "text-ink");
+
+const AUTO_DEMO_REPLAY_SEQUENCE = [0, 18, 11] as const;
 
 const buildWorldBoundaryContext = (world: ScenarioDefinition["dataset"]["world"]) =>
   [
@@ -157,6 +163,24 @@ const autoDemoScripts = {
       role: "Executive" as Role,
       month: 12,
       targetId: "demo-what-changed",
+      presentationMode: true,
+    },
+    {
+      title: "Time progression mode",
+      description:
+        "Right after the month-over-month read, Time Progression Mode shows how the world evolves across checkpoints. This is where you track state transitions, read pressure change through time, and understand how risk escalation is changing as the scenario moves from one month band to the next.",
+      role: "Executive" as Role,
+      month: 12,
+      targetId: "demo-time-progression",
+      presentationMode: true,
+    },
+    {
+      title: "Signal monitor",
+      description:
+        "The Signal Monitor gives you the live watchlist underneath the broader narrative. Key Signals show what is actively carrying the read, Risks show where downside is concentrating, and Triggers show the conditions that would force a different posture or earlier review.",
+      role: "Executive" as Role,
+      month: 12,
+      targetId: "demo-signal-monitor",
       presentationMode: true,
     },
     {
@@ -330,6 +354,24 @@ const autoDemoScripts = {
       role: "Executive" as Role,
       month: 12,
       targetId: "demo-what-changed",
+      presentationMode: true,
+    },
+    {
+      title: "Time progression mode",
+      description:
+        "After the month-over-month panel, Time Progression Mode shows you how the world is moving across checkpoint months. It lets you read state transitions directly, see how pressure changes through time, and judge whether risk escalation is accelerating or staying contained.",
+      role: "Executive" as Role,
+      month: 12,
+      targetId: "demo-time-progression",
+      presentationMode: true,
+    },
+    {
+      title: "Signal monitor",
+      description:
+        "The Signal Monitor is the live decision watchlist. It pulls Key Signals, Risks, and Triggers into one place so you can see what is carrying the current read, where the next pressure is likely to surface, and what conditions would change the operating posture.",
+      role: "Executive" as Role,
+      month: 12,
+      targetId: "demo-signal-monitor",
       presentationMode: true,
     },
     {
@@ -521,6 +563,24 @@ const autoDemoScripts = {
       role: "Executive" as Role,
       month: 12,
       targetId: "demo-what-changed",
+      presentationMode: true,
+    },
+    {
+      title: "Time progression mode",
+      description:
+        "The next stop is Time Progression Mode. This is where you read state transitions through time, understand whether pressure is stepping higher or stabilizing, and see if risk escalation is broadening or remaining concentrated.",
+      role: "Executive" as Role,
+      month: 12,
+      targetId: "demo-time-progression",
+      presentationMode: true,
+    },
+    {
+      title: "Signal monitor",
+      description:
+        "Then you move into the Signal Monitor. It gives you the active Key Signals, Risks, and Triggers that sit underneath the broader executive story, so your team can separate durable structural movement from watchpoints that still need confirmation.",
+      role: "Executive" as Role,
+      month: 12,
+      targetId: "demo-signal-monitor",
       presentationMode: true,
     },
     {
@@ -724,6 +784,7 @@ export default function App() {
   const [voiceProfile, setVoiceProfile] = useState<VoiceProfile>(() =>
     typeof window !== "undefined" ? getSavedVoiceProfile() : "google-us-female",
   );
+  const [voiceBriefIntelligence, setVoiceBriefIntelligence] = useState<VoiceBriefIntelligence | undefined>(undefined);
   const [savedViews, setSavedViews] = useState<ViewSnapshot[]>([]);
   const [autoDemoOpen, setAutoDemoOpen] = useState(false);
   const [autoDemoActive, setAutoDemoActive] = useState(false);
@@ -1564,7 +1625,12 @@ export default function App() {
                   worldBoundaryContext={worldBoundaryContext}
                   demoPlayback={
                     activeDemoTargetId === "demo-timeline-replay"
-                      ? { token: autoDemoReplayToken, startMonth: 0, endMonth: autoDemoSteps[autoDemoStepIndex]?.month ?? safeMonth }
+                      ? {
+                          token: autoDemoReplayToken,
+                          startMonth: 0,
+                          endMonth: autoDemoSteps[autoDemoStepIndex]?.month ?? safeMonth,
+                          sequence: AUTO_DEMO_REPLAY_SEQUENCE,
+                        }
                       : null
                   }
                 />
@@ -1586,6 +1652,9 @@ export default function App() {
               </div>
               <div id="demo-what-changed" style={{ scrollMarginTop: "140px" }} className={demoSectionClassName("demo-what-changed")}>
                 <WhatChangedPanel result={displayResult} point={currentPoint} />
+              </div>
+              <div id="demo-time-progression" style={{ scrollMarginTop: "140px" }} className={demoSectionClassName("demo-time-progression")}>
+                <TimeProgressionMode result={displayResult} />
               </div>
               {!presentationMode ? (
                 <>
@@ -1619,6 +1688,9 @@ export default function App() {
                   </div>
                 </div>
               </section>
+              <div id="demo-signal-monitor" style={{ scrollMarginTop: "140px" }} className={demoSectionClassName("demo-signal-monitor")}>
+                <VoiceBriefSignalMonitor intelligence={voiceBriefIntelligence} />
+              </div>
               {comparisonResult && comparisonPoint ? (
                 <div id="demo-comparison" style={{ scrollMarginTop: "140px" }} className={demoSectionClassName("demo-comparison")}>
                   <ScenarioComparisonPanel
@@ -1636,32 +1708,35 @@ export default function App() {
 
           {role !== "Executive" ? (
             <>
-              <section className="rounded-sm border border-edge bg-panel p-4 shadow-panel">
+              <section className="surface-panel">
                 <div className="grid gap-4 xl:grid-cols-[1.5fr_1fr]">
                   <div>
                     <p className="text-xs uppercase tracking-[0.22em] text-muted">Bounded Narrative World</p>
                     <p className="mt-3 text-sm leading-7 text-muted">{worldConfig.boundedDescription}</p>
                   </div>
                   <div className="grid gap-3 text-sm md:grid-cols-2">
-                    <div className="rounded-sm border border-edge/80 bg-shell/60 p-3">
+                    <div className="surface-panel-subtle p-3">
                       <p className="text-xs uppercase tracking-[0.18em] text-muted">Current Phase</p>
                       <p className={`mt-2 text-lg font-semibold ${phaseColor(currentPoint.phase)}`}>{currentPoint.phase}</p>
                     </div>
-                    <div className="rounded-sm border border-edge/80 bg-shell/60 p-3">
+                    <div className="surface-panel-subtle p-3">
                       <p className="text-xs uppercase tracking-[0.18em] text-muted">Proof Objects</p>
                       <p className="mt-2 text-lg font-semibold text-ink">{displayResult.proofObjects.length}</p>
                     </div>
-                    <div className="rounded-sm border border-edge/80 bg-shell/60 p-3">
+                    <div className="surface-panel-subtle p-3">
                       <p className="text-xs uppercase tracking-[0.18em] text-muted">Transitions</p>
                       <p className="mt-2 text-lg font-semibold text-ink">{transitionCount}</p>
                     </div>
-                    <div className="rounded-sm border border-edge/80 bg-shell/60 p-3">
+                    <div className="surface-panel-subtle p-3">
                       <p className="text-xs uppercase tracking-[0.18em] text-muted">Visible Artifacts</p>
                       <p className="mt-2 text-lg font-semibold text-ink">{currentPoint.visibleEvents.length}</p>
                     </div>
                   </div>
                 </div>
               </section>
+              <div id="demo-signal-monitor" style={{ scrollMarginTop: "140px" }} className={demoSectionClassName("demo-signal-monitor")}>
+                <VoiceBriefSignalMonitor intelligence={voiceBriefIntelligence} />
+              </div>
 
               {comparisonResult && comparisonPoint ? (
                 <div id="demo-comparison" style={{ scrollMarginTop: "140px" }} className={demoSectionClassName("demo-comparison")}>
@@ -1688,10 +1763,18 @@ export default function App() {
                 worldBoundaryContext={worldBoundaryContext}
                 demoPlayback={
                   activeDemoTargetId === "demo-timeline-replay"
-                    ? { token: autoDemoReplayToken, startMonth: 0, endMonth: autoDemoSteps[autoDemoStepIndex]?.month ?? safeMonth }
+                    ? {
+                        token: autoDemoReplayToken,
+                        startMonth: 0,
+                        endMonth: autoDemoSteps[autoDemoStepIndex]?.month ?? safeMonth,
+                        sequence: AUTO_DEMO_REPLAY_SEQUENCE,
+                      }
                     : null
                 }
               />
+              <div id="demo-time-progression" style={{ scrollMarginTop: "140px" }} className={demoSectionClassName("demo-time-progression")}>
+                <TimeProgressionMode result={displayResult} />
+              </div>
               <WhatChangedPanel result={displayResult} point={currentPoint} />
 
               {role === "Analyst" ? (
@@ -1836,6 +1919,24 @@ export default function App() {
                     compareScenarioId,
                   }}
                   onExport={(artifact) => logActivity("brief_exported", `${selectedScenario.label}`, `Exported ${artifact}.`)}
+                />
+              </div>
+              <div>
+                <VoiceBriefPanel
+                  scenarioLabel={selectedScenario.label}
+                  result={displayResult}
+                  point={currentPoint}
+                  onIntelligenceUpdate={setVoiceBriefIntelligence}
+                  currentView={{
+                    id: "current",
+                    name: "Current View",
+                    scenarioId,
+                    role,
+                    month: safeMonth,
+                    eventId: selectedEventId,
+                    transitionId: selectedTransitionId,
+                    compareScenarioId,
+                  }}
                 />
               </div>
               <section

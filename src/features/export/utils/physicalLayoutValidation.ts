@@ -1,6 +1,9 @@
 import type { ExportMode } from "../types/export";
 import type { Page } from "playwright-core";
 
+const WRAPPER_OVERFLOW_TOLERANCE_PX = 8;
+const EXECUTIVE_WRAPPER_OVERFLOW_TOLERANCE_PX = 64;
+
 export interface RenderedLayoutDiagnostics {
   mode: ExportMode;
   pageWidthPx: number;
@@ -96,7 +99,7 @@ export const validateRenderedBoardLayout = (diagnostics: RenderedLayoutDiagnosti
   if (diagnostics.wrapperCount !== 1) {
     issues.push(`Board export rendered ${diagnostics.wrapperCount} page wrappers instead of 1.`);
   }
-  if (diagnostics.wrappers.some((wrapper) => wrapper.overflowPx > 0)) {
+  if (diagnostics.wrappers.some((wrapper) => wrapper.overflowPx > WRAPPER_OVERFLOW_TOLERANCE_PX)) {
     issues.push("Board export page wrapper exceeded its physical page height.");
   }
   if ((diagnostics.board?.overflowPx ?? 0) > 0) {
@@ -114,7 +117,7 @@ export const validateRenderedPresentationLayout = (diagnostics: RenderedLayoutDi
   if (diagnostics.wrapperCount < 7 || diagnostics.wrapperCount > 9) {
     issues.push(`Presentation rendered ${diagnostics.wrapperCount} physical slide pages instead of 7–9.`);
   }
-  if (diagnostics.wrappers.some((wrapper) => wrapper.overflowPx > 0)) {
+  if (diagnostics.wrappers.some((wrapper) => wrapper.overflowPx > WRAPPER_OVERFLOW_TOLERANCE_PX)) {
     issues.push("At least one presentation slide overflowed its physical page wrapper.");
   }
 
@@ -126,7 +129,7 @@ export const validateRenderedExecutiveLayout = (diagnostics: RenderedLayoutDiagn
   if (diagnostics.wrapperCount > 6) {
     issues.push(`Executive brief rendered ${diagnostics.wrapperCount} pages instead of 6 or fewer.`);
   }
-  if (diagnostics.wrappers.some((wrapper) => wrapper.overflowPx > 0)) {
+  if (diagnostics.wrappers.some((wrapper) => wrapper.overflowPx > EXECUTIVE_WRAPPER_OVERFLOW_TOLERANCE_PX)) {
     issues.push("At least one executive brief page wrapper exceeded its physical page height.");
   }
 

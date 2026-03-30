@@ -24,7 +24,7 @@ export function ArtifactExplorer({
     : 0;
 
   return (
-    <section className="rounded-sm border border-edge bg-panel p-4 shadow-panel">
+    <section className="surface-panel">
       <div className="mb-4">
         <div className="flex items-start justify-between gap-3">
           <div>
@@ -55,7 +55,7 @@ export function ArtifactExplorer({
           {events.map((event) => (
             <button
               key={event.id}
-              className={`w-full rounded-sm border px-3 py-3 text-left ${
+              className={`w-full rounded-md border px-3 py-3 text-left ${
                 selectedEvent?.id === event.id
                   ? "border-muted bg-shell/90"
                   : "border-edge bg-shell/50 hover:border-muted"
@@ -72,7 +72,7 @@ export function ArtifactExplorer({
         </div>
 
         {selectedEvent ? (
-          <div className="rounded-sm border border-edge bg-shell/60 p-4">
+          <div className="surface-panel-subtle p-4">
             <p className="text-xs uppercase tracking-[0.18em] text-muted">Artifact detail</p>
             <h4 className="mt-2 text-lg font-semibold text-ink">{selectedEvent.title}</h4>
             <p className="mt-3 text-sm leading-6 text-muted">{selectedEvent.description}</p>
@@ -84,7 +84,7 @@ export function ArtifactExplorer({
               <p>Phase contribution: <span className="text-muted">{selectedEvent.phase}</span></p>
             </div>
 
-            <div className="mt-4 rounded-sm border border-edge/80 bg-panel p-3">
+            <div className="surface-panel mt-4 p-3">
               <p className="text-xs uppercase tracking-[0.18em] text-muted">Linked transitions</p>
               <div className="mt-3 space-y-2">
                 {transitions

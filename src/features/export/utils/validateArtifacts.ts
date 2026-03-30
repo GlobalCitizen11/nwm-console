@@ -6,6 +6,11 @@ import type {
   ExportQaResult,
   PresentationBriefContent,
 } from "../types/export";
+import {
+  validateBoardOnePagerSpec as validateBoardOnePagerArtifactSpec,
+  validateExecutiveBriefSpec as validateExecutiveBriefArtifactSpec,
+  validatePresentationBriefSpec as validatePresentationBriefArtifactSpec,
+} from "../../../lib/validateArtifactSpecs";
 
 const clean = (text: string) => text.replace(/\s+/g, " ").trim();
 const words = (text: string) => clean(text).split(/\s+/).filter(Boolean);
@@ -62,21 +67,56 @@ export const validateCanonicalSummary = (summary: CanonicalExportSummary): Expor
 
 export const validateBoardOnePager = (content: BoardOnePagerContent): ExportQaResult => {
   const issues: ExportQaIssue[] = languageIssues(
-    [content.currentStateSummary, content.implicationsSummary, content.monitoringSummary],
+    [
+      content.topInterpretation,
+      ...content.boardRead,
+      ...content.signalGrid.map((item) => `${item.value}. ${item.implication}`),
+      ...content.decisionBullets,
+      content.dominantPath,
+      content.primaryPressure,
+      ...content.riskConcentrations,
+      ...content.nextChangeSignals,
+      ...content.monitoringTriggers,
+      ...content.readShiftSignals,
+      ...content.containedSpreadSplit.map((item) => item.value),
+    ],
     "density",
   );
 
-  if (wordCount(content.currentStateSummary) > 50) {
-    issues.push({ level: "error", code: "overflow", message: "Board current state summary exceeds 50 words." });
+  if (content.systemStrip.length !== 4) {
+    issues.push({ level: "error", code: "overflow", message: "Board system strip must contain exactly four metrics." });
   }
-  if ((content.signalStack[4]?.value && wordCount(content.signalStack[4].value) > 15) || (content.signalStack[5]?.value && wordCount(content.signalStack[5].value) > 15)) {
-    issues.push({ level: "error", code: "overflow", message: "Board dominant path or pressure summary exceeds budget." });
+  if (content.boardRead.length !== 2) {
+    issues.push({ level: "error", code: "overflow", message: "Board read must contain exactly 2 lines." });
   }
-  if (wordCount(content.implicationsSummary) > 25) {
-    issues.push({ level: "error", code: "overflow", message: "Board implications summary exceeds 25 words." });
+  if (content.signalGrid.length !== 4) {
+    issues.push({ level: "error", code: "overflow", message: "Signal grid must contain exactly 4 columns." });
   }
-  if (wordCount(content.monitoringSummary) > 20) {
-    issues.push({ level: "error", code: "overflow", message: "Board monitoring summary exceeds 20 words." });
+  if (content.decisionBullets.length < 3 || content.decisionBullets.length > 4) {
+    issues.push({ level: "error", code: "overflow", message: "Decision box must contain 3 to 4 bullets." });
+  }
+  if (content.riskConcentrations.length !== 3) {
+    issues.push({ level: "error", code: "overflow", message: "Risk concentration box must contain 3 bullets." });
+  }
+  if (content.nextChangeSignals.length !== 3) {
+    issues.push({ level: "error", code: "overflow", message: "What changes next must contain 3 bullets." });
+  }
+  if (content.monitoringTriggers.length < 2 || content.monitoringTriggers.length > 3) {
+    issues.push({ level: "error", code: "overflow", message: "Monitoring triggers must contain 2 to 3 items." });
+  }
+  if (content.readShiftSignals.length < 2 || content.readShiftSignals.length > 3) {
+    issues.push({ level: "error", code: "overflow", message: "Read-shift signals must contain 2 to 3 items." });
+  }
+  if (content.containedSpreadSplit.length !== 2) {
+    issues.push({ level: "error", code: "overflow", message: "Contained/spreading split must contain exactly 2 items." });
+  }
+  for (const bullet of [...content.decisionBullets, ...content.riskConcentrations, ...content.nextChangeSignals, ...content.monitoringTriggers, ...content.readShiftSignals]) {
+    if (wordCount(bullet) > 15) {
+      issues.push({ level: "error", code: "overflow", message: `Board bullet exceeds the word budget: "${bullet}"` });
+    }
+  }
+  if (wordCount(content.dominantPath) > 15 || wordCount(content.primaryPressure) > 15) {
+    issues.push({ level: "error", code: "overflow", message: "Board dominant path or primary pressure exceeds budget." });
   }
   if (content.evidenceAnchors.length !== 3) {
     issues.push({ level: "error", code: "overflow", message: "Board evidence strip must contain exactly 3 anchors." });
@@ -89,14 +129,13 @@ export const validateBoardOnePager = (content: BoardOnePagerContent): ExportQaRe
       issues.push({ level: "error", code: "overflow", message: `Evidence anchor exceeds compact budget: "${anchor.shortTitle}"` });
     }
   }
-  const estimatedPageUse =
-    wordCount(content.currentStateSummary) / 8 +
-    wordCount(content.implicationsSummary) / 7 +
-    wordCount(content.monitoringSummary) / 6 +
-    content.signalStack.length * 1.15 +
-    content.evidenceAnchors.length * 0.9;
-  if (estimatedPageUse > 23) {
-    issues.push({ level: "error", code: "overflow", message: "Board content exceeds the one-page layout budget." });
+  const specValidation = validateBoardOnePagerArtifactSpec(content.spec);
+  for (const specIssue of specValidation.issues) {
+    issues.push({
+      level: specIssue.level,
+      code: specIssue.code === "artifact-fail" ? "density" : specIssue.code === "item-count" ? "overflow" : "density",
+      message: `${specIssue.path}: ${specIssue.message}`,
+    });
   }
 
   return { ok: issues.length === 0, issues };
@@ -104,27 +143,41 @@ export const validateBoardOnePager = (content: BoardOnePagerContent): ExportQaRe
 
 export const validateExecutiveBrief = (content: ExecutiveBriefContent): ExportQaResult => {
   const issues: ExportQaIssue[] = [];
+  const paragraphs = [
+    content.spec.systemStateOverview.currentConditionParagraph.value,
+    content.spec.systemStateOverview.meaningParagraph.value,
+    content.spec.narrativeDevelopment.earlySignalsParagraph.value,
+    content.spec.narrativeDevelopment.systemicUptakeParagraph.value,
+    content.spec.narrativeDevelopment.currentConditionParagraph.value,
+    content.spec.structuralInterpretation.interpretationParagraph1.value,
+    content.spec.structuralInterpretation.interpretationParagraph2?.value ?? "",
+    content.spec.forwardOrientation.primaryPathParagraph.value,
+    content.spec.forwardOrientation.alternatePathParagraph.value,
+    content.spec.strategicPositioning.positioningParagraph1.value,
+    content.spec.strategicPositioning.positioningParagraph2?.value ?? "",
+    content.spec.evidenceBase.intro.value,
+  ].filter(Boolean);
 
-  if (content.sections.length > 6) {
-    issues.push({ level: "error", code: "overflow", message: "Executive brief exceeds six sections." });
+  issues.push(...languageIssues(paragraphs, "density"));
+
+  const supportLists = [
+    ...(content.spec.strategicPositioning.priorityAreas?.value ?? []),
+    ...(content.spec.strategicPositioning.sensitivityPoints?.value ?? []),
+    ...(content.spec.strategicPositioning.visibilityNeeds?.value ?? []),
+  ];
+  issues.push(...languageIssues(supportLists, "density"));
+
+  if (content.spec.evidenceBase.items.value.length < 3 || content.spec.evidenceBase.items.value.length > 6) {
+    issues.push({ level: "error", code: "overflow", message: "Executive evidence base must contain three to six signals." });
   }
 
-  for (const section of content.sections) {
-    issues.push(...languageIssues(section.paragraphs, "density"));
-    if (section.bullets) {
-      issues.push(...languageIssues(section.bullets, "density"));
-    }
-    const totalWords =
-      section.paragraphs.reduce((sum, paragraph) => sum + wordCount(paragraph), 0) +
-      (section.bullets?.reduce((sum, bullet) => sum + wordCount(bullet), 0) ?? 0);
-    if (totalWords < 80 || totalWords > 120) {
-      issues.push({ level: "error", code: "underfill", message: `${section.title} is outside the 80–120 word range.` });
-    }
-    const bodyBlob = section.paragraphs.join(" ").toLowerCase();
-    const insightValue = clean(section.insightCard.value).toLowerCase();
-    if (bodyBlob.includes(insightValue)) {
-      issues.push({ level: "error", code: "density", message: `${section.title} insight card duplicates body copy.` });
-    }
+  const specValidation = validateExecutiveBriefArtifactSpec(content.spec);
+  for (const specIssue of specValidation.issues) {
+    issues.push({
+      level: specIssue.level,
+      code: specIssue.code === "item-count" ? "overflow" : specIssue.code === "artifact-fail" ? "density" : "density",
+      message: `${specIssue.path}: ${specIssue.message}`,
+    });
   }
 
   return { ok: issues.length === 0, issues };
@@ -156,6 +209,15 @@ export const validatePresentationBrief = (content: PresentationBriefContent): Ex
       }
     }
     issues.push(...languageIssues(slide.bullets, "density"));
+  }
+
+  const specValidation = validatePresentationBriefArtifactSpec(content.spec);
+  for (const specIssue of specValidation.issues) {
+    issues.push({
+      level: specIssue.level,
+      code: specIssue.code === "item-count" ? "overflow" : specIssue.code === "artifact-fail" ? "density" : "density",
+      message: `${specIssue.path}: ${specIssue.message}`,
+    });
   }
 
   return { ok: issues.length === 0, issues };

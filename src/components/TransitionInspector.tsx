@@ -107,7 +107,7 @@ export function TransitionInspector({
               <p className="section-kicker">Threshold conditions</p>
               <div className="mt-3 flex flex-wrap gap-2">
                 {selected.proof.thresholdConditions.map((condition) => (
-                  <span key={condition} className="rounded-md border border-edge px-2 py-1 text-xs uppercase tracking-[0.12em] text-ink">
+                  <span key={condition} className="rounded-md border border-edge/80 bg-shell/55 px-2 py-1 text-xs uppercase tracking-[0.12em] text-ink">
                     {condition}
                   </span>
                 ))}

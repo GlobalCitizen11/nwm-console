@@ -29,12 +29,48 @@ const pickClause = (text: string) =>
 const compactPhrase = (text: string | undefined, fallback: string, count = 5) => {
   const source = pickClause(text ?? "")
     .replace(/^(the system|the world|the environment|current state|latest shift|dominant path|monitoring)\s+(is|shows|remains|stays)\s+/i, "")
+    .replace(
+      /^(pressure is concentrated in|monitoring should stay fixed on|decision posture should stay disciplined where|the main watchpoint is whether|that pressure is now shaping|visibility is needed on|what matters most is)\s+/i,
+      "",
+    )
+    .replace(/^(whether|recent developments such as)\s+/i, "")
+    .replace(/\b(visibility is needed on|what matters most is|monitoring should stay fixed on)\b/gi, "")
+    .replace(/^M\d+\s+/i, "")
     .replace(/\b(the|a|an)\b/gi, " ")
     .replace(/[()]/g, " ")
     .replace(/[^A-Za-z0-9\s/-]/g, " ")
     .replace(/\s+/g, " ")
     .trim();
-  return takeWords(source || fallback, count) || fallback;
+  const resolved = source && !/^(on|whether|where)$/i.test(source) ? source : fallback;
+  return takeWords(resolved, count) || fallback;
+};
+
+const monthLabel = (text: string | undefined, fallback = "the earliest interval") => {
+  const match = clean(text ?? "").match(/\bM\d+\b/i);
+  return match ? match[0].toUpperCase() : fallback;
+};
+
+const cleanEventPhrase = (text: string | undefined, fallback: string, count = 6) => {
+  const source = pickClause(text ?? "")
+    .replace(/^M\d+\s+/i, "")
+    .replace(/\bU\.?\s*S\.?\b/gi, "US")
+    .replace(/\(([^)]*)\)/g, " ")
+    .replace(/^(expanded|expansion|contracted|widening|accelerating|deepening|broadening|heightened)\s+/i, "")
+    .replace(/\b(expanded|contracted)\s+[A-Z]\b/g, "")
+    .replace(/\b[A-Z]\b/g, " ")
+    .replace(/[^A-Za-z0-9\s/-]/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+  const normalized = source
+    .replace(/^(us\s+)?(export controls?|guidance|litigation|records)\b/i, (match) => match.trim())
+    .trim();
+  const resolved =
+    normalized &&
+    normalized.length > 6 &&
+    !/^(expanded|contracted|widening|accelerating|deepening|broadening|heightened)\b/i.test(normalized)
+      ? normalized
+      : fallback;
+  return takeWords(resolved, count);
 };
 
 const titleCase = (text: string) =>
@@ -72,6 +108,10 @@ export const buildCanonicalSummary = (data: ExportSemanticData): CanonicalExport
     6,
   );
   const watchpointSubject = compactPhrase(state.visibilityNeeds[0] ?? state.stabilitySignals[0], "pressure transmission", 5);
+  const earlySignalMonth = monthLabel(state.earlySignals[0]);
+  const earlySignalEvent = cleanEventPhrase(state.earlySignals[0], "the first visible boundary break", 7);
+  const systemicUptakeEvent = cleanEventPhrase(state.systemicUptake[0], "institutions and adjacent domains", 7);
+  const sensitivitySubject = compactPhrase(state.sensitivities[0], "exposure and timing", 5);
 
   const evidenceSource = [
     ...state.signalAnchors.slice(0, 3),
@@ -99,10 +139,10 @@ export const buildCanonicalSummary = (data: ExportSemanticData): CanonicalExport
     monitoringSummary: sentence(`Monitoring should stay fixed on ${monitoringSubject}`),
     narrativeDevelopment: {
       earlySignalsSummary: sentence(
-        `Early signals first appeared around ${compactPhrase(state.earlySignals[0], "coordination stress", 5)}`,
+        `The earliest signals appeared by ${earlySignalMonth}, when ${earlySignalEvent} began to shift the boundary condition`,
       ),
       systemicUptakeSummary: sentence(
-        `Systemic uptake widened across ${compactPhrase(state.systemicUptake[0], "institutions and adjacent domains", 5)}`,
+        `Systemic uptake widened through ${systemicUptakeEvent}, which spread the read across adjacent institutions`,
       ),
       currentStateFormationSummary: sentence(
         `Recent developments turned the pattern into an operating condition inside the boundary`,
@@ -116,7 +156,7 @@ export const buildCanonicalSummary = (data: ExportSemanticData): CanonicalExport
     ),
     alternatePathSummary: sentence("A credible alternate path requires a visible break in coordination"),
     strategicPositioningSummary: sentence(
-      `Decision posture should stay disciplined where ${compactPhrase(state.sensitivities[0], "exposure and timing", 5)} is most exposed`,
+      `Decision posture should stay disciplined where ${sensitivitySubject} is most exposed`,
     ),
     watchpointSummary: sentence(`The main watchpoint is whether ${watchpointSubject} begins to change`),
     evidenceAnchorsCompact: evidenceSource.slice(0, 3).map(buildEvidenceAnchor),

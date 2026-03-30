@@ -1,0 +1,136 @@
+{
+  "deckTitle": "Inception Gate Investor Deck Voiceover",
+  "voice": "sage",
+  "model": "gpt-4o-mini-tts",
+  "speed": 0.89,
+  "slides": [
+    {
+      "slideId": "s1",
+      "title": "The Missing Layer in Institutional Decision-Making",
+      "audioPath": "audio/inception-gate/s01.mp3",
+      "script": "Welcome. This deck is about a new way to think about narrative in institutional decision-making. Narrative World Modeling starts from a different premise than the rest of the stack. Narrative is not just content, sentiment, or media analysis. It is a governable system state. Once you treat it that way, fragmented signals can be structured, tracked, and formally adjudicated into one clear read before leadership acts. That is the missing layer. Inception Gate puts that layer into workflow, so institutions can detect shifts earlier, align around the same reality, and act with clearer logic.",
+      "cues": [
+        { "at": 0, "key": "headline" },
+        { "at": 7, "key": "investor-read" },
+        { "at": 13, "key": "engine" },
+        { "at": 18, "key": "positioning" }
+      ]
+    },
+    {
+      "slideId": "s2",
+      "title": "Institutions Have More Data Than Decision Clarity",
+      "audioPath": "audio/inception-gate/s02.mp3",
+      "script": "The real problem is not missing information. It is that important shifts form before they are obvious in dashboards, reports, or market consensus. By the time the data is clean, the window has often moved. Inside the organization, different teams then build different interpretations, and decision quality depends too much on who is in the room. The result is slower action, conflicting strategy, and a lot of reactive decision-making."
+    },
+    {
+      "slideId": "s3",
+      "title": "Current Tools Stop Short of Decision-Making",
+      "audioPath": "audio/inception-gate/s03.mp3",
+      "script": "Once the problem is framed that way, the gap in the current stack is pretty easy to see. Existing tools operate on isolated streams. Dashboards watch metrics. Consultants deliver episodic judgment. Scenario planning explores futures outside the live workflow. And generic AI produces fast language on demand. None of those systems defines a coherent narrative state space that can be measured, adjudicated, and used for live decisions. That is the gap Inception Gate is built to fill."
+    },
+    {
+      "slideId": "s4",
+      "title": "A Live Decision System, Not Scenario Planning Software",
+      "audioPath": "audio/inception-gate/s04.mp3",
+      "script": "That brings the product into focus. Scenario planning is usually periodic. A team steps out of the workflow, imagines a few futures, and comes back with a planning artifact. Inception Gate does something different. It runs continuously inside live decision cycles and treats narrative as a governed state. It brings together market, policy, media, cultural, and internal signals, updates the current state, resolves conflicting evidence into one adjudicated read, and then lets teams compare future paths from that state. So the distinction matters. Scenario planning asks what might happen. Inception Gate shows what state the system is in now, what paths are open from here, and what evidence would force the institution to change its view.",
+      "cues": [
+        { "at": 0, "key": "architecture" },
+        { "at": 4, "key": "data-signals" },
+        { "at": 8, "key": "engine-stage" },
+        { "at": 13, "key": "strategic-outputs" },
+        { "at": 17, "key": "positioning-panel" }
+      ]
+    },
+    {
+      "slideId": "s5",
+      "title": "How Information Moves Through the Platform",
+      "audioPath": "audio/inception-gate/s05.mp3",
+      "script": "In practice, the workflow is simple. Teams monitor the live picture across domains, replay how pressure built and when the state changed, and then turn that read into briefs, path comparisons, alerts, and archive entries. That matters because the system does not just give an answer. It preserves the reasoning, the transition points, and the institutional memory behind the decision. The organization learns over time instead of starting over every cycle."
+    },
+    {
+      "slideId": "s6",
+      "title": "What Customers Actually Receive",
+      "audioPath": "audio/inception-gate/s06.mp3",
+      "script": "This is what the customer actually gets. Iran is just one example, but it shows the full product on one screen. On the left, the signal picture is made simple. The dominant market story is getting stronger, more signals are moving together, key actors are aligning, and the market is still behind the underlying risk. In the middle, the system turns that evidence into a current read a leadership team can use right away. In this case, the read is that the market is moving toward a tighter energy-control regime before the full repricing has happened. On the right, it lays out the alternate paths and the trigger conditions that would confirm, accelerate, or break that view. That matters because an institution can make real decisions from it. A bank, fund, or insurer can reprice or reduce exposure to energy, shipping, and regional counterparties. An operating company can secure alternate sourcing, routing, or inventory buffers while flexibility still exists. And a board or risk team can raise risk posture and align stakeholder messaging around the conditions that would escalate the situation. That is the core value. The product does not just summarize events. It gives leadership a governed decision surface: what is changing, what it means, what actions are justified now, and what evidence would change the call.",
+      "cues": [
+        { "at": 0, "key": "signal-panel" },
+        { "at": 9, "key": "nci" },
+        { "at": 18, "key": "scr" },
+        { "at": 28, "key": "actor-alignment" },
+        { "at": 39, "key": "volatility-gap" },
+        { "at": 50, "key": "system-read" },
+        { "at": 63, "key": "why-matters" },
+        { "at": 74, "key": "scenario-paths" },
+        { "at": 87, "key": "confidence" }
+      ]
+    },
+    {
+      "slideId": "s7",
+      "title": "Who Buys First",
+      "audioPath": "audio/inception-gate/s07.mp3",
+      "script": "If that is the product, the first buyer is fairly clear. It is the executive already accountable for turning ambiguity into a board-ready call on timing, risk, capital, or posture. That usually means strategy, risk, policy, communications, or investment leadership. They do not need another dashboard. They need one trusted read before a visible decision window closes. That is why the first wedge is strong. These teams already own the cost of fragmented interpretation, and they already control budget tied to high-stakes decisions."
+    },
+    {
+      "slideId": "s8",
+      "title": "GTM and Pricing",
+      "audioPath": "audio/inception-gate/s08.mp3",
+      "script": "Go to market stays very focused. The first sale is not a broad enterprise rollout. It is one accountable sponsor, one critical workflow, and one paid deployment tied to a live decision cycle. That keeps the ask concrete and the proof visible. The customer can judge value against real outputs: earlier detection, faster briefing, faster alignment, and a cleaner operating read inside an existing workflow. If that first cycle works, expansion becomes much easier to justify because the product has already earned its place in a real decision cadence.",
+      "cues": [
+        { "at": 0, "key": "gtm-panel" },
+        { "at": 6, "key": "commercial-model" },
+        { "at": 12, "key": "gtm-panel" },
+        { "at": 17, "key": "gtm-panel" }
+      ]
+    },
+    {
+      "slideId": "s9",
+      "title": "Land, Prove Value, Expand",
+      "audioPath": "audio/inception-gate/s09.mp3",
+      "script": "From there, the motion stays disciplined. The company lands in one high-stakes workflow, proves value quickly, and then expands into adjacent teams and decision cycles inside the same account. The proof standard is practical. Briefing cycles should compress. Cross-functional teams should align around the same state instead of arguing over source material. Recommendations should be easier to explain and defend. And important phase shifts should trigger action before consensus catches up. That is how one workflow turns into infrastructure."
+    },
+    {
+      "slideId": "s10",
+      "title": "Budget Already Exists",
+      "audioPath": "audio/inception-gate/s10.mp3",
+      "script": "And the reason that motion works is that the budget is already there. This is a budget-conversion story, not a budget-creation story. Institutions already spend real money on consulting, research, risk tooling, communications support, and analyst time to solve the same synthesis problem in fragmented ways. The pitch is simple: replace scattered interpretation spend with one governed decision system that gets more useful over time. That improves timing, sharpens capital allocation, and lowers the cost of slow or misaligned calls. That is why the first wedge is believable, and why the expansion story holds up."
+    },
+    {
+      "slideId": "s11",
+      "title": "Why Customers Stay",
+      "audioPath": "audio/inception-gate/s11.mp3",
+      "script": "If the product lands well, customers have a reason to stay. The moat is not raw model access. It is the patent-pending math and methodology that drive the state model, plus what happens when the system becomes part of live workflow. The decision model, proof objects, and living archive start to compound together. Narrative stops being an unmanaged force and becomes a measurable, auditable operating domain inside the institution. Every decision can be explained, defended, and audited. Every state transition becomes institutional memory. And replacing the product means rebuilding the logic, the workflow, the history, and the trust layer across multiple teams. That is why this can become a narrative intelligence layer inside the organization, not just a software tool.",
+      "cues": [
+        { "at": 0, "key": "defensibility-layers" },
+        { "at": 8, "key": "defensibility-layers" },
+        { "at": 14, "key": "inherently-different" },
+        { "at": 21, "key": "defensibility-layers" }
+      ]
+    },
+    {
+      "slideId": "s12",
+      "title": "What We Need to Prove Before Series A",
+      "audioPath": "audio/inception-gate/s12.mp3",
+      "script": "For investors, the next question is what has to be true before Series A. The answer is not just revenue. It is proof that Inception Gate can land as system infrastructure inside institutional accounts. That means paid customers with recurring use, strong retention, visible leadership usage, and expansion from one workflow into broader decision cycles. If the company can show that pattern clearly, the financing case gets much stronger because the product starts to look like durable enterprise infrastructure, not a temporary pilot."
+    },
+    {
+      "slideId": "s13",
+      "title": "How the $6M Seed Is Deployed",
+      "audioPath": "audio/inception-gate/s13.mp3",
+      "script": "That is what the seed round is for. Most of the capital goes into product and data, because that is what hardens the system and improves the quality and reliability of the outputs under institutional use. The rest goes into winning the first reference accounts and building the implementation and support layer required to keep them. So the use of funds is straightforward: make the product enterprise-ready, convert strong accounts, and prove a credible Series A software business."
+    },
+    {
+      "slideId": "s14",
+      "title": "Why This Founder",
+      "audioPath": "audio/inception-gate/s14.mp3",
+      "script": "The founder matters here for one reason. Marques Anderson framed the product around a real institutional failure that keeps repeating: too much signal, no shared read strong enough to guide action. That pattern recognition shaped Inception Gate into a governed system for early detection, coherence, and auditable decision logic. More importantly, it led to the category itself: treating narrative as a governable state and turning it into decision infrastructure. So the founder fit is not about personality. It is about having the right product thesis, the right workflow design, and the right category framing to build this as infrastructure. For a demo or white paper, contact marques@a2xfoundry.com.",
+      "voiceScript": "The founder matters here for one reason. Markus Anderson framed the product around a real institutional failure that keeps repeating: too much signal, no shared read strong enough to guide action. That pattern recognition shaped Inception Gate into a governed system for early detection, coherence, and auditable decision logic. More importantly, it led to the category itself: treating narrative as a governable state and turning it into decision infrastructure. So the founder fit is not about personality. It's about having the right product thesis, the right workflow design, and the right category framing to build this as infrastructure. For a demo or white paper, contact marques@a2xfoundry.com.",
+      "cues": [
+        { "at": 0, "key": "founder-panel" },
+        { "at": 10, "key": "founder-panel" },
+        { "at": 17, "key": "unique-advantage" },
+        { "at": 27, "key": "unique-advantage" },
+        { "at": 33, "key": "founder-panel" }
+      ]
+    }
+  ]
+}

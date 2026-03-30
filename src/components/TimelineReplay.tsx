@@ -12,6 +12,7 @@ interface TimelineReplayProps {
     token: number;
     startMonth: number;
     endMonth: number;
+    sequence?: readonly number[];
   } | null;
 }
 
@@ -29,6 +30,7 @@ export function TimelineReplay({
   const demoPlaybackToken = demoPlayback?.token ?? 0;
   const demoPlaybackStart = demoPlayback?.startMonth ?? 0;
   const demoPlaybackEnd = demoPlayback?.endMonth ?? 0;
+  const demoPlaybackSequence = demoPlayback?.sequence ?? null;
   const maxMonth = timeline[timeline.length - 1]?.month ?? 0;
   const currentPhase = timeline.find((point) => point.month === currentMonth)?.phase ?? "Escalating";
   const visibleTransitions = transitions.filter((transition) => transition.month <= currentMonth);
@@ -62,22 +64,56 @@ export function TimelineReplay({
       demoIntervalRef.current = null;
     }
 
-    const boundedStart = Math.max(0, Math.min(maxMonth, demoPlaybackStart));
-    const boundedEnd = Math.max(boundedStart, Math.min(maxMonth, demoPlaybackEnd));
-    let demoMonth = boundedStart;
-    onMonthChange(boundedStart);
+    const boundedSequence =
+      demoPlaybackSequence?.length && demoPlaybackSequence.length > 1
+        ? demoPlaybackSequence.map((month) => Math.max(0, Math.min(maxMonth, month)))
+        : null;
 
-    demoIntervalRef.current = window.setInterval(() => {
-      demoMonth += 1;
-      if (demoMonth >= boundedEnd) {
-        demoMonth = boundedEnd;
-        if (demoIntervalRef.current) {
-          window.clearInterval(demoIntervalRef.current);
-          demoIntervalRef.current = null;
-        }
-      }
+    if (boundedSequence) {
+      let sequenceIndex = 0;
+      let demoMonth = boundedSequence[0];
       onMonthChange(demoMonth);
-    }, 420);
+
+      demoIntervalRef.current = window.setInterval(() => {
+        const targetMonth = boundedSequence[sequenceIndex + 1];
+        if (targetMonth == null) {
+          if (demoIntervalRef.current) {
+            window.clearInterval(demoIntervalRef.current);
+            demoIntervalRef.current = null;
+          }
+          return;
+        }
+
+        if (demoMonth === targetMonth) {
+          sequenceIndex += 1;
+          if (sequenceIndex >= boundedSequence.length - 1 && demoIntervalRef.current) {
+            window.clearInterval(demoIntervalRef.current);
+            demoIntervalRef.current = null;
+          }
+          return;
+        }
+
+        demoMonth += demoMonth < targetMonth ? 1 : -1;
+        onMonthChange(demoMonth);
+      }, 420);
+    } else {
+      const boundedStart = Math.max(0, Math.min(maxMonth, demoPlaybackStart));
+      const boundedEnd = Math.max(boundedStart, Math.min(maxMonth, demoPlaybackEnd));
+      let demoMonth = boundedStart;
+      onMonthChange(boundedStart);
+
+      demoIntervalRef.current = window.setInterval(() => {
+        demoMonth += 1;
+        if (demoMonth >= boundedEnd) {
+          demoMonth = boundedEnd;
+          if (demoIntervalRef.current) {
+            window.clearInterval(demoIntervalRef.current);
+            demoIntervalRef.current = null;
+          }
+        }
+        onMonthChange(demoMonth);
+      }, 420);
+    }
 
     return () => {
       if (demoIntervalRef.current) {
@@ -85,7 +121,7 @@ export function TimelineReplay({
         demoIntervalRef.current = null;
       }
     };
-  }, [demoPlaybackEnd, demoPlaybackStart, demoPlaybackToken, maxMonth, onMonthChange]);
+  }, [demoPlaybackEnd, demoPlaybackSequence, demoPlaybackStart, demoPlaybackToken, maxMonth, onMonthChange]);
 
   return (
     <section className="surface-panel">

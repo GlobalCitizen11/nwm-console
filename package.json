@@ -5,10 +5,14 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "sync:deck-public": "node scripts/sync-inception-gate-public.mjs",
+    "build:deck-static": "npm run sync:deck-public && node scripts/build-inception-gate-static.mjs",
+    "export:deck-pdf": "node scripts/export-inception-gate-pdf.mjs",
+    "build": "npm run sync:deck-public && tsc -b && vite build",
     "preview": "vite preview",
     "test": "vitest run",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "deck:voiceover": "node scripts/generate-inception-gate-voiceover.mjs"
   },
   "dependencies": {
     "@sparticuz/chromium": "^143.0.4",
@@ -20,6 +24,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.17.0",
+    "@types/node": "^25.5.0",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
     "@vitejs/plugin-react": "^6.0.1",
