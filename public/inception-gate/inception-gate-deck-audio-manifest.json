@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-03-30T05:08:38.324Z",
+  "generatedAt": "2026-03-30T05:19:17.057Z",
   "provider": "openai",
   "voice": "sage",
   "model": "gpt-4o-mini-tts",
@@ -8,85 +8,85 @@
       "slideId": "s1",
       "title": "The Missing Layer in Institutional Decision-Making",
       "audioPath": "audio/inception-gate/s01.mp3",
-      "bytes": 727296
+      "bytes": 692736
     },
     {
       "slideId": "s2",
       "title": "Institutions Have More Data Than Decision Clarity",
       "audioPath": "audio/inception-gate/s02.mp3",
-      "bytes": 588672
+      "bytes": 536448
     },
     {
       "slideId": "s3",
       "title": "Current Tools Stop Short of Decision-Making",
       "audioPath": "audio/inception-gate/s03.mp3",
-      "bytes": 595200
+      "bytes": 690816
     },
     {
       "slideId": "s4",
       "title": "A Live Decision System, Not Scenario Planning Software",
       "audioPath": "audio/inception-gate/s04.mp3",
-      "bytes": 887040
+      "bytes": 868992
     },
     {
       "slideId": "s5",
       "title": "How Information Moves Through the Platform",
       "audioPath": "audio/inception-gate/s05.mp3",
-      "bytes": 588672
+      "bytes": 604032
     },
     {
       "slideId": "s6",
       "title": "What Customers Actually Receive",
       "audioPath": "audio/inception-gate/s06.mp3",
-      "bytes": 1273728
+      "bytes": 1291776
     },
     {
       "slideId": "s7",
       "title": "Who Buys First",
       "audioPath": "audio/inception-gate/s07.mp3",
-      "bytes": 690816
+      "bytes": 711936
     },
     {
       "slideId": "s8",
       "title": "GTM and Pricing",
       "audioPath": "audio/inception-gate/s08.mp3",
-      "bytes": 693504
+      "bytes": 769152
     },
     {
       "slideId": "s9",
       "title": "Land, Prove Value, Expand",
       "audioPath": "audio/inception-gate/s09.mp3",
-      "bytes": 711168
+      "bytes": 680448
     },
     {
       "slideId": "s10",
       "title": "Budget Already Exists",
       "audioPath": "audio/inception-gate/s10.mp3",
-      "bytes": 792960
+      "bytes": 807168
     },
     {
       "slideId": "s11",
       "title": "Why Customers Stay",
       "audioPath": "audio/inception-gate/s11.mp3",
-      "bytes": 779136
+      "bytes": 913920
     },
     {
       "slideId": "s12",
       "title": "What We Need to Prove Before Series A",
       "audioPath": "audio/inception-gate/s12.mp3",
-      "bytes": 683136
+      "bytes": 637056
     },
     {
       "slideId": "s13",
       "title": "How the $6M Seed Is Deployed",
       "audioPath": "audio/inception-gate/s13.mp3",
-      "bytes": 594048
+      "bytes": 590592
     },
     {
       "slideId": "s14",
       "title": "Why This Founder",
       "audioPath": "audio/inception-gate/s14.mp3",
-      "bytes": 711936
+      "bytes": 916608
     }
   ]
 }

@@ -8,7 +8,7 @@
       "slideId": "s1",
       "title": "The Missing Layer in Institutional Decision-Making",
       "audioPath": "audio/inception-gate/s01.mp3",
-      "script": "Here is the simple idea. Institutions are flooded with data, reports, and expert input, but the most important step is still unresolved. All of that information still has to become one clear read before leadership acts. That is the missing layer. Narrative World Modeling converts fragmented signals into a governed system state the institution can actually use. Inception Gate puts that into workflow, so teams can detect shifts earlier, align around the same reality, and make high-stakes decisions with clearer logic and less guesswork.",
+      "script": "Here is the core idea. Narrative World Modeling starts from a different premise than the rest of the stack. Narrative is not just content, sentiment, or media analysis. It is a governable system state. Once you treat it that way, fragmented signals can be structured, tracked over time, and formally adjudicated into one clear read before leadership acts. That is the missing layer. Inception Gate puts that layer into workflow, so institutions can detect shifts earlier, align around the same reality, and make high-stakes decisions with clearer logic.",
       "cues": [
         { "at": 0, "key": "headline" },
         { "at": 7, "key": "investor-read" },
@@ -26,13 +26,13 @@
       "slideId": "s3",
       "title": "Current Tools Stop Short of Decision-Making",
       "audioPath": "audio/inception-gate/s03.mp3",
-      "script": "Once the problem is framed that way, the gap in the current stack is pretty easy to see. Dashboards help collect and monitor information, but they do not tell a team what it means. Consultants can bring judgment, but only in bursts. Scenario planning can explore futures, but it usually sits outside the live workflow. And generic AI can produce language fast, but it still does not create a governed operating read. That is the gap Inception Gate is built to fill."
+      "script": "Once the problem is framed that way, the gap in the current stack is pretty easy to see. Existing tools operate on isolated streams. Dashboards watch metrics. Consultants deliver episodic judgment. Scenario planning explores futures outside the live workflow. And generic AI produces fast language on demand. None of those systems defines a coherent narrative state space that can be measured, adjudicated, and used for live decisions. That is the gap Inception Gate is built to fill."
     },
     {
       "slideId": "s4",
       "title": "A Live Decision System, Not Scenario Planning Software",
       "audioPath": "audio/inception-gate/s04.mp3",
-      "script": "That brings the product into focus. Scenario planning is usually periodic. A team steps out of the workflow, imagines a few futures, and comes back with a planning artifact. Inception Gate does something different. It runs continuously inside live decision cycles. It brings together market, policy, media, cultural, and internal signals, updates the current state, resolves conflicting evidence into one governed read, and then lets teams compare future paths based on that state. So the distinction matters. Scenario planning asks what might happen. Inception Gate shows what state the system is in now, what paths are open from here, and what evidence would force the institution to change its view.",
+      "script": "That brings the product into focus. Scenario planning is usually periodic. A team steps out of the workflow, imagines a few futures, and comes back with a planning artifact. Inception Gate does something different. It runs continuously inside live decision cycles and treats narrative as a governed state. It brings together market, policy, media, cultural, and internal signals, updates the current state, resolves conflicting evidence into one adjudicated read, and then lets teams compare future paths from that state. So the distinction matters. Scenario planning asks what might happen. Inception Gate shows what state the system is in now, what paths are open from here, and what evidence would force the institution to change its view.",
       "cues": [
         { "at": 0, "key": "architecture" },
         { "at": 4, "key": "data-signals" },
@@ -98,7 +98,7 @@
       "slideId": "s11",
       "title": "Why Customers Stay",
       "audioPath": "audio/inception-gate/s11.mp3",
-      "script": "If the product lands well, customers have a reason to stay. The moat is not raw model access. It is what happens when the system becomes part of live workflow. The decision model, proof objects, and living archive start to compound together. Every decision can be explained, defended, and audited. Every state transition becomes institutional memory. And replacing the product means rebuilding the logic, the workflow, the history, and the trust layer across multiple teams. That is why this can become a narrative intelligence layer inside the organization, not just a software tool.",
+      "script": "If the product lands well, customers have a reason to stay. The moat is not raw model access. It is what happens when the system becomes part of live workflow. The decision model, proof objects, and living archive start to compound together. Narrative stops being an unmanaged force and becomes a measurable, auditable operating domain inside the institution. Every decision can be explained, defended, and audited. Every state transition becomes institutional memory. And replacing the product means rebuilding the logic, the workflow, the history, and the trust layer across multiple teams. That is why this can become a narrative intelligence layer inside the organization, not just a software tool.",
       "cues": [
         { "at": 0, "key": "defensibility-layers" },
         { "at": 8, "key": "defensibility-layers" },
@@ -122,8 +122,8 @@
       "slideId": "s14",
       "title": "Why This Founder",
       "audioPath": "audio/inception-gate/s14.mp3",
-      "script": "The founder matters here for one reason. The product is framed around a real institutional failure that keeps repeating: too much signal, no shared read strong enough to guide action. That pattern recognition shaped Inception Gate into a governed system for early detection, coherence, and auditable decision logic. So the founder fit is not about personality. It is about having the right product thesis, the right workflow design, and the right category framing to build this as infrastructure. For a demo or white paper, contact marques@a2xfoundry.com.",
-      "voiceScript": "The founder matters here for one reason. The product is framed around a real institutional failure that keeps repeating: too much signal, no shared read strong enough to guide action. That pattern recognition shaped Inception Gate into a governed system for early detection, coherence, and auditable decision logic. So the founder fit is not about personality. It's about having the right product thesis, the right workflow design, and the right category framing to build this as infrastructure. For a demo or white paper, contact marques@a2xfoundry.com.",
+      "script": "The founder matters here for one reason. The product is framed around a real institutional failure that keeps repeating: too much signal, no shared read strong enough to guide action. That pattern recognition shaped Inception Gate into a governed system for early detection, coherence, and auditable decision logic. More importantly, it led to the category itself: treating narrative as a governable state and turning it into decision infrastructure. So the founder fit is not about personality. It is about having the right product thesis, the right workflow design, and the right category framing to build this as infrastructure. For a demo or white paper, contact marques@a2xfoundry.com.",
+      "voiceScript": "The founder matters here for one reason. The product is framed around a real institutional failure that keeps repeating: too much signal, no shared read strong enough to guide action. That pattern recognition shaped Inception Gate into a governed system for early detection, coherence, and auditable decision logic. More importantly, it led to the category itself: treating narrative as a governable state and turning it into decision infrastructure. So the founder fit is not about personality. It's about having the right product thesis, the right workflow design, and the right category framing to build this as infrastructure. For a demo or white paper, contact marques@a2xfoundry.com.",
       "cues": [
         { "at": 0, "key": "founder-panel" },
         { "at": 10, "key": "founder-panel" },
