@@ -1,13 +1,14 @@
 {
   "deckTitle": "Inception Gate Investor Deck Voiceover",
-  "voice": "coral",
+  "voice": "sage",
   "model": "gpt-4o-mini-tts",
+  "speed": 0.89,
   "slides": [
     {
       "slideId": "s1",
       "title": "The Missing Layer in Institutional Decision-Making",
       "audioPath": "audio/inception-gate/s01.mp3",
-      "script": "Institutions already pay for data, software, and expert analysis. What they still do not have is a system that turns all of that into one clear, accountable read. Today that synthesis still happens across decks, meetings, analyst judgment, and manual briefing work. Inception Gate is the missing layer between raw inputs and executive action. It takes fragmented signals, organizes them into one operating view, and produces outputs leaders can actually use.",
+      "script": "Most institutions already pay for data, software, and expert analysis. But even with all of that, they still do not have one system that turns those inputs into a clear, accountable read. Today that work still gets done by hand across decks, meetings, analyst judgment, and last-minute briefing prep. Inception Gate sits in that gap. It pulls fragmented signals into one operating view, so leaders get something they can actually use to make a decision.",
       "cues": [
         { "at": 0, "key": "headline" },
         { "at": 7, "key": "investor-read" },
@@ -19,19 +20,19 @@
       "slideId": "s2",
       "title": "Institutions Have More Data Than Decision Clarity",
       "audioPath": "audio/inception-gate/s02.mp3",
-      "script": "That problem is not a lack of information. It is a lack of shared interpretation. When teams cannot align quickly on what the signals mean, decisions slow down, drift, or get made too late."
+      "script": "So the problem is not missing information. It is missing shared interpretation. When teams cannot align quickly on what the signals actually mean, decisions slow down, drift, or get made after the window has already moved."
     },
     {
       "slideId": "s3",
       "title": "Current Tools Stop Short of Decision-Making",
       "audioPath": "audio/inception-gate/s03.mp3",
-      "script": "Once you frame the problem that way, the gap in the current stack becomes obvious. Dashboards are useful for collection and monitoring, but they do not resolve meaning. Consultants can provide judgment, but only in episodic bursts. Scenario planning helps teams think through possible futures, but it usually lives outside day-to-day workflow. Generic AI can generate language quickly, but it does not create a governed operating read. That is the gap Inception Gate is built to fill: not another source of content, but a live system that updates the current read as evidence changes."
+      "script": "Once you look at it that way, the gap in the current stack is pretty easy to see. Dashboards help collect and monitor information, but they do not tell a team what it means. Consultants can bring judgment, but only in bursts. Scenario planning is useful, but it usually sits outside the live workflow. And generic AI can produce language fast, but it does not create a governed operating read. Inception Gate is built to fill that exact gap."
     },
     {
       "slideId": "s4",
       "title": "A Live Decision System, Not Scenario Planning Software",
       "audioPath": "audio/inception-gate/s04.mp3",
-      "script": "That leads directly to the product. Scenario planning is a periodic exercise. Inception Gate is an operating system for interpretation. It ingests live evidence, updates the current read, compares alternate paths, and shows what would change the read.",
+      "script": "That brings us to the product. Scenario planning is usually a periodic exercise. Inception Gate is something a team uses continuously. It takes in live evidence, updates the current read, compares alternate paths, and shows what would actually cause the read to change. So this is not planning software. It is a live decision system.",
       "cues": [
         { "at": 0, "key": "architecture" },
         { "at": 4, "key": "data-signals" },
@@ -44,13 +45,13 @@
       "slideId": "s5",
       "title": "How Information Moves Through the Platform",
       "audioPath": "audio/inception-gate/s05.mp3",
-      "script": "Here is the workflow in practice. Teams monitor the live picture, replay how the read formed, and turn that into briefs, path comparisons, and alerts. The product is built for recurring decision cycles, not one-off analysis."
+      "script": "Here is how the workflow works in practice. Teams watch the live picture, trace how the read was formed, and turn that into briefs, path comparisons, and alerts. The point is to support recurring decision cycles, not one-off analysis."
     },
     {
       "slideId": "s6",
       "title": "What Customers Actually Receive",
       "audioPath": "audio/inception-gate/s06.mp3",
-      "script": "This is what a customer actually sees. Iran is just one example, but it shows the product clearly. The system pulls noisy signals into one view, highlights the main read, shows alternate paths, and makes clear what would strengthen or weaken that read. On the left are the signal inputs that explain why the system is leaning in a certain direction. In the middle is the actual system read, which turns those signals into a short interpretation a leadership team can use. On the right are the alternate paths and the trigger conditions that would confirm, accelerate, or break the current read. That matters because the product is not just summarizing events. It is helping a team understand what is happening, what could happen next, and what evidence would force them to update their view. Instead of forcing leaders to read dozens of disconnected updates, it gives them a short, evidence-linked brief that answers what changed, why it matters, where risk is concentrated, what to do now, and what would change the read.",
+      "script": "This is what the customer actually gets. Iran is just one example, but it is a useful one because it shows the full product in one screen. On the left, you have the signals coming in. In the middle, the system turns those signals into a current read that a leadership team can actually use. On the right, it lays out the alternate paths and the trigger conditions that would confirm, accelerate, or break that read. That is the key difference. The product is not just summarizing events. It is helping a team understand what is happening now, what could happen next, and what evidence would force them to update their view. Instead of reading dozens of disconnected updates, leaders get a short, evidence-linked brief that tells them what changed, why it matters, where risk is building, what to do now, and what would change the read.",
       "cues": [
         { "at": 0, "key": "signal-panel" },
         { "at": 9, "key": "nci" },
@@ -67,13 +68,13 @@
       "slideId": "s7",
       "title": "Who Buys First",
       "audioPath": "audio/inception-gate/s07.mp3",
-      "script": "If that is the product, the first buyer is straightforward. It is the team already paying for ambiguity: strategy, risk, policy, or investment leadership. They are not looking for another dashboard. They want faster alignment before they brief executives, move capital, or change posture."
+      "script": "If that is the product, the first buyer is fairly clear. It is the team already paying for ambiguity: strategy, risk, policy, or investment leadership. They do not need another dashboard. They need faster alignment before they brief executives, move capital, or change posture."
     },
     {
       "slideId": "s8",
       "title": "GTM and Pricing",
       "audioPath": "audio/inception-gate/s08.mp3",
-      "script": "Go to market starts narrow on purpose. The first sale is not a broad enterprise rollout. It is one sponsor, one workflow, and one paid pilot tied to a live decision cycle. Pricing works because the value is concrete: faster briefing, faster alignment, and a better operating read inside a strategy, risk, or policy workflow. If the pilot proves that value, expansion from that foothold becomes much more believable.",
+      "script": "Go to market starts narrow on purpose. The first sale is not a broad enterprise rollout. It is one sponsor, one workflow, and one paid pilot tied to a live decision cycle. That makes the value easy to see: faster briefing, faster alignment, and a better operating read inside an existing strategy, risk, or policy workflow. If the pilot works, expansion from that foothold becomes much easier to justify.",
       "cues": [
         { "at": 0, "key": "gtm-panel" },
         { "at": 6, "key": "commercial-model" },
@@ -85,19 +86,19 @@
       "slideId": "s9",
       "title": "Land, Prove Value, Expand",
       "audioPath": "audio/inception-gate/s09.mp3",
-      "script": "From there, the commercial motion stays disciplined. Land in one high-stakes workflow. Prove value quickly. Then expand into adjacent teams, reporting surfaces, and decision cycles within the same account."
+      "script": "From there, the motion stays disciplined. Land in one high-stakes workflow. Prove value quickly. Then expand into adjacent teams, reporting surfaces, and decision cycles inside the same account."
     },
     {
       "slideId": "s10",
       "title": "Budget Already Exists",
       "audioPath": "audio/inception-gate/s10.mp3",
-      "script": "That model works because the budget already exists. This is not a story about creating a brand-new software line item. Institutions already spend heavily on consulting, research, risk tooling, and analyst time to solve the same synthesis problem in fragmented ways. The budget case is simple: replace scattered spend with one decision system that becomes more useful over time. That is why the first wedge is believable and why the expansion story is credible."
+      "script": "That only works because the budget is already there. This is not about inventing a brand-new software line item. Institutions already spend real money on consulting, research, risk tooling, and analyst time to solve the same synthesis problem in fragmented ways. The pitch is simple: take that scattered spend and replace it with one decision system that gets more useful over time. That is why the first wedge is believable, and why the expansion story holds up."
     },
     {
       "slideId": "s11",
       "title": "Why Customers Stay",
       "audioPath": "audio/inception-gate/s11.mp3",
-      "script": "If the company lands well, customers have a reason to stay. The moat is not model access. It is the combination of a structured decision model, a traceable workflow, and decision memory that compounds over time. The longer the system is used, the harder it is to replace.",
+      "script": "If the company lands well, customers have a reason to stay. The moat is not raw model access. It is the combination of a structured decision model, a traceable workflow, and decision memory that compounds over time. The longer a team uses the system, the harder it is to pull it back out.",
       "cues": [
         { "at": 0, "key": "defensibility-layers" },
         { "at": 8, "key": "defensibility-layers" },
@@ -109,20 +110,20 @@
       "slideId": "s12",
       "title": "What We Need to Prove Before Series A",
       "audioPath": "audio/inception-gate/s12.mp3",
-      "script": "For investors, the next question is what needs to be proven before Series A. Customers need to deploy, stay, and expand. If the company can show paid institutional accounts, strong retention, and visible leadership usage, the financing case becomes much stronger."
+      "script": "For investors, the next question is what has to be true before Series A. Customers need to deploy, stay, and expand. If the company can show paid institutional accounts, strong retention, and visible usage at the leadership level, the financing case gets much stronger."
     },
     {
       "slideId": "s13",
       "title": "How the $6M Seed Is Deployed",
       "audioPath": "audio/inception-gate/s13.mp3",
-      "script": "That is what the seed round funds. Most of the capital goes into product and data because that is what improves the system and the outputs. The rest goes into winning the first accounts and building the delivery capacity to keep them."
+      "script": "That is what the seed round is for. Most of the capital goes into product and data, because that is what improves the system and the quality of the outputs. The rest goes into winning the first accounts and building the delivery capacity to support them well."
     },
     {
       "slideId": "s14",
       "title": "Why This Founder",
       "audioPath": "audio/inception-gate/s14.mp3",
-      "script": "And that brings us to the founder. Marques Anderson has seen the core failure up close: signal everywhere, but no shared institutional read strong enough to guide action. He is not building an AI wrapper. He is building a decision layer for strategy, risk, policy, and investment teams that need a clearer read before they act. For a demo or white paper, contact marques@a2xfoundry.com.",
-      "voiceScript": "And that brings us to the founder. Markus Anderson has seen the core failure up close: signal everywhere, but no shared institutional read strong enough to guide action. He is not building an AI wrapper. He is building a decision layer for strategy, risk, policy, and investment teams that need a clearer read before they act. For a demo or white paper, contact marques@a2xfoundry.com.",
+      "script": "And that brings us to the founder. Marques Anderson has seen this failure up close: signal everywhere, but no shared institutional read strong enough to guide action. He is not building an AI wrapper. He is building a decision layer for strategy, risk, policy, and investment teams that need a clearer read before they act. For a demo or white paper, contact marques@a2xfoundry.com.",
+      "voiceScript": "And that brings us to the founder. Markus Anderson has seen this failure up close: signal everywhere, but no shared institutional read strong enough to guide action. He is not building an AI wrapper. He is building a decision layer for strategy, risk, policy, and investment teams that need a clearer read before they act. For a demo or white paper, contact marques@a2xfoundry.com.",
       "cues": [
         { "at": 0, "key": "founder-panel" },
         { "at": 10, "key": "founder-panel" },

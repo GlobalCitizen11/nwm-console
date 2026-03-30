@@ -133,7 +133,10 @@ function getProviderConfig(narration, env) {
     apiKey,
     voice: pickFirst(getArgValue("--voice"), narration.voice, "coral"),
     model: pickFirst(getArgValue("--model"), narration.model, "gpt-4o-mini-tts"),
-    speed: parseNumber(pickFirst(getArgValue("--speed"), process.env.OPENAI_TTS_SPEED, env.OPENAI_TTS_SPEED), 0.93),
+    speed: parseNumber(
+      pickFirst(getArgValue("--speed"), narration.speed, process.env.OPENAI_TTS_SPEED, env.OPENAI_TTS_SPEED),
+      0.93,
+    ),
   };
 }
 
