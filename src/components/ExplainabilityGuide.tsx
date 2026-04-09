@@ -14,6 +14,8 @@ const roleGuidance: Record<
     title: string;
     intro: string;
     priorities: string[];
+    applications: string[];
+    teachingUse: string;
   }
 > = {
   Executive: {
@@ -25,6 +27,12 @@ const roleGuidance: Record<
       "Timeline replay shows when the environment crossed a threshold.",
       "Conditional projection should be read as an assumption-bound outlook, not a forecast.",
     ],
+    applications: [
+      "For strategy, policy, and leadership teams, this view helps clarify where attention, escalation, or resource allocation may need to shift.",
+      "It is useful when a business needs a shared read before a board, communications, or operating review.",
+    ],
+    teachingUse:
+      "Faculty can use this surface to frame a live case at the right level of abstraction, while students can compare how the same environment reads before and after a threshold crossing.",
   },
   Analyst: {
     title: "Analyst investigation and scenario testing",
@@ -35,6 +43,12 @@ const roleGuidance: Record<
       "Artifacts can be read by contribution type: reinforce, destabilize, or reclassify.",
       "Sandbox comparisons show how removing, delaying, or weakening artifacts changes the phase path.",
     ],
+    applications: [
+      "For research, strategy, and market-intelligence teams, this view helps separate broad structural change from a read carried by only a few artifacts.",
+      "It is useful when a business needs to defend why one interpretation is stronger than another.",
+    ],
+    teachingUse:
+      "Faculty can use it for evidence review and hypothesis comparison, while students can trace causal structure and defend rival interpretations with visible support.",
   },
   Oversight: {
     title: "Oversight review and audit workflow",
@@ -45,6 +59,12 @@ const roleGuidance: Record<
       "Threshold conditions, metric deltas, and evidence hashes keep the adjudication challengeable.",
       "Proof JSON is available when a transition needs to move into review or external audit.",
     ],
+    applications: [
+      "For governance, risk, and audit teams, this view makes it easier to challenge whether a state change is actually supported before it moves into a formal record.",
+      "It is useful when a business needs disciplined review rather than unexamined escalation.",
+    ],
+    teachingUse:
+      "It gives faculty and students a practical way to study decision rights, auditability, and institutional challenge under uncertainty.",
   },
   Sandbox: {
     title: "Sandbox scenario construction and comparison",
@@ -55,6 +75,12 @@ const roleGuidance: Record<
       "Base and scenario phase paths should be compared before downstream projection output is interpreted.",
       "Scenario results remain bounded sensitivity analysis, not policy advice or predictive evidence.",
     ],
+    applications: [
+      "For planning, policy, and communications teams, this view helps compare how changed assumptions alter the path before commitments are made.",
+      "It is useful when a business needs to test contingencies without presenting exploration as prediction.",
+    ],
+    teachingUse:
+      "Faculty can run scenario workshops with explicit assumptions, while students can compare what truly changes the read and what leaves the structure intact.",
   },
 };
 
@@ -108,16 +134,37 @@ export function ExplainabilityGuide({ role, open, onToggle }: ExplainabilityGuid
 
           <div className="mt-4 grid gap-4 xl:grid-cols-4">
             <div className="surface-panel-subtle p-3 text-sm text-muted">
-              World Overview: define the boundary and explain the current state in plain English.
+              World Overview: define the boundary so strategy, risk, or classroom discussion begins from the same environment.
             </div>
             <div className="surface-panel-subtle p-3 text-sm text-muted">
-              Timeline + Replay: inspect sequence, persistence, and transition timing.
+              Timeline + Replay: inspect sequence and timing so noise can be separated from a material shift.
             </div>
             <div className="surface-panel-subtle p-3 text-sm text-muted">
-              Proof Objects: audit the threshold conditions, deltas, and supporting artifacts.
+              Proof Objects: audit threshold conditions and support governance, challenge, or teaching review.
             </div>
             <div className="surface-panel-subtle p-3 text-sm text-muted">
-              Sandbox + Projection: explore conditional paths without implying prediction or prescription.
+              Sandbox + Projection: compare conditional paths before planning, committee, or case discussion.
+            </div>
+          </div>
+
+          <div className="mt-4 grid gap-4 xl:grid-cols-[1.15fr_0.85fr]">
+            <div className="surface-panel-subtle p-4">
+              <p className="section-kicker">Applied decision use</p>
+              <div className="mt-3 space-y-3 text-sm leading-6 text-muted">
+                {rolePanel.applications.map((application) => (
+                  <p key={application}>{application}</p>
+                ))}
+              </div>
+            </div>
+
+            <div className="surface-panel-subtle p-4">
+              <p className="section-kicker">Business School use</p>
+              <div className="mt-3 space-y-3 text-sm leading-6 text-muted">
+                <p>{rolePanel.teachingUse}</p>
+                <p>
+                  What remains relatively uncommon in the market is keeping interpretation, explicit state resolution, and bounded scenario testing in the same reviewable workflow.
+                </p>
+              </div>
             </div>
           </div>
         </>

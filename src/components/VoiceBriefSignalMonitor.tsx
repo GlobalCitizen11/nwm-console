@@ -14,7 +14,7 @@ export function VoiceBriefSignalMonitor({
       <div className="mb-3">
         <p className="section-kicker">Signal Monitor</p>
         <p className="mt-1 text-sm text-muted">
-          Key signals, risks, and triggers anchored to the bounded narrative world.
+          Key signals, risks, and triggers anchored to the bounded narrative world. Useful for operating review, committee prep, or classroom case discussion because the active watchlist stays explicit.
         </p>
       </div>
 

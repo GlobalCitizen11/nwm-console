@@ -58,7 +58,7 @@ const buildView = (
 
 const buildExecutiveAvailability = (failedChecks: string[]) => ({
   exportable: failedChecks.length === 0,
-  reason: failedChecks.length > 0 ? `Executive Brief withheld: ${failedChecks.join(", ")}.` : undefined,
+  reason: failedChecks.length > 0 ? `Executive Brief withheld: ${Array.from(new Set(failedChecks)).join(" ")}` : undefined,
 });
 
 export const buildExecutiveBriefReadinessTimeline = ({
@@ -82,7 +82,7 @@ export const buildExecutiveBriefReadinessTimeline = ({
     });
     const exportData = normalizeExportData(briefingState, currentView.name);
     const canonicalSummary = buildCanonicalSummary(exportData);
-    const failedChecks = canonicalSummary.executiveBriefGate.checks.filter((check) => !check.passed).map((check) => check.label);
+    const failedChecks = canonicalSummary.executiveBriefGate.checks.filter((check) => !check.passed).map((check) => check.failureMode);
     const executiveAvailability = buildExecutiveAvailability(failedChecks);
     const executiveQa = validateExecutiveBrief(renderExecutiveBrief(canonicalSummary));
 

@@ -409,6 +409,16 @@ const buildExecutiveBriefGate = ({
     currentView.eventId === null &&
     currentView.transitionId === null;
   const categorySeparated = currentView.role === "Executive" && currentView.compareScenarioId === null;
+  const haloIntegrityFailure =
+    currentView.role !== "Executive"
+      ? "Executive Briefs can only be generated from Executive view."
+      : currentView.compareScenarioId !== null
+        ? "Executive Briefs require compare mode to be cleared."
+        : "Executive Briefs require selected event and transition context to be cleared.";
+  const categorySeparationFailure =
+    currentView.role !== "Executive"
+      ? "Executive Briefs can only be generated from Executive view."
+      : "Executive Briefs cannot be generated while compare mode is active.";
 
   const checks: BriefingState["executiveBriefGate"]["checks"] = [
     {
@@ -475,7 +485,7 @@ const buildExecutiveBriefGate = ({
         haloIntegrity
           ? "The current view is Executive-only with no event, transition, or compare focus, so the artifact can stay restricted to state, phase, density, momentum, reversibility, and proof-object traceability."
           : `The current view carries event, transition, compare, or non-executive context, so ${SYSTEM_LABELS.HALO} integrity cannot be guaranteed.`,
-      failureMode: "Orientation contains prohibited predictive or prescriptive content.",
+      failureMode: haloIntegrityFailure,
     },
     {
       id: "category-separation",
@@ -485,7 +495,7 @@ const buildExecutiveBriefGate = ({
         categorySeparated
           ? "The artifact is being generated from Executive view without a compare context, preserving separation between orientation and simulation workflows."
           : `The artifact is being generated from ${currentView.role} view or a compare context, which mixes executive orientation with non-orientation workflows.`,
-      failureMode: "Orientation is mixed with simulation or non-executive modes.",
+      failureMode: categorySeparationFailure,
     },
   ];
 
@@ -514,7 +524,7 @@ const buildExecutiveBriefGate = ({
       ],
       4,
     ),
-    unmetRequirements: checks.filter((check) => !check.passed).map((check) => check.label),
+    unmetRequirements: unique(checks.filter((check) => !check.passed).map((check) => check.failureMode)),
     checks,
   };
 };

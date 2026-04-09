@@ -116,7 +116,7 @@ describe("export pipeline", () => {
     });
 
     expect(bundle.availabilityByMode["executive-brief"].exportable).toBe(false);
-    expect(bundle.availabilityByMode["executive-brief"].reason).toContain("Category separation maintained");
+    expect(bundle.availabilityByMode["executive-brief"].reason).toContain("Executive Briefs can only be generated from Executive view.");
     expect(bundle.contentByMode["executive-brief"].spec.header.validityLabel.value).toContain("Structurally Incomplete");
   });
 
@@ -128,8 +128,8 @@ describe("export pipeline", () => {
     });
 
     expect(bundle.availabilityByMode["executive-brief"].exportable).toBe(false);
-    expect(bundle.availabilityByMode["executive-brief"].reason).toContain("Phase adjudicated");
-    expect(bundle.availabilityByMode["executive-brief"].reason).toContain("Proof objects sufficient");
+    expect(bundle.availabilityByMode["executive-brief"].reason).toContain("No phase. No valid executive brief.");
+    expect(bundle.availabilityByMode["executive-brief"].reason).toContain("Claims are not yet traceable from input to state to output.");
   });
 
   it("rejects predictive language if executive copy drifts out of interpretation-layer mode", () => {

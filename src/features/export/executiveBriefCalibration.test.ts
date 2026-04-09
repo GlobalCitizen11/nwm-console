@@ -65,7 +65,7 @@ describe("executive brief calibration matrix", () => {
 
     expect(latePoint.validity).toBe("Structurally Incomplete");
     expect(latePoint.exportable).toBe(false);
-    expect(latePoint.withheldReason).toContain("Category separation maintained");
+    expect(latePoint.withheldReason).toContain("Executive Briefs can only be generated from Executive view.");
   });
 
   it.each(scenarioFixtures)("exports a valid late executive brief for $label", (fixture) => {

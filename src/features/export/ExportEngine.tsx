@@ -64,7 +64,7 @@ const buildAvailabilityByMode = (summary: CanonicalExportSummary): Record<Export
   const executiveExportable = summary.executiveBriefGate.validity === "Structurally Valid";
   const executiveReason = executiveExportable
     ? undefined
-    : `Executive Brief withheld: ${failedChecks.map((check) => check.label).join(", ")}.`;
+    : `Executive Brief withheld: ${Array.from(new Set(failedChecks.map((check) => check.failureMode))).join(" ")}`;
 
   return {
     "executive-brief": {

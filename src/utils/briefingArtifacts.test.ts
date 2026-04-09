@@ -79,7 +79,7 @@ describe("briefing artifacts", () => {
 
     expect(brief).toContain("EXECUTIVE BRIEF WITHHELD");
     expect(brief).toContain("UNMET CONDITIONS");
-    expect(brief).toContain("Category separation maintained");
+    expect(brief).toContain("Executive Briefs can only be generated from Executive view.");
   });
 
   it("builds a slide-ready presentation brief with eight non-redundant slides", () => {

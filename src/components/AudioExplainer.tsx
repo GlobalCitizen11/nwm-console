@@ -74,20 +74,20 @@ export function AudioExplainer({
 
     switch (section) {
       case "world":
-        return `${sharedContext} The world overview sets the boundary: domain, geography, time horizon, and governance mode. It keeps the later read anchored to what is actually in scope before any signal is interpreted. ${decisionGuardrail}`;
+        return `${sharedContext} The world overview sets the boundary: domain, geography, time horizon, and governance mode. It keeps the later read anchored to what is actually in scope before any signal is interpreted. That helps firms and institutions keep planning tied to the right environment, and it gives faculty a clean case boundary for classroom discussion. ${decisionGuardrail}`;
       case "timeline":
-        return `${sharedContext} Timeline and replay show when structural pressure accumulated and when the phase path changed. Sequence matters more than any isolated artifact, which makes turning points easier to read here. ${decisionGuardrail}`;
+        return `${sharedContext} Timeline and replay show when structural pressure accumulated and when the phase path changed. Sequence matters more than any isolated artifact, which makes turning points easier to read here. That helps teams separate temporary noise from change that may warrant escalation, and it helps students see how sequence alters the read. ${decisionGuardrail}`;
       case "proof":
-        return `${sharedContext} The proof and transition surfaces keep the basis for a phase change reviewable, including thresholds, deltas, and supporting artifacts. The current selected transition is ${selectedTransitionId ?? "not set"}. ${decisionGuardrail}`;
+        return `${sharedContext} The proof and transition surfaces keep the basis for a phase change reviewable, including thresholds, deltas, and supporting artifacts. The current selected transition is ${selectedTransitionId ?? "not set"}. This matters when a business, committee, or classroom needs to challenge the basis for a conclusion rather than simply accept it. ${decisionGuardrail}`;
       case "sandbox":
-        return `${sharedContext} The ${SYSTEM_LABELS.PROTOSTAR} examines how the phase path changes when selected artifacts are removed, delayed, or weakened. There are currently ${activeScenarioCount} active sandbox modifications. It is a bounded scenario exercise, not a policy instruction or a forecast. ${decisionGuardrail}`;
+        return `${sharedContext} The ${SYSTEM_LABELS.PROTOSTAR} examines how the phase path changes when selected artifacts are removed, delayed, or weakened. There are currently ${activeScenarioCount} active sandbox modifications. It is useful when a team wants to test strategy, communications, or policy assumptions before committing, and it lets students compare rival cases without confusing exploration with prediction. It is a bounded scenario exercise, not a policy instruction or a forecast. ${decisionGuardrail}`;
       case "projection":
-        return `${sharedContext} The ${SYSTEM_LABELS.PROTOSTAR} presents a conditional forward view under explicit assumptions. It keeps threshold proximity and continuation risk visible without implying prediction. ${decisionGuardrail}`;
+        return `${sharedContext} The ${SYSTEM_LABELS.PROTOSTAR} presents a conditional forward view under explicit assumptions. It keeps threshold proximity and continuation risk visible without implying prediction. That makes it easier to compare contingency plans, operating hypotheses, or classroom scenarios without overstating certainty. ${decisionGuardrail}`;
       case "governance":
-        return `${sharedContext} The governance panel keeps safeguards, non-claims, and deployment posture visible. It frames how the console should be used before outputs move into review or circulation. ${decisionGuardrail}`;
+        return `${sharedContext} The governance panel keeps safeguards, non-claims, and deployment posture visible. It frames how the console should be used before outputs move into review or circulation. It is the panel that keeps business use disciplined and also shows students how analytic tools should stay bounded by method and review. ${decisionGuardrail}`;
       case "current":
       default:
-        return `${sharedContext} ${getCurrentUrlContext()} The selected artifact is ${selectedEventId ?? "not set"}, and the selected transition is ${selectedTransitionId ?? "not set"}. This spoken note is meant to clarify what the current shared view is showing and where attention should rest. ${decisionGuardrail}`;
+        return `${sharedContext} ${getCurrentUrlContext()} The selected artifact is ${selectedEventId ?? "not set"}, and the selected transition is ${selectedTransitionId ?? "not set"}. This spoken note is meant to clarify what the current shared view is showing and where attention should rest. The same framing helps a management team, faculty member, or student notice what should be monitored next. ${decisionGuardrail}`;
     }
   }, [role, currentMonth, world.name, section, selectedEventId, selectedTransitionId, activeScenarioCount]);
 
@@ -117,7 +117,7 @@ export function AudioExplainer({
       <p className="text-xs uppercase tracking-[0.22em] text-muted">Audio Explainer</p>
       <h3 className="mt-2 text-lg font-semibold text-ink">Section narration</h3>
       <p className="mt-2 text-sm leading-6 text-muted">
-        Spoken guidance for the active console context. Uses the browser voice engine only. Intended for orientation and review, not automated judgment.
+        Spoken guidance for the active console context. Uses the browser voice engine only. Useful when walking a team, committee, or classroom through the same surface. Intended for orientation and review, not automated judgment.
       </p>
 
       <div className="mt-4 grid gap-3">

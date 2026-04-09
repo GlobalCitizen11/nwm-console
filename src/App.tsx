@@ -111,7 +111,7 @@ const autoDemoScripts = {
     {
       title: "Welcome",
       description:
-        `Welcome. This walkthrough follows one bounded world through ${THREE_LAYER_SYSTEM}. The emphasis is on context: how signals begin to cohere, how state is resolved, and how alternative assumptions can be examined without losing traceability.`,
+        `Welcome. This walkthrough follows one bounded world through ${THREE_LAYER_SYSTEM}. The emphasis is on context: how signals begin to cohere, how state is resolved, and how alternative assumptions can be examined without losing traceability. For operating teams, that supports earlier prioritization before strategy, risk, or policy decisions move.`,
       role: "Executive" as Role,
       month: 0,
       targetId: "demo-intro-card",
@@ -138,7 +138,7 @@ const autoDemoScripts = {
     {
       title: "World overview",
       description:
-        "World Overview condenses the boundary into a working brief. It gives you the summary, source classes, governance mode, and top-line measures that orient the rest of the read.",
+        "World Overview condenses the boundary into a working brief. It gives decision-makers the summary, source classes, governance mode, and top-line measures needed to align before capital allocation, policy response, or communications planning begin.",
       role: "Executive" as Role,
       month: 0,
       targetId: "demo-world-overview",
@@ -147,7 +147,7 @@ const autoDemoScripts = {
     {
       title: "Replay and sequence",
       description:
-        "Replay shows how pressure accumulates over time. What matters here is less any single event than the sequence through which conditions persist, tighten, or begin to cross a threshold.",
+        "Replay shows how pressure accumulates over time. What matters here is less any single event than the sequence through which conditions persist, tighten, or begin to cross a threshold. That helps teams separate temporary noise from change that may justify escalation.",
       role: "Executive" as Role,
       month: 12,
       targetId: "demo-timeline-replay",
@@ -156,7 +156,7 @@ const autoDemoScripts = {
     {
       title: `Current state and ${INTERPRETATION_LAYER}`,
       description:
-        `Read the current-state strip beside the ${INTERPRETATION_LAYER}. Together they show where the world stands, how signals are cohering, and whether the environment still reads as contained or is beginning to harden.`,
+        `Read the current-state strip beside the ${INTERPRETATION_LAYER}. Together they show where the world stands, how signals are cohering, and whether the environment still reads as contained or is beginning to harden. That helps determine whether the situation can remain on watch or needs deeper review.`,
       role: "Executive" as Role,
       month: 12,
       targetId: "demo-current-state",
@@ -165,7 +165,7 @@ const autoDemoScripts = {
     {
       title: "Month-over-month movement",
       description:
-        "This panel isolates what changed from the prior month. It helps separate ordinary movement from shifts that materially change the read.",
+        "This panel isolates what changed from the prior month. It helps separate ordinary movement from shifts that materially change the read and may require reprioritization.",
       role: "Executive" as Role,
       month: 12,
       targetId: "demo-what-changed",
@@ -174,7 +174,7 @@ const autoDemoScripts = {
     {
       title: "Checkpoint progression",
       description:
-        "Checkpoint months make the pace of change easier to see. This is useful when the question is whether pressure is stabilizing, tightening, or beginning to spread.",
+        "Checkpoint months make the pace of change easier to see. This is useful when the question is whether pressure is stabilizing, tightening, or beginning to spread, and whether the right response is to hold course, investigate further, or prepare for a harder transition.",
       role: "Executive" as Role,
       month: 12,
       targetId: "demo-time-progression",
@@ -183,7 +183,7 @@ const autoDemoScripts = {
     {
       title: "Signal monitor",
       description:
-        "The Signal Monitor keeps the watchlist close at hand. Key Signals, Risks, and Triggers make emerging pressure points easier to read without losing the broader context.",
+        "The Signal Monitor keeps the watchlist close at hand. Key Signals, Risks, and Triggers make emerging pressure points easier to read without losing the broader context, which helps teams keep the next review triggers explicit.",
       role: "Executive" as Role,
       month: 12,
       targetId: "demo-signal-monitor",
@@ -201,7 +201,7 @@ const autoDemoScripts = {
     {
       title: "Governance and exports",
       description:
-        "The right rail keeps governance posture and export paths visible. It is where a live read becomes something reviewable and reusable.",
+        "The right rail keeps governance posture and export paths visible. It is where a live read becomes something a committee, client, or classroom can review, challenge, and reuse.",
       role: "Executive" as Role,
       month: 12,
       targetId: "demo-governance",
@@ -228,7 +228,7 @@ const autoDemoScripts = {
     {
       title: "Working views",
       description:
-        "Each view carries a different job. Executive View supports orientation, Analyst View supports investigation, Oversight View supports review, and Sandbox View supports structured scenario testing.",
+        "Each view carries a different job. Executive View supports orientation, Analyst View supports investigation, Oversight View supports review, and Sandbox View supports structured scenario testing. That lets a business move from leadership framing to evidence review and scenario testing without changing tools.",
       role: "Sandbox" as Role,
       month: 12,
       targetId: "demo-view-modes",
@@ -237,7 +237,7 @@ const autoDemoScripts = {
     {
       title: `${SIMULATION_ENGINE}`,
       description:
-        `The ${SIMULATION_ENGINE} supports bounded scenario testing. In this example the walkthrough removes one artifact, adds another, then adjusts A12 through delay and impact so you can see how the path responds under changed assumptions.`,
+        `The ${SIMULATION_ENGINE} supports bounded scenario testing. In this example the walkthrough removes one artifact, adds another, then adjusts A12 through delay and impact so you can see how the path responds under changed assumptions before resources, messaging, or policy positions are committed.`,
       role: "Sandbox" as Role,
       month: 12,
       targetId: "demo-sandbox-controls",
@@ -246,7 +246,7 @@ const autoDemoScripts = {
     {
       title: "Scenario import",
       description:
-        "Scenario Import shows how the same workflow can be reused for a different bounded world or event set.",
+        "Scenario Import shows how the same workflow can be reused for a different bounded world, operating problem, or teaching case.",
       role: "Sandbox" as Role,
       month: 12,
       targetId: "demo-import",
@@ -273,7 +273,7 @@ const autoDemoScripts = {
     {
       title: "Exports",
       description:
-        "Exports turn the live state into a briefing surface or committee packet without losing the current context.",
+        "Exports turn the live state into a review surface or committee packet without losing the current context, so downstream discussion starts from the same evidence base.",
       role: "Sandbox" as Role,
       month: 12,
       targetId: "demo-exports",
@@ -291,7 +291,7 @@ const autoDemoScripts = {
     {
       title: "Closing read",
       description:
-        "You have now moved from boundary definition through interpretation, adjudication, oversight, and scenario testing. The emphasis throughout is orientation before action.",
+        "You have now moved from boundary definition through interpretation, adjudication, oversight, and scenario testing. In operating use, that supports better-timed review and escalation. In Business School settings, the same flow can stage a live case, let students compare interpretations, and show which assumptions actually change the path.",
       role: "Sandbox" as Role,
       month: 12,
       targetId: "demo-outro-card",
@@ -302,7 +302,7 @@ const autoDemoScripts = {
     {
       title: "Welcome",
       description:
-        `Welcome. This walkthrough follows the full console flow, from bounded-world framing into the ${INTERPRETATION_LAYER}, the ${ADJUDICATION_LAYER}, analyst review surfaces, and the ${SIMULATION_ENGINE}.`,
+        `Welcome. This walkthrough follows the full console flow, from bounded-world framing into the ${INTERPRETATION_LAYER}, the ${ADJUDICATION_LAYER}, analyst review surfaces, and the ${SIMULATION_ENGINE}. The goal is to make real operating choices easier to structure before action is taken.`,
       role: "Executive" as Role,
       month: 0,
       targetId: "demo-intro-card",
@@ -329,7 +329,7 @@ const autoDemoScripts = {
     {
       title: "World overview",
       description:
-        "World Overview translates the boundary into an initial brief. Summary, source classes, governance posture, and top-line measures set the conditions for everything that follows.",
+        "World Overview translates the boundary into an initial brief. Summary, source classes, governance posture, and top-line measures set the conditions for everything that follows, which gives a business a common frame before priorities, messaging, or resource choices begin to diverge.",
       role: "Executive" as Role,
       month: 0,
       targetId: "demo-world-overview",
@@ -338,7 +338,7 @@ const autoDemoScripts = {
     {
       title: "Replay and sequence",
       description:
-        "Replay gives the world sequence and memory. It shows how policy, infrastructure, market, and sovereign signals accumulate into structural change over time.",
+        "Replay gives the world sequence and memory. It shows how policy, infrastructure, market, and sovereign signals accumulate into structural change over time, which helps distinguish a passing episode from a change that may affect planning.",
       role: "Executive" as Role,
       month: 12,
       targetId: "demo-timeline-replay",
@@ -347,7 +347,7 @@ const autoDemoScripts = {
     {
       title: `Current state and ${INTERPRETATION_LAYER}`,
       description:
-        `The current-state strip and the ${INTERPRETATION_LAYER} provide the first consolidated read. They help clarify how much pressure has formed, how stable the environment appears, and where closer review may be warranted.`,
+        `The current-state strip and the ${INTERPRETATION_LAYER} provide the first consolidated read. They help clarify how much pressure has formed, how stable the environment appears, and where closer review may be warranted before commitments are made.`,
       role: "Executive" as Role,
       month: 12,
       targetId: "demo-current-state",
@@ -374,7 +374,7 @@ const autoDemoScripts = {
     {
       title: "Signal monitor",
       description:
-        "The Signal Monitor keeps the live watchlist visible. Key Signals, Risks, and Triggers bring the next pressure points closer to the surface.",
+        "The Signal Monitor keeps the live watchlist visible. Key Signals, Risks, and Triggers bring the next pressure points closer to the surface so operators know what to monitor and faculty can keep case discussion tied to explicit triggers.",
       role: "Executive" as Role,
       month: 12,
       targetId: "demo-signal-monitor",
@@ -410,7 +410,7 @@ const autoDemoScripts = {
     {
       title: "Analyst evidence",
       description:
-        "Analyst View opens the evidence surfaces behind the executive readout. Charts, artifact exploration, the world map, and state provenance make concentration and relationship structure easier to inspect.",
+        "Analyst View opens the evidence surfaces behind the executive readout. Charts, artifact exploration, the world map, and state provenance make concentration and relationship structure easier to inspect, which helps explain why one interpretation is stronger than another.",
       role: "Analyst" as Role,
       month: 12,
       targetId: "demo-analyst",
@@ -419,7 +419,7 @@ const autoDemoScripts = {
     {
       title: "State provenance",
       description:
-        "Provenance shows which signals and thresholds are carrying the current state. It is the quickest way to trace the read back to visible support.",
+        "Provenance shows which signals and thresholds are carrying the current state. It is the quickest way to trace the read back to visible support before a team, committee, or class accepts the conclusion.",
       role: "Analyst" as Role,
       month: 12,
       targetId: "demo-provenance",
@@ -428,7 +428,7 @@ const autoDemoScripts = {
     {
       title: "Oversight review",
       description:
-        "Oversight View keeps the basis for a phase change reviewable. Adjudication conditions, proof objects, and challenge state remain explicit.",
+        "Oversight View keeps the basis for a phase change reviewable. Adjudication conditions, proof objects, and challenge state remain explicit so the record can be defended, challenged, or taught rather than simply repeated.",
       role: "Oversight" as Role,
       month: 12,
       targetId: "demo-oversight",
@@ -437,7 +437,7 @@ const autoDemoScripts = {
     {
       title: "Working views",
       description:
-        "The views divide the work into orientation, investigation, review, and scenario testing. That division helps the same read remain legible across roles.",
+        "The views divide the work into orientation, investigation, review, and scenario testing. That division helps the same read remain legible across roles and supports handoff from leadership to analysts, reviewers, and planners.",
       role: "Sandbox" as Role,
       month: 12,
       targetId: "demo-view-modes",
@@ -446,7 +446,7 @@ const autoDemoScripts = {
     {
       title: `${SIMULATION_ENGINE}`,
       description:
-        `The ${SIMULATION_ENGINE} is used here for bounded sensitivity analysis. Remove, delay, or weaken an artifact and the console recomputes the path under the revised assumptions.`,
+        `The ${SIMULATION_ENGINE} is used here for bounded sensitivity analysis. Remove, delay, or weaken an artifact and the console recomputes the path under the revised assumptions, which is useful before capital, policy, or communications choices are locked in.`,
       role: "Sandbox" as Role,
       month: 12,
       targetId: "demo-sandbox-controls",
@@ -455,7 +455,7 @@ const autoDemoScripts = {
     {
       title: "Scenario import",
       description:
-        "Scenario Import extends the same workflow to a new bounded world without changing the review model.",
+        "Scenario Import extends the same workflow to a new bounded world without changing the review model, which makes the method portable across business problems and classroom cases.",
       role: "Sandbox" as Role,
       month: 12,
       targetId: "demo-import",
@@ -482,7 +482,7 @@ const autoDemoScripts = {
     {
       title: "Exports",
       description:
-        "Exports turn the current read into a reusable briefing surface.",
+        "Exports turn the current read into a reusable review surface that can travel into board, operating, or classroom discussion without losing structure.",
       role: "Sandbox" as Role,
       month: 12,
       targetId: "demo-exports",
@@ -500,7 +500,7 @@ const autoDemoScripts = {
     {
       title: "Closing read",
       description:
-        "This completes the full walkthrough. The console moves from interpretation to review and scenario testing without losing context or traceability.",
+        "This completes the full walkthrough. The console moves from interpretation to review and scenario testing without losing context or traceability. What remains relatively uncommon in the market is keeping those functions in one reviewable workflow.",
       role: "Sandbox" as Role,
       month: 12,
       targetId: "demo-outro-card",
@@ -511,7 +511,7 @@ const autoDemoScripts = {
     {
       title: "Welcome",
       description:
-        `Welcome. This walkthrough follows one bounded world through ${THREE_LAYER_SYSTEM}, from initial framing to reviewable state resolution and structured scenario testing.`,
+        `Welcome. This walkthrough follows one bounded world through ${THREE_LAYER_SYSTEM}, from initial framing to reviewable state resolution and structured scenario testing. The emphasis is on how this can help organizations make better-timed decisions under uncertainty.`,
       role: "Executive" as Role,
       month: 0,
       targetId: "demo-intro-card",
@@ -538,7 +538,7 @@ const autoDemoScripts = {
     {
       title: "World overview",
       description:
-        "World Overview turns that boundary into a concise opening brief. It is the first place where context starts to read as a coherent environment.",
+        "World Overview turns that boundary into a concise opening brief. It is the first place where context starts to read as a coherent environment, which gives leaders and faculty a common framing device before discussion branches into alternatives.",
       role: "Executive" as Role,
       month: 0,
       targetId: "demo-world-overview",
@@ -547,7 +547,7 @@ const autoDemoScripts = {
     {
       title: "Replay and sequence",
       description:
-        "Replay shows how pressure accumulates and why sequence matters. Instead of a point-in-time snapshot, you see how the environment begins to harden or remain manageable over time.",
+        "Replay shows how pressure accumulates and why sequence matters. Instead of a point-in-time snapshot, you see how the environment begins to harden or remain manageable over time, which helps teams and students reason about timing rather than headlines alone.",
       role: "Executive" as Role,
       month: 12,
       targetId: "demo-timeline-replay",
@@ -556,7 +556,7 @@ const autoDemoScripts = {
     {
       title: `Current state and ${INTERPRETATION_LAYER}`,
       description:
-        `The current state and the ${INTERPRETATION_LAYER} sit together here. They provide a quick read on phase, instability, and evidentiary support before deeper review begins.`,
+        `The current state and the ${INTERPRETATION_LAYER} sit together here. They provide a quick read on phase, instability, and evidentiary support before deeper review begins, which makes it easier to decide whether the situation calls for monitoring, escalation, or restraint.`,
       role: "Executive" as Role,
       month: 12,
       targetId: "demo-current-state",
@@ -583,7 +583,7 @@ const autoDemoScripts = {
     {
       title: "Signal monitor",
       description:
-        "The Signal Monitor keeps the active watchlist in view so emerging pressure points do not get lost in the broader narrative.",
+        "The Signal Monitor keeps the active watchlist in view so emerging pressure points do not get lost in the broader narrative. It is useful in operating reviews and in classroom settings where participants need a clear set of watch items.",
       role: "Executive" as Role,
       month: 12,
       targetId: "demo-signal-monitor",
@@ -601,7 +601,7 @@ const autoDemoScripts = {
     {
       title: "Governance and exports",
       description:
-        "Governance posture and export surfaces remain visible alongside the analysis. They help move a live read into a reviewable briefing record.",
+        "Governance posture and export surfaces remain visible alongside the analysis. They help move a live read into a reviewable record that can support management, client, or classroom discussion.",
       role: "Executive" as Role,
       month: 12,
       targetId: "demo-governance",
@@ -619,7 +619,7 @@ const autoDemoScripts = {
     {
       title: "Analyst evidence",
       description:
-        "Analyst View opens the supporting evidence behind the executive readout. Charts, the world map, state provenance, and projection status show where pressure is concentrating and how the current read is being carried.",
+        "Analyst View opens the supporting evidence behind the executive readout. Charts, the world map, state provenance, and projection status show where pressure is concentrating and how the current read is being carried, which helps explain the real mechanism behind the headline.",
       role: "Analyst" as Role,
       month: 12,
       targetId: "demo-analyst",
@@ -637,7 +637,7 @@ const autoDemoScripts = {
     {
       title: "Oversight review",
       description:
-        "Oversight View makes each phase change reviewable. The question shifts from what the system says to why the record supports it.",
+        "Oversight View makes each phase change reviewable. The question shifts from what the system says to why the record supports it, which is essential in governance settings and in teaching environments where judgment needs to be defended.",
       role: "Oversight" as Role,
       month: 12,
       targetId: "demo-oversight",
@@ -655,7 +655,7 @@ const autoDemoScripts = {
     {
       title: `${SIMULATION_ENGINE}`,
       description:
-        `The ${SIMULATION_ENGINE} lets you remove a signal, delay it, or change its impact so the path can be examined under different assumptions.`,
+        `The ${SIMULATION_ENGINE} lets you remove a signal, delay it, or change its impact so the path can be examined under different assumptions before a business commits resources or a classroom settles on one interpretation.`,
       role: "Sandbox" as Role,
       month: 12,
       targetId: "demo-sandbox-controls",
@@ -664,7 +664,7 @@ const autoDemoScripts = {
     {
       title: "Scenario import",
       description:
-        "Scenario Import shows how the workflow can be reused for a different bounded world without changing the review discipline.",
+        "Scenario Import shows how the workflow can be reused for a different bounded world without changing the review discipline, which makes it practical across industries and in case-based teaching.",
       role: "Sandbox" as Role,
       month: 12,
       targetId: "demo-import",
@@ -709,7 +709,7 @@ const autoDemoScripts = {
     {
       title: "Closing read",
       description:
-        "This walkthrough closes with the same emphasis it began with: context first, explicit state resolution, and bounded scenario exploration.",
+        "This walkthrough closes with the same emphasis it began with: context first, explicit state resolution, and bounded scenario exploration. Few tools in the market keep those pieces together in a way that remains legible to operators, reviewers, faculty, and students.",
       role: "Sandbox" as Role,
       month: 12,
       targetId: "demo-outro-card",
@@ -1585,6 +1585,12 @@ export default function App() {
                 <p className="mt-3 max-w-4xl text-sm leading-7 text-muted">
                   This walkthrough follows a bounded world from initial framing through the {INTERPRETATION_LAYER}, the {ADJUDICATION_LAYER}, and the {SIMULATION_ENGINE}. Use it to see how the environment is interpreted, how state is clarified, and how alternative assumptions can be examined without breaking continuity.
                 </p>
+                <p className="mt-3 max-w-4xl text-sm leading-7 text-muted">
+                  In operating settings, that helps leadership, strategy, risk, policy, and communications teams align before action. In Business School settings, the same flow can stage a live case so faculty and students can compare interpretations, challenge evidence, and test which assumptions materially change the path.
+                </p>
+                <p className="mt-3 max-w-4xl text-sm leading-7 text-muted">
+                  What remains relatively uncommon in the market is that interpretation, explicit state resolution, and bounded scenario testing stay in one reviewable workspace.
+                </p>
               </div>
             </section>
           ) : null}
@@ -1856,19 +1862,25 @@ export default function App() {
                     <div className="mt-4 grid gap-3 md:grid-cols-2 xl:grid-cols-4">
                       <div className="surface-panel-subtle p-4">
                         <p className="section-kicker">Executive</p>
-                        <p className="mt-2 text-sm leading-6 text-muted">Best for top-line orientation, leadership briefing, and current structural posture.</p>
+                        <p className="mt-2 text-sm leading-6 text-muted">Best for top-line orientation, prioritization, and leadership alignment on current structural posture.</p>
                       </div>
                       <div className="surface-panel-subtle p-4">
                         <p className="section-kicker">Analyst</p>
-                        <p className="mt-2 text-sm leading-6 text-muted">Best for charts, artifacts, provenance, comparison, and deeper evidence review.</p>
+                        <p className="mt-2 text-sm leading-6 text-muted">Best for evidence review, causal inspection, comparison, and defending why one interpretation is stronger than another.</p>
                       </div>
                       <div className="surface-panel-subtle p-4">
                         <p className="section-kicker">Oversight</p>
-                        <p className="mt-2 text-sm leading-6 text-muted">Best for proof objects, adjudication logic, review workflow, and governance challenge.</p>
+                        <p className="mt-2 text-sm leading-6 text-muted">Best for proof objects, adjudication logic, review workflow, and governance challenge before a conclusion is carried forward.</p>
                       </div>
                       <div className="surface-panel-subtle p-4">
                         <p className="section-kicker">Sandbox</p>
-                        <p className="mt-2 text-sm leading-6 text-muted">Best for remove, delay, and impact testing to see how sensitive the world is to key artifacts.</p>
+                        <p className="mt-2 text-sm leading-6 text-muted">Best for remove, delay, and impact testing to see how sensitive the world is before plans, messaging, or resource choices are set.</p>
+                      </div>
+                      <div className="surface-panel-subtle p-4 md:col-span-2 xl:col-span-4">
+                        <p className="section-kicker">Business School use</p>
+                        <p className="mt-2 text-sm leading-6 text-muted">
+                          Faculty can use the same four-view structure to stage a case over time, assign competing interpretations, and show how evidence, adjudication, and scenario testing fit together. Students benefit because they can compare rival reads, defend judgments with visible support, and see what actually changes the path rather than relying on static case summaries.
+                        </p>
                       </div>
                     </div>
                   </div>
@@ -1885,6 +1897,9 @@ export default function App() {
                     <h2 className="section-title">Operational handoff</h2>
                     <p className="mt-3 max-w-4xl text-sm leading-7 text-muted">
                       You have now seen the core flow from world definition to replay, evidence, oversight, and scenario testing. From here, the console can move directly into saved views, exports, imported worlds, or a client-specific scenario review.
+                    </p>
+                    <p className="mt-3 max-w-4xl text-sm leading-7 text-muted">
+                      In practice, that means the same workspace can support executive orientation, analyst review, governance challenge, and scenario comparison without losing continuity. For Business School faculty and students, it can also function as a live case environment where interpretation, evidence, and alternative assumptions remain visible in one place.
                     </p>
                   </div>
                 </section>
