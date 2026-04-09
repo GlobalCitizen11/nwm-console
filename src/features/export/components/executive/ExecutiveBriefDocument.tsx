@@ -1,23 +1,20 @@
 import type { ReactNode } from "react";
 import type { ExecutiveBriefContent } from "../../types/export";
+import { getAdjudicationStatusDisplay, getPhaseResolutionReasonDisplay, SYSTEM_LABELS } from "../../../../lib/systemLabels";
 import { ExportPage } from "../primitives/ExportPage";
 import { StatusChip } from "../primitives/StatusChip";
-import { EvidenceStrip } from "../primitives/EvidenceStrip";
-import { InsightRailCard } from "../primitives/InsightRailCard";
 
 function ExecutivePanel({
   label,
   title,
-  toneClass,
   children,
 }: {
   label: string;
   title: string;
-  toneClass: string;
   children: ReactNode;
 }) {
   return (
-    <section className={`executive-reset-panel ${toneClass}`.trim()}>
+    <section className="executive-reset-panel">
       <div className="executive-reset-panel-topline">
         <span className="executive-reset-panel-label">{label}</span>
         <h2 className="executive-reset-panel-title">{title}</h2>
@@ -28,33 +25,38 @@ function ExecutivePanel({
   );
 }
 
-function ExecutiveParagraphStack({ paragraphs }: { paragraphs: string[] }) {
+function MetricGrid({
+  items,
+}: {
+  items: Array<{ label: string; value: string }>;
+}) {
   return (
-    <div className="executive-reset-paragraph-stack">
-      {paragraphs.filter(Boolean).map((paragraph) => (
-        <p key={paragraph} className="executive-reset-paragraph">
-          {paragraph}
-        </p>
+    <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
+      {items.map((item) => (
+        <div key={`${item.label}-${item.value}`} className="surface-panel-subtle p-4">
+          <p className="section-kicker">{item.label}</p>
+          <p className="mt-2 text-sm text-ink">{item.value}</p>
+        </div>
       ))}
     </div>
   );
 }
 
-function ExecutiveSignalList({
+function TextList({
   title,
   items,
 }: {
   title: string;
   items: string[];
 }) {
-  if (!items.length) {
+  if (items.length === 0) {
     return null;
   }
 
   return (
-    <section className="executive-reset-signal-list">
-      <p className="executive-reset-signal-title">{title}</p>
-      <ul>
+    <section className="surface-panel-subtle p-4">
+      <p className="section-kicker">{title}</p>
+      <ul className="mt-3 space-y-2 text-sm text-ink">
         {items.map((item) => (
           <li key={item}>{item}</li>
         ))}
@@ -63,211 +65,206 @@ function ExecutiveSignalList({
   );
 }
 
-function ExecutiveNarrativeBlock({
-  label,
-  paragraph,
+function MappingTable({
+  rows,
 }: {
-  label: string;
-  paragraph: string;
+  rows: ExecutiveBriefContent["v2"]["artifactStateMapping"];
 }) {
   return (
-    <div className="executive-reset-narrative-block">
-      <div className="executive-reset-narrative-marker">{label}</div>
-      <p>{paragraph}</p>
+    <div className="surface-panel-subtle overflow-hidden p-0">
+      <table className="w-full border-collapse text-left text-sm text-ink">
+        <thead>
+          <tr className="border-b border-edge">
+            <th className="px-4 py-3 font-medium text-muted">Artifact</th>
+            <th className="px-4 py-3 font-medium text-muted">Primary Function</th>
+            <th className="px-4 py-3 font-medium text-muted">State Effect</th>
+            <th className="px-4 py-3 font-medium text-muted">Interpretive Role</th>
+          </tr>
+        </thead>
+        <tbody>
+          {rows.map((row) => (
+            <tr key={row.artifactId} className="border-b border-edge/70 align-top">
+              <td className="px-4 py-3">{row.artifact}</td>
+              <td className="px-4 py-3 text-muted">{row.primaryFunction}</td>
+              <td className="px-4 py-3 text-muted">{row.stateEffect}</td>
+              <td className="px-4 py-3 text-muted">{row.interpretiveRole}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 }
 
 export function ExecutiveBriefDocument({ content }: { content: ExecutiveBriefContent }) {
-  const { spec, fieldPack } = content;
   const metadata = {
-    scenarioName: spec.header.scenarioName.value,
-    boundedWorld: spec.header.boundedWorld.value,
-    phase: spec.header.currentPhase.value,
-    asOf: spec.header.asOfLabel.value,
+    scenarioName: content.title,
+    boundedWorld: content.boundedWorld,
+    phase: content.v2.phaseResolution.phase,
+    asOf: content.replayMonth,
     generatedAt: content.timestamp,
     confidentiality: content.confidentialityLabel,
     currentViewName: "Executive Brief",
   };
 
-  const headerMeta = fieldPack.headerMeta.map((item) => ({
-    key: item.label,
-    value: item.value,
-    tone: item.label === "Phase" ? ("accent" as const) : ("default" as const),
-  }));
+  const { phaseResolution, preGcsSensitivity, stateVector } = content.v2;
+  const adjudicationStatus = getAdjudicationStatusDisplay(phaseResolution.adjudicationStatus);
+  const phaseResolutionReason = getPhaseResolutionReasonDisplay(phaseResolution.rationale);
+  const normalizedPreGcsReason = getPhaseResolutionReasonDisplay(preGcsSensitivity.reason);
+  const preGcsReason = normalizedPreGcsReason.endsWith(".")
+    ? normalizedPreGcsReason
+    : `${normalizedPreGcsReason}.`;
+  const visibleMappings = content.v2.artifactStateMapping.slice(0, 6);
+  const visibleSpine = content.v2.temporalSpine.slice(0, 5);
 
   return (
     <>
-      <ExportPage metadata={metadata} pageNumber={1} totalPages={2} className="executive-brief-page executive-brief-page--reset executive-brief-page--reset-page1">
+      <ExportPage metadata={metadata} pageNumber={1} totalPages={3} className="executive-brief-page executive-brief-page--reset">
         <header className="executive-reset-document-header">
           <div className="executive-reset-document-header-topline">
             <p className="executive-reset-document-kicker">Executive Brief</p>
             <div className="executive-reset-document-meta">
-              {headerMeta.map((item) => (
-                <StatusChip key={`${item.key}-${item.value}`} label={item.key} value={item.value} tone={item.tone} />
-              ))}
+              <StatusChip label="Phase" value={phaseResolution.phase} tone="accent" />
+              <StatusChip label={SYSTEM_LABELS.PAL} value={adjudicationStatus} tone="accent" />
+              <StatusChip label="Confidence" value={stateVector.confidence.toFixed(1)} />
+              <StatusChip label="Basis" value={stateVector.basis} />
             </div>
           </div>
 
           <div className="executive-reset-document-header-main">
             <div className="executive-reset-document-copy">
-              <h1 className="executive-reset-document-title">{spec.header.executiveHeadline.value}</h1>
-              <p className="executive-reset-document-subtitle">{spec.header.executiveSubline.value}</p>
+              <h1 className="executive-reset-document-title">{content.title}</h1>
+              <p className="executive-reset-document-subtitle">{content.v2.boundedWorldDefinition}</p>
             </div>
-
             <div className="executive-reset-document-stats">
               <div className="executive-reset-header-stat">
-                <span>Current phase</span>
-                <strong>{spec.header.currentPhase.value}</strong>
-              </div>
-              <div className="executive-reset-header-stat">
-                <span>As of</span>
-                <strong>{spec.header.asOfLabel.value}</strong>
+                <span>Replay month</span>
+                <strong>{content.replayMonth}</strong>
               </div>
               <div className="executive-reset-header-stat">
                 <span>Bounded world</span>
-                <strong>{spec.header.boundedWorld.value}</strong>
+                <strong>{content.boundedWorld}</strong>
+              </div>
+              <div className="executive-reset-header-stat">
+                <span>Proof status</span>
+                <strong>Pre-governance-grade</strong>
               </div>
             </div>
           </div>
-
-          <div className="executive-reset-document-insights">
-            {spec.systemStateOverview.sidebarInsight?.value ? (
-              <InsightRailCard
-                label="Operating read"
-                value={spec.systemStateOverview.sidebarInsight.value}
-                className="executive-reset-insight executive-reset-insight--system"
-              />
-            ) : null}
-            <InsightRailCard
-              label="Briefing frame"
-              value={spec.header.boundedWorld.value}
-              support={content.timestamp}
-              className="executive-reset-insight executive-reset-insight--neutral"
-            />
-          </div>
         </header>
 
-        <section className="executive-reset-spread executive-reset-spread--page1">
-          <div className="executive-reset-page1-left">
-            <ExecutivePanel
-              label="Section 1"
-              title={spec.systemStateOverview.sectionTitle.value}
-              toneClass="is-system"
-            >
-              <ExecutiveParagraphStack
-                paragraphs={[
-                  spec.systemStateOverview.currentConditionParagraph.value,
-                  spec.systemStateOverview.meaningParagraph.value,
+        <section className="grid gap-5">
+          <ExecutivePanel label="Section 1" title="Bounded World Definition">
+            <p className="executive-reset-paragraph">{content.v2.boundedWorldDefinition}</p>
+          </ExecutivePanel>
+
+          <ExecutivePanel label="Section 2" title="Artifact Set Summary">
+            <p className="executive-reset-paragraph">{content.v2.artifactSetSummary}</p>
+          </ExecutivePanel>
+
+          <ExecutivePanel label="Section 3" title="System State Overview">
+            <div className="grid gap-4 xl:grid-cols-[1.2fr_0.8fr]">
+              <div className="space-y-3">
+                <p className="executive-reset-paragraph">{content.spec.systemStateOverview.currentConditionParagraph.value}</p>
+                <p className="executive-reset-paragraph">{content.spec.systemStateOverview.meaningParagraph.value}</p>
+              </div>
+              <MetricGrid
+                items={[
+                  { label: "Velocity", value: stateVector.velocity.toFixed(1) },
+                  { label: "Density", value: stateVector.density.toFixed(1) },
+                  { label: "Coherence", value: stateVector.coherence.toFixed(1) },
+                  { label: "Reversibility", value: stateVector.reversibility.toFixed(1) },
+                  { label: "Confidence", value: stateVector.confidence.toFixed(1) },
+                  { label: "Basis", value: stateVector.basis },
                 ]}
               />
-            </ExecutivePanel>
-
-            <ExecutivePanel
-              label="Evidence"
-              title={spec.evidenceBase.sectionTitle.value}
-              toneClass="is-evidence"
-            >
-              <ExecutiveParagraphStack paragraphs={[spec.evidenceBase.intro.value]} />
-              <EvidenceStrip
-                items={spec.evidenceBase.items.value.map((item) => ({
-                  id: item.code,
-                  code: item.code,
-                  text: `${item.signal} ${item.significance}`.trim(),
-                }))}
-                className="executive-reset-evidence"
-              />
-            </ExecutivePanel>
-          </div>
-
-          <ExecutivePanel
-            label="Section 2"
-            title={spec.narrativeDevelopment.sectionTitle.value}
-            toneClass="is-narrative"
-          >
-            <div className="executive-reset-narrative-stack">
-              <ExecutiveNarrativeBlock label="Early signals" paragraph={spec.narrativeDevelopment.earlySignalsParagraph.value} />
-              <ExecutiveNarrativeBlock label="Systemic uptake" paragraph={spec.narrativeDevelopment.systemicUptakeParagraph.value} />
-              <ExecutiveNarrativeBlock label="Current condition" paragraph={spec.narrativeDevelopment.currentConditionParagraph.value} />
             </div>
-            {spec.narrativeDevelopment.sidebarInsight?.value ? (
-              <InsightRailCard
-                label="Narrative insight"
-                value={spec.narrativeDevelopment.sidebarInsight.value}
-                className="executive-reset-insight executive-reset-insight--narrative"
-              />
-            ) : null}
           </ExecutivePanel>
         </section>
       </ExportPage>
 
-      <ExportPage metadata={metadata} pageNumber={2} totalPages={2} className="executive-brief-page executive-brief-page--reset executive-brief-page--reset-page2">
-        <section className="executive-reset-closing">
-          <div className="executive-reset-two-up executive-reset-two-up--page2">
-            <ExecutivePanel
-              label="Section 3"
-              title={spec.structuralInterpretation.sectionTitle.value}
-              toneClass="is-structural"
-            >
-              <ExecutiveParagraphStack
-                paragraphs={[
-                  spec.structuralInterpretation.interpretationParagraph1.value,
-                  spec.structuralInterpretation.interpretationParagraph2?.value ?? "",
-                ]}
-              />
-              {spec.structuralInterpretation.sidebarInsight?.value ? (
-                <InsightRailCard
-                  label="Structural read"
-                  value={spec.structuralInterpretation.sidebarInsight.value}
-                  className="executive-reset-insight executive-reset-insight--structural"
-                />
-              ) : null}
+      <ExportPage metadata={metadata} pageNumber={2} totalPages={3} className="executive-brief-page executive-brief-page--reset">
+        <section className="grid gap-5">
+          <ExecutivePanel label="Section 4" title="Narrative Development">
+            <div className="space-y-3">
+              <p className="executive-reset-paragraph">{content.spec.narrativeDevelopment.earlySignalsParagraph.value}</p>
+              <p className="executive-reset-paragraph">{content.spec.narrativeDevelopment.systemicUptakeParagraph.value}</p>
+              <p className="executive-reset-paragraph">{content.spec.narrativeDevelopment.currentConditionParagraph.value}</p>
+            </div>
+          </ExecutivePanel>
+
+          <ExecutivePanel label="Section 5" title="Temporal Spine">
+            <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
+              {visibleSpine.map((entry) => (
+                <div key={entry.id} className="surface-panel-subtle p-4">
+                  <p className="section-kicker">{entry.label}</p>
+                  <p className="mt-2 text-sm text-ink">{entry.summary}</p>
+                  <p className="mt-2 text-xs text-muted">
+                    Month {entry.month} | Phase {entry.phase} | Effect {entry.structuralEffect}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </ExecutivePanel>
+
+          <div className="grid gap-5 xl:grid-cols-2">
+            <ExecutivePanel label="Section 6" title={`Phase and ${SYSTEM_LABELS.PAL} Status`}>
+              <div className="space-y-3">
+                <p className="executive-reset-paragraph">
+                  Current phase <strong>{phaseResolution.phase}</strong> is resolved as{" "}
+                  <strong>{adjudicationStatus}</strong>. This remains threshold-driven adjudication rather than a full
+                  institutional {` ${SYSTEM_LABELS.PAL}`}.
+                </p>
+                <p className="executive-reset-paragraph">{phaseResolutionReason}</p>
+              </div>
+              <TextList title="Threshold Conditions" items={phaseResolution.thresholdConditions.slice(0, 4)} />
             </ExecutivePanel>
 
-            <ExecutivePanel
-              label="Section 4"
-              title={spec.forwardOrientation.sectionTitle.value}
-              toneClass="is-forward"
-            >
-              <ExecutiveParagraphStack
-                paragraphs={[
-                  spec.forwardOrientation.primaryPathParagraph.value,
-                  spec.forwardOrientation.alternatePathParagraph.value,
+            <ExecutivePanel label="Section 7" title="Forward Orientation">
+              <div className="space-y-3">
+                <p className="executive-reset-paragraph">{content.spec.forwardOrientation.primaryPathParagraph.value}</p>
+                <p className="executive-reset-paragraph">{content.spec.forwardOrientation.alternatePathParagraph.value}</p>
+              </div>
+            </ExecutivePanel>
+          </div>
+        </section>
+      </ExportPage>
+
+      <ExportPage metadata={metadata} pageNumber={3} totalPages={3} className="executive-brief-page executive-brief-page--reset">
+        <section className="grid gap-5">
+          <div className="grid gap-5 xl:grid-cols-2">
+            <ExecutivePanel label="Section 8" title="Traceability Summary">
+              <p className="executive-reset-paragraph">{content.v2.traceabilitySummary}</p>
+            </ExecutivePanel>
+
+            <ExecutivePanel label="Section 9" title="Proof-Object Summary">
+              <p className="executive-reset-paragraph">{content.v2.proofSummary}</p>
+              <TextList
+                title="Proof Scaffold Status"
+                items={[
+                  "Proof status is pre-governance-grade.",
+                  "Linked transitions remain visible through the proof scaffold.",
+                  "Oversight state remains explicit in audit-facing output.",
                 ]}
               />
-              {spec.forwardOrientation.sidebarInsight?.value ? (
-                <InsightRailCard
-                  label="Path signal"
-                  value={spec.forwardOrientation.sidebarInsight.value}
-                  className="executive-reset-insight executive-reset-insight--forward"
-                />
-              ) : null}
             </ExecutivePanel>
           </div>
 
-          <ExecutivePanel
-            label="Section 5"
-            title={spec.strategicPositioning.sectionTitle.value}
-            toneClass="is-positioning"
-          >
-            <ExecutiveParagraphStack
-              paragraphs={[
-                spec.strategicPositioning.positioningParagraph1.value,
-                spec.strategicPositioning.positioningParagraph2?.value ?? "",
-              ]}
-            />
-            <div className="executive-reset-support-grid">
-              <ExecutiveSignalList title="Priority Areas" items={spec.strategicPositioning.priorityAreas?.value ?? []} />
-              <ExecutiveSignalList title="Sensitivity Points" items={spec.strategicPositioning.sensitivityPoints?.value ?? []} />
-              <ExecutiveSignalList title="Visibility Needs" items={spec.strategicPositioning.visibilityNeeds?.value ?? []} />
+          <ExecutivePanel label="Section 10" title="Artifact to State Mapping">
+            <MappingTable rows={visibleMappings} />
+          </ExecutivePanel>
+
+          <ExecutivePanel label="Section 11" title="Pre-GCS Sensitivity">
+            <div className="grid gap-4 xl:grid-cols-2">
+              <TextList title="Primary Sensitivities" items={preGcsSensitivity.primarySensitivities} />
+              <TextList title="Counterweight Conditions" items={preGcsSensitivity.counterweightConditions} />
+              <TextList title="Non-Effect Zones" items={preGcsSensitivity.nonEffectZones} />
+              <TextList title="Reversibility Constraints" items={preGcsSensitivity.reversibilityConstraints} />
             </div>
-            {spec.strategicPositioning.sidebarInsight?.value ? (
-              <InsightRailCard
-                label="Positioning read"
-                value={spec.strategicPositioning.sidebarInsight.value}
-                className="executive-reset-insight executive-reset-insight--positioning"
-              />
-            ) : null}
+            <p className="mt-4 text-sm text-muted">
+              {preGcsReason} This layer is provisional and remains separate from replay, projection, and
+              counterfactual mutation.
+            </p>
           </ExecutivePanel>
         </section>
       </ExportPage>

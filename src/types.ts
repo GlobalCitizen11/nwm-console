@@ -247,6 +247,163 @@ export interface BriefingRawState {
   currentView: ViewSnapshot;
 }
 
+export interface ExecutiveBriefGateCheck {
+  id:
+    | "narrative-world-boundary"
+    | "structural-memory"
+    | "state-vector-completeness"
+    | "phase-adjudication"
+    | "structural-momentum"
+    | "density-threshold"
+    | "reversibility-classification"
+    | "proof-object-sufficiency"
+    | "halo-orientation-integrity"
+    | "category-separation";
+  label: string;
+  passed: boolean;
+  detail: string;
+  failureMode: string;
+}
+
+export interface ExecutiveBriefBoundaryWindow {
+  start: string;
+  end: string;
+  resolution: "Monthly";
+  current: string;
+}
+
+export interface ExecutiveBriefBoundaryDefinition {
+  includedEntities: string[];
+  excludedEntities: string[];
+  temporalWindow: ExecutiveBriefBoundaryWindow;
+  spatialDomain: string;
+  platformDomain: string;
+  artifactInclusionCriteria: string[];
+}
+
+export interface ExecutiveBriefProofTrace {
+  visibleArtifactIds: string[];
+  transitionIds: string[];
+  proofIds: string[];
+  ruleVersions: string[];
+  challengeStates: ProofObject["challengeStatus"][];
+  reviewStates: ProofObject["oversight"]["reviewState"][];
+}
+
+export interface ExecutiveBriefOrientationGate {
+  mode: "Orientation";
+  framework: "HALO + PAL";
+  validity: "Structurally Valid" | "Structurally Incomplete";
+  boundaryDefinition: ExecutiveBriefBoundaryDefinition;
+  boundarySummary: string;
+  temporalWindowSummary: string;
+  platformDomainSummary: string;
+  artifactCriteriaSummary: string;
+  dominantNarratives: string[];
+  competingNarratives: string[];
+  synchronizationSummary: string;
+  proofTrace: ExecutiveBriefProofTrace;
+  proofTraceSummary: string;
+  traceabilityMarkers: string[];
+  unmetRequirements: string[];
+  checks: ExecutiveBriefGateCheck[];
+}
+
+export type ArtifactStructuralRole =
+  | "world-definition"
+  | "burden"
+  | "infrastructure"
+  | "reinforcement"
+  | "counterweight";
+
+export interface ArtifactRecord {
+  id: string;
+  sourceType: SourceType;
+  title: string;
+  summary: string;
+  observedAt: string;
+  eventTime: string;
+  domainTags: string[];
+  primaryFunction: string;
+  stateEffects: {
+    velocity: number;
+    density: number;
+    coherence: number;
+    reversibility: number;
+  };
+  structuralRole: ArtifactStructuralRole;
+}
+
+export interface StateVectorV2 {
+  velocity: number;
+  density: number;
+  coherence: number;
+  reversibility: number;
+  confidence: number;
+  basis: "deterministic-replay";
+}
+
+export interface PhaseResolutionV2 {
+  phase: string;
+  adjudicationStatus: "pal-like-threshold";
+  rationale: string;
+  thresholdConditions: string[];
+}
+
+export interface ProofObjectScaffold {
+  proofStatus: "pre-governance-grade";
+  linkedTransition: string;
+  artifactIds: string[];
+  thresholdConditions: string[];
+  quantitativeDeltas: ProofObject["quantitativeDeltas"];
+  rationale: string;
+  uncertainty: number;
+  auditHash: string;
+  oversightState: {
+    reviewState: ProofObject["oversight"]["reviewState"];
+    challengeStatus: ProofObject["challengeStatus"];
+  };
+}
+
+export interface ArtifactStateMappingRow {
+  artifactId: string;
+  artifact: string;
+  primaryFunction: string;
+  stateEffect: string;
+  interpretiveRole: string;
+}
+
+export interface TemporalSpineEntry {
+  id: string;
+  label: string;
+  month: number;
+  phase: string;
+  artifactIds: string[];
+  structuralEffect: StructuralEffect;
+  summary: string;
+}
+
+export interface PreGCSSensitivityLayer {
+  enabled: true;
+  reason: "phase adjudication is threshold-based, not formal PAL";
+  provisionalLabel: "pre-gcs";
+  primarySensitivities: string[];
+  counterweightConditions: string[];
+  nonEffectZones: string[];
+  reversibilityConstraints: string[];
+}
+
+export interface BriefingStateV2 {
+  artifactSetSummary: string;
+  artifactRecords: ArtifactRecord[];
+  stateVector: StateVectorV2;
+  phaseResolution: PhaseResolutionV2;
+  proofScaffolds: ProofObjectScaffold[];
+  artifactStateMapping: ArtifactStateMappingRow[];
+  temporalSpine: TemporalSpineEntry[];
+  preGcsSensitivity: PreGCSSensitivityLayer;
+}
+
 export interface BriefingState {
   scenarioName: string;
   boundedWorld: string;
@@ -271,6 +428,8 @@ export interface BriefingState {
   priorities: string[];
   sensitivities: string[];
   visibilityNeeds: string[];
+  executiveBriefGate: ExecutiveBriefOrientationGate;
+  v2: BriefingStateV2;
 }
 
 export interface PresentationBriefSlide {

@@ -22,14 +22,14 @@ export function TimeProgressionMode({ result }: { result: SimulationResult }) {
   return (
     <section className="surface-panel">
       <div className="flex flex-col gap-4 xl:flex-row xl:items-end xl:justify-between">
-        <div>
+        <div className="min-w-0">
           <p className="section-kicker">Time Progression Mode</p>
           <h3 className="section-title">Checkpoint evolution across the bounded world</h3>
           <p className="mt-2 max-w-4xl text-sm leading-7 text-muted">
             Track pressure changes, narrative shifts, and risk escalation across key checkpoint months.
           </p>
         </div>
-        <div className="surface-panel-subtle p-3 text-sm text-muted xl:min-w-[300px]">
+        <div className="surface-panel-subtle w-full p-3 text-sm text-muted xl:max-w-[300px]">
           <p>
             Active checkpoint: <span className="text-ink">M{checkpoint.month}</span>
           </p>

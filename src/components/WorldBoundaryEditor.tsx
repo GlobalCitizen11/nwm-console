@@ -25,10 +25,10 @@ export function WorldBoundaryEditor({ world, worldBoundaryContext, onChange }: W
         <SectionAudioControl
           sectionTitle="World Boundary"
           worldBoundaryContext={worldBoundaryContext}
-          summary="The world boundary section defines what the model is about, where it applies, and what evidence classes are allowed."
+          summary="The world boundary section defines what the bounded world covers, where it applies, and which evidence classes belong inside it."
           currentState={`It is currently representing the world named ${world.name}, in the domain ${world.domain}, across ${world.geography}, over a horizon of ${world.timeHorizonMonths} months, with governance mode ${world.governanceMode}. The declared source classes are ${(world.sourceClasses ?? []).join(", ") || "not specified"}.`}
-          businessUse="A firm can use this section to confirm exactly what is in scope before acting on any signal."
-          decisionGuidance="Better scoping generally leads to better decisions because the team is less likely to misuse the output outside its intended boundary."
+          businessUse="This section keeps the read anchored to what is actually in scope before any signal is interpreted."
+          decisionGuidance="A clear boundary reduces overreach and makes later interpretation easier to defend."
           rawContext={[
             `World name: ${world.name}`,
             `Domain: ${world.domain}`,

@@ -40,9 +40,15 @@ import { AutoDemoPanel } from "./components/AutoDemoPanel";
 import { ArtifactIngressRibbon } from "./components/ArtifactIngressRibbon";
 import { VoiceBriefPanel } from "./components/VoiceBriefPanel";
 import { VoiceBriefSignalMonitor } from "./components/VoiceBriefSignalMonitor";
+import { LocalNwmConsolePanel } from "./components/LocalNwmConsolePanel";
 import type { VoiceBriefIntelligence } from "./types/voiceBriefIntelligence";
+import { SYSTEM_DISPLAY_LABELS, SYSTEM_LABELS } from "./lib/systemLabels";
 
 type Role = "Executive" | "Analyst" | "Oversight" | "Sandbox";
+const INTERPRETATION_LAYER = SYSTEM_LABELS.HALO;
+const ADJUDICATION_LAYER = SYSTEM_LABELS.PAL;
+const SIMULATION_ENGINE = SYSTEM_LABELS.PROTOSTAR;
+const THREE_LAYER_SYSTEM = SYSTEM_DISPLAY_LABELS.threeLayerSystem;
 
 const initialUrlState = typeof window !== "undefined" ? readUrlState() : {};
 const builtInScenarioDefinitions: ScenarioDefinition[] = [
@@ -105,25 +111,25 @@ const autoDemoScripts = {
     {
       title: "Welcome",
       description:
-        "Welcome. This walkthrough will show you how the console defines a Narrative Bounded World, tracks structural change over time, surfaces governance-grade evidence, and supports better institutional decision-making through replay, proof, and scenario testing.",
+        `Welcome. This walkthrough follows one bounded world through ${THREE_LAYER_SYSTEM}. The emphasis is on context: how signals begin to cohere, how state is resolved, and how alternative assumptions can be examined without losing traceability.`,
       role: "Executive" as Role,
       month: 0,
       targetId: "demo-intro-card",
       presentationMode: true,
     },
     {
-      title: "Deployment posture",
+      title: "Operating posture",
       description:
-        "You are starting with deployment posture so you can see immediately that this is meant to operate like a governed institutional console. The environment label, scenario context, and operating posture frame the rest of the walkthrough before you move into the core analysis surfaces.",
+        "Begin with operating posture. The scenario label, review setting, and safeguards establish the terms of the read before any interpretation begins.",
       role: "Executive" as Role,
       month: 0,
       targetId: "demo-deployment",
       presentationMode: true,
     },
     {
-      title: "Bounded world framing",
+      title: "Bounded world",
       description:
-        "You are starting in Executive View so you can see the Narrative Bounded World first. In this case, the selected boundary is AI sovereignty and compute access across major jurisdictions, focused on policy, semiconductors, cloud infrastructure, export controls, and strategic classification. Inside that boundary, the key insights to watch for are tightening compute access, rising sovereign infrastructure programs, vendor concentration, and signs that AI capability is being treated less like a commercial market and more like strategic infrastructure.",
+        "Start with the boundary. Here the environment is AI sovereignty and compute access across major jurisdictions, with attention to policy, semiconductors, cloud infrastructure, export controls, and strategic classification. That frame keeps the later read anchored to the signals most likely to shape the operating environment.",
       role: "Executive" as Role,
       month: 0,
       targetId: "demo-world-boundary",
@@ -132,43 +138,43 @@ const autoDemoScripts = {
     {
       title: "World overview",
       description:
-        "Right after the boundary, the World Overview gives you the executive briefing frame for the same environment. This is where you read the world summary, source classes, governance mode, top-line metrics, and board-level framing before moving into replay.",
+        "World Overview condenses the boundary into a working brief. It gives you the summary, source classes, governance mode, and top-line measures that orient the rest of the read.",
       role: "Executive" as Role,
       month: 0,
       targetId: "demo-world-overview",
       presentationMode: true,
     },
     {
-      title: "Structural evolution through replay",
+      title: "Replay and sequence",
       description:
-        "Now you are looking at timeline replay. Use this to see how the world evolves month by month, where transitions occur, and how pressure accumulates through persistence instead of one-off spikes. This gives you a clearer basis for review timing, escalation timing, and leadership briefing than a static dashboard snapshot.",
+        "Replay shows how pressure accumulates over time. What matters here is less any single event than the sequence through which conditions persist, tighten, or begin to cross a threshold.",
       role: "Executive" as Role,
       month: 12,
       targetId: "demo-timeline-replay",
       presentationMode: true,
     },
     {
-      title: "Current state and HALO orientation",
+      title: `Current state and ${INTERPRETATION_LAYER}`,
       description:
-        "With replay advanced, you can read the current state strip and HALO together. HALO gives you an orientation layer around pressure, motion, evidentiary mass, and instability, while the current state strip shows where the world stands now. This helps you decide whether the environment looks contained, stressed, or structurally reclassified without turning the console into an autonomous decision-maker.",
+        `Read the current-state strip beside the ${INTERPRETATION_LAYER}. Together they show where the world stands, how signals are cohering, and whether the environment still reads as contained or is beginning to harden.`,
       role: "Executive" as Role,
       month: 12,
       targetId: "demo-current-state",
       presentationMode: true,
     },
     {
-      title: "Month-over-month change",
+      title: "Month-over-month movement",
       description:
-        "This What Changed view shows you what moved from the prior period, which artifacts contributed most, and whether the next threshold is getting closer or farther away. That makes the environment legible for executive review because you can see not only the state, but also the direction and the reasons behind the shift.",
+        "This panel isolates what changed from the prior month. It helps separate ordinary movement from shifts that materially change the read.",
       role: "Executive" as Role,
       month: 12,
       targetId: "demo-what-changed",
       presentationMode: true,
     },
     {
-      title: "Time progression mode",
+      title: "Checkpoint progression",
       description:
-        "Right after the month-over-month read, Time Progression Mode shows how the world evolves across checkpoints. This is where you track state transitions, read pressure change through time, and understand how risk escalation is changing as the scenario moves from one month band to the next.",
+        "Checkpoint months make the pace of change easier to see. This is useful when the question is whether pressure is stabilizing, tightening, or beginning to spread.",
       role: "Executive" as Role,
       month: 12,
       targetId: "demo-time-progression",
@@ -177,16 +183,16 @@ const autoDemoScripts = {
     {
       title: "Signal monitor",
       description:
-        "The Signal Monitor gives you the live watchlist underneath the broader narrative. Key Signals show what is actively carrying the read, Risks show where downside is concentrating, and Triggers show the conditions that would force a different posture or earlier review.",
+        "The Signal Monitor keeps the watchlist close at hand. Key Signals, Risks, and Triggers make emerging pressure points easier to read without losing the broader context.",
       role: "Executive" as Role,
       month: 12,
       targetId: "demo-signal-monitor",
       presentationMode: true,
     },
     {
-      title: "How this applies to AI sovereignty",
+      title: "Reading the AI sovereignty environment",
       description:
-        "In this specific AI sovereignty and compute access scenario, you would use the console to monitor whether export controls, sovereign compute programs, hyperscaler concentration, and strategic infrastructure debates are converging into a more constrained operating regime. That helps your team decide when to escalate review, revisit exposure, or prepare contingency options around compute access, vendor dependence, and jurisdictional divergence.",
+        "In this AI sovereignty scenario, the question is whether export controls, sovereign build-outs, vendor concentration, and strategic classification are beginning to move together. Patterns that might otherwise appear disconnected start to read as part of the same environment.",
       role: "Executive" as Role,
       month: 12,
       targetId: "demo-world-overview",
@@ -195,7 +201,7 @@ const autoDemoScripts = {
     {
       title: "Governance and exports",
       description:
-        "On the right side, you have the governance and export surfaces that make the console operational. This is where you can review deployment safeguards and generate briefing artifacts without leaving the workflow.",
+        "The right rail keeps governance posture and export paths visible. It is where a live read becomes something reviewable and reusable.",
       role: "Executive" as Role,
       month: 12,
       targetId: "demo-governance",
@@ -204,34 +210,34 @@ const autoDemoScripts = {
     {
       title: "Scenario comparison",
       description:
-        "Before moving into the sandbox, you can compare this AI sovereignty world against a second bounded scenario. This helps you see whether the current phase path, transition burden, and reversibility profile are unique to this environment or whether similar structural dynamics are appearing elsewhere.",
+        "Comparison helps distinguish what is specific to this bounded world from pressures that may be appearing elsewhere.",
       role: "Executive" as Role,
       month: 12,
       targetId: "demo-comparison",
       presentationMode: true,
     },
     {
-      title: "Proof and oversight",
+      title: "Oversight review",
       description:
-        "In Oversight View, you can inspect adjudicated transitions, proof objects, review state, and audit metadata. This is where you challenge the legitimacy of a phase change, review the threshold conditions that were met, and export the record for governance or committee workflows.",
+        "Oversight View keeps transition logic reviewable. Threshold conditions, proof objects, and audit state remain visible before the record moves outward.",
       role: "Oversight" as Role,
       month: 12,
       targetId: "demo-oversight",
       presentationMode: false,
     },
     {
-      title: "What each view is for",
+      title: "Working views",
       description:
-        "At this point, it helps to understand the four working views. Executive View is best for top-line orientation, leadership briefing, and current posture. Analyst View is where you investigate charts, artifacts, provenance, and comparison. Oversight View is where you review proof, adjudication logic, and governance state. Sandbox View is where you test remove, delay, and impact changes to see how sensitive the phase path is before you act.",
+        "Each view carries a different job. Executive View supports orientation, Analyst View supports investigation, Oversight View supports review, and Sandbox View supports structured scenario testing.",
       role: "Sandbox" as Role,
       month: 12,
       targetId: "demo-view-modes",
       presentationMode: false,
     },
     {
-      title: "Counterfactual sandbox",
+      title: `${SIMULATION_ENGINE}`,
       description:
-        "Now you are in the Counterfactual Sandbox. In this brief example, the demo will remove one artifact, add another artifact, then focus on A12 by switching it to Delay, increasing the delay to 5 months, and finally increasing impact to 2.7. That shows you that the sandbox supports both composition and sensitivity testing inside the same workflow. It is exploratory scenario analysis for decision support, not prediction and not policy prescription.",
+        `The ${SIMULATION_ENGINE} supports bounded scenario testing. In this example the walkthrough removes one artifact, adds another, then adjusts A12 through delay and impact so you can see how the path responds under changed assumptions.`,
       role: "Sandbox" as Role,
       month: 12,
       targetId: "demo-sandbox-controls",
@@ -240,16 +246,16 @@ const autoDemoScripts = {
     {
       title: "Scenario import",
       description:
-        "Right after the sandbox, you can move into Scenario Import. This is where you bring a new bounded world or event set into the console so the same workflow can be reused for a different operating environment, client case, or internal monitoring track.",
+        "Scenario Import shows how the same workflow can be reused for a different bounded world or event set.",
       role: "Sandbox" as Role,
       month: 12,
       targetId: "demo-import",
       presentationMode: false,
     },
     {
-      title: "Scenario report",
+      title: "Operational summary",
       description:
-        "This operational summary works like a scenario report. It brings the active world, current month, transition burden, and simulation status into one concise readout so you can communicate the current posture quickly after running a sandbox variation.",
+        "This operational summary condenses the active world, current month, transition burden, and simulation status into a compact handoff.",
       role: "Sandbox" as Role,
       month: 12,
       targetId: "demo-operational-summary",
@@ -258,16 +264,16 @@ const autoDemoScripts = {
     {
       title: "Saved views",
       description:
-        "Saved Views lets you preserve the exact scenario state you want to come back to later. That is useful when your team needs to compare committee-ready snapshots, preserve a checkpoint before a briefing, or keep a high-signal sandbox path for follow-up review.",
+        "Saved Views preserve exact states for later comparison, briefing, or review.",
       role: "Sandbox" as Role,
       month: 12,
       targetId: "demo-saved-views",
       presentationMode: false,
     },
     {
-      title: "Operational summary and exports",
+      title: "Exports",
       description:
-        "Before the walkthrough closes, you can see the operational summary and export surfaces together. This is where the live state becomes reusable for a briefing, committee package, or operating handoff.",
+        "Exports turn the live state into a briefing surface or committee packet without losing the current context.",
       role: "Sandbox" as Role,
       month: 12,
       targetId: "demo-exports",
@@ -276,16 +282,16 @@ const autoDemoScripts = {
     {
       title: "Activity log",
       description:
-        "The activity log preserves a local trail of imports, exports, proof changes, and view transitions. That gives you lightweight operating memory around how the workspace was used during the review cycle.",
+        "The activity log keeps a local record of how the workspace changed during review.",
       role: "Sandbox" as Role,
       month: 12,
       targetId: "demo-activity-log",
       presentationMode: false,
     },
     {
-      title: "Closing summary",
+      title: "Closing read",
       description:
-        "You have now seen how the console moves from bounded-world definition to replay, orientation, evidence, oversight, and scenario testing. The result is a more transparent and auditable way for your team to interpret a changing environment and act with stronger institutional discipline.",
+        "You have now moved from boundary definition through interpretation, adjudication, oversight, and scenario testing. The emphasis throughout is orientation before action.",
       role: "Sandbox" as Role,
       month: 12,
       targetId: "demo-outro-card",
@@ -296,25 +302,25 @@ const autoDemoScripts = {
     {
       title: "Welcome",
       description:
-        "Welcome. This walkthrough is designed to show you the full product flow, from Narrative Bounded World framing through analyst evidence, oversight, sandbox testing, and operational export.",
+        `Welcome. This walkthrough follows the full console flow, from bounded-world framing into the ${INTERPRETATION_LAYER}, the ${ADJUDICATION_LAYER}, analyst review surfaces, and the ${SIMULATION_ENGINE}.`,
       role: "Executive" as Role,
       month: 0,
       targetId: "demo-intro-card",
       presentationMode: true,
     },
     {
-      title: "Deployment posture",
+      title: "Operating posture",
       description:
-        "You are beginning with deployment posture so the operating context is explicit before any analysis starts. This helps you present the console as a governance-aware product rather than just a collection of dashboards.",
+        "Begin with operating posture. It establishes scenario context and safeguards before the analytical surfaces come into view.",
       role: "Executive" as Role,
       month: 0,
       targetId: "demo-deployment",
       presentationMode: true,
     },
     {
-      title: "Bounded world framing",
+      title: "Bounded world",
       description:
-        "You are starting in Executive View so the first thing you see is the Narrative Bounded World itself. This selected boundary covers AI sovereignty and compute access across the United States, Europe, China, and adjacent infrastructure geographies, with emphasis on policy, chips, cloud, export controls, and strategic infrastructure treatment. That gives you a disciplined frame for the specific insights you want to monitor, including compute segmentation, regulatory hardening, vendor dependence, and jurisdictional divergence.",
+        "Start with the bounded world itself. Here the environment is AI sovereignty and compute access across the United States, Europe, China, and adjacent infrastructure geographies. That frame keeps the later read anchored to policy, chips, cloud, export controls, and strategic infrastructure.",
       role: "Executive" as Role,
       month: 0,
       targetId: "demo-world-boundary",
@@ -323,43 +329,43 @@ const autoDemoScripts = {
     {
       title: "World overview",
       description:
-        "The next stop is the World Overview. This is the executive readout for the bounded environment, where you can see summary, source classes, governance posture, and top-level metrics before stepping into how the world evolved.",
+        "World Overview translates the boundary into an initial brief. Summary, source classes, governance posture, and top-line measures set the conditions for everything that follows.",
       role: "Executive" as Role,
       month: 0,
       targetId: "demo-world-overview",
       presentationMode: true,
     },
     {
-      title: "Structural evolution through replay",
+      title: "Replay and sequence",
       description:
-        "The replay advances the world through time so you can see that state has memory. Phase shifts depend on persistence, not isolated spikes. This is where you trace how policy, infrastructure, market, and sovereign artifacts accumulate into structural change over time.",
+        "Replay gives the world sequence and memory. It shows how policy, infrastructure, market, and sovereign signals accumulate into structural change over time.",
       role: "Executive" as Role,
       month: 12,
       targetId: "demo-timeline-replay",
       presentationMode: true,
     },
     {
-      title: "Current state and HALO orientation",
+      title: `Current state and ${INTERPRETATION_LAYER}`,
       description:
-        "The current-state strip and HALO explain where the world stands now, how much instability is present, how much evidentiary mass has accumulated, and whether the environment looks contained or stressed. For you, this becomes a fast orientation read before you move into deeper analyst or oversight workflows.",
+        `The current-state strip and the ${INTERPRETATION_LAYER} provide the first consolidated read. They help clarify how much pressure has formed, how stable the environment appears, and where closer review may be warranted.`,
       role: "Executive" as Role,
       month: 12,
       targetId: "demo-current-state",
       presentationMode: true,
     },
     {
-      title: "Month-over-month change",
+      title: "Month-over-month movement",
       description:
-        "This panel explains what changed from the prior month, which artifacts are driving the move, and whether the next threshold is nearing. It helps you distinguish between noise, momentum, and real structural reclassification.",
+        "This panel shows what moved since the prior month and which artifacts are carrying the shift. It helps separate drift from a more consequential change in state.",
       role: "Executive" as Role,
       month: 12,
       targetId: "demo-what-changed",
       presentationMode: true,
     },
     {
-      title: "Time progression mode",
+      title: "Checkpoint progression",
       description:
-        "After the month-over-month panel, Time Progression Mode shows you how the world is moving across checkpoint months. It lets you read state transitions directly, see how pressure changes through time, and judge whether risk escalation is accelerating or staying contained.",
+        "Checkpoint months make the tempo of change easier to read. You can see whether pressure is accelerating, stabilizing, or beginning to recede.",
       role: "Executive" as Role,
       month: 12,
       targetId: "demo-time-progression",
@@ -368,25 +374,25 @@ const autoDemoScripts = {
     {
       title: "Signal monitor",
       description:
-        "The Signal Monitor is the live decision watchlist. It pulls Key Signals, Risks, and Triggers into one place so you can see what is carrying the current read, where the next pressure is likely to surface, and what conditions would change the operating posture.",
+        "The Signal Monitor keeps the live watchlist visible. Key Signals, Risks, and Triggers bring the next pressure points closer to the surface.",
       role: "Executive" as Role,
       month: 12,
       targetId: "demo-signal-monitor",
       presentationMode: true,
     },
     {
-      title: "How this would be used in AI sovereignty",
+      title: "Reading the AI sovereignty environment",
       description:
-        "In the AI sovereignty scenario, this tool helps you assess whether export-control tightening, sovereign compute build-outs, cloud concentration, and strategic reclassification pressures are creating a materially different operating environment. In practice, that can support earlier cross-functional review around supply exposure, compliance posture, vendor concentration, and regional operating options.",
+        "In the AI sovereignty scenario, the working question is whether export controls, sovereign compute build-outs, cloud concentration, and strategic reclassification are beginning to align. This is where the broader situation becomes easier to read.",
       role: "Executive" as Role,
       month: 12,
       targetId: "demo-world-overview",
       presentationMode: true,
     },
     {
-      title: "Right-rail governance and exports",
+      title: "Governance and exports",
       description:
-        "The right rail gives you governance posture and export controls in one place. This matters because the console is not only about seeing the world. It is also about preserving a governed operating record and moving insights into briefing workflows.",
+        "The right rail keeps governance posture and export paths in view. It links interpretation to review rather than treating the console as a closed analytical surface.",
       role: "Executive" as Role,
       month: 12,
       targetId: "demo-governance",
@@ -395,16 +401,16 @@ const autoDemoScripts = {
     {
       title: "Scenario comparison",
       description:
-        "This comparison view shows the active AI sovereignty world against a second bounded scenario so you can see where the paths align and where they diverge. It is useful when you want to distinguish scenario-specific pressure from broader systemic patterns before testing interventions in the sandbox.",
+        "Comparison helps distinguish what is specific to this world from patterns that may be repeating elsewhere.",
       role: "Analyst" as Role,
       month: 12,
       targetId: "demo-comparison",
       presentationMode: false,
     },
     {
-      title: "Analyst evidence surfaces",
+      title: "Analyst evidence",
       description:
-        "Switching into Analyst View opens the evidence surfaces you would use for deeper investigation. Here you have charts, artifact exploration, the narrative world map, projection status, and state provenance. Together they show trend direction, relationship clustering, influence concentration, and which parts of the world are carrying the most pressure.",
+        "Analyst View opens the evidence surfaces behind the executive readout. Charts, artifact exploration, the world map, and state provenance make concentration and relationship structure easier to inspect.",
       role: "Analyst" as Role,
       month: 12,
       targetId: "demo-analyst",
@@ -413,34 +419,34 @@ const autoDemoScripts = {
     {
       title: "State provenance",
       description:
-        "This provenance layer shows you which signals and thresholds are driving the current world state. It is where your team can separate genuine structural influence from background noise and explain the basis for the current posture more rigorously.",
+        "Provenance shows which signals and thresholds are carrying the current state. It is the quickest way to trace the read back to visible support.",
       role: "Analyst" as Role,
       month: 12,
       targetId: "demo-provenance",
       presentationMode: false,
     },
     {
-      title: "Proof and oversight",
+      title: "Oversight review",
       description:
-        "Oversight View shows you that transitions are adjudicated under explicit rules and supported by proof objects that can be reviewed, challenged, annotated, and exported. This is where the console demonstrates traceability rather than black-box scoring.",
+        "Oversight View keeps the basis for a phase change reviewable. Adjudication conditions, proof objects, and challenge state remain explicit.",
       role: "Oversight" as Role,
       month: 12,
       targetId: "demo-oversight",
       presentationMode: false,
     },
     {
-      title: "What each view is for",
+      title: "Working views",
       description:
-        "Before the sandbox, it is useful to clarify the working views. Executive View is for leadership orientation and briefing. Analyst View is for evidence review, pattern investigation, and comparison. Oversight View is for proof, auditability, and challenge. Sandbox View is for scenario testing through remove, delay, and impact adjustments.",
+        "The views divide the work into orientation, investigation, review, and scenario testing. That division helps the same read remain legible across roles.",
       role: "Sandbox" as Role,
       month: 12,
       targetId: "demo-view-modes",
       presentationMode: false,
     },
     {
-      title: "Counterfactual sandbox",
+      title: `${SIMULATION_ENGINE}`,
       description:
-        "The sandbox closes the walkthrough with bounded sensitivity analysis. Here you can remove an artifact, delay it, or reduce its impact, compare scenarios, save views, and watch the world recompute deterministically. This helps you understand which assumptions matter most when you are preparing decisions, reviews, or contingency planning.",
+        `The ${SIMULATION_ENGINE} is used here for bounded sensitivity analysis. Remove, delay, or weaken an artifact and the console recomputes the path under the revised assumptions.`,
       role: "Sandbox" as Role,
       month: 12,
       targetId: "demo-sandbox-controls",
@@ -449,16 +455,16 @@ const autoDemoScripts = {
     {
       title: "Scenario import",
       description:
-        "Right after sandbox testing, Scenario Import shows that you can bring a new bounded world into the same workflow. That is useful when your team wants to move from a showcase world into a client-specific environment without changing the operating model of the console.",
+        "Scenario Import extends the same workflow to a new bounded world without changing the review model.",
       role: "Sandbox" as Role,
       month: 12,
       targetId: "demo-import",
       presentationMode: false,
     },
     {
-      title: "Scenario report",
+      title: "Operational summary",
       description:
-        "This operational summary acts as a compact scenario report. It captures the active world, current phase, transition count, and simulation status in one place so the analytical output can be handed off cleanly.",
+        "This summary condenses the active world, current phase, transition count, and simulation status into a compact handoff.",
       role: "Sandbox" as Role,
       month: 12,
       targetId: "demo-operational-summary",
@@ -467,16 +473,16 @@ const autoDemoScripts = {
     {
       title: "Saved views",
       description:
-        "Saved views allow you to preserve exact analysis states across roles and months. That becomes useful when you want to compare a baseline, an escalation point, and a sandboxed path without reconstructing each one manually.",
+        "Saved views preserve exact analysis states across roles and months.",
       role: "Sandbox" as Role,
       month: 12,
       targetId: "demo-saved-views",
       presentationMode: false,
     },
     {
-      title: "Exports and operational summary",
+      title: "Exports",
       description:
-        "The walkthrough ends with operational summary and exports. This is where you turn the live console state into something reusable for leadership briefings, governance review, and follow-on operating cadence.",
+        "Exports turn the current read into a reusable briefing surface.",
       role: "Sandbox" as Role,
       month: 12,
       targetId: "demo-exports",
@@ -485,16 +491,16 @@ const autoDemoScripts = {
     {
       title: "Activity log",
       description:
-        "The activity log captures imports, exports, proof updates, and movement through the console. That gives you a simple audit trail of how the workspace has been used during analysis and review.",
+        "The activity log records imports, exports, proof updates, and movement through the workspace.",
       role: "Sandbox" as Role,
       month: 12,
       targetId: "demo-activity-log",
       presentationMode: false,
     },
     {
-      title: "Closing summary",
+      title: "Closing read",
       description:
-        "This closes the full walkthrough. You have seen how the console supports executive orientation, analyst investigation, oversight review, and scenario planning inside a single governed operating surface.",
+        "This completes the full walkthrough. The console moves from interpretation to review and scenario testing without losing context or traceability.",
       role: "Sandbox" as Role,
       month: 12,
       targetId: "demo-outro-card",
@@ -505,25 +511,25 @@ const autoDemoScripts = {
     {
       title: "Welcome",
       description:
-        "Welcome. This commercial walkthrough is designed to show you why the console is valuable as a high-trust institutional product: it frames a Narrative Bounded World, explains structural change, preserves auditability, and helps your team make better-informed decisions.",
+        `Welcome. This walkthrough follows one bounded world through ${THREE_LAYER_SYSTEM}, from initial framing to reviewable state resolution and structured scenario testing.`,
       role: "Executive" as Role,
       month: 0,
       targetId: "demo-intro-card",
       presentationMode: true,
     },
     {
-      title: "Deployment posture",
+      title: "Operating posture",
       description:
-        "You are starting with deployment posture so you can see immediately that this is designed to operate like a serious institutional system. That matters in a commercial setting because it shows the product understands governance, not just interface design.",
+        "Start with operating posture. It makes the review setting explicit before any analysis begins.",
       role: "Executive" as Role,
       month: 0,
       targetId: "demo-deployment",
       presentationMode: true,
     },
     {
-      title: "Strategic operating environment",
+      title: "Strategic environment",
       description:
-        "You are beginning with the Narrative Bounded World so you can immediately see what operating environment is being modeled. Here, the selected boundary is AI sovereignty and compute access, spanning policy, semiconductors, compute infrastructure, cloud concentration, and export controls across major jurisdictions. For you, that means the most relevant insights are whether access is becoming more segmented, whether strategic dependence is increasing, and whether the environment is moving toward a more constrained operating regime.",
+        "The bounded world comes first. Here it covers AI sovereignty and compute access across policy, semiconductors, cloud infrastructure, and export controls. That frame keeps attention on the conditions forming around access, concentration, and constraint.",
       role: "Executive" as Role,
       month: 0,
       targetId: "demo-world-boundary",
@@ -532,43 +538,43 @@ const autoDemoScripts = {
     {
       title: "World overview",
       description:
-        "Immediately after that, the World Overview turns the boundary into an executive brief. Here you can see the summary, source classes, governance posture, and top-line state in a format that is easier to use in a leadership conversation.",
+        "World Overview turns that boundary into a concise opening brief. It is the first place where context starts to read as a coherent environment.",
       role: "Executive" as Role,
       month: 0,
       targetId: "demo-world-overview",
       presentationMode: true,
     },
     {
-      title: "How the environment evolves",
+      title: "Replay and sequence",
       description:
-        "Now you are looking at replay, which is where the platform becomes useful for leadership. Instead of showing you a static point-in-time summary, it shows how pressure accumulates, when the environment begins to harden, and when the narrative world starts moving toward a different operating regime. That helps you time reviews, escalation, and contingency planning more effectively.",
+        "Replay shows how pressure accumulates and why sequence matters. Instead of a point-in-time snapshot, you see how the environment begins to harden or remain manageable over time.",
       role: "Executive" as Role,
       month: 12,
       targetId: "demo-timeline-replay",
       presentationMode: true,
     },
     {
-      title: "Executive orientation and current posture",
+      title: `Current state and ${INTERPRETATION_LAYER}`,
       description:
-        "Here you can see the current state and HALO together. This gives you a fast read on phase, momentum, instability, and evidentiary support. In practice, this is useful when you need to brief leadership quickly on whether the environment is still manageable, whether it is nearing a structural threshold, or whether it has already shifted into a more constrained regime.",
+        `The current state and the ${INTERPRETATION_LAYER} sit together here. They provide a quick read on phase, instability, and evidentiary support before deeper review begins.`,
       role: "Executive" as Role,
       month: 12,
       targetId: "demo-current-state",
       presentationMode: true,
     },
     {
-      title: "Operational change and business relevance",
+      title: "Operational movement",
       description:
-        "The What Changed panel makes the movement operational. It shows you what changed from the prior period, which artifacts are carrying the movement, and where the next threshold pressure is building. For your team, this helps connect abstract signals to actual decisions around monitoring priorities, committee review, investment timing, and exposure management.",
+        "What Changed focuses on movement since the prior month. It makes it easier to see whether the read is genuinely shifting or simply absorbing more noise.",
       role: "Executive" as Role,
       month: 12,
       targetId: "demo-what-changed",
       presentationMode: true,
     },
     {
-      title: "Time progression mode",
+      title: "Checkpoint progression",
       description:
-        "The next stop is Time Progression Mode. This is where you read state transitions through time, understand whether pressure is stepping higher or stabilizing, and see if risk escalation is broadening or remaining concentrated.",
+        "This view makes the pace and direction of change easier to compare across checkpoints.",
       role: "Executive" as Role,
       month: 12,
       targetId: "demo-time-progression",
@@ -577,25 +583,25 @@ const autoDemoScripts = {
     {
       title: "Signal monitor",
       description:
-        "Then you move into the Signal Monitor. It gives you the active Key Signals, Risks, and Triggers that sit underneath the broader executive story, so your team can separate durable structural movement from watchpoints that still need confirmation.",
+        "The Signal Monitor keeps the active watchlist in view so emerging pressure points do not get lost in the broader narrative.",
       role: "Executive" as Role,
       month: 12,
       targetId: "demo-signal-monitor",
       presentationMode: true,
     },
     {
-      title: "How your team would use this in AI sovereignty",
+      title: "Reading the AI sovereignty environment",
       description:
-        "For this AI sovereignty scenario, your team could use the console to track whether compute access is becoming more segmented across jurisdictions, whether vendor dependence is becoming riskier, and whether strategic policy alignment is starting to constrain capital, infrastructure, or partnership choices. That supports better timing around executive review, sourcing strategy, compliance preparation, and geopolitical contingency planning.",
+        "In this scenario, the question is whether compute access is becoming more segmented across jurisdictions and whether strategic dependence is tightening around a narrower set of actors.",
       role: "Executive" as Role,
       month: 12,
       targetId: "demo-world-overview",
       presentationMode: true,
     },
     {
-      title: "Governance posture and board-readout workflow",
+      title: "Governance and exports",
       description:
-        "This stop brings in the governance and export surfaces. For you, this is where the product starts to look deployment-ready because it supports safeguards, briefing generation, and a repeatable operating workflow alongside the analytics.",
+        "Governance posture and export surfaces remain visible alongside the analysis. They help move a live read into a reviewable briefing record.",
       role: "Executive" as Role,
       month: 12,
       targetId: "demo-governance",
@@ -604,52 +610,52 @@ const autoDemoScripts = {
     {
       title: "Scenario comparison",
       description:
-        "Before the sandbox, the comparison view shows you how this AI sovereignty world differs from another bounded scenario. In a client setting, this is useful because it demonstrates that the platform can compare structurally different environments rather than only replay a single storyline.",
+        "Comparison makes it easier to tell whether the current path is specific to this environment or part of a broader pattern.",
       role: "Analyst" as Role,
       month: 12,
       targetId: "demo-comparison",
       presentationMode: false,
     },
     {
-      title: "Analyst depth and structural evidence",
+      title: "Analyst evidence",
       description:
-        "When you switch into Analyst View, you get the supporting evidence surfaces behind the executive readout. Charts, the world map, state provenance, and projection status let your team trace trend direction, identify where pressure is concentrating, and see how the current scenario ties back to the bounded world definition. This is where your analysts prepare the material that supports better decisions upstream.",
+        "Analyst View opens the supporting evidence behind the executive readout. Charts, the world map, state provenance, and projection status show where pressure is concentrating and how the current read is being carried.",
       role: "Analyst" as Role,
       month: 12,
       targetId: "demo-analyst",
       presentationMode: false,
     },
     {
-      title: "Provenance and structural support",
+      title: "Provenance",
       description:
-        "Here you see the provenance layer that supports the executive story. It helps your team explain which artifacts, deltas, and threshold conditions are actually carrying the current state, which is essential if you want a high-trust decision-support product instead of a black-box signal feed.",
+        "This provenance layer keeps the supporting artifacts, deltas, and threshold conditions close to the current read.",
       role: "Analyst" as Role,
       month: 12,
       targetId: "demo-provenance",
       presentationMode: false,
     },
     {
-      title: "Governance, proof, and auditability",
+      title: "Oversight review",
       description:
-        "Oversight View is where you demonstrate institutional discipline. Every transition is backed by an adjudicated proof object, threshold logic, review state, and exportable audit record. That means when your organization acts on the output, it can explain why the environment was interpreted the way it was and what evidence supported that interpretation.",
+        "Oversight View makes each phase change reviewable. The question shifts from what the system says to why the record supports it.",
       role: "Oversight" as Role,
       month: 12,
       targetId: "demo-oversight",
       presentationMode: false,
     },
     {
-      title: "What each view is for",
+      title: "Working views",
       description:
-        "Before you enter the sandbox, the four views map to four different jobs. Executive View supports leadership orientation. Analyst View supports investigation and comparison. Oversight View supports governance and proof review. Sandbox View supports structured what-if testing through remove, delay, and impact controls.",
+        "The four views divide the work into orientation, investigation, review, and scenario testing.",
       role: "Sandbox" as Role,
       month: 12,
       targetId: "demo-view-modes",
       presentationMode: false,
     },
     {
-      title: "Scenario testing for decision support",
+      title: `${SIMULATION_ENGINE}`,
       description:
-        "The final stop is the Sandbox. Here you can remove a signal, delay it, or reduce its impact and watch the world recompute deterministically. This is especially valuable when you want to understand whether your current posture depends on one key artifact or whether the environment remains structurally stressed even under alternative assumptions. That gives you a more grounded basis for planning and resource allocation.",
+        `The ${SIMULATION_ENGINE} lets you remove a signal, delay it, or change its impact so the path can be examined under different assumptions.`,
       role: "Sandbox" as Role,
       month: 12,
       targetId: "demo-sandbox-controls",
@@ -658,16 +664,16 @@ const autoDemoScripts = {
     {
       title: "Scenario import",
       description:
-        "Right after sandbox testing, Scenario Import shows that the platform can take in a new bounded world and reuse the same governed workflow. That is important commercially because it shows you are not locked into one canned scenario or one static storyline.",
+        "Scenario Import shows how the workflow can be reused for a different bounded world without changing the review discipline.",
       role: "Sandbox" as Role,
       month: 12,
       targetId: "demo-import",
       presentationMode: false,
     },
     {
-      title: "Scenario report and saved views",
+      title: "Operational summary",
       description:
-        "After running a sandbox variation, the scenario report and saved views let you preserve the resulting posture and compare it against other checkpoints. That turns the sandbox from a one-off exploration into a reusable operating artifact.",
+        "After a scenario variation, the report and saved views preserve the resulting posture for later comparison.",
       role: "Sandbox" as Role,
       month: 12,
       targetId: "demo-operational-summary",
@@ -676,16 +682,16 @@ const autoDemoScripts = {
     {
       title: "Saved views",
       description:
-        "Saved views help your team keep the exact states that matter most, whether that is a base case, an adverse case, or a board-ready snapshot of the current environment.",
+        "Saved views keep the exact states that matter for follow-up review.",
       role: "Sandbox" as Role,
       month: 12,
       targetId: "demo-saved-views",
       presentationMode: false,
     },
     {
-      title: "Operational handoff and exports",
+      title: "Exports",
       description:
-        "The final handoff is where you convert the current state into exports and summaries that your organization can actually reuse after the meeting ends. This is the point where the console stops being a demo and starts looking like a real operating tool.",
+        "Exports and summaries let the current read travel beyond the live console without losing structure.",
       role: "Sandbox" as Role,
       month: 12,
       targetId: "demo-exports",
@@ -694,16 +700,16 @@ const autoDemoScripts = {
     {
       title: "Activity log",
       description:
-        "The activity log gives you a lightweight history of how the console was used during the working session. That helps reinforce that this is not just a visual experience, but an operating workspace with memory.",
+        "The activity log keeps a simple local record of how the workspace changed during the session.",
       role: "Sandbox" as Role,
       month: 12,
       targetId: "demo-activity-log",
       presentationMode: false,
     },
     {
-      title: "Closing summary",
+      title: "Closing read",
       description:
-        "That completes the commercial walkthrough. What you have seen is not just a visualization layer, but a governed system for turning structural signals into evidence-backed operational understanding your organization can actually use.",
+        "This walkthrough closes with the same emphasis it began with: context first, explicit state resolution, and bounded scenario exploration.",
       role: "Sandbox" as Role,
       month: 12,
       targetId: "demo-outro-card",
@@ -1132,7 +1138,7 @@ export default function App() {
     if (step.targetId === "demo-sandbox-controls") {
       setSelectedSandboxScenarioId(null);
       setAutoDemoSandboxActiveArtifactId("A10");
-      setAutoDemoSandboxMessage("Demo setup: starting with two visible artifacts, A10 and A12.");
+      setAutoDemoSandboxMessage("Initial setup: two artifacts are in view here, A10 and A12.");
       setCounterfactualDraftScenario([
         {
           eventId: "A10",
@@ -1150,7 +1156,7 @@ export default function App() {
       demoSandboxTimerRefs.current = [
         window.setTimeout(() => {
           setAutoDemoSandboxActiveArtifactId("A10");
-          setAutoDemoSandboxMessage("Demo step 1: Removing artifact A10.");
+          setAutoDemoSandboxMessage("Step 1: A10 is removed so the path change is easier to read.");
           setCounterfactualDraftScenario([
             {
               eventId: "A12",
@@ -1163,7 +1169,7 @@ export default function App() {
         }, 7800),
         window.setTimeout(() => {
           setAutoDemoSandboxActiveArtifactId("A13");
-          setAutoDemoSandboxMessage("Demo step 2: Adding artifact A13 to show you can add rows as well.");
+          setAutoDemoSandboxMessage("Step 2: A13 is added to introduce a second directional change.");
           setCounterfactualDraftScenario([
             {
               eventId: "A12",
@@ -1182,7 +1188,7 @@ export default function App() {
         }, 11200),
         window.setTimeout(() => {
           setAutoDemoSandboxActiveArtifactId("A12");
-          setAutoDemoSandboxMessage("Demo step 3: Switching to artifact A12 and changing type to Delay.");
+          setAutoDemoSandboxMessage("Step 3: focus shifts to A12, now treated as a delay.");
           setCounterfactualDraftScenario([
             {
               eventId: "A12",
@@ -1201,7 +1207,7 @@ export default function App() {
         }, 13600),
         window.setTimeout(() => {
           setAutoDemoSandboxActiveArtifactId("A12");
-          setAutoDemoSandboxMessage("Demo step 4: Increasing the delay on A12 to 5 months.");
+          setAutoDemoSandboxMessage("Step 4: the delay on A12 is extended to five months.");
           setCounterfactualDraftScenario([
             {
               eventId: "A12",
@@ -1220,7 +1226,7 @@ export default function App() {
         }, 16300),
         window.setTimeout(() => {
           setAutoDemoSandboxActiveArtifactId("A12");
-          setAutoDemoSandboxMessage("Demo step 5: Increasing A12 impact to 2.7.");
+          setAutoDemoSandboxMessage("Step 5: A12's impact is raised to 2.7 under a stronger assumption.");
           setCounterfactualDraftScenario([
             {
               eventId: "A12",
@@ -1309,7 +1315,7 @@ export default function App() {
     };
 
     playNarration();
-    logActivity("view_changed", "Auto demo", `Started step ${autoDemoStepIndex + 1}: ${step.title}.`);
+    logActivity("view_changed", "Auto walkthrough", `Entered step ${autoDemoStepIndex + 1}: ${step.title}.`);
 
     return () => {
       window.clearTimeout(scrollTimer);
@@ -1416,15 +1422,15 @@ export default function App() {
 
         <header className="z-30 border-b border-edge bg-panel/95 lg:sticky lg:top-0">
           <div className="mx-auto flex max-w-[1600px] flex-col gap-4 px-4 py-3 md:gap-4 md:py-3 xl:gap-5 xl:py-4">
-            <div className="flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between xl:gap-4">
+            <div className="flex flex-col gap-3 xl:flex-row xl:items-end xl:justify-between xl:gap-4">
               <div>
                 <p className="section-kicker">Narrative World Modeling Console</p>
                 <h1 className="mt-1.5 text-2xl font-semibold md:text-[1.75rem] xl:mt-2 xl:text-3xl">NWM Console</h1>
                 <p className="mt-1.5 max-w-3xl text-sm leading-6 text-muted md:max-w-2xl xl:mt-2">
-                  {selectedScenario.description} Traceable orientation, adjudicated transitions, and bounded scenario review for institutional operators.
+                  {selectedScenario.description} Structured orientation across narrative movement, state resolution, and bounded scenario review.
                 </p>
               </div>
-              <div className="surface-panel-subtle hidden gap-2 px-4 py-3 text-sm lg:grid lg:min-w-[320px] xl:min-w-[360px]">
+              <div className="surface-panel-subtle hidden gap-2 px-4 py-3 text-sm lg:grid lg:w-full xl:max-w-[360px]">
                 <div className="flex items-center justify-between gap-4">
                   <span className="text-muted">Scenario</span>
                   <span className="text-ink">{selectedScenario.label}</span>
@@ -1444,15 +1450,15 @@ export default function App() {
                   </div>
                 ) : null}
                 <div className="flex items-center justify-between gap-4">
-                  <span className="text-muted">Demo ready</span>
+                  <span className="text-muted">Walkthrough ready</span>
                   <span className={isDemoReady ? "text-phaseYellow" : "text-ink"}>
                     {isDemoReady ? "Ready" : "Check state"}
                   </span>
                 </div>
               </div>
             </div>
-            <div className="flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
-              <div className="segmented-control">
+            <div className="flex flex-col gap-3 xl:flex-row xl:items-end xl:justify-between">
+              <div className="segmented-control w-full xl:w-auto">
               {(["Executive", "Analyst", "Sandbox", "Oversight"] as Role[]).map((candidate) => (
                 <button
                   key={candidate}
@@ -1468,22 +1474,22 @@ export default function App() {
                 className="action-button"
                 onClick={() => setGuidedOpen(true)}
               >
-                Guided Demo
+                Guided Walkthrough
               </button>
               <button
                 className="action-button"
                 onClick={() => setAutoDemoOpen(true)}
               >
-                Auto Demo
+                Auto Walkthrough
               </button>
               <button
                 className="action-button"
                 onClick={resetDemoState}
               >
-                Reset Demo State
-              </button>
+                  Reset Walkthrough State
+                </button>
               </div>
-              <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
+              <div className="grid gap-3 md:grid-cols-2 2xl:grid-cols-3">
                 <label className="control-stack">
                   <span className="control-label">Scenario</span>
                   <select
@@ -1532,15 +1538,15 @@ export default function App() {
               </div>
             </div>
             {role === "Executive" ? (
-              <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between xl:justify-end">
-                <div className="surface-panel-subtle text-sm text-muted lg:flex-1 xl:flex-none">
+              <div className="flex flex-col gap-3 xl:flex-row xl:items-center xl:justify-between 2xl:justify-end">
+                <div className="surface-panel-subtle text-sm text-muted xl:flex-1 2xl:flex-none">
                   <p>
-                    Demo readiness:{" "}
+                    Walkthrough readiness:{" "}
                     <span className={isDemoReady ? "text-phaseYellow" : "text-ink"}>
                       {isDemoReady
-                        ? "Ready to present"
-                        : `Set Executive View, Presentation Mode, Month 0, AI Sovereignty scenario${
-                            hasNarrationReady ? "" : ", and valid narration configuration"
+                        ? "Walkthrough ready"
+                        : `Set Executive View, Presentation Mode, Month 0, and the AI Sovereignty scenario${
+                            hasNarrationReady ? "" : ", plus valid narration configuration"
                           }.`}
                     </span>
                   </p>
@@ -1561,10 +1567,12 @@ export default function App() {
 
         <main
           className={`mx-auto grid max-w-[1600px] gap-5 px-4 py-5 ${
-            role === "Executive" && presentationMode ? "xl:grid-cols-[minmax(0,1fr)_300px]" : "xl:grid-cols-[minmax(0,1fr)_360px]"
+            role === "Executive" && presentationMode
+              ? "2xl:grid-cols-[minmax(0,1fr)_minmax(260px,19rem)]"
+              : "2xl:grid-cols-[minmax(0,1fr)_minmax(280px,22rem)]"
           }`}
         >
-          <div className="space-y-5">
+          <div className="min-w-0 space-y-5">
           {autoDemoOpen ? (
             <section
               id="demo-intro-card"
@@ -1572,10 +1580,10 @@ export default function App() {
               className={demoSectionClassName("demo-intro-card")}
             >
               <div className="surface-panel">
-                <p className="section-kicker">Auto Demo</p>
-                <h2 className="section-title">Narrative World Modeling Walkthrough</h2>
+                <p className="section-kicker">Guided Walkthrough</p>
+                <h2 className="section-title">Narrative World Modeling review</h2>
                 <p className="mt-3 max-w-4xl text-sm leading-7 text-muted">
-                  This guided presentation will walk you through Narrative Bounded World definition, structural replay, current orientation, oversight evidence, and counterfactual scenario testing using the active demo script.
+                  This walkthrough follows a bounded world from initial framing through the {INTERPRETATION_LAYER}, the {ADJUDICATION_LAYER}, and the {SIMULATION_ENGINE}. Use it to see how the environment is interpreted, how state is clarified, and how alternative assumptions can be examined without breaking continuity.
                 </p>
               </div>
             </section>
@@ -1612,6 +1620,8 @@ export default function App() {
               </div>
               <div id="demo-world-overview" style={{ scrollMarginTop: "140px" }} className={demoSectionClassName("demo-world-overview")}>
                 <ExecutiveView
+                  scenarioLabel={selectedScenario.label}
+                  scenarioId={scenarioId}
                   result={displayResult}
                   point={currentPoint}
                 />
@@ -1881,7 +1891,7 @@ export default function App() {
               ) : null}
           </div>
 
-          <div className="space-y-5 xl:sticky xl:top-28 xl:self-start">
+          <div className="min-w-0 space-y-5 2xl:sticky 2xl:top-28 2xl:self-start">
               <div id="demo-governance" style={{ scrollMarginTop: "140px" }} className={demoSectionClassName("demo-governance")}>
                 <GovernancePanel world={worldConfig} worldBoundaryContext={worldBoundaryContext} />
               </div>
@@ -1922,6 +1932,23 @@ export default function App() {
                 />
               </div>
               <div>
+                <LocalNwmConsolePanel
+                  scenarioLabel={selectedScenario.label}
+                  result={displayResult}
+                  point={currentPoint}
+                  currentView={{
+                    id: "current",
+                    name: "Current View",
+                    scenarioId,
+                    role,
+                    month: safeMonth,
+                    eventId: selectedEventId,
+                    transitionId: selectedTransitionId,
+                    compareScenarioId,
+                  }}
+                />
+              </div>
+              <div>
                 <VoiceBriefPanel
                   scenarioLabel={selectedScenario.label}
                   result={displayResult}
@@ -1951,9 +1978,9 @@ export default function App() {
                   <p>Replay month: <span className="text-ink">{safeMonth}</span></p>
                   <p>Visible transitions: <span className="text-ink">{visibleTransitions.length}</span></p>
                   <p>Simulation active: <span className="text-ink">{counterfactualDraftScenario.length > 0 ? "Yes" : "No"}</span></p>
-                  <p>Narration engine: <span className="text-ink">OpenAI-enhanced</span></p>
+                  <p>Narration engine: <span className="text-ink">OpenAI voice path</span></p>
                   {role === "Executive" ? <p>Presentation mode: <span className="text-ink">{presentationMode ? "Yes" : "No"}</span></p> : null}
-                  <p>Keyboard shortcuts: <span className="text-ink">Left/Right month, G guided demo, S sandbox</span></p>
+                  <p>Keyboard shortcuts: <span className="text-ink">Left/Right month, G guided walkthrough, S sandbox</span></p>
                 </div>
                 <p className="mt-4 text-xs leading-6 text-muted">
                   AI-generated narration may add nuance, but it remains orientation support only. It must not be treated as truth adjudication, automated judgment, or a substitute for human review.

@@ -6,7 +6,9 @@
     "lib": ["ES2020", "DOM"],
     "module": "ESNext",
     "moduleResolution": "Bundler",
-    "allowSyntheticDefaultImports": true
+    "allowSyntheticDefaultImports": true,
+    "outDir": ".tsbuild/node"
   },
-  "include": ["vite.config.ts", "tailwind.config.ts"]
+  "include": ["vite.config.ts", "tailwind.config.ts", "api/**/*.ts", "src/engine/**/*.ts", "src/features/export/**/*.ts", "src/lib/**/*.ts", "src/rules/**/*.ts", "src/types.ts", "src/types/**/*.ts", "src/utils/briefingArtifacts.ts", "src/utils/briefingV2.ts"],
+  "exclude": ["**/*.test.ts"]
 }

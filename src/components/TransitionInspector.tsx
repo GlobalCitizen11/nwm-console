@@ -36,8 +36,8 @@ export function TransitionInspector({
             worldBoundaryContext={worldBoundaryContext}
             summary="The transition inspector explains why a phase change was adjudicated and which artifacts triggered it."
             currentState={`There are currently ${transitions.length} visible adjudicated transitions, and the selected transition is ${selected ? `${selected.fromPhase} to ${selected.toPhase} at month ${selected.month}` : "none"}. ${selectedRationale}`}
-            businessUse="A firm can use this section to decide whether a transition is strong enough to support escalation, reporting, or risk posture adjustment."
-            decisionGuidance="This improves decision quality by making threshold logic explicit and by giving oversight teams a concrete basis to challenge weak transitions before acting on them."
+            businessUse="This section helps clarify whether a transition is strong enough to support closer review, reporting, or a posture change."
+            decisionGuidance="Explicit threshold logic gives oversight teams a concrete basis for challenge before the transition is carried further."
             rawContext={[
               `Visible transitions: ${transitions.length}`,
               `Selected transition: ${selected ? `${selected.fromPhase} to ${selected.toPhase} at month ${selected.month}` : "none"}`,

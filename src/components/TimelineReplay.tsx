@@ -139,8 +139,8 @@ export function TimelineReplay({
             worldBoundaryContext={worldBoundaryContext}
             summary="This timeline and replay section shows how the world evolved over time and where phase transitions occurred."
             currentState={`The replay is currently positioned at month ${currentMonth} out of month ${maxMonth}. The current phase at this point is ${currentPhase}. ${latestTransition ? `The latest visible transition is ${latestTransition.fromPhase} to ${latestTransition.toPhase} at month ${latestTransition.month}.` : "No transition is yet visible at this point in the replay."}`}
-            businessUse="A firm can use replay to understand sequence, persistence, and turning points instead of reacting to isolated artifacts."
-            decisionGuidance="This helps distinguish an early weak signal from a persistent structural change that may justify escalation, reporting, or deeper review."
+            businessUse="Replay makes sequence, persistence, and turning points easier to distinguish than a static snapshot."
+            decisionGuidance="It helps separate an early signal from a structural change that may warrant deeper review."
             rawContext={[
               `Current month: ${currentMonth}`,
               `Maximum month: ${maxMonth}`,

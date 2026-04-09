@@ -66,8 +66,8 @@ export function NarrativeWorldMap({
             worldBoundaryContext={worldBoundaryContext}
             summary="The narrative world map shows how events cluster and influence one another structurally."
             currentState={`The map is currently showing ${filteredEvents.length} nodes and ${links.length} structural links. The active phase filter is ${phaseFilter} and the active domain filter is ${domainFilter}. The selected node is ${selectedNode?.event.title ?? "none"}. ${hovered ? `The hovered node is ${hovered.event.title}.` : "No node is currently being hovered."}`}
-            businessUse="A firm can use this section to identify concentration points, recurring domains, and where pressure is spreading through the environment."
-            decisionGuidance="This supports better decisions about which issue clusters deserve earlier review, targeted monitoring, or governance attention."
+            businessUse="This section helps locate concentration points, recurring domains, and where pressure is spreading through the environment."
+            decisionGuidance="It helps show which clusters may deserve closer monitoring or governance attention."
             rawContext={[
               `Node count: ${filteredEvents.length}`,
               `Link count: ${links.length}`,

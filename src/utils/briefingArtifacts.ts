@@ -7,6 +7,8 @@ import type {
   PresentationBriefSlide,
   TransitionRecord,
 } from "../types";
+import { getFrameworkDisplayLabel, SYSTEM_DISPLAY_LABELS, SYSTEM_LABELS } from "../lib/systemLabels";
+import { buildBriefingStateV2 } from "./briefingV2";
 
 const sourceLabel: Record<NarrativeEvent["sourceType"], string> = {
   policy: "policy",
@@ -272,6 +274,251 @@ const buildVisibilityNeeds = (recentEvents: NarrativeEvent[], transitions: Trans
     3,
   );
 
+const normalizeTag = (tag: string) => tag.replace(/-/g, " ").trim();
+
+const buildExecutiveBriefGate = ({
+  rawState,
+  visibleEvents,
+  recentEvents,
+  earlySignals,
+  systemicUptake,
+  signalAnchors,
+  topDomains,
+  density,
+  momentum,
+  reversibility,
+}: {
+  rawState: BriefingRawState;
+  visibleEvents: NarrativeEvent[];
+  recentEvents: NarrativeEvent[];
+  earlySignals: string[];
+  systemicUptake: string[];
+  signalAnchors: string[];
+  topDomains: string[];
+  density: BriefingState["narrativeDensity"];
+  momentum: BriefingState["structuralMomentum"];
+  reversibility: BriefingState["reversibility"];
+}): BriefingState["executiveBriefGate"] => {
+  const { result, point, currentView } = rawState;
+  const sourceClasses = result.world.sourceClasses ?? [];
+  const activeMonths = unique(visibleEvents.map((event) => `M${event.month}`));
+  const sourceCoverage = new Set(visibleEvents.map((event) => event.sourceType)).size;
+  const visibleTransitions = result.transitions.filter((transition) => transition.month <= point.month);
+  const visibleProofs = visibleTransitions.map((transition) => transition.proof);
+  const dominantNarratives = take(topDomains.map(normalizeTag), 2);
+  const competingNarratives = take(
+    unique([
+      ...pickTopDomains(visibleEvents).slice(2).map(normalizeTag),
+      ...visibleEvents.map((event) => normalizeTag(event.sourceType)),
+    ]).filter((item) => !dominantNarratives.includes(item)),
+    2,
+  );
+  const motifCounts = new Map<string, number>();
+  for (const event of visibleEvents) {
+    for (const motif of unique([normalizeTag(event.sourceType), ...event.domainTags.map(normalizeTag)])) {
+      motifCounts.set(motif, (motifCounts.get(motif) ?? 0) + 1);
+    }
+  }
+  const repeatedMotifs = Array.from(motifCounts.entries())
+    .filter(([, count]) => count >= 2)
+    .sort((left, right) => right[1] - left[1] || left[0].localeCompare(right[0]))
+    .map(([motif]) => motif);
+  const synchronized = sourceCoverage >= 3 || visibleTransitions.length >= 2;
+  const boundaryDefinition: BriefingState["executiveBriefGate"]["boundaryDefinition"] = {
+    includedEntities: take(
+      unique([
+        result.world.name,
+        result.world.domain,
+        ...dominantNarratives,
+        ...repeatedMotifs.slice(0, 2),
+      ]),
+      5,
+    ),
+    excludedEntities: take(
+      unique([
+        `Activity outside ${result.world.geography}`,
+        `Artifacts outside permitted source classes (${joinList(sourceClasses) || "defined source classes"})`,
+        "Inputs that do not materially alter structural pressure inside the bounded world",
+      ]),
+      3,
+    ),
+    temporalWindow: {
+      start: "M0",
+      end: `M${result.world.timeHorizonMonths}`,
+      resolution: "Monthly" as const,
+      current: `M${point.month}`,
+    },
+    spatialDomain: result.world.geography,
+    platformDomain: `${result.world.domain} inside ${result.world.name}`,
+    artifactInclusionCriteria: [
+      `Source classes limited to ${joinList(sourceClasses) || "defined source classes"}`,
+      "Artifacts must visibly alter velocity, density, coherence, or reversibility",
+      `Signals must remain inside ${result.world.geography} or materially transmit into the bounded world`,
+    ],
+  };
+  const proofTrace: BriefingState["executiveBriefGate"]["proofTrace"] = {
+    visibleArtifactIds: take(visibleEvents.map((event) => event.id), 6),
+    transitionIds: visibleTransitions.map((transition) => transition.id),
+    proofIds: visibleProofs.map((proof) => proof.proofId),
+    ruleVersions: unique(visibleTransitions.map((transition) => transition.ruleVersion)),
+    challengeStates: unique(visibleProofs.map((proof) => proof.challengeStatus)) as BriefingState["executiveBriefGate"]["proofTrace"]["challengeStates"],
+    reviewStates: unique(visibleProofs.map((proof) => proof.oversight.reviewState)) as BriefingState["executiveBriefGate"]["proofTrace"]["reviewStates"],
+  };
+  const boundaryDefined = Boolean(
+    result.world.domain &&
+      result.world.geography &&
+      result.world.timeHorizonMonths > 0 &&
+      result.world.boundedDescription &&
+      sourceClasses.length > 0 &&
+      boundaryDefinition.includedEntities.length > 0 &&
+      boundaryDefinition.excludedEntities.length > 0,
+  );
+  const structuralMemoryPresent =
+    activeMonths.length >= 4 &&
+    earlySignals.length > 0 &&
+    systemicUptake.length > 0 &&
+    repeatedMotifs.length > 0;
+  const stateVectorComplete =
+    Boolean(point.phase) &&
+    dominantNarratives.length > 0 &&
+    competingNarratives.length > 0 &&
+    Boolean(density) &&
+    Boolean(momentum) &&
+    synchronized;
+  const phaseAdjudicated =
+    Boolean(point.phase) &&
+    visibleTransitions.length > 0 &&
+    visibleTransitions.every((transition) => Boolean(transition.ruleVersion) && Boolean(transition.proof?.proofId));
+  const momentumResolved = point.month > 0 && recentEvents.length > 0 && point.metrics.coherence > 0;
+  const densitySufficient = point.metrics.density >= 35 && visibleEvents.length >= 4 && sourceCoverage >= 2;
+  const reversibilityClassified = Boolean(reversibility);
+  const proofObjectSufficient =
+    visibleTransitions.length > 0 &&
+    signalAnchors.length >= 3 &&
+    visibleProofs.length === visibleTransitions.length &&
+    visibleTransitions.every(
+      (transition) =>
+        transition.triggeringArtifacts.length > 0 &&
+        transition.proof.evidenceHashes.length > 0 &&
+        transition.proof.relationshipEvidence.length > 0 &&
+        transition.proof.thresholdConditions.length > 0,
+    );
+  const haloIntegrity =
+    currentView.role === "Executive" &&
+    currentView.compareScenarioId === null &&
+    currentView.eventId === null &&
+    currentView.transitionId === null;
+  const categorySeparated = currentView.role === "Executive" && currentView.compareScenarioId === null;
+
+  const checks: BriefingState["executiveBriefGate"]["checks"] = [
+    {
+      id: "narrative-world-boundary",
+      label: "Narrative world bounded",
+      passed: boundaryDefined,
+      detail: `Included entities are ${joinList(boundaryDefinition.includedEntities) || "the bounded world"}, excluded entities are ${joinList(boundaryDefinition.excludedEntities) || "not yet explicit"}, and artifacts remain limited to ${joinList(sourceClasses) || "defined source classes"} inside ${result.world.geography}.`,
+      failureMode: "No stable world. Output collapses into loose summaries.",
+    },
+    {
+      id: "structural-memory",
+      label: "Structural memory present",
+      passed: structuralMemoryPresent,
+      detail: `Longitudinal memory spans ${activeMonths[0] ?? "M0"} through ${activeMonths[activeMonths.length - 1] ?? `M${point.month}`}, preserving repeated motifs across ${joinList(repeatedMotifs.slice(0, 3)) || "the active boundary"}.`,
+      failureMode: "No hysteresis. Output lacks depth.",
+    },
+    {
+      id: "state-vector-completeness",
+      label: "State vector complete",
+      passed: stateVectorComplete,
+      detail: `Dominant narratives center on ${joinList(dominantNarratives) || "the current narrative cluster"}, while competing narratives remain ${joinList(competingNarratives) || "not yet separable"}. Synchronization is ${synchronized ? "detectable" : "still fragmented"}.`,
+      failureMode: "Fragmented topics replace a unified state vector.",
+    },
+    {
+      id: "phase-adjudication",
+      label: "Phase adjudicated",
+      passed: phaseAdjudicated,
+      detail: `The ${SYSTEM_LABELS.PAL} currently resolves the world as ${point.phase} through ${visibleTransitions.length} visible adjudicated transition${visibleTransitions.length === 1 ? "" : "s"} under ${joinList(proofTrace.ruleVersions) || "the active rule set"}.`,
+      failureMode: "No phase. No valid executive brief.",
+    },
+    {
+      id: "structural-momentum",
+      label: "Structural momentum resolved",
+      passed: momentumResolved,
+      detail: `Momentum is classified as ${momentum}, allowing the read to distinguish reinforcement from dissipation across recent intervals.`,
+      failureMode: "State cannot be separated from transition.",
+    },
+    {
+      id: "density-threshold",
+      label: "Density threshold met",
+      passed: densitySufficient,
+      detail: `Signal concentration is ${density} at ${point.metrics.density.toFixed(0)} density across ${visibleEvents.length} visible artifact${visibleEvents.length === 1 ? "" : "s"}.`,
+      failureMode: "Signal concentration remains too thin for industrial-grade output.",
+    },
+    {
+      id: "reversibility-classification",
+      label: "Reversibility classified",
+      passed: reversibilityClassified,
+      detail: `The system is classified as ${reversibility}, encoding whether the present condition remains elastic or locked in.`,
+      failureMode: "Constraint encoding stays shallow without reversibility classification.",
+    },
+    {
+      id: "proof-object-sufficiency",
+      label: "Proof objects sufficient",
+      passed: proofObjectSufficient,
+      detail: `Traceability currently links artifact IDs ${joinList(proofTrace.visibleArtifactIds) || "none"} through transition IDs ${joinList(proofTrace.transitionIds) || "none"} into proof IDs ${joinList(proofTrace.proofIds) || "none"}.`,
+      failureMode: "Claims are not yet traceable from input to state to output.",
+    },
+    {
+      id: "halo-orientation-integrity",
+      label: `${SYSTEM_LABELS.HALO} preserved`,
+      passed: haloIntegrity,
+      detail:
+        haloIntegrity
+          ? "The current view is Executive-only with no event, transition, or compare focus, so the artifact can stay restricted to state, phase, density, momentum, reversibility, and proof-object traceability."
+          : `The current view carries event, transition, compare, or non-executive context, so ${SYSTEM_LABELS.HALO} integrity cannot be guaranteed.`,
+      failureMode: "Orientation contains prohibited predictive or prescriptive content.",
+    },
+    {
+      id: "category-separation",
+      label: "Category separation maintained",
+      passed: categorySeparated,
+      detail:
+        categorySeparated
+          ? "The artifact is being generated from Executive view without a compare context, preserving separation between orientation and simulation workflows."
+          : `The artifact is being generated from ${currentView.role} view or a compare context, which mixes executive orientation with non-orientation workflows.`,
+      failureMode: "Orientation is mixed with simulation or non-executive modes.",
+    },
+  ];
+
+  return {
+    mode: "Orientation",
+    framework: "HALO + PAL",
+    validity: checks.every((check) => check.passed) ? "Structurally Valid" : "Structurally Incomplete",
+    boundaryDefinition,
+    boundarySummary: `Included entities: ${joinList(boundaryDefinition.includedEntities) || "the bounded world"}. Excluded entities: ${joinList(boundaryDefinition.excludedEntities) || "not yet explicit"}.`,
+    temporalWindowSummary: `Temporal window: ${boundaryDefinition.temporalWindow.start} to ${boundaryDefinition.temporalWindow.end} at ${boundaryDefinition.temporalWindow.resolution.toLowerCase()} resolution. Current read is taken from ${boundaryDefinition.temporalWindow.current}.`,
+    platformDomainSummary: `Platform domain remains ${boundaryDefinition.platformDomain}, spatial domain remains ${boundaryDefinition.spatialDomain}, and governance mode is ${result.world.governanceMode}.`,
+    artifactCriteriaSummary: `Artifact inclusion requires ${joinList(boundaryDefinition.artifactInclusionCriteria)}.`,
+    dominantNarratives,
+    competingNarratives,
+    synchronizationSummary: synchronized
+      ? `Synchronization is detectable across ${sourceCoverage} source classes and ${visibleTransitions.length} visible adjudicated transition${visibleTransitions.length === 1 ? "" : "s"} under the ${SYSTEM_LABELS.PAL}.`
+      : `Synchronization remains partial, with pressure still concentrated in a narrower set of source classes.`,
+    proofTrace,
+    proofTraceSummary: `Traceability spans artifact IDs ${joinList(proofTrace.visibleArtifactIds) || "none"}, transition IDs ${joinList(proofTrace.transitionIds) || "none"}, and proof IDs ${joinList(proofTrace.proofIds) || "none"} under ${joinList(proofTrace.ruleVersions) || "the active rule set"}. Review states are ${joinList(proofTrace.reviewStates) || "unknown"} and challenge states are ${joinList(proofTrace.challengeStates) || "unknown"}.`,
+    traceabilityMarkers: take(
+      [
+        `Artifacts: ${joinList(proofTrace.visibleArtifactIds) || "none"}`,
+        `Transitions: ${joinList(proofTrace.transitionIds) || "none"}`,
+        `Proofs: ${joinList(proofTrace.proofIds) || "none"}`,
+        `Rule versions: ${joinList(proofTrace.ruleVersions) || "none"}`,
+      ],
+      4,
+    ),
+    unmetRequirements: checks.filter((check) => !check.passed).map((check) => check.label),
+    checks,
+  };
+};
+
 export function extractBriefingState(rawState: BriefingRawState): BriefingState {
   const { scenarioName, result, point } = rawState;
   const visibleEvents = [...point.visibleEvents].sort((left, right) => left.month - right.month || left.title.localeCompare(right.title));
@@ -294,11 +541,24 @@ export function extractBriefingState(rawState: BriefingRawState): BriefingState 
   const signalAnchors = selectSignalAnchors(visibleEvents, result.transitions, point.month);
   const crossDomainEffects = describeCrossDomainEffects(recentEvents.length > 0 ? recentEvents : visibleEvents, topDomains);
   const stabilitySignals = describeStabilitySignals(visibleEvents, recentEvents, reversibility);
+  const executiveBriefGate = buildExecutiveBriefGate({
+    rawState,
+    visibleEvents,
+    recentEvents,
+    earlySignals,
+    systemicUptake,
+    signalAnchors,
+    topDomains,
+    density,
+    momentum,
+    reversibility,
+  });
+  const sourceClasses = result.world.sourceClasses ?? [];
 
   return {
     scenarioName,
     boundedWorld: result.world.name,
-    boundaryDefinition: `Inside the world: ${result.world.domain} across ${result.world.geography}. Excluded unless activated: activity outside this boundary that does not materially alter structural pressure inside it.`,
+    boundaryDefinition: `Included entities: ${joinList(executiveBriefGate.boundaryDefinition.includedEntities) || result.world.name}. Excluded entities: ${joinList(executiveBriefGate.boundaryDefinition.excludedEntities) || "none specified"}. Temporal window: ${executiveBriefGate.boundaryDefinition.temporalWindow.start} to ${executiveBriefGate.boundaryDefinition.temporalWindow.end} at ${executiveBriefGate.boundaryDefinition.temporalWindow.resolution.toLowerCase()} resolution. Artifact inclusion: ${joinList(executiveBriefGate.boundaryDefinition.artifactInclusionCriteria) || joinList(sourceClasses) || "defined source classes"}.`,
     asOf: `Replay month M${point.month} of ${result.world.timeHorizonMonths}`,
     phase: point.phase,
     narrativeDensity: density,
@@ -319,6 +579,8 @@ export function extractBriefingState(rawState: BriefingRawState): BriefingState 
     priorities: buildPriorities(topDomains, signalAnchors),
     sensitivities: buildSensitivities(momentum, reversibility, recentEvents),
     visibilityNeeds: buildVisibilityNeeds(recentEvents, result.transitions, point.month),
+    executiveBriefGate,
+    v2: buildBriefingStateV2(rawState),
   };
 }
 
@@ -332,61 +594,77 @@ const formatSystemStateBlock = (state: BriefingState) =>
   ];
 
 export function composeExecutiveBrief(state: BriefingState) {
-  // Build the first paragraph around the current condition and the latest structural shift.
-  const overviewParagraphOne = `${state.currentCondition} ${state.structuralShift}`;
-  // Build the second paragraph around operational meaning rather than restating the model fields.
-  const overviewParagraphTwo = `Operationally, the visible pattern is carrying pressure through ${joinList(state.pressurePoints.slice(0, 2))}, which means the world readout is being shaped by structural uptake rather than isolated noise.`;
-
-  const developmentParagraphs = [
-    `Early signals formed through ${joinList(state.earlySignals) || "a still-forming signal set"}, establishing the first observable break from baseline conditions.`,
-    `Systemic uptake followed through ${joinList(state.systemicUptake.slice(0, 3)) || "a limited set of institutional and legal developments"}, which moved the world from early formation into broader structural recognition.`,
-    `The current condition is now being carried by ${joinList(state.latestDevelopments.slice(0, 3)) || "the latest visible developments"}, which are the most immediate anchors for the present phase readout.`,
+  const gate = state.executiveBriefGate;
+  const unmetConditions = gate.unmetRequirements.length > 0 ? gate.unmetRequirements : ["Structural state integrity remains incomplete"];
+  const proofTraceLine = `Proof trace: transitions ${joinList(gate.proofTrace.transitionIds) || "none"}; proofs ${joinList(gate.proofTrace.proofIds) || "none"}; rule versions ${joinList(gate.proofTrace.ruleVersions) || "none"}.`;
+  const boundaryLines = [
+    `Included entities: ${joinList(gate.boundaryDefinition.includedEntities) || "the bounded world"}.`,
+    `Excluded entities: ${joinList(gate.boundaryDefinition.excludedEntities) || "none specified"}.`,
+    `Temporal window: ${gate.boundaryDefinition.temporalWindow.start} to ${gate.boundaryDefinition.temporalWindow.end} at ${gate.boundaryDefinition.temporalWindow.resolution.toLowerCase()} resolution; current read ${gate.boundaryDefinition.temporalWindow.current}.`,
+    `Artifact inclusion criteria: ${joinList(gate.boundaryDefinition.artifactInclusionCriteria) || "not specified"}.`,
   ];
 
-  const structuralInterpretation = [
-    `The structural meaning is not only that pressure is present, but that it is now being transmitted across the boundary in a way that aligns multiple source classes rather than remaining trapped in a single narrative lane.`,
-    `Cross-domain interaction is currently visible through ${joinList(state.crossDomainEffects.slice(0, 2))}, which is why the present phase carries more institutional weight than an early-stage signal cluster would.`,
-  ];
-
-  const strategicPositioning = [
-    `Current positioning centers on ${joinList(state.priorities)}.`,
-    `The state is most sensitive to ${joinList(state.sensitivities)}, while visibility needs remain concentrated on ${joinList(state.visibilityNeeds)}.`,
-  ];
+  if (gate.validity !== "Structurally Valid") {
+    return [
+      "EXECUTIVE BRIEF WITHHELD",
+      `Scenario Name: ${state.scenarioName}`,
+      `Bounded World: ${state.boundedWorld}`,
+      `Mode: ${gate.mode} (${getFrameworkDisplayLabel(gate.framework)})`,
+      `Validity: ${gate.validity}`,
+      "",
+      "UNMET CONDITIONS",
+      ...unmetConditions.map((item) => `- ${item}`),
+      "",
+      "BOUNDARY",
+      ...boundaryLines,
+      "",
+      "PROOF OBJECT TRACEABILITY",
+      gate.proofTraceSummary,
+      proofTraceLine,
+    ].join("\n");
+  }
 
   return [
     "EXECUTIVE BRIEF",
     `Scenario Name: ${state.scenarioName}`,
     `Bounded World: ${state.boundedWorld}`,
-    `Boundary Definition: ${state.boundaryDefinition}`,
+    `Mode: ${gate.mode} (${getFrameworkDisplayLabel(gate.framework)})`,
+    `Validity: ${gate.validity}`,
     `As of: ${state.asOf}`,
     `Phase: ${state.phase}`,
     "",
     "SYSTEM STATE",
     ...formatSystemStateBlock(state),
     "",
-    "1. System State Overview",
-    overviewParagraphOne,
+    "1. Narrative World Boundary",
+    ...boundaryLines,
     "",
-    overviewParagraphTwo,
+    "2. Structural Memory",
+    `Early signals: ${joinList(state.earlySignals) || "No early signals retained"}.`,
     "",
-    "2. Narrative Development",
-    ...developmentParagraphs.flatMap((paragraph) => [paragraph, ""]),
-    "3. Structural Interpretation",
-    ...structuralInterpretation.flatMap((paragraph) => [paragraph, ""]),
-    "4. Forward Orientation",
-    state.primaryPath,
+    `Systemic uptake: ${joinList(state.systemicUptake.slice(0, 3)) || "No systemic uptake retained"}.`,
     "",
-    ...state.alternatePaths.flatMap((paragraph) => [paragraph, ""]),
-    "5. Strategic Positioning",
-    ...strategicPositioning.flatMap((paragraph) => [paragraph, ""]),
-    "6. Signal Basis",
+    `Accumulation remains visible through ${joinList(state.latestDevelopments.slice(0, 3)) || "the latest developments"}. ${gate.synchronizationSummary}`,
+    "",
+    `3. ${SYSTEM_LABELS.PAL}`,
+    `${state.currentCondition} ${state.structuralShift}`,
+    "",
+    `Current state is ${state.phase} with ${state.narrativeDensity} density, ${state.structuralMomentum} momentum, and ${state.reversibility} reversibility.`,
+    "",
+    `4. ${SYSTEM_DISPLAY_LABELS.interpretationLayerIntegrity}`,
+    "This artifact remains restricted to state, phase, density, momentum, reversibility, and proof-object traceability.",
+    "",
+    gate.checks.find((check) => check.id === "halo-orientation-integrity")?.detail ?? `${SYSTEM_LABELS.HALO} integrity is preserved.`,
+    "",
+    gate.checks.find((check) => check.id === "category-separation")?.detail ?? "Category separation is maintained.",
+    "",
+    "5. Proof Object Traceability",
+    gate.proofTraceSummary,
+    "",
+    proofTraceLine,
+    "",
+    "6. Evidence Base",
     ...state.signalAnchors.map((anchor) => `- ${anchor}`),
-    "",
-    "7. Cross-Domain Effects",
-    ...state.crossDomainEffects.map((effect) => `- ${effect}`),
-    "",
-    "8. Stability / Containment Signals",
-    ...state.stabilitySignals.map((signal) => `- ${signal}`),
   ].join("\n");
 }
 

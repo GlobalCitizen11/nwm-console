@@ -2,28 +2,28 @@ import type { BoardOnePagerContent } from "../../types/export";
 import { ExportPage } from "../primitives/ExportPage";
 import { BoardDecisionBox } from "./BoardDecisionBox";
 import { BoardEvidenceStrip } from "./BoardEvidenceStrip";
-import { PressureBar } from "../primitives/PressureBar";
 import { SignalCard } from "../primitives/SignalCard";
 import { StatusChip } from "../primitives/StatusChip";
+import { getAdjudicationStatusDisplay, getPhaseResolutionReasonDisplay, SYSTEM_LABELS } from "../../../../lib/systemLabels";
+
+const metricValue = (value: number) => value.toFixed(1);
 
 export function BoardOnePagerDocument({ content }: { content: BoardOnePagerContent }) {
-  const pressureScore = 84;
-  const pressureLevel = pressureScore >= 75 ? "Critical" : pressureScore >= 55 ? "Elevated" : "Managed";
-  const [firstRisk, secondRisk, thirdRisk] = content.riskConcentrations;
-  const [firstTrigger, secondTrigger, thirdTrigger] = content.monitoringTriggers;
-  const [coordinationSignal, allocationSignal, infrastructureSignal] = content.signalGrid;
-  const headerStats = content.systemStrip.slice(0, 3);
-  const keySignalRows = [coordinationSignal, allocationSignal, infrastructureSignal]
-    .filter(Boolean)
-    .slice(0, 3)
-    .map((signal) => `${signal.label}: ${signal.implication}`);
+  const { phaseResolution, proofSummary, stateVector } = content.v2;
+  const adjudicationStatus = getAdjudicationStatusDisplay(phaseResolution.adjudicationStatus);
+  const adjudicationReason = getPhaseResolutionReasonDisplay(phaseResolution.rationale);
+  const [firstDriver, secondDriver, thirdDriver] = content.v2.keyDrivers;
+  const [firstImplication, secondImplication, thirdImplication] = content.v2.immediateImplications;
+  const [firstWatch, secondWatch, thirdWatch] = content.v2.whatToWatch;
+  const thresholdLead =
+    phaseResolution.thresholdConditions[0] ?? "Threshold conditions remain visible in the linked proof scaffold.";
 
   return (
     <ExportPage
       metadata={{
         scenarioName: content.title,
         boundedWorld: content.boundedWorld,
-        phase: content.systemStrip[0]?.value ?? "Unknown",
+        phase: phaseResolution.phase,
         asOf: content.replayMonth,
         generatedAt: content.timestamp,
         confidentiality: content.confidentialityLabel,
@@ -39,31 +39,37 @@ export function BoardOnePagerDocument({ content }: { content: BoardOnePagerConte
             <StatusChip label="Scenario" value={content.title} className="board-authority-chip" />
             <StatusChip label="Artifact" value="Board One-Pager" className="board-authority-chip" />
             <StatusChip label="Replay Month" value={content.replayMonth} className="board-authority-chip" />
-            <div className="board-authority-pressure-chip">
-              <StatusChip label="Pressure" value={pressureLevel} tone={pressureLevel === "Critical" ? "warning" : "accent"} className="board-authority-chip" />
-              <div className="board-authority-pressure-track" aria-hidden="true">
-                <div className={`board-authority-pressure-fill board-authority-pressure-fill--${pressureLevel.toLowerCase()}`.trim()} />
-              </div>
-            </div>
+            <StatusChip label={SYSTEM_LABELS.PAL} value={adjudicationStatus} tone="accent" className="board-authority-chip" />
           </div>
           <header className="board-authority-band">
             <div className="board-authority-copy board-hero-panel">
-              <p className="board-kicker">Console briefing surface</p>
-              <h1>{content.boardRead[0]}</h1>
-              <p className="board-authority-summary">{content.boardRead[1]}</p>
+              <p className="board-kicker">Threshold readout</p>
+              <h1>{content.v2.currentState}</h1>
+              <p className="board-authority-summary">{content.v2.structuralReality}</p>
             </div>
             <div className="board-authority-meta">
               <div className="board-authority-side-card">
-                <p className="board-authority-side-label">System posture</p>
-                <div className="board-authority-side-value">{content.topInterpretation}</div>
+                <p className="board-authority-side-label">Phase status</p>
+                <div className="board-authority-side-value">{phaseResolution.phase}</div>
+                <p className="mt-2 text-sm text-muted">{content.v2.adjudicationStatus}</p>
               </div>
               <div className="board-authority-state-stack">
-                {headerStats.map((item) => (
-                  <div key={`${item.label}-${item.value}`} className="board-authority-state-cell">
-                    <span className="board-authority-state-label">{item.label}</span>
-                    <strong className="board-authority-state-value">{item.value}</strong>
-                  </div>
-                ))}
+                <div className="board-authority-state-cell">
+                  <span className="board-authority-state-label">Velocity</span>
+                  <strong className="board-authority-state-value">{metricValue(stateVector.velocity)}</strong>
+                </div>
+                <div className="board-authority-state-cell">
+                  <span className="board-authority-state-label">Density</span>
+                  <strong className="board-authority-state-value">{metricValue(stateVector.density)}</strong>
+                </div>
+                <div className="board-authority-state-cell">
+                  <span className="board-authority-state-label">Coherence</span>
+                  <strong className="board-authority-state-value">{metricValue(stateVector.coherence)}</strong>
+                </div>
+                <div className="board-authority-state-cell">
+                  <span className="board-authority-state-label">Reversibility</span>
+                  <strong className="board-authority-state-value">{metricValue(stateVector.reversibility)}</strong>
+                </div>
               </div>
             </div>
           </header>
@@ -73,100 +79,104 @@ export function BoardOnePagerDocument({ content }: { content: BoardOnePagerConte
           <div className="board-signal-column board-signal-column--strategy board-lane-shell">
             <div className="board-signal-lane-header">
               <span className="board-signal-lane-index">01</span>
-              <span className="board-signal-lane-label">System Path</span>
-              <strong className="board-signal-lane-value">Base case and capital direction</strong>
+              <span className="board-signal-lane-label">System State</span>
+              <strong className="board-signal-lane-value">Current read and explicit variables</strong>
             </div>
             <SignalCard
-              title="Dominant path"
-              strength="Base case"
-              insight={content.dominantPath}
-              implication="Globally exposed logistics assets now lose pricing power."
+              title="Current state"
+              strength={phaseResolution.phase}
+              insight={content.v2.currentState}
+              implication={content.v2.structuralReality}
               tag="confirmation"
               className="board-signal-cell board-signal-cell--critical"
             />
             <SignalCard
-              title="Primary pressure"
-              strength={pressureLevel}
-              insight={content.primaryPressure}
-              implication="Regulatory alignment now determines asset attractiveness."
-              tag="risk"
-              className="board-signal-cell board-signal-cell--critical"
+              title="State vector"
+              strength={`Confidence ${metricValue(stateVector.confidence)}`}
+              insight={`Velocity ${metricValue(stateVector.velocity)} | Density ${metricValue(stateVector.density)}`}
+              implication={`Coherence ${metricValue(stateVector.coherence)} | Reversibility ${metricValue(stateVector.reversibility)}`}
+              tag="confirmation"
+              className="board-signal-cell"
             />
             <SignalCard
-              title="Fragmentation pressure"
-              strength={`${pressureScore}/100`}
-              insight="Pressure is moving from friction into asset repricing and execution loss."
-              implication="Capital now moves first toward insulated regional systems."
-              tag="risk"
-              className="board-signal-cell board-signal-cell--pressure-bar"
-            >
-              <PressureBar label="Fragmentation Pressure" value={pressureScore} className="board-pressure-bar" />
-            </SignalCard>
+              title={`${SYSTEM_LABELS.PAL} status`}
+              strength={adjudicationStatus}
+              insight={adjudicationReason}
+              implication={thresholdLead}
+              tag="shift"
+              className="board-signal-cell"
+            />
           </div>
 
           <div className="board-signal-column board-signal-column--risk board-lane-shell">
             <div className="board-signal-lane-header">
               <span className="board-signal-lane-index">02</span>
-              <span className="board-signal-lane-label">Risk Field</span>
-              <strong className="board-signal-lane-value">Downside concentration and inflection</strong>
+              <span className="board-signal-lane-label">Structural Drivers</span>
+              <strong className="board-signal-lane-value">Why the current read resolves this way</strong>
             </div>
             <SignalCard
-              title="Risk concentration"
-              strength="Concentrated"
-              insight={firstRisk ?? "Cross-border logistics face cost volatility risk."}
-              implication={secondRisk ?? "Policy friction raises margin risk in exposed networks."}
+              title="Key drivers"
+              strength="Traceable"
+              insight={firstDriver ?? "Driver concentration remains visible in the artifact set."}
+              implication={secondDriver ?? content.v2.traceabilitySummary}
+              tag="confirmation"
+              className="board-signal-cell"
+            >
+              {thirdDriver ? <div className="board-signal-mini-row">{thirdDriver}</div> : null}
+            </SignalCard>
+            <SignalCard
+              title="Immediate implications"
+              strength="Current surface"
+              insight={firstImplication ?? "Immediate implications remain tied to the visible state."}
+              implication={secondImplication ?? proofSummary}
               tag="risk"
               className="board-signal-cell"
             >
-              {thirdRisk ? <div className="board-signal-mini-row">{thirdRisk}</div> : null}
-            </SignalCard>
-            <SignalCard
-              title="Inflection paths"
-              strength="Watch next"
-              insight={content.nextChangeSignals[0] ?? "Policy enforcement accelerates. Capital reprices domestic infrastructure."}
-              implication={content.nextChangeSignals[1] ?? "Trade normalization would restore global efficiency first."}
-              tag="shift"
-              className="board-signal-cell"
-            >
-              {content.nextChangeSignals[2] ? <div className="board-signal-mini-row">{content.nextChangeSignals[2]}</div> : null}
+              {thirdImplication ? <div className="board-signal-mini-row">{thirdImplication}</div> : null}
             </SignalCard>
           </div>
 
           <div className="board-signal-column board-signal-column--signals board-lane-shell">
             <div className="board-signal-lane-header">
               <span className="board-signal-lane-index">03</span>
-              <span className="board-signal-lane-label">Signal Watch</span>
-              <strong className="board-signal-lane-value">Live moves and hard triggers</strong>
+              <span className="board-signal-lane-label">Sensitivity</span>
+              <strong className="board-signal-lane-value">What to watch without collapsing into projection</strong>
             </div>
             <SignalCard
-              title="Key signals"
-              strength="Live"
-              insight={keySignalRows[0] ?? "Capital is concentrating where sovereign alignment is strongest."}
-              implication={keySignalRows[1] ?? "Long-duration capital exits globally exposed assets."}
-              tag="confirmation"
-              className="board-signal-cell"
-            >
-              {keySignalRows[2] ? <div className="board-signal-mini-row">{keySignalRows[2]}</div> : null}
-            </SignalCard>
-            <SignalCard
-              title="Triggers"
-              strength="State shifts"
-              insight={firstTrigger ?? "If export controls extend downstream, optionality narrows."}
-              implication={secondTrigger ?? "If regional mandates accelerate, domestic repricing deepens."}
+              title="What to watch"
+              strength="Pre-GCS"
+              insight={firstWatch ?? "Sensitivity remains bounded to the visible artifact mix."}
+              implication={secondWatch ?? "Counterweight conditions remain visible, not simulated."}
               tag="shift"
               className="board-signal-cell"
             >
-              {thirdTrigger ? <div className="board-signal-mini-row">{thirdTrigger}</div> : null}
+              {thirdWatch ? <div className="board-signal-mini-row">{thirdWatch}</div> : null}
             </SignalCard>
+            <SignalCard
+              title="Traceability"
+              strength="Audit-visible"
+              insight={content.v2.traceabilitySummary}
+              implication={proofSummary}
+              tag="confirmation"
+              className="board-signal-cell"
+            />
           </div>
         </section>
 
         <section className="board-bottom-band board-console-panel">
-          <BoardDecisionBox headline={content.decisionHeadline} summaryLines={[content.topInterpretation]} bullets={content.decisionBullets} />
+          <BoardDecisionBox
+            headline="Proof and traceability"
+            summaryLines={[content.v2.adjudicationStatus]}
+            bullets={[
+              proofSummary,
+              thresholdLead,
+              "Pre-GCS sensitivity is diagnostic only and remains separate from projection and sandbox mutation.",
+            ]}
+          />
         </section>
 
         <section className="board-evidence-tape board-console-panel" aria-label="Evidence strip">
-          <div className="board-evidence-kicker">Live evidence feed</div>
+          <div className="board-evidence-kicker">Artifact traceability</div>
           <BoardEvidenceStrip items={content.evidenceAnchors} />
         </section>
       </div>

@@ -145,10 +145,10 @@ export function VoiceBriefPanel({
     <section className="surface-panel">
       <div className="flex items-start justify-between gap-4">
         <div>
-          <p className="section-kicker">Voice Brief</p>
-          <h2 className="section-title">Real-time voice-to-brief readout</h2>
+          <p className="section-kicker">Voice Readout</p>
+          <h2 className="section-title">Live voice readout</h2>
           <p className="mt-2 text-sm text-muted">
-            Speak in full sentences. The console captures transcript input, normalizes it into structured intelligence, and shows the live readout without passing raw transcript into artifacts.
+            Speak in full sentences. The console turns the live transcript into a structured readout while keeping raw transcript out of exported artifacts.
           </p>
         </div>
         <div className="surface-panel-subtle min-w-[220px] text-sm text-muted">

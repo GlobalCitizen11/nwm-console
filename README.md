@@ -6,7 +6,7 @@ NWM Console is a deterministic MVP for Narrative World Modeling. It is a governa
 
 - Bound a Narrative World with explicit geography, domain, horizon, and governance posture.
 - Replay seeded artifacts across an 18-month geopolitical capital fragmentation scenario.
-- Show structural metric evolution, HALO orientation, adjudicated phase transitions, and attached proof objects.
+- Show structural metric evolution through the Interpretation Layer, the Adjudication Layer, and the Simulation Engine.
 - Support bounded counterfactual simulation without making predictive or prescriptive claims.
 
 ## Run
@@ -15,6 +15,10 @@ NWM Console is a deterministic MVP for Narrative World Modeling. It is a governa
 npm install
 npm run dev
 ```
+
+The console is available from both `http://localhost:5173/` and `http://localhost:5173/nwm-console` when you use the default Vite dev port. The `/nwm-console` path also keeps export preview routes under the same alias.
+
+Brief URL ingest now supports direct webpages as well as documents. For HTML pages, the server first normalizes static page text and can fall back to a headless browser render for JS-heavy sites before handing the extracted text to the scenario import flow.
 
 Optional AI-enhanced narration:
 
@@ -121,7 +125,7 @@ You can also skip manual conversion and use the in-app importer to upload either
 - Replace the seeded dataset by swapping the JSON schema-compatible file in `src/data`.
 - Replace the CSV import utility in `src/utils/scenarioCsv.ts` with a production ingestion pipeline or validation service.
 - Replace the phase rules engine by editing `src/rules/phaseRules.ts` and keeping the exported interface stable.
-- Replace HALO computation in `src/engine/stateEngine.ts` without touching the UI contracts.
+- Replace Interpretation Layer computation in `src/engine/stateEngine.ts` without touching the UI contracts.
 - Replace proof generation in `src/engine/phaseAdjudicator.ts` as long as `ProofObject` remains stable.
 - Replace replay logic by changing `runWorldSimulation`.
 - Replace topology generation in `NarrativeWorldMap.tsx` with a future graph library or backend-fed layout.

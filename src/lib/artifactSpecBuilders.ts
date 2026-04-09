@@ -38,6 +38,7 @@ import {
   buildExecutiveBriefSpecFromSummary as buildExecutiveBriefSpecFromSummaryV2,
   mapExecutiveBriefSpecToRenderedSections as mapExecutiveBriefSpecToRenderedSectionsV2,
 } from "./buildExecutiveBriefSpec";
+import { getAdjudicationStatusDisplay, getPhaseResolutionReasonDisplay, SYSTEM_LABELS } from "./systemLabels";
 
 const clean = (text: string) => text.replace(/\s+/g, " ").trim();
 const words = (text: string) => clean(text).split(/\s+/).filter(Boolean);
@@ -244,53 +245,50 @@ const boardSignalGridItems = () => [
 ];
 
 const boardReadLines = (summary: CanonicalExportSummary) => {
-  const currentState = humanize(summary.currentStateSummary).toLowerCase();
-  const headline = /fragmented regime/.test(currentState)
-    ? "Capital power shifts to sovereign networks."
-    : "Capital is rotating toward sovereign control.";
-  const summaryLine = /narrative density is high/i.test(summary.currentStateSummary)
-    ? "Regional control drains liquidity from cross-border assets."
-    : "Regional control drains liquidity from exposed assets.";
+  const headline = compactSentence(
+    `${summary.phaseResolution.phase} is the current operating state under threshold adjudication`,
+    9,
+  );
+  const summaryLine = compactSentence(summary.currentStateSummary, 12);
   return {
     headline: compactSentence(headline, 7),
     summary: compactSentence(summaryLine, 9),
   };
 };
 
-const boardDecisionHeadline = () =>
-  compactSentence("Reallocate exposure toward regionally insulated supply infrastructure.", 7);
+const boardDecisionHeadline = () => "Immediate implications";
 
-const boardDecisionBullets = () => [
-  compactSentence("Increase domestic logistics allocation before risk widens.", 7),
-  compactSentence("Reduce global transport exposure before downside widens.", 7),
-  compactSentence("Hedge regional supply costs before margins compress.", 7),
-];
+const boardDecisionBullets = (summary: CanonicalExportSummary) =>
+  [
+    summary.implicationsSummary,
+    summary.proofSummary,
+    summary.traceabilitySummary,
+  ].map((item) => compactSentence(item, 13));
 
-const boardRiskConcentrations = () => [
-  compactSentence("Cross-border logistics face cost volatility risk.", 6),
-  compactSentence("Global supply dependence reduces control under policy shifts.", 8),
-  compactSentence("Regulatory friction raises margin risk.", 5),
-];
+const boardRiskConcentrations = (summary: CanonicalExportSummary) =>
+  summary.preGcsSensitivity.reversibilityConstraints
+    .slice(0, 3)
+    .map((item) => compactSentence(item, 13));
 
-const boardInflectionPaths = () => ({
-  continuation: compactSentence("Policy enforcement accelerates. Capital reprices domestic infrastructure.", 7),
-  reversal: compactSentence("Trade normalization returns. Global logistics regain efficiency.", 7),
-  acceleration: compactSentence("Supplier controls extend. Optionality narrows.", 5),
+const boardInflectionPaths = (summary: CanonicalExportSummary) => ({
+  continuation: compactSentence(summary.preGcsSensitivity.counterweightConditions[0] ?? "Counterweight conditions remain provisional.", 13),
+  reversal: compactSentence(summary.preGcsSensitivity.counterweightConditions[1] ?? "Counterweight conditions require threshold-relevant change.", 13),
+  acceleration: compactSentence(summary.preGcsSensitivity.primarySensitivities[0] ?? "Sensitivity remains concentrated in the visible state.", 13),
 });
 
-const boardReadShiftSignals = () => [
-  compactSentence("System-wide coordination execution appears.", 4),
-  compactSentence("Bloc-wide easing of controls appears.", 5),
-];
+const boardReadShiftSignals = (summary: CanonicalExportSummary) =>
+  summary.preGcsSensitivity.nonEffectZones
+    .slice(0, 2)
+    .map((item) => compactSentence(item, 13));
 
-const boardContainedVsSpreading = (): BoardContainedSpreadItem[] => [
+const boardContainedVsSpreading = (summary: CanonicalExportSummary): BoardContainedSpreadItem[] => [
   {
-    label: "Spreading",
-    value: compactSentence("Fragmentation spreads through allocation and infrastructure.", 6),
+    label: SYSTEM_LABELS.PAL,
+    value: compactSentence(getAdjudicationStatusDisplay(summary.phaseResolution.adjudicationStatus), 5),
   },
   {
-    label: "Contained",
-    value: compactSentence("Relief stays local and reversible.", 5),
+    label: "Proof",
+    value: compactSentence(summary.proofSummary, 7),
   },
 ];
 
@@ -321,41 +319,40 @@ export function buildBoardOnePagerSpec(
         ruleConfig(boardRules.stateBand.stateInterpretation),
       ),
     },
-    boardRead: {
-      headline: makeFieldRule(boardRead.headline, ruleConfig(boardRules.boardRead.headline)),
-      summary: makeFieldRule(boardRead.summary, ruleConfig(boardRules.boardRead.summary)),
-    },
-    decisionBox: {
-      title: makeFieldRule(boardDecisionHeadline(), ruleConfig(boardRules.decisionBox.title)),
-      actions: makeFieldRule(boardDecisionBullets(), ruleConfig(boardRules.decisionBox.actions)),
-    },
-    dominantPath: {
-      statement: makeFieldRule(
-        compactSentence("Capital concentration in sovereign supply networks reduces logistics power.", 9),
-        ruleConfig(boardRules.dominantPath.statement),
-      ),
-    },
-    primaryPressure: {
-      statement: makeFieldRule(
-        compactSentence("Policy fragmentation is accelerating capital reallocation risk.", 7),
-        ruleConfig(boardRules.primaryPressure.statement),
-      ),
-    },
-    riskConcentration: {
-      items: makeFieldRule(boardRiskConcentrations(), ruleConfig(boardRules.riskConcentration.items)),
-    },
-    inflectionPaths: {
-      continuation: makeFieldRule(boardInflectionPaths().continuation, ruleConfig(boardRules.inflectionPaths.continuation)),
-      reversal: makeFieldRule(boardInflectionPaths().reversal, ruleConfig(boardRules.inflectionPaths.reversal)),
-      acceleration: makeFieldRule(boardInflectionPaths().acceleration, ruleConfig(boardRules.inflectionPaths.acceleration!)),
-    },
-    triggers: {
-      items: makeFieldRule(
+      boardRead: {
+        headline: makeFieldRule(boardRead.headline, ruleConfig(boardRules.boardRead.headline)),
+        summary: makeFieldRule(boardRead.summary, ruleConfig(boardRules.boardRead.summary)),
+      },
+      decisionBox: {
+        title: makeFieldRule(boardDecisionHeadline(), ruleConfig(boardRules.decisionBox.title)),
+        actions: makeFieldRule(boardDecisionBullets(summary), ruleConfig(boardRules.decisionBox.actions)),
+      },
+      dominantPath: {
+        statement: makeFieldRule(
+          compactSentence(summary.dominantPathSummary, 13),
+          ruleConfig(boardRules.dominantPath.statement),
+        ),
+      },
+      primaryPressure: {
+        statement: makeFieldRule(
+          compactSentence(summary.primaryPressureSummary, 13),
+          ruleConfig(boardRules.primaryPressure.statement),
+        ),
+      },
+      riskConcentration: {
+        items: makeFieldRule(boardRiskConcentrations(summary), ruleConfig(boardRules.riskConcentration.items)),
+      },
+      inflectionPaths: {
+        continuation: makeFieldRule(boardInflectionPaths(summary).continuation, ruleConfig(boardRules.inflectionPaths.continuation)),
+        reversal: makeFieldRule(boardInflectionPaths(summary).reversal, ruleConfig(boardRules.inflectionPaths.reversal)),
+        acceleration: makeFieldRule(boardInflectionPaths(summary).acceleration, ruleConfig(boardRules.inflectionPaths.acceleration!)),
+      },
+      triggers: {
+        items: makeFieldRule(
         [
-          compactSentence("If export controls extend, flexibility narrows.", 6),
-          compactSentence("If trade blocs accelerate, downside widens.", 6),
-          compactSentence("If subsidies expand, cost pressure widens.", 6),
-        ],
+          compactSentence(summary.watchpointSummary, 13),
+          ...summary.preGcsSensitivity.primarySensitivities.slice(0, 2).map((item) => compactSentence(item, 13)),
+        ].slice(0, 3),
         ruleConfig(boardRules.triggers.items),
       ),
     },
@@ -366,7 +363,7 @@ export function buildBoardOnePagerSpec(
       items: makeFieldRule(boardSignalGridItems(), ruleConfig(boardRules.signalGrid.items)),
     },
     readShiftSignals: {
-      items: makeFieldRule(boardReadShiftSignals(), {
+      items: makeFieldRule(boardReadShiftSignals(summary), {
         required: false,
         tone: "signal",
         renderStyle: "list",
@@ -378,7 +375,7 @@ export function buildBoardOnePagerSpec(
       }),
     },
     containedVsSpreading: {
-      items: makeFieldRule(boardContainedVsSpreading(), {
+      items: makeFieldRule(boardContainedVsSpreading(summary), {
         required: false,
         tone: "interpretive",
         renderStyle: "row",
@@ -413,96 +410,94 @@ export function buildPresentationBriefSpec(
     slides: [
       {
         slideType: makeFieldRule("title", ruleConfig(rule(0).slideType)),
-        title: makeFieldRule("Fragmentation Becomes Baseline", ruleConfig(rule(0).title)),
+        title: makeFieldRule("Current State Read", ruleConfig(rule(0).title)),
         bullets: makeFieldRule(
           [
-            makeBullet(`Planning must assume the system now operates in ${lower(summary.phase)}.`, rule(0).bullets.maxWords),
-            makeBullet("Normalization is now an upside case, not the baseline.", rule(0).bullets.maxWords),
-            makeBullet(`Planning must reprice around ${executivePressurePhrase(summary)}.`, rule(0).bullets.maxWords),
+            makeBullet(summary.currentStateSummary, rule(0).bullets.maxWords),
+            makeBullet(`State basis remains ${summary.stateVector.basis}.`, rule(0).bullets.maxWords),
+            makeBullet(`Confidence is ${summary.stateVector.confidence.toFixed(1)} with ${getAdjudicationStatusDisplay(summary.phaseResolution.adjudicationStatus)}.`, rule(0).bullets.maxWords),
           ],
           ruleConfig(rule(0).bullets),
         ),
       },
       {
         slideType: makeFieldRule("system-state", ruleConfig(rule(1).slideType)),
-        title: makeFieldRule("Key Signals Lock In", ruleConfig(rule(1).title)),
+        title: makeFieldRule("State Vector", ruleConfig(rule(1).title)),
         bullets: makeFieldRule(
           [
-            makeBullet(`High narrative density now keeps adjustment windows crowded.`, rule(1).bullets.maxWords),
-            makeBullet(`Fragmenting momentum means delay compounds risk now.`, rule(1).bullets.maxWords),
-            makeBullet(`Low reversibility means early moves retain more optionality.`, rule(1).bullets.maxWords),
+            makeBullet(`Velocity ${summary.stateVector.velocity.toFixed(1)} and density ${summary.stateVector.density.toFixed(1)} are explicit.`, rule(1).bullets.maxWords),
+            makeBullet(`Coherence ${summary.stateVector.coherence.toFixed(1)} and reversibility ${summary.stateVector.reversibility.toFixed(1)} remain explicit.`, rule(1).bullets.maxWords),
+            makeBullet(`The current phase is ${summary.phaseResolution.phase}.`, rule(1).bullets.maxWords),
           ],
           ruleConfig(rule(1).bullets),
         ),
       },
       {
         slideType: makeFieldRule("key-risk", ruleConfig(rule(2).slideType)),
-        title: makeFieldRule("Dominant Path Hardens", ruleConfig(rule(2).title)),
+        title: makeFieldRule("Adjudication Status", ruleConfig(rule(2).title)),
         bullets: makeFieldRule(
           [
-            makeBullet("Fragmentation is now the priced-in operating baseline.", rule(2).bullets.maxWords),
-            makeBullet("Plans built on rapid normalization now misprice exposure.", rule(2).bullets.maxWords),
-            makeBullet("Delay costs more than early controlled repositioning.", rule(2).bullets.maxWords),
+            makeBullet(`${SYSTEM_LABELS.PAL} is labeled ${getAdjudicationStatusDisplay(summary.phaseResolution.adjudicationStatus)}.`, rule(2).bullets.maxWords),
+            makeBullet(getPhaseResolutionReasonDisplay(summary.phaseResolution.rationale), rule(2).bullets.maxWords),
+            makeBullet(summary.phaseResolution.thresholdConditions[0] ?? "Threshold conditions remain visible.", rule(2).bullets.maxWords),
           ],
           ruleConfig(rule(2).bullets),
         ),
       },
       {
         slideType: makeFieldRule("pressure", ruleConfig(rule(3).slideType)),
-        title: makeFieldRule("Pressure Now Transmits", ruleConfig(rule(3).title)),
+        title: makeFieldRule("Artifact Traceability", ruleConfig(rule(3).title)),
         bullets: makeFieldRule(
           [
-            makeBullet("Leaders should treat early signals as the first break in prior logic.", rule(3).bullets.maxWords),
-            makeBullet("Systemic uptake now spreads response costs across domains.", rule(3).bullets.maxWords),
-            makeBullet("Recent developments now force planning through the condition.", rule(3).bullets.maxWords),
+            makeBullet(summary.traceabilitySummary, rule(3).bullets.maxWords),
+            makeBullet(summary.artifactSetSummary, rule(3).bullets.maxWords),
+            makeBullet(summary.artifactStateMapping[0]?.stateEffect ?? "Artifact-to-state mapping remains explicit.", rule(3).bullets.maxWords),
           ],
           ruleConfig(rule(3).bullets),
         ),
       },
       {
         slideType: makeFieldRule("path", ruleConfig(rule(4).slideType)),
-        title: makeFieldRule("Risk Concentrates Fast", ruleConfig(rule(4).title)),
+        title: makeFieldRule("Temporal Spine", ruleConfig(rule(4).title)),
         bullets: makeFieldRule(
           [
-            makeBullet("Cross-border dependencies absorb the first operational shock.", rule(4).bullets.maxWords),
-            makeBullet("Policy-linked allocation decisions now fail faster under misalignment.", rule(4).bullets.maxWords),
-            makeBullet("Infrastructure bottlenecks compound risk before markets fully adjust.", rule(4).bullets.maxWords),
+            ...summary.temporalSpine.slice(0, 3).map((entry) => makeBullet(`${entry.label}: ${entry.summary}`, rule(4).bullets.maxWords)),
           ],
           ruleConfig(rule(4).bullets),
         ),
       },
       {
         slideType: makeFieldRule("decision", ruleConfig(rule(5).slideType)),
-        title: makeFieldRule("Inflection Paths Matter", ruleConfig(rule(5).title)),
+        title: makeFieldRule("Proof Scaffold", ruleConfig(rule(5).title)),
         bullets: makeFieldRule(
           [
-            makeBullet("Plan for continuation if allocation controls widen further.", rule(5).bullets.maxWords),
-            makeBullet("Only coordination reopening in behavior starts reversal.", rule(5).bullets.maxWords),
-            makeBullet("Expect acceleration when supply access breaks across markets.", rule(5).bullets.maxWords),
+            makeBullet(summary.proofSummary, rule(5).bullets.maxWords),
+            makeBullet(`Visible proof scaffolds: ${summary.proofScaffolds.length}.`, rule(5).bullets.maxWords),
+            makeBullet(summary.proofScaffolds[0] ? `Proof scaffold ${summary.proofScaffolds[0].linkedTransition} remains audit-visible.` : "No linked transition is yet visible.", rule(5).bullets.maxWords),
           ],
           ruleConfig(rule(5).bullets),
         ),
       },
       {
         slideType: makeFieldRule("triggers", ruleConfig(rule(6).slideType)),
-        title: makeFieldRule("What Leadership Changes Now", ruleConfig(rule(6).title)),
+        title: makeFieldRule("Pre-GCS Sensitivity", ruleConfig(rule(6).title)),
         bullets: makeFieldRule(
           [
-            makeBullet("Remove coordination-dependent assumptions from active plans.", rule(6).bullets.maxWords),
-            makeBullet("Prioritize control over timing where exposure is hard to reverse.", rule(6).bullets.maxWords),
-            makeBullet("Protect access before bottlenecks harden into structural loss.", rule(6).bullets.maxWords),
+            makeBullet(summary.preGcsSensitivity.primarySensitivities[0] ?? "Primary sensitivities remain explicit.", rule(6).bullets.maxWords),
+            makeBullet(summary.preGcsSensitivity.counterweightConditions[0] ?? "Counterweight conditions remain explicit.", rule(6).bullets.maxWords),
+            makeBullet(summary.preGcsSensitivity.reversibilityConstraints[0] ?? "Reversibility constraints remain explicit.", rule(6).bullets.maxWords),
           ],
           ruleConfig(rule(6).bullets),
         ),
       },
       {
         slideType: makeFieldRule("evidence", ruleConfig(rule(7).slideType)),
-        title: makeFieldRule("Only Watch State Shifts", ruleConfig(rule(7).title)),
+        title: makeFieldRule("What To Watch", ruleConfig(rule(7).title)),
         bullets: makeFieldRule(
           [
-            makeBullet("Watch for coordination reopening that changes behavior at scale.", rule(7).bullets.maxWords),
-            makeBullet("Watch for control easing that materially reduces allocation pressure.", rule(7).bullets.maxWords),
-            makeBullet("Ignore signals that leave the system structure unchanged.", rule(7).bullets.maxWords),
+            makeBullet(summary.watchpointSummary, rule(7).bullets.maxWords),
+            makeBullet(summary.preGcsSensitivity.nonEffectZones[0] ?? "Non-effect zones remain explicit.", rule(7).bullets.maxWords),
+            makeBullet(summary.preGcsSensitivity.nonEffectZones[1] ?? "Artifact repetition alone does not change the read.", rule(7).bullets.maxWords),
           ],
           ruleConfig(rule(7).bullets),
         ),
@@ -553,27 +548,27 @@ export function buildExecutiveBriefFieldPack(spec: ExecutiveBriefSpec): Executiv
 
 export function buildPresentationBriefFieldPack(spec: PresentationBriefSpec): PresentationBriefFieldPack {
   return {
-    titleSlide: slide("title", spec.slides[0].title.value, "Fragmentation now sets the operating baseline", spec.slides[0].bullets.value),
+    titleSlide: slide("title", spec.slides[0].title.value, "Current state at a glance", spec.slides[0].bullets.value),
     systemStateSlide: {
-      ...slide("system", spec.slides[1].title.value, "The system is tightening around fewer options", spec.slides[1].bullets.value),
+      ...slide("system", spec.slides[1].title.value, "The state vector is explicit", spec.slides[1].bullets.value),
       signalStrip: [
         { label: "Phase", value: "Active" },
         { label: "Mode", value: "Boarded" },
         { label: "Boundary", value: "Active" },
       ],
     },
-    keyJudgmentsSlide: slide("takeaways", spec.slides[2].title.value, "Three judgments should guide leadership", spec.slides[2].bullets.value),
-    progressionSlide: slide("progression", spec.slides[3].title.value, "A signal sequence became operating reality", spec.slides[3].bullets.value),
-    inflectionSlide: slide("inflections", spec.slides[4].title.value, "Three turns changed the decision surface", spec.slides[4].bullets.value),
-    impactSlide: slide("implications", spec.slides[5].title.value, "Leadership now has less room to wait", spec.slides[5].bullets.value),
+    keyJudgmentsSlide: slide("takeaways", spec.slides[2].title.value, "Adjudication remains threshold-driven", spec.slides[2].bullets.value),
+    progressionSlide: slide("progression", spec.slides[3].title.value, "Artifacts map into visible state", spec.slides[3].bullets.value),
+    inflectionSlide: slide("inflections", spec.slides[4].title.value, "Temporal spine remains explicit", spec.slides[4].bullets.value),
+    impactSlide: slide("implications", spec.slides[5].title.value, "Proof scaffold remains audit-visible", spec.slides[5].bullets.value),
     pathwaysSlide: {
-      ...slide("paths", spec.slides[6].title.value, "Continuation still sets the base case", spec.slides[6].bullets.value),
+      ...slide("paths", spec.slides[6].title.value, "Pre-GCS sensitivity remains separate", spec.slides[6].bullets.value),
       signalStrip: [
-        { label: "Primary", value: "Continuation" },
-        { label: "Alternate", value: "Interruption" },
+        { label: "Primary", value: "Sensitivity" },
+        { label: "Mode", value: "Pre-GCS" },
       ],
     },
-    monitoringSlide: slide("monitoring", spec.slides[7].title.value, "Only a narrow set of signals can reopen flexibility", spec.slides[7].bullets.value),
+    monitoringSlide: slide("monitoring", spec.slides[7].title.value, "Sensitivity boundaries remain explicit", spec.slides[7].bullets.value),
   };
 }
 
@@ -717,27 +712,27 @@ export function buildAssistedIntelligenceFromSummary(
     systemState: {
       title: executiveSpec.systemStateOverview.sectionTitle.value,
       summary: executiveSpec.systemStateOverview.currentConditionParagraph.value,
-      sidebarInsight: executiveSpec.systemStateOverview.sidebarInsight?.value ?? executiveSource.operatingMeaning,
+      sidebarInsight: executiveSpec.systemStateOverview.sidebarInsight?.value ?? executiveSource.systemStateSidebar ?? "",
     },
     narrativeProgression: {
       title: executiveSpec.narrativeDevelopment.sectionTitle.value,
       summary: executiveSpec.narrativeDevelopment.earlySignalsParagraph.value,
-      sidebarInsight: executiveSpec.narrativeDevelopment.sidebarInsight?.value ?? executiveSource.transitionType,
+      sidebarInsight: executiveSpec.narrativeDevelopment.sidebarInsight?.value ?? executiveSource.narrativeSidebar ?? "",
     },
     structuralRead: {
       title: executiveSpec.structuralInterpretation.sectionTitle.value,
       summary: executiveSpec.structuralInterpretation.interpretationParagraph1.value,
-      sidebarInsight: executiveSpec.structuralInterpretation.sidebarInsight?.value ?? executiveSource.implicitVariableBehavior,
+      sidebarInsight: executiveSpec.structuralInterpretation.sidebarInsight?.value ?? executiveSource.structuralSidebar ?? "",
     },
     forwardView: {
       title: executiveSpec.forwardOrientation.sectionTitle.value,
       summary: executiveSpec.forwardOrientation.primaryPathParagraph.value,
-      sidebarInsight: executiveSpec.forwardOrientation.sidebarInsight?.value ?? executiveSource.flexibilityNeeds,
+      sidebarInsight: executiveSpec.forwardOrientation.sidebarInsight?.value ?? executiveSource.haloSidebar ?? "",
     },
     decisionPosture: {
       title: executiveSpec.strategicPositioning.sectionTitle.value,
       summary: executiveSpec.strategicPositioning.positioningParagraph1.value,
-      sidebarInsight: executiveSpec.strategicPositioning.sidebarInsight?.value ?? executiveSource.currentExposures,
+      sidebarInsight: executiveSpec.strategicPositioning.sidebarInsight?.value ?? executiveSource.traceabilitySidebar ?? "",
       actions: executiveSpec.strategicPositioning.priorityAreas?.value,
     },
     evidenceBase: {

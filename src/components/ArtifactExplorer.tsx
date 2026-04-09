@@ -36,8 +36,8 @@ export function ArtifactExplorer({
             worldBoundaryContext={worldBoundaryContext}
             summary="The artifact explorer shows the individual events that contributed to the world state."
             currentState={`There are currently ${events.length} visible artifacts. The selected artifact is ${selectedEvent?.title ?? "none"}, from month ${selectedEvent?.month ?? "unknown"}, with structural contribution ${selectedEvent?.structuralEffect ?? "unknown"}, and it is linked to ${linkedTransitionCount} visible transitions.`}
-            businessUse="A firm can use this section to judge whether a specific artifact is background noise, a meaningful contributor, or part of a transition-driving cluster."
-            decisionGuidance="This supports better prioritization of analyst effort by focusing review on the artifacts most likely to have altered the structural path."
+            businessUse="This section helps clarify whether an artifact is background noise, a meaningful contributor, or part of a transition-driving cluster."
+            decisionGuidance="It helps focus analyst attention on the artifacts most likely to have altered the structural path."
             rawContext={[
               `Visible artifact count: ${events.length}`,
               `Selected artifact title: ${selectedEvent?.title ?? "none"}`,

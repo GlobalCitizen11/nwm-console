@@ -6,6 +6,7 @@ import { buildBoardOnePagerPlan } from "./boardOnePager";
 import { buildExecutiveBriefPlan } from "./executiveBrief";
 import { buildPresentationBriefPlan } from "./presentationBrief";
 import { extractBriefingState } from "../utils/briefingArtifacts";
+import { SYSTEM_DISPLAY_LABELS } from "../lib/systemLabels";
 
 const scenario = loadScenarioDataset(scenarioData);
 const result = runWorldSimulation(scenario.world, scenario.events);
@@ -32,7 +33,9 @@ describe("export engine", () => {
 
     expect(plan.pages).toHaveLength(6);
     expect(plan.pages[0]?.title).toBe("Cover");
-    expect(plan.pages[5]?.title).toBe("System Effects + Conclusion");
+    expect(plan.pages[1]?.title).toBe("Narrative World Boundary");
+    expect(plan.pages[4]?.title).toBe(SYSTEM_DISPLAY_LABELS.interpretationLayerIntegrity);
+    expect(plan.pages[5]?.title).toBe("Proof Object Traceability");
   });
 
   it("builds a slide-based presentation plan", () => {

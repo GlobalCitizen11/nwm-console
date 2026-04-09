@@ -1,4 +1,5 @@
 import type { CanonicalEvidenceAnchor, CanonicalExportSummary, ExportSemanticData } from "../types/export";
+import { getAdjudicationStatusDisplay } from "../../../lib/systemLabels";
 
 const clean = (text: string) => text.replace(/\s+/g, " ").trim();
 
@@ -100,6 +101,7 @@ const buildEvidenceAnchor = (text: string, index: number): CanonicalEvidenceAnch
 
 export const buildCanonicalSummary = (data: ExportSemanticData): CanonicalExportSummary => {
   const state = data.sourceState;
+  const v2 = data.v2;
   const pressureSubject = compactPhrase(state.pressurePoints[0] ?? state.structuralShift, "infrastructure control");
   const prioritySubject = compactPhrase(state.priorities[0] ?? state.structuralShift, "coordination and allocation");
   const monitoringSubject = compactPhrase(
@@ -117,6 +119,15 @@ export const buildCanonicalSummary = (data: ExportSemanticData): CanonicalExport
     ...state.signalAnchors.slice(0, 3),
     ...data.evidenceAnchors.slice(0, 3).map((anchor) => `${anchor.headline}. ${anchor.support}`),
   ].filter(Boolean);
+  const traceabilitySummary = sentence(
+    `Artifact-to-state traceability currently spans ${v2.artifactStateMapping.length} mapped records and ${v2.proofScaffolds.length} proof scaffold${v2.proofScaffolds.length === 1 ? "" : "s"}`,
+  );
+  const adjudicationStatus = getAdjudicationStatusDisplay(v2.phaseResolution.adjudicationStatus);
+  const proofSummary = sentence(
+    v2.proofScaffolds.length > 0
+      ? `Proof remains pre-governance-grade and currently resolves through ${adjudicationStatus}`
+      : "Proof remains provisional because no phase-transition scaffold is yet visible",
+  );
 
   return {
     scenarioTitle: data.title,
@@ -124,19 +135,20 @@ export const buildCanonicalSummary = (data: ExportSemanticData): CanonicalExport
     timestamp: data.metadata.generatedAt,
     confidentialityLabel: data.metadata.confidentiality,
     boundedWorld: data.metadata.boundedWorld,
+    boundaryDefinition: data.boundary,
     phase: data.metadata.phase,
     density: data.systemStats.find((stat) => stat.label === "Narrative Density")?.value ?? state.narrativeDensity,
     momentum: data.systemStats.find((stat) => stat.label === "Structural Momentum")?.value ?? state.structuralMomentum,
     reversibility: data.systemStats.find((stat) => stat.label === "Reversibility")?.value ?? state.reversibility,
-    currentStateSummary: `${sentence(`The system is operating in ${data.metadata.phase}`)} ${sentence(
-      `Narrative density is ${state.narrativeDensity}`,
+    currentStateSummary: `${sentence(`The system is operating in ${data.metadata.phase} with ${adjudicationStatus}`)} ${sentence(
+      `State vector confidence is ${v2.stateVector.confidence.toFixed(1)} on a deterministic-replay basis`,
     )}`,
     dominantPathSummary: sentence(
-      `${state.structuralMomentum.charAt(0).toUpperCase()}${state.structuralMomentum.slice(1)} behavior is likely to deepen without a stabilizing interruption`,
+      `The current structural reality centers on ${pressureSubject} with ${state.structuralMomentum} momentum already visible`,
     ),
     primaryPressureSummary: sentence(`Pressure is concentrated in ${pressureSubject}`),
     implicationsSummary: sentence(`That pressure is now shaping ${prioritySubject}`),
-    monitoringSummary: sentence(`Monitoring should stay fixed on ${monitoringSubject}`),
+    monitoringSummary: sentence(`Watch the system through ${monitoringSubject} rather than through capability headlines alone`),
     narrativeDevelopment: {
       earlySignalsSummary: sentence(
         `The earliest signals appeared by ${earlySignalMonth}, when ${earlySignalEvent} began to shift the boundary condition`,
@@ -149,16 +161,28 @@ export const buildCanonicalSummary = (data: ExportSemanticData): CanonicalExport
       ),
     },
     structuralInterpretationSummary: `${sentence(
-      "The sequence now carries structural meaning",
+      "The sequence now carries structural meaning because density, coherence, and reversibility are resolved together",
     )} ${sentence(`Reversibility is ${state.reversibility}`)}`,
     forwardOrientationSummary: sentence(
-      `The next interval favors deeper ${state.structuralMomentum} behavior across the boundary`,
+      `If the current artifact distribution continues, sensitivity remains highest around ${pressureSubject}`,
     ),
-    alternatePathSummary: sentence("A credible alternate path requires a visible break in coordination"),
+    alternatePathSummary: sentence(
+      `A different read requires a visible counterweight that improves coherence or reversibility against the current threshold stack`,
+    ),
     strategicPositioningSummary: sentence(
-      `Decision posture should stay disciplined where ${sensitivitySubject} is most exposed`,
+      `The system remains structurally sensitive where ${sensitivitySubject} is most exposed`,
     ),
-    watchpointSummary: sentence(`The main watchpoint is whether ${watchpointSubject} begins to change`),
+    watchpointSummary: sentence(`The main watchpoint is whether ${watchpointSubject} changes the current state vector`),
     evidenceAnchorsCompact: evidenceSource.slice(0, 3).map(buildEvidenceAnchor),
+    executiveBriefGate: state.executiveBriefGate,
+    artifactSetSummary: v2.artifactSetSummary,
+    stateVector: v2.stateVector,
+    phaseResolution: v2.phaseResolution,
+    proofScaffolds: v2.proofScaffolds,
+    artifactStateMapping: v2.artifactStateMapping,
+    temporalSpine: v2.temporalSpine,
+    preGcsSensitivity: v2.preGcsSensitivity,
+    traceabilitySummary,
+    proofSummary,
   };
 };

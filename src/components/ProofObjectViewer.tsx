@@ -82,7 +82,7 @@ export function ProofObjectViewer({ proof, open = true, onClose, onUpdate }: Pro
 
       {onUpdate ? (
         <div className="surface-panel-subtle mt-4 p-4">
-          <p className="section-kicker">Update review workflow</p>
+          <p className="section-kicker">Review workflow updates</p>
           <div className="mt-3 grid gap-3 md:grid-cols-2">
             <label className="control-stack">
               <span className="control-label">Review state</span>

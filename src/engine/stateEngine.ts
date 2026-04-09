@@ -21,7 +21,7 @@ const computeHalo = (
   visibleEvents: NarrativeEvent[],
   currentPhase: string,
 ): HaloOrientation => {
-  // Demo HALO layer. A future real HALO engine can replace this function while preserving the UI contract.
+  // Demo interpretation layer. A future formal orientation engine can replace this function while preserving the UI contract.
   const evidentiaryMass = clamp(visibleEvents.length * 6 + metrics.density * 0.55, 0, 100);
   const momentum = clamp(metrics.velocity * 0.52 + metrics.density * 0.28 + (100 - metrics.reversibility) * 0.2);
   const emergenceRatio = clamp((metrics.density + metrics.coherence) / Math.max(1, metrics.reversibility) * 28);
@@ -42,7 +42,7 @@ const computeHalo = (
 };
 
 const projectMetrics = (events: NarrativeEvent[], month: number) => {
-  // Demo metric projection. A future Protostar/PAL engine can replace this accumulator with formal world-state computation.
+  // Demo metric projection. A future simulation engine and adjudication layer can replace this accumulator with formal world-state computation.
   const visibleEvents = events.filter((event) => event.month <= month);
   const aggregates = visibleEvents.reduce(
     (accumulator, event) => {

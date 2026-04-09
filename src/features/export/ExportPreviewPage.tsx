@@ -49,6 +49,7 @@ export function ExportPreviewPage() {
   }
 
   const html = bundle.htmlByMode[mode];
+  const modeAvailability = bundle.availabilityByMode?.[mode] ?? { exportable: true };
   const showBoardSpecDebug = getDebugMode() === "board-spec" && mode === "board-onepager";
   const showExecutiveSpecDebug = getDebugMode() === "executive-spec" && mode === "executive-brief";
   const showPresentationSpecDebug = getDebugMode() === "presentation-spec" && mode === "presentation-brief";
@@ -93,9 +94,11 @@ export function ExportPreviewPage() {
             <StatusChip label="Scenario" value={bundle.data.metadata.scenarioName} />
             <StatusChip label="Artifact" value={exportModes.find((item) => item.id === mode)?.label ?? mode} tone="accent" />
             <StatusChip label="Phase" value={bundle.data.metadata.phase} />
+            <StatusChip label="Source" value="Canonical + Assisted" />
             <StatusChip
-              label="Source"
-              value="Canonical + Assisted"
+              label="Exportability"
+              value={modeAvailability.exportable ? "Exportable" : "Withheld"}
+              tone={modeAvailability.exportable ? "default" : "warning"}
             />
           </div>
           <div className="export-preview-toolbar-controls">
@@ -109,7 +112,11 @@ export function ExportPreviewPage() {
             <div className="export-preview-statusRow">
               <button
                 className="export-mode-tab is-active"
+                disabled={!modeAvailability.exportable}
                 onClick={async () => {
+                  if (!modeAvailability.exportable) {
+                    return;
+                  }
                   try {
                     await playwrightPdf({
                       mode,
@@ -122,9 +129,12 @@ export function ExportPreviewPage() {
                   }
                 }}
               >
-                Download PDF
+                {modeAvailability.exportable ? "Download PDF" : "Artifact Withheld"}
               </button>
             </div>
+            {!modeAvailability.exportable && modeAvailability.reason ? (
+              <p className="export-subtitle">{modeAvailability.reason}</p>
+            ) : null}
           </div>
         </div>
       </div>

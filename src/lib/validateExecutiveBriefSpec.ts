@@ -5,6 +5,7 @@ import type {
   ArtifactSpecValidationIssue,
   ArtifactSpecValidationResult,
 } from "../types/artifactSpecs";
+import { SYSTEM_DISPLAY_LABELS } from "./systemLabels";
 
 const clean = (text: string) => text.replace(/\s+/g, " ").trim();
 const wordCount = (text: string) => clean(text).split(/\s+/).filter(Boolean).length;
@@ -18,17 +19,6 @@ const bannedPhrases = [
   /\bthe system is now in a place where\b/i,
 ];
 
-const genericConsultingPhrases = [
-  /\bleverage\b/i,
-  /\boptimize\b/i,
-  /\bsynerg/i,
-  /\bvalue proposition\b/i,
-  /\bholistic\b/i,
-  /\bgoing forward\b/i,
-  /\bbest practice\b/i,
-  /\bconsider\b/i,
-];
-
 const timeDependentPhrases = [
   /\bover the next \d+/i,
   /\bin the coming months\b/i,
@@ -39,14 +29,21 @@ const timeDependentPhrases = [
   /\bnear term\b/i,
 ];
 
-const alternatePathDiscriminator =
-  /\balternate|instead|reversal|interruption|if|unless|should .* ease|could reopen|would reopen|returns|restores|recedes\b/i;
+const prohibitedOrientationPhrases = [
+  /\bforecast\b/i,
+  /\blikely\b/i,
+  /\bshould\b/i,
+  /\bmust\b/i,
+  /\bbehavioral inference\b/i,
+];
 
 const evidenceTaxonomyPattern =
   /\bclassification|category|taxonomy|bucket|type|domain|label\b/i;
 
 const implicationPattern =
   /\bchanges|reorders|reprices|narrows|widens|hardens|forces|shifts|tightens|reduces|raises|constrains|locks|reopens|restores|transmits|invalidates|revises|moves|reverses|builds?|carr(?:y|ies)|rewards?|persists?|eases|revisit|protects\b/i;
+
+const stripTerminal = (text: string) => clean(text).replace(/[.!?]+$/g, "");
 
 function issue(
   path: string,
@@ -207,6 +204,8 @@ export function validateExecutiveBriefSpec(spec: ExecutiveBriefSpec): ArtifactSp
   validateTextRule(issues, "header.boundedWorld", spec.header.boundedWorld.value, spec.header.boundedWorld.required, spec.header.boundedWorld.minWords, spec.header.boundedWorld.maxWords);
   validateTextRule(issues, "header.asOfLabel", spec.header.asOfLabel.value, spec.header.asOfLabel.required, spec.header.asOfLabel.minWords, spec.header.asOfLabel.maxWords);
   validateTextRule(issues, "header.currentPhase", spec.header.currentPhase.value, spec.header.currentPhase.required, spec.header.currentPhase.minWords, spec.header.currentPhase.maxWords);
+  validateTextRule(issues, "header.briefMode", spec.header.briefMode.value, spec.header.briefMode.required, spec.header.briefMode.minWords, spec.header.briefMode.maxWords);
+  validateTextRule(issues, "header.validityLabel", spec.header.validityLabel.value, spec.header.validityLabel.required, spec.header.validityLabel.minWords, spec.header.validityLabel.maxWords);
   validateTextRule(issues, "header.executiveHeadline", spec.header.executiveHeadline.value, spec.header.executiveHeadline.required, spec.header.executiveHeadline.minWords, spec.header.executiveHeadline.maxWords);
   validateTextRule(issues, "header.executiveSubline", spec.header.executiveSubline.value, spec.header.executiveSubline.required, spec.header.executiveSubline.minWords, spec.header.executiveSubline.maxWords);
 
@@ -240,41 +239,83 @@ export function validateExecutiveBriefSpec(spec: ExecutiveBriefSpec): ArtifactSp
     }
   });
 
-  if (!alternatePathDiscriminator.test(spec.forwardOrientation.alternatePathParagraph.value)) {
-    issues.push(issue("forwardOrientation.alternatePathParagraph", "Forward orientation must include a true alternate path.", "artifact-fail"));
+  if (stripTerminal(spec.header.briefMode.value) !== SYSTEM_DISPLAY_LABELS.framework) {
+    issues.push(issue("header.briefMode", `Executive brief mode must be ${SYSTEM_DISPLAY_LABELS.framework}.`, "artifact-fail"));
+  }
+  if (!["Structurally Valid", "Structurally Incomplete"].includes(stripTerminal(spec.header.validityLabel.value))) {
+    issues.push(issue("header.validityLabel", "Validity label must declare whether the brief is structurally valid or incomplete.", "artifact-fail"));
   }
 
-  const positioningBlob = [
+  const requiredTitles: Array<[string, string]> = [
+    ["systemStateOverview.sectionTitle", "narrative world boundary"],
+    ["narrativeDevelopment.sectionTitle", "structural memory"],
+    ["structuralInterpretation.sectionTitle", "adjudication layer"],
+    ["forwardOrientation.sectionTitle", SYSTEM_DISPLAY_LABELS.interpretationLayerIntegrity.toLowerCase()],
+    ["strategicPositioning.sectionTitle", "proof object traceability"],
+  ];
+  for (const [path, expected] of requiredTitles) {
+    const actual =
+      path === "systemStateOverview.sectionTitle"
+        ? spec.systemStateOverview.sectionTitle.value
+        : path === "narrativeDevelopment.sectionTitle"
+          ? spec.narrativeDevelopment.sectionTitle.value
+          : path === "structuralInterpretation.sectionTitle"
+            ? spec.structuralInterpretation.sectionTitle.value
+            : path === "forwardOrientation.sectionTitle"
+              ? spec.forwardOrientation.sectionTitle.value
+              : spec.strategicPositioning.sectionTitle.value;
+    if (clean(actual).toLowerCase() !== expected) {
+      issues.push(issue(path, `${path} must be "${expected}".`, "artifact-fail"));
+    }
+  }
+
+  const orientationFields = [
+    spec.header.executiveHeadline.value,
+    spec.header.executiveSubline.value,
+    spec.systemStateOverview.currentConditionParagraph.value,
+    spec.systemStateOverview.meaningParagraph.value,
+    spec.narrativeDevelopment.earlySignalsParagraph.value,
+    spec.narrativeDevelopment.systemicUptakeParagraph.value,
+    spec.narrativeDevelopment.currentConditionParagraph.value,
+    spec.structuralInterpretation.interpretationParagraph1.value,
+    spec.forwardOrientation.primaryPathParagraph.value,
+    spec.forwardOrientation.alternatePathParagraph.value,
     spec.strategicPositioning.positioningParagraph1.value,
     spec.strategicPositioning.positioningParagraph2?.value ?? "",
     ...(spec.strategicPositioning.priorityAreas?.value ?? []),
-  ].join(" ");
-  if (genericConsultingPhrases.some((pattern) => pattern.test(positioningBlob))) {
-    issues.push(issue("strategicPositioning", "Strategic positioning sounds like generic consulting advice.", "artifact-fail"));
-  }
-
-  const sectionTitles = [
-    spec.systemStateOverview.sectionTitle.value,
-    spec.narrativeDevelopment.sectionTitle.value,
-    spec.structuralInterpretation.sectionTitle.value,
-    spec.forwardOrientation.sectionTitle.value,
-    spec.strategicPositioning.sectionTitle.value,
-  ].map((value) => clean(value).toLowerCase());
-  if (new Set(sectionTitles).size !== 5) {
-    issues.push(issue("sectionTitles", "Executive sections must map cleanly to the five-section architecture.", "artifact-fail"));
-  }
+    ...(spec.strategicPositioning.sensitivityPoints?.value ?? []),
+    ...(spec.strategicPositioning.visibilityNeeds?.value ?? []),
+  ].filter(Boolean);
 
   for (const field of [
     spec.systemStateOverview.meaningParagraph.value,
     spec.structuralInterpretation.interpretationParagraph1.value,
     spec.forwardOrientation.primaryPathParagraph.value,
-    spec.forwardOrientation.alternatePathParagraph.value,
     spec.strategicPositioning.positioningParagraph1.value,
   ]) {
     if (!implicationPattern.test(field)) {
       issues.push(issue("executiveTone", "Executive brief paragraphs must carry direct implication and causal clarity.", "artifact-fail"));
       break;
     }
+  }
+
+  for (const field of orientationFields) {
+    for (const pattern of prohibitedOrientationPhrases) {
+      if (pattern.test(field)) {
+        issues.push(issue("orientationIntegrity", "Executive brief must remain orientation-only and avoid prediction or recommendation language.", "artifact-fail"));
+        break;
+      }
+    }
+  }
+
+  const prohibitedTones = [
+    spec.forwardOrientation.primaryPathParagraph.tone,
+    spec.forwardOrientation.alternatePathParagraph.tone,
+    spec.strategicPositioning.positioningParagraph1.tone,
+    spec.strategicPositioning.positioningParagraph2?.tone,
+  ].filter(Boolean);
+  if (prohibitedTones.some((tone) => tone === "predictive" || tone === "directive")) {
+    issues.push(issue("orientationIntegrity", "Executive brief tones must stay analytical, explanatory, or signal-based.", "artifact-fail"));
   }
 
   for (const similarity of inspectExecutiveBodyRailSimilarity(spec)) {
@@ -301,6 +342,8 @@ export function inspectExecutiveBriefSpecFields(spec: ExecutiveBriefSpec): Artif
     "header.boundedWorld",
     "header.asOfLabel",
     "header.currentPhase",
+    "header.briefMode",
+    "header.validityLabel",
     "header.executiveHeadline",
     "header.executiveSubline",
     "systemStateOverview.currentConditionParagraph",

@@ -1,13 +1,15 @@
-import chromium from "@sparticuz/chromium";
-import { chromium as playwright } from "playwright-core";
 import type { ExportMode } from "../../src/features/export/types/export";
 import {
   countPdfPages,
   measureRenderedLayout,
   validateRenderedBoardLayout,
   validateRenderedExecutiveLayout,
+  validateRenderedLocalConsoleLayout,
   validateRenderedPresentationLayout,
 } from "../../src/features/export/utils/physicalLayoutValidation";
+import { launchHeadlessBrowser } from "./browser";
+
+type PdfRenderMode = ExportMode | "local-console";
 
 type VercelRequest = {
   method?: string;
@@ -21,10 +23,11 @@ type VercelResponse = {
 };
 
 interface PdfRequestBody {
-  mode: ExportMode;
+  mode: PdfRenderMode;
   html: string;
   filename: string;
   orientation?: "portrait" | "landscape";
+  documentKind?: "executive" | "one-pager";
 }
 
 const parseBody = (body: unknown): PdfRequestBody | null => {
@@ -43,7 +46,7 @@ const parseBody = (body: unknown): PdfRequestBody | null => {
   return null;
 };
 
-const buildPdfDocument = (html: string, mode: ExportMode, orientation: "portrait" | "landscape") => {
+const buildPdfDocument = (html: string, mode: PdfRenderMode, orientation: "portrait" | "landscape") => {
   const injection = `
       <style id="export-pdf-orientation">
         @page {
@@ -100,11 +103,7 @@ export default async function handler(request: VercelRequest, response: VercelRe
 
   let browser;
   try {
-    browser = await playwright.launch({
-      args: chromium.args,
-      executablePath: await chromium.executablePath(),
-      headless: true,
-    });
+    browser = await launchHeadlessBrowser();
 
     const page = await browser.newPage({
       viewport: {
@@ -120,11 +119,13 @@ export default async function handler(request: VercelRequest, response: VercelRe
 
     const renderDiagnostics = await measureRenderedLayout(page, payload.mode, orientation);
     const renderValidation =
-      payload.mode === "board-onepager"
-        ? validateRenderedBoardLayout(renderDiagnostics)
-        : payload.mode === "presentation-brief"
-          ? validateRenderedPresentationLayout(renderDiagnostics)
-          : validateRenderedExecutiveLayout(renderDiagnostics);
+      payload.mode === "local-console"
+        ? validateRenderedLocalConsoleLayout(renderDiagnostics, payload.documentKind === "one-pager" ? "one-pager" : "executive")
+        : payload.mode === "board-onepager"
+          ? validateRenderedBoardLayout(renderDiagnostics)
+          : payload.mode === "presentation-brief"
+            ? validateRenderedPresentationLayout(renderDiagnostics)
+            : validateRenderedExecutiveLayout(renderDiagnostics);
     if (!renderValidation.ok) {
       response.setHeader("Content-Type", "application/json");
       response.status(422).send(
@@ -139,8 +140,8 @@ export default async function handler(request: VercelRequest, response: VercelRe
 
     const pageRanges =
       payload.mode === "board-onepager"
-        ? "1"
-        : `1-${renderValidation.diagnostics.wrapperCount}`;
+          ? "1"
+          : `1-${renderValidation?.diagnostics.wrapperCount}`;
 
     const pdf = await page.pdf({
       format: "Letter",
@@ -159,6 +160,17 @@ export default async function handler(request: VercelRequest, response: VercelRe
     });
 
     const renderedPageCount = countPdfPages(pdf);
+    if (payload.mode === "local-console" && renderedPageCount !== renderValidation.diagnostics.wrapperCount) {
+      response.setHeader("Content-Type", "application/json");
+      response.status(422).send(
+        JSON.stringify({
+          error: "Local console PDF page count does not match the rendered page wrappers.",
+          diagnostics: renderValidation.diagnostics,
+          renderedPageCount,
+        }),
+      );
+      return;
+    }
     if (payload.mode === "board-onepager" && renderedPageCount !== 1) {
       response.setHeader("Content-Type", "application/json");
       response.status(422).send(
@@ -170,12 +182,12 @@ export default async function handler(request: VercelRequest, response: VercelRe
       );
       return;
     }
-    if (payload.mode === "presentation-brief" && renderedPageCount !== renderValidation.diagnostics.wrapperCount) {
+    if (payload.mode === "presentation-brief" && renderedPageCount !== renderValidation!.diagnostics.wrapperCount) {
       response.setHeader("Content-Type", "application/json");
       response.status(422).send(
         JSON.stringify({
           error: "Presentation slide page count does not match the rendered slide wrappers.",
-          diagnostics: renderValidation.diagnostics,
+          diagnostics: renderValidation!.diagnostics,
           renderedPageCount,
         }),
       );
@@ -186,7 +198,7 @@ export default async function handler(request: VercelRequest, response: VercelRe
       response.status(422).send(
         JSON.stringify({
           error: "Executive brief exceeded the six-page limit.",
-          diagnostics: renderValidation.diagnostics,
+          diagnostics: renderValidation!.diagnostics,
           renderedPageCount,
         }),
       );

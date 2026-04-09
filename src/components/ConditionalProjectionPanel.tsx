@@ -1,4 +1,5 @@
 import type { ProjectionResult } from "../types";
+import { SYSTEM_LABELS } from "../lib/systemLabels";
 import { SectionAudioControl } from "./SectionAudioControl";
 
 interface ConditionalProjectionPanelProps {
@@ -21,18 +22,18 @@ export function ConditionalProjectionPanel({ projection, worldBoundaryContext }:
     <section className="surface-panel">
       <div className="flex flex-col gap-3 xl:flex-row xl:items-start xl:justify-between">
         <div>
-          <p className="section-kicker">Conditional Projection</p>
-          <h3 className="section-title">Forward-looking structural outlook</h3>
+          <p className="section-kicker">{SYSTEM_LABELS.PROTOSTAR}</p>
+          <h3 className="section-title">Conditional projection output</h3>
           <p className="mt-2 max-w-3xl text-sm leading-6 text-muted">{projection.outlookSummary}</p>
         </div>
         <div className="flex gap-2">
           <SectionAudioControl
             sectionTitle="Conditional Projection"
             worldBoundaryContext={worldBoundaryContext}
-            summary="The conditional projection panel provides a bounded forward outlook under explicit assumptions."
+            summary="The Simulation Engine provides a bounded forward outlook under explicit assumptions."
             currentState={`It is currently representing the ${projection.currentPhase} phase, with a next target of ${projection.nextPhaseTarget ?? "no further phase"}, ${projection.projectedTransitions.length} projected transitions, and an uncertainty band of ${projection.uncertaintyBand}. ${nearestGap ? `Threshold proximity currently indicates that ${nearestGap}.` : "There is no further threshold proximity because the current state is already terminal."}`}
-            businessUse="A firm can use this to judge whether pressure appears to be building toward another review point and whether nearer-term planning discussions may be warranted."
-            decisionGuidance="This is appropriately forward-looking, but it remains an exploratory projection rather than a guaranteed prediction of real-world outcomes."
+            businessUse="This view helps clarify whether pressure is moving toward another review point under the current assumptions."
+            decisionGuidance="Read it as an assumption-bound extension of the current state, not a prediction of real-world outcomes."
             rawContext={[
               `Current phase: ${projection.currentPhase}`,
               `Next phase target: ${projection.nextPhaseTarget ?? "terminal"}`,
@@ -43,7 +44,7 @@ export function ConditionalProjectionPanel({ projection, worldBoundaryContext }:
             ]}
           />
           <div className="surface-panel-subtle px-3 py-2 text-xs uppercase tracking-[0.18em] text-muted">
-            Exploratory only. Not predictive of real-world behavior.
+            Exploratory only. Simulation Engine output under explicit assumptions.
           </div>
         </div>
       </div>

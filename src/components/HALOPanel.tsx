@@ -1,4 +1,5 @@
 import type { HaloOrientation } from "../types";
+import { SYSTEM_LABELS } from "../lib/systemLabels";
 import { SectionAudioControl } from "./SectionAudioControl";
 
 interface HALOPanelProps {
@@ -11,6 +12,7 @@ interface HALOPanelProps {
 const meter = (value: number) => `${Math.min(100, Math.max(0, value))}%`;
 
 export function HALOPanel({ halo, phase, ringCount, worldBoundaryContext }: HALOPanelProps) {
+  const sectionTitle = SYSTEM_LABELS.HALO;
   const pulseDuration = `${Math.max(4.8, 9.2 - halo.momentum / 18)}s`;
   const ringDuration = `${Math.max(3.6, 7.4 - halo.instability / 20)}s`;
   const ambientOpacity = 0.18 + halo.instability / 180;
@@ -49,20 +51,20 @@ export function HALOPanel({ halo, phase, ringCount, worldBoundaryContext }: HALO
       />
       <div className="mb-4 flex items-start justify-between">
         <div>
-          <p className="section-kicker">HALO Orientation</p>
+          <p className="section-kicker">{sectionTitle}</p>
           <h3 className="section-title">{phase}</h3>
           <p className="mt-2 max-w-2xl text-sm leading-6 text-muted">
-            Orientation layer for state, pressure, motion, and structural support. The motion is intentionally slow and ambient.
+            The Interpretation Layer structures state, pressure, motion, and structural support. Motion remains intentionally slow and ambient.
           </p>
         </div>
         <div className="flex items-center gap-3">
           <SectionAudioControl
-            sectionTitle="HALO Orientation"
+            sectionTitle={sectionTitle}
             worldBoundaryContext={worldBoundaryContext}
-            summary="This HALO section summarizes state, pressure, motion, and structural support for the current narrative world."
+            summary="This output reflects the Interpretation Layer's reading of state, pressure, motion, and structural support for the current narrative world."
             currentState={`The section is currently representing the ${phase} phase. Momentum is ${halo.momentum}, emergence ratio is ${halo.emergenceRatio}, evidentiary mass is ${halo.evidentiaryMass}, ring count is ${ringCount}, and instability is ${halo.instability}. ${momentumInterpretation} ${instabilityInterpretation}`}
-            businessUse="A firm can use this section as an orientation signal to judge whether monitoring can remain routine or whether leadership review should become more active."
-            decisionGuidance="If instability stays elevated while momentum remains high, this panel supports bringing forward human review, escalation discussion, or a request for more supporting evidence."
+            businessUse="This section helps clarify whether monitoring can remain routine or whether the environment merits closer review."
+            decisionGuidance="If instability remains elevated while momentum stays high, this surface can justify earlier human review or a request for more supporting evidence."
             rawContext={[
               `Phase: ${phase}`,
               `Dominant orientation color: ${halo.dominantOrientationColor}`,
@@ -139,7 +141,7 @@ export function HALOPanel({ halo, phase, ringCount, worldBoundaryContext }: HALO
       </div>
 
       <p className="mt-4 text-sm leading-6 text-muted">
-        HALO exposes state, pressure, motion, and structural support. It does not classify truth,
+        The Interpretation Layer exposes state, pressure, motion, and structural support. It does not classify truth,
         infer belief, or authorize action.
       </p>
     </section>

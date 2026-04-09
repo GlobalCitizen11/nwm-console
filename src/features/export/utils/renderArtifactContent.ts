@@ -15,6 +15,7 @@ import {
   buildExecutiveBriefFieldPack,
   buildExecutiveBriefSpecFromSummary,
 } from "../../../lib/buildExecutiveBriefSpec";
+import { getAdjudicationStatusDisplay } from "../../../lib/systemLabels";
 
 const clean = (text: string) => text.replace(/\s+/g, " ").trim();
 
@@ -43,6 +44,7 @@ export const renderBoardOnePager = (
   summary: CanonicalExportSummary,
   intelligence?: VoiceBriefTranscriptIntelligence | VoiceBriefIntelligence,
 ): BoardOnePagerContent => {
+  const adjudicationStatus = getAdjudicationStatusDisplay(summary.phaseResolution.adjudicationStatus);
   const spec = buildBoardOnePagerSpec(summary, intelligence);
   const fieldPack = buildBoardOnePagerFieldPack(spec);
 
@@ -73,6 +75,29 @@ export const renderBoardOnePager = (
     readShiftSignals: fieldPack.readShiftSignals,
     containedSpreadSplit: fieldPack.containedSpreadSplit,
     evidenceAnchors: fieldPack.evidenceAnchors,
+    v2: {
+      currentState: summary.currentStateSummary,
+      structuralReality: summary.dominantPathSummary,
+      keyDrivers: [
+        summary.primaryPressureSummary,
+        summary.artifactSetSummary,
+        summary.traceabilitySummary,
+      ].filter(Boolean),
+      immediateImplications: [
+        summary.implicationsSummary,
+        summary.proofSummary,
+        `State vector: density ${summary.stateVector.density.toFixed(1)}, coherence ${summary.stateVector.coherence.toFixed(1)}, reversibility ${summary.stateVector.reversibility.toFixed(1)}.`,
+      ].filter(Boolean),
+      whatToWatch: [
+        summary.watchpointSummary,
+        ...summary.preGcsSensitivity.primarySensitivities.slice(0, 2),
+      ].slice(0, 3),
+      adjudicationStatus: `Current phase ${summary.phaseResolution.phase} is marked ${adjudicationStatus}.`,
+      traceabilitySummary: summary.traceabilitySummary,
+      proofSummary: summary.proofSummary,
+      stateVector: summary.stateVector,
+      phaseResolution: summary.phaseResolution,
+    },
   };
 };
 
@@ -91,6 +116,17 @@ export const renderExecutiveBrief = (
     boundedWorld: summary.boundedWorld,
     spec,
     fieldPack,
+    v2: {
+      boundedWorldDefinition: summary.boundaryDefinition,
+      artifactSetSummary: summary.artifactSetSummary,
+      stateVector: summary.stateVector,
+      phaseResolution: summary.phaseResolution,
+      traceabilitySummary: summary.traceabilitySummary,
+      proofSummary: summary.proofSummary,
+      artifactStateMapping: summary.artifactStateMapping,
+      temporalSpine: summary.temporalSpine,
+      preGcsSensitivity: summary.preGcsSensitivity,
+    },
   };
 };
 

@@ -37,8 +37,8 @@ export function GovernancePanel({ world, worldBoundaryContext }: GovernancePanel
           worldBoundaryContext={worldBoundaryContext}
           summary="The governance panel states what this system can and cannot do."
           currentState={`The panel is currently representing the ${world.governanceMode} deployment mode.`}
-          businessUse="A firm can use this section to enforce proper use, clarify non-claims, and ensure that outputs support human review instead of automated decision authority."
-          decisionGuidance="Strong governance around the tool leads to better decisions by preventing misuse, false certainty, and overreach beyond the system boundary."
+          businessUse="This section keeps non-claims, safeguards, and review expectations visible alongside the analysis."
+          decisionGuidance="Clear governance reduces false certainty and keeps the console within its declared boundary."
           rawContext={[
             `Deployment mode: ${world.governanceMode}`,
             "Safeguards: aggregate-only analysis, no actor-level profiling, no belief inference, no truth adjudication, no automated decision authority, human oversight required",

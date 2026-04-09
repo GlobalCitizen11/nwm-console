@@ -1,4 +1,5 @@
 import type { AudioMode, AudioRole } from "../context/audioPreferences";
+import { SYSTEM_LABELS } from "../lib/systemLabels";
 import { getOpenAiVoice, type VoiceProfile } from "./speech";
 
 const STORAGE_KEY = "nwm-console-openai-api-key";
@@ -29,8 +30,8 @@ interface ResponsesApiResult {
 type OpenAiSpeechVoice = "coral" | "shimmer";
 
 const sectionLenses: Record<string, string> = {
-  "HALO Orientation":
-    "Treat this as a structural orientation brief. Focus on pressure, momentum, instability, and what the signal mix suggests about the current posture of the world.",
+  [SYSTEM_LABELS.HALO]:
+    "Treat this as a structural interpretation brief. Focus on pressure, momentum, instability, and what the signal mix suggests about the current posture of the world.",
   "Timeline Replay":
     "Treat this as a sequence-and-turning-points brief. Focus on where the world changed, what persisted, and why the current point in time matters.",
   "State Evolution Charts":

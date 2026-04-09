@@ -1,6 +1,15 @@
+import { useMemo } from "react";
 import type { SimulationResult, WorldStatePoint } from "../types";
+import {
+  buildExecutiveBriefReadinessTimeline,
+  findExecutiveBriefReadinessWindow,
+  formatExecutiveBriefReadinessWindow,
+} from "../features/export/utils/executiveBriefReadiness";
+import { SYSTEM_DISPLAY_LABELS, SYSTEM_LABELS } from "../lib/systemLabels";
 
 interface ExecutiveViewProps {
+  scenarioLabel: string;
+  scenarioId: string;
   result: SimulationResult;
   point: WorldStatePoint;
 }
@@ -12,23 +21,45 @@ const cards = [
   { key: "reversibility", label: "Reversibility" },
 ] as const;
 
-export function ExecutiveView({ result, point }: ExecutiveViewProps) {
+export function ExecutiveView({ scenarioLabel, scenarioId, result, point }: ExecutiveViewProps) {
   const sourceClasses =
     result.world.sourceClasses?.join(", ") ??
     Array.from(
       new Set(result.timeline[result.timeline.length - 1]?.visibleEvents.map((event) => event.sourceType) ?? []),
     ).join(", ");
+  const readiness = useMemo(
+    () =>
+      buildExecutiveBriefReadinessTimeline({
+        scenarioName: scenarioLabel,
+        scenarioId,
+        result,
+      }),
+    [scenarioId, scenarioLabel, result],
+  );
+  const currentReadiness =
+    readiness.points.find((entry) => entry.month === point.month) ??
+    readiness.points[readiness.points.length - 1];
+  const currentWindow = findExecutiveBriefReadinessWindow(readiness, point.month);
+  const nextValidPoint = readiness.points.find((entry) => entry.month > point.month && entry.exportable && entry.qaOk) ?? null;
+  const readinessWindowSummary =
+    readiness.readinessWindows.length > 0
+      ? readiness.readinessWindows.map(formatExecutiveBriefReadinessWindow).join(", ")
+      : "No valid Executive Brief window yet";
+  const briefableNow = Boolean(currentReadiness?.exportable && currentReadiness.qaOk);
+  const currentReason =
+    currentReadiness?.withheldReason ??
+    (currentReadiness?.unmetRequirements.length ? currentReadiness.unmetRequirements.join(", ") : "Structural state integrity remains incomplete.");
 
   return (
     <div className="space-y-4">
       <section className="surface-panel">
         <div className="flex flex-col gap-4 xl:flex-row xl:items-end xl:justify-between">
-          <div>
+          <div className="min-w-0">
             <p className="section-kicker">World Overview</p>
             <h2 className="mt-2 text-3xl font-semibold text-ink">{result.world.name}</h2>
             <p className="mt-3 max-w-4xl text-sm leading-7 text-muted">{result.world.summary}</p>
           </div>
-          <div className="surface-panel-subtle grid gap-2 text-sm text-ink xl:min-w-[340px]">
+          <div className="surface-panel-subtle grid w-full gap-2 text-sm text-ink xl:max-w-[360px]">
             <p>Domain: <span className="text-muted">{result.world.domain}</span></p>
             <p>Geography: <span className="text-muted">{result.world.geography}</span></p>
             <p>Time horizon: <span className="text-muted">{result.world.timeHorizonMonths} months</span></p>
@@ -44,19 +75,27 @@ export function ExecutiveView({ result, point }: ExecutiveViewProps) {
               <span className="text-ink">{point.metrics.velocity}</span>, density at{" "}
               <span className="text-ink">{point.metrics.density}</span>, coherence at{" "}
               <span className="text-ink">{point.metrics.coherence}</span>, and reversibility at{" "}
-              <span className="text-ink">{point.metrics.reversibility}</span>. This creates a concise top-line briefing before the user moves into replay, HALO, and provenance.
+              <span className="text-ink">{point.metrics.reversibility}</span>. This provides the top-line read before moving into replay, the{" "}
+              {SYSTEM_LABELS.HALO}, and provenance.
             </p>
           </div>
           <div className="surface-panel-subtle p-4">
             <p className="section-kicker">Board framing</p>
             <p className="mt-3 text-sm leading-7 text-muted">
-              Use this view to brief leadership on boundary, phase, and structural posture. Deeper explanation of why the world reached this state should come from replay, provenance, proof, and sandbox surfaces below.
+              This surface keeps boundary, phase, and structural posture in one place. The deeper account of how the world reached this state sits in replay, provenance, proof, and sandbox surfaces below.
             </p>
           </div>
         </div>
       </section>
 
-      <div className="grid gap-4 xl:grid-cols-6">
+      <div className="grid gap-4 grid-cols-[repeat(auto-fit,minmax(180px,1fr))]">
+        <div className={`metric-card ${briefableNow ? "" : "border-phaseYellow/40"}`}>
+          <p className="section-kicker">Executive brief</p>
+          <p className="mt-3 text-xl font-semibold text-ink">{briefableNow ? "Briefable now" : "Not briefable yet"}</p>
+          <p className="mt-2 text-xs uppercase tracking-[0.18em] text-muted">
+            {currentWindow ? `Active window ${formatExecutiveBriefReadinessWindow(currentWindow)}` : currentReadiness ? `Blocked at M${currentReadiness.month}` : "No active window"}
+          </p>
+        </div>
         <div className="metric-card">
           <p className="section-kicker">Current phase</p>
           <p className="mt-3 text-xl font-semibold text-ink">{point.phase}</p>
@@ -68,6 +107,44 @@ export function ExecutiveView({ result, point }: ExecutiveViewProps) {
           </div>
         ))}
       </div>
+
+      <section className="surface-panel">
+        <div className="flex flex-col gap-4 xl:flex-row xl:items-start xl:justify-between">
+          <div className="min-w-0 xl:max-w-[52rem]">
+            <p className="section-kicker">Executive Brief Readiness</p>
+            <h2 className="section-title">When this scenario becomes briefable</h2>
+            <p className="mt-3 text-sm leading-7 text-muted">
+              Executive Brief validity is tracked month by month against the {SYSTEM_DISPLAY_LABELS.framework} gate. This tells you when the scenario first becomes structurally briefable and whether the current replay month still sits inside a valid executive-brief window.
+            </p>
+          </div>
+          <div className="surface-panel-subtle grid w-full gap-2 text-sm text-ink xl:max-w-[420px]">
+            <p>First valid month: <span className="text-muted">{readiness.firstValidLabel ?? "Not reached"}</span></p>
+            <p>Current month: <span className="text-muted">M{point.month}</span></p>
+            <p>Current status: <span className="text-muted">{briefableNow ? "Exportable" : "Withheld"}</span></p>
+            <p>Readiness windows: <span className="text-muted">{readinessWindowSummary}</span></p>
+          </div>
+        </div>
+        <div className="mt-5 grid gap-4 xl:grid-cols-[1.1fr_0.9fr]">
+          <div className="surface-panel-subtle p-4">
+            <p className="section-kicker">Current month read</p>
+            <p className="mt-3 text-sm leading-7 text-muted">
+              {briefableNow
+                ? `M${point.month} sits inside the active readiness window ${currentWindow ? formatExecutiveBriefReadinessWindow(currentWindow) : readiness.firstValidLabel ?? "current window"}, so the Executive Brief can be generated without dropping back to a structural diagnostic.`
+                : `M${point.month} is outside a valid Executive Brief window. The current blocked condition is ${currentReason}`}
+            </p>
+          </div>
+          <div className="surface-panel-subtle p-4">
+            <p className="section-kicker">Window transition</p>
+            <p className="mt-3 text-sm leading-7 text-muted">
+              {briefableNow
+                ? `The scenario first became briefable at ${readiness.firstValidLabel ?? "an unresolved month"} and remains valid through ${currentWindow ? currentWindow.endLabel : `M${point.month}`}.`
+                : nextValidPoint
+                  ? `The next valid Executive Brief window opens at M${nextValidPoint.month}, when the structural gate and export QA both clear.`
+                  : "No later valid Executive Brief window appears in the current replay horizon."}
+            </p>
+          </div>
+        </div>
+      </section>
 
       <section className="surface-panel">
         <p className="section-kicker">System Non-Claims</p>

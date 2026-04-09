@@ -5,6 +5,7 @@ import type {
   NarrativeEvent,
   SimulationResult,
 } from "../types";
+import { SYSTEM_LABELS } from "../lib/systemLabels";
 import { SectionAudioControl } from "./SectionAudioControl";
 
 interface CounterfactualSandboxProps {
@@ -122,19 +123,19 @@ export function CounterfactualSandbox({
       <div className="mb-4">
         <div className="flex items-start justify-between gap-3">
           <div>
-            <p className="section-kicker">Counterfactual Sandbox</p>
-            <h3 className="section-title">Exploratory scenario simulation workspace</h3>
+            <p className="section-kicker">{SYSTEM_LABELS.PROTOSTAR}</p>
+            <h3 className="section-title">Exploratory scenario testing workspace</h3>
             <p className="mt-2 text-sm text-muted">
-              Build a bounded scenario by stacking multiple artifact changes. This is not predictive and not policy guidance.
+              The Simulation Engine supports bounded scenario testing by stacking multiple artifact changes. Read it as structured exploration under explicit assumptions.
             </p>
           </div>
           <SectionAudioControl
             sectionTitle="Counterfactual Sandbox"
             worldBoundaryContext={worldBoundaryContext}
-            summary="The counterfactual sandbox lets users build bounded exploratory scenarios and compare them against the base world."
+            summary="The Simulation Engine lets users build bounded exploratory scenarios and compare them against the base world."
             currentState={`The sandbox currently has ${currentScenario.length} active artifact changes and ${savedScenarios.length} saved scenarios. The selected saved scenario is ${selectedScenarioId ?? "draft scenario"}. ${pathChanged ? "The current scenario is changing the phase path relative to the base world." : "The current scenario is not materially changing the phase path relative to the base world."}`}
-            businessUse="A firm can use this section to identify which artifacts truly alter the structural path."
-            decisionGuidance="That supports better scenario review, stress testing, and prioritization of human analysis before real-world decisions are taken."
+            businessUse="This section helps reveal which artifacts materially alter the structural path."
+            decisionGuidance="Use it to compare sensitivity across assumptions before the read moves into planning or review."
             rawContext={[
               `Active operations: ${currentScenario.map((operation) => `${operation.eventId} ${operation.mode} delay ${operation.delayMonths} strength ${operation.strengthMultiplier}`).join(" | ") || "none"}`,
               `Saved scenarios: ${savedScenarios.map((scenario) => scenario.name).join(" | ") || "none"}`,
@@ -203,10 +204,10 @@ export function CounterfactualSandbox({
       >
         {demoHighlightControls ? (
           <div className="mb-3 rounded-md border border-phaseYellow/60 bg-shell/80 px-3 py-2 text-sm text-ink">
-            {demoControlMessage ?? "Auto demo is actively manipulating this artifact row: remove, delay, and impact."}
+            {demoControlMessage ?? "The walkthrough is adjusting this artifact row through remove, delay, and impact changes."}
           </div>
         ) : null}
-        <div className="grid gap-3 lg:grid-cols-[1fr_auto_auto]">
+        <div className="grid items-end gap-3 grid-cols-[repeat(auto-fit,minmax(220px,1fr))]">
           <label className="control-stack">
             <span className="control-label">Saved scenario</span>
             <select
@@ -261,7 +262,7 @@ export function CounterfactualSandbox({
         {currentScenario.map((operation, index) => (
           <div
             key={`${operation.eventId}-${index}`}
-            className={`surface-panel-subtle grid gap-3 p-4 lg:grid-cols-[minmax(0,1.8fr)_minmax(180px,0.9fr)_minmax(120px,0.65fr)_minmax(140px,0.75fr)_auto] ${
+            className={`surface-panel-subtle grid items-end gap-3 p-4 grid-cols-[repeat(auto-fit,minmax(160px,1fr))] 2xl:grid-cols-[minmax(0,1.8fr)_minmax(180px,0.9fr)_minmax(120px,0.65fr)_minmax(140px,0.75fr)_auto] ${
               demoHighlightControls && demoActiveArtifactId === operation.eventId ? "border-phaseYellow/80 bg-shell/80" : ""
             }`}
           >
@@ -316,7 +317,7 @@ export function CounterfactualSandbox({
                 title="Strength multiplier"
               />
             </label>
-            <div className="control-stack">
+            <div className="control-stack justify-self-start">
               <span className="control-label">Row</span>
               <button
                 className="action-button"

@@ -68,8 +68,8 @@ export function StateCharts({ timeline, currentMonth, worldBoundaryContext }: St
             worldBoundaryContext={worldBoundaryContext}
             summary="These charts show how the core structural metrics are changing over time."
             currentState={`The charts are currently showing month ${currentMonth}. The latest values are velocity ${currentPoint?.metrics.velocity ?? 0}, density ${currentPoint?.metrics.density ?? 0}, coherence ${currentPoint?.metrics.coherence ?? 0}, and reversibility ${currentPoint?.metrics.reversibility ?? 0}. Velocity is ${trendDirection("velocity")}, density is ${trendDirection("density")}, coherence is ${trendDirection("coherence")}, and reversibility is ${trendDirection("reversibility")}.`}
-            businessUse="A firm can use these trends to distinguish short-term noise from persistent structural movement."
-            decisionGuidance="When density is rising and reversibility is falling together, the business has a stronger basis for earlier review, contingency planning, or risk escalation."
+            businessUse="These trends help distinguish short-term noise from more persistent structural movement."
+            decisionGuidance="When density rises as reversibility falls, the environment may be becoming less absorbent and more difficult to reverse."
             rawContext={[
               `Visible months: ${visibleTimeline.map((point) => point.month).join(", ")}`,
               `Velocity series: ${visibleTimeline.map((point) => point.metrics.velocity).join(", ")}`,

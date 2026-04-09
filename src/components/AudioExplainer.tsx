@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import type { WorldDefinition } from "../types";
+import { SYSTEM_LABELS } from "../lib/systemLabels";
 import { configurePreferredVoice } from "../utils/speech";
 
 type AudioRole = "Executive" | "Analyst" | "Sandbox" | "Oversight";
@@ -22,12 +23,12 @@ interface AudioExplainerProps {
 }
 
 const sectionLabels: Record<AudioSection, string> = {
-  current: "Current Link Context",
+  current: "Current View Context",
   world: "World Overview",
   timeline: "Timeline And Replay",
   proof: "Proof And Transition Review",
-  sandbox: "Counterfactual Sandbox",
-  projection: "Conditional Projection",
+  sandbox: `${SYSTEM_LABELS.PROTOSTAR} Sandbox`,
+  projection: `${SYSTEM_LABELS.PROTOSTAR} Projection`,
   governance: "Governance Panel",
 };
 
@@ -67,26 +68,26 @@ export function AudioExplainer({
   }, []);
 
   const script = useMemo(() => {
-    const sharedContext = `You are currently in the ${role} view at month ${currentMonth} in the ${world.name} world.`;
+    const sharedContext = `You are currently in the ${role} view at month ${currentMonth} within the ${world.name} bounded world.`;
     const decisionGuardrail =
-      "Firms should use this information to support better governed human decisions, stronger review discipline, and clearer escalation logic, not to automate judgment.";
+      "This surface is intended to support human review and clearer orientation, not automated judgment.";
 
     switch (section) {
       case "world":
-        return `${sharedContext} The world overview explains the bounded domain, geography, time horizon, and governance mode. A firm can use this section to confirm what is in scope before interpreting any signal, so teams do not overread the model beyond its declared boundary. ${decisionGuardrail}`;
+        return `${sharedContext} The world overview sets the boundary: domain, geography, time horizon, and governance mode. It keeps the later read anchored to what is actually in scope before any signal is interpreted. ${decisionGuardrail}`;
       case "timeline":
-        return `${sharedContext} The timeline and replay section shows when structural pressure accumulated and when the phase path changed. A firm can use this to brief leadership on sequence, persistence, and turning points rather than reacting to isolated artifacts. ${decisionGuardrail}`;
+        return `${sharedContext} Timeline and replay show when structural pressure accumulated and when the phase path changed. Sequence matters more than any isolated artifact, which makes turning points easier to read here. ${decisionGuardrail}`;
       case "proof":
-        return `${sharedContext} The proof and transition surfaces explain why a phase change was adjudicated, including thresholds, deltas, and supporting artifacts. A firm can use this for oversight, challenge review, escalation memos, and audit documentation before taking action. The current selected transition is ${selectedTransitionId ?? "not set"}. ${decisionGuardrail}`;
+        return `${sharedContext} The proof and transition surfaces keep the basis for a phase change reviewable, including thresholds, deltas, and supporting artifacts. The current selected transition is ${selectedTransitionId ?? "not set"}. ${decisionGuardrail}`;
       case "sandbox":
-        return `${sharedContext} The sandbox allows a firm to explore how the phase path changes if selected artifacts are removed, delayed, or weakened. There are currently ${activeScenarioCount} active sandbox modifications. A firm can use this to stress test assumptions, compare scenario sensitivity, and identify which artifacts materially affect the world-state path. It should not be treated as policy advice. ${decisionGuardrail}`;
+        return `${sharedContext} The ${SYSTEM_LABELS.PROTOSTAR} examines how the phase path changes when selected artifacts are removed, delayed, or weakened. There are currently ${activeScenarioCount} active sandbox modifications. It is a bounded scenario exercise, not a policy instruction or a forecast. ${decisionGuardrail}`;
       case "projection":
-        return `${sharedContext} The conditional projection layer shows a bounded forward outlook under explicit assumptions. A firm can use it to understand threshold proximity and scenario continuation risk, while keeping uncertainty visible. It is an exploratory projection, not a prediction of real-world behavior. ${decisionGuardrail}`;
+        return `${sharedContext} The ${SYSTEM_LABELS.PROTOSTAR} presents a conditional forward view under explicit assumptions. It keeps threshold proximity and continuation risk visible without implying prediction. ${decisionGuardrail}`;
       case "governance":
-        return `${sharedContext} The governance panel states safeguards, non-claims, and deployment posture. A firm can use this section to ensure the console is used in a governance-grade manner, with human review and without truth adjudication, belief inference, or automated decision authority. ${decisionGuardrail}`;
+        return `${sharedContext} The governance panel keeps safeguards, non-claims, and deployment posture visible. It frames how the console should be used before outputs move into review or circulation. ${decisionGuardrail}`;
       case "current":
       default:
-        return `${sharedContext} ${getCurrentUrlContext()} The selected artifact is ${selectedEventId ?? "not set"}, and the selected transition is ${selectedTransitionId ?? "not set"}. This audio explainer helps users understand what the current shared link is showing and how the firm can use the information for orientation, review, and disciplined human decision support. ${decisionGuardrail}`;
+        return `${sharedContext} ${getCurrentUrlContext()} The selected artifact is ${selectedEventId ?? "not set"}, and the selected transition is ${selectedTransitionId ?? "not set"}. This spoken note is meant to clarify what the current shared view is showing and where attention should rest. ${decisionGuardrail}`;
     }
   }, [role, currentMonth, world.name, section, selectedEventId, selectedTransitionId, activeScenarioCount]);
 
@@ -114,9 +115,9 @@ export function AudioExplainer({
   return (
     <section className="surface-panel">
       <p className="text-xs uppercase tracking-[0.22em] text-muted">Audio Explainer</p>
-      <h3 className="mt-2 text-lg font-semibold text-ink">Section narration and decision-support guidance</h3>
+      <h3 className="mt-2 text-lg font-semibold text-ink">Section narration</h3>
       <p className="mt-2 text-sm leading-6 text-muted">
-        Spoken guidance for the active console context. Uses the browser voice engine only. Framed for human decision support, not automated judgment.
+        Spoken guidance for the active console context. Uses the browser voice engine only. Intended for orientation and review, not automated judgment.
       </p>
 
       <div className="mt-4 grid gap-3">

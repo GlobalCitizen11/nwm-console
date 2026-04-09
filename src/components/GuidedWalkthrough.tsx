@@ -1,17 +1,19 @@
+import { SYSTEM_LABELS } from "../lib/systemLabels";
+
 interface GuidedWalkthroughProps {
   open: boolean;
   onClose: () => void;
 }
 
 const steps = [
-  "1. World boundary: inspect the explicit geographic and domain scope.",
-  "2. Artifact ingestion: seeded artifacts appear over the replay horizon.",
-  "3. State evolution: velocity, density, coherence, and reversibility accumulate structurally.",
-  "4. Phase transitions: rule-based adjudication requires persistence and hysteresis.",
-  "5. Proof object inspection: each transition exposes evidence hashes and rationale.",
-  "6. Sandbox simulation: remove, delay, or weaken artifacts to recompute the phase path.",
-  "7. World map visualization: event topology reveals influence clustering and structural pressure.",
-  "8. Governance safeguards: non-claims and oversight posture remain visible throughout the interface.",
+  "1. World boundary: establish the domain, geography, and time horizon before reading the signals.",
+  "2. Artifact ingress: seeded artifacts enter the bounded world across the replay horizon.",
+  `3. ${SYSTEM_LABELS.HALO}: signals begin to cohere into a readable environment.`,
+  `4. ${SYSTEM_LABELS.PAL}: persistence and hysteresis clarify whether the state is settling or tightening.`,
+  "5. Proof review: each visible transition retains evidence hashes and rationale.",
+  `6. ${SYSTEM_LABELS.PROTOSTAR}: remove, delay, or weaken artifacts to examine how the path changes under different assumptions.`,
+  "7. World map: clustered relationships make concentrated pressure easier to see.",
+  "8. Governance posture: safeguards and use boundaries remain visible throughout the review.",
 ];
 
 export function GuidedWalkthrough({ open, onClose }: GuidedWalkthroughProps) {
@@ -24,7 +26,7 @@ export function GuidedWalkthrough({ open, onClose }: GuidedWalkthroughProps) {
       <div className="mx-auto max-w-3xl rounded-sm border border-edge bg-panel p-6 shadow-panel">
         <div className="flex items-center justify-between">
           <div>
-            <p className="text-xs uppercase tracking-[0.22em] text-muted">Guided Demo Mode</p>
+            <p className="text-xs uppercase tracking-[0.22em] text-muted">Guided Walkthrough</p>
             <h2 className="mt-2 text-2xl font-semibold text-ink">Narrative World Modeling walkthrough</h2>
           </div>
           <button

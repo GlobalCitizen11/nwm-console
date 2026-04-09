@@ -56,11 +56,11 @@ input {
 
 @layer components {
   .surface-panel {
-    @apply rounded-md border border-edge/90 bg-panel px-5 py-4 shadow-panel;
+    @apply min-w-0 rounded-md border border-edge/90 bg-panel px-5 py-4 shadow-panel;
   }
 
   .surface-panel-subtle {
-    @apply rounded-md border border-edge/70 bg-shell/60 px-4 py-3;
+    @apply min-w-0 rounded-md border border-edge/70 bg-shell/60 px-4 py-3;
   }
 
   .section-kicker {
@@ -92,7 +92,7 @@ input {
   }
 
   .metric-card {
-    @apply rounded-md border border-edge/90 bg-panel px-4 py-4 shadow-panel;
+    @apply min-w-0 rounded-md border border-edge/90 bg-panel px-4 py-4 shadow-panel;
   }
 }
 

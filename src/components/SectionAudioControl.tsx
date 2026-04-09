@@ -75,11 +75,12 @@ export function SectionAudioControl({
 
   const buildScript = () => {
     return [
-      `Local ${role.toLowerCase()} brief.`,
-      `Section: ${sectionTitle}.`,
-      `Current state: ${currentState}`,
-      `Bounded-world relevance: ${businessUse}`,
-      decisionGuidance ? `Human review note: ${decisionGuidance}` : "",
+      `Local ${role.toLowerCase()} section brief.`,
+      `${sectionTitle}.`,
+      summary,
+      `Current read: ${currentState}`,
+      `Why it matters: ${businessUse}`,
+      decisionGuidance ? `Review note: ${decisionGuidance}` : "",
       "This is the deterministic local voice path.",
     ]
       .filter(Boolean)
@@ -187,7 +188,7 @@ export function SectionAudioControl({
     }
 
     if (isSectionAudioBlocked()) {
-      setErrorMessage("Auto demo narration is active. Pause or stop the demo before playing a section brief.");
+      setErrorMessage("Walkthrough narration is active. Pause or stop the walkthrough before playing a section brief.");
       return;
     }
     const useOpenAiVoice = isOpenAiVoiceProfile(voiceProfile);

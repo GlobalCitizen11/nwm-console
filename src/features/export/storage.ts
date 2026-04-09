@@ -1,7 +1,7 @@
 import type { ExportPreviewBundle } from "./types/export";
 
 const PREFIX = "nwm-feature-export:";
-const STORAGE_VERSION = 4;
+const STORAGE_VERSION = 5;
 const MAX_PREVIEW_PAYLOADS = 6;
 
 interface StoredExportPreviewPayload {
@@ -20,6 +20,7 @@ const isValidBundle = (value: unknown): value is ExportPreviewBundle => {
       bundle.data &&
       bundle.htmlByMode &&
       bundle.qaByMode &&
+      bundle.availabilityByMode &&
       bundle.filenameByMode &&
       bundle.orientationByMode,
   );

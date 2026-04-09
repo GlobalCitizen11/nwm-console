@@ -1,10 +1,11 @@
 import { describe, expect, it } from "vitest";
+import { SYSTEM_LABELS } from "../lib/systemLabels";
 import { buildNarrationPrompt } from "./openaiNarration";
 
 describe("buildNarrationPrompt", () => {
   it("includes governance-safe narration constraints and section state", () => {
     const prompt = buildNarrationPrompt({
-      sectionTitle: "HALO Orientation",
+      sectionTitle: SYSTEM_LABELS.HALO,
       role: "Executive",
       mode: "detailed",
       worldBoundaryContext: "World name: Capital Fragmentation Simulation | Domain: Sovereign capital alignment",
@@ -14,7 +15,7 @@ describe("buildNarrationPrompt", () => {
       decisionGuidance: "May warrant escalation review.",
     });
 
-    expect(prompt).toContain("HALO Orientation");
+    expect(prompt).toContain(SYSTEM_LABELS.HALO);
     expect(prompt).toContain("Momentum is 72 and instability is 64.");
     expect(prompt).toContain("may warrant");
     expect(prompt).toContain("do not claim certainty");

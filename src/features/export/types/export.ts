@@ -1,4 +1,13 @@
-import type { BriefingState } from "../../../types";
+import type {
+  ArtifactStateMappingRow,
+  BriefingState,
+  ExecutiveBriefOrientationGate,
+  PhaseResolutionV2,
+  PreGCSSensitivityLayer,
+  ProofObjectScaffold,
+  StateVectorV2,
+  TemporalSpineEntry,
+} from "../../../types";
 import type { VoiceBriefIntelligence } from "../../../types/voiceBriefIntelligence";
 import type {
   ExecutiveBriefFieldPack as NewExecutiveBriefFieldPack,
@@ -76,6 +85,7 @@ export interface ExportSemanticData {
   monitoringPriorities: ExportInsight[];
   closingSynthesis: string;
   sourceState: BriefingState;
+  v2: BriefingState["v2"];
 }
 
 export interface CanonicalSystemTruth {
@@ -133,6 +143,11 @@ export interface ExportQaResult {
   issues: ExportQaIssue[];
 }
 
+export interface ExportAvailability {
+  exportable: boolean;
+  reason?: string;
+}
+
 export interface ExportPreviewBundle {
   mode: ExportMode;
   data: ExportSemanticData;
@@ -142,6 +157,7 @@ export interface ExportPreviewBundle {
   contentByMode: ExportContentByMode;
   htmlByMode: Record<ExportMode, string>;
   qaByMode: Record<ExportMode, ExportQaResult>;
+  availabilityByMode: Record<ExportMode, ExportAvailability>;
   filenameByMode: Record<ExportMode, string>;
   orientationByMode: Record<ExportMode, "portrait" | "landscape">;
 }
@@ -357,6 +373,7 @@ export interface CanonicalExportSummary {
   timestamp: string;
   confidentialityLabel: string;
   boundedWorld: string;
+  boundaryDefinition: string;
   phase: string;
   density: string;
   momentum: string;
@@ -377,6 +394,16 @@ export interface CanonicalExportSummary {
   strategicPositioningSummary: string;
   watchpointSummary: string;
   evidenceAnchorsCompact: CanonicalEvidenceAnchor[];
+  executiveBriefGate: ExecutiveBriefOrientationGate;
+  artifactSetSummary: string;
+  stateVector: StateVectorV2;
+  phaseResolution: PhaseResolutionV2;
+  proofScaffolds: ProofObjectScaffold[];
+  artifactStateMapping: ArtifactStateMappingRow[];
+  temporalSpine: TemporalSpineEntry[];
+  preGcsSensitivity: PreGCSSensitivityLayer;
+  traceabilitySummary: string;
+  proofSummary: string;
 }
 
 export interface ExecutiveInsightCard {
@@ -407,6 +434,17 @@ export interface ExecutiveBriefContent {
   boundedWorld: string;
   spec: NewExecutiveBriefSpec;
   fieldPack: NewExecutiveBriefFieldPack;
+  v2: {
+    boundedWorldDefinition: string;
+    artifactSetSummary: string;
+    stateVector: StateVectorV2;
+    phaseResolution: PhaseResolutionV2;
+    traceabilitySummary: string;
+    proofSummary: string;
+    artifactStateMapping: ArtifactStateMappingRow[];
+    temporalSpine: TemporalSpineEntry[];
+    preGcsSensitivity: PreGCSSensitivityLayer;
+  };
 }
 
 export interface BoardOnePagerContent {
@@ -431,6 +469,18 @@ export interface BoardOnePagerContent {
   readShiftSignals: string[];
   containedSpreadSplit: Array<{ label: string; value: string }>;
   evidenceAnchors: CanonicalEvidenceAnchor[];
+  v2: {
+    currentState: string;
+    structuralReality: string;
+    keyDrivers: string[];
+    immediateImplications: string[];
+    whatToWatch: string[];
+    adjudicationStatus: string;
+    traceabilitySummary: string;
+    proofSummary: string;
+    stateVector: StateVectorV2;
+    phaseResolution: PhaseResolutionV2;
+  };
 }
 
 export interface PresentationSlideContent {

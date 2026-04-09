@@ -3,9 +3,10 @@ import type { Page } from "playwright-core";
 
 const WRAPPER_OVERFLOW_TOLERANCE_PX = 8;
 const EXECUTIVE_WRAPPER_OVERFLOW_TOLERANCE_PX = 64;
+export type RenderedLayoutMode = ExportMode | "local-console";
 
 export interface RenderedLayoutDiagnostics {
-  mode: ExportMode;
+  mode: RenderedLayoutMode;
   pageWidthPx: number;
   pageHeightPx: number;
   printableHeightPx: number;
@@ -45,7 +46,7 @@ export const countPdfPages = (pdf: Uint8Array) => {
 
 export const measureRenderedLayout = async (
   page: Page,
-  mode: ExportMode,
+  mode: RenderedLayoutMode,
   orientation: "portrait" | "landscape",
 ): Promise<RenderedLayoutDiagnostics> =>
   page.evaluate(
@@ -131,6 +132,27 @@ export const validateRenderedExecutiveLayout = (diagnostics: RenderedLayoutDiagn
   }
   if (diagnostics.wrappers.some((wrapper) => wrapper.overflowPx > EXECUTIVE_WRAPPER_OVERFLOW_TOLERANCE_PX)) {
     issues.push("At least one executive brief page wrapper exceeded its physical page height.");
+  }
+
+  return { ok: issues.length === 0, issues, diagnostics };
+};
+
+export const validateRenderedLocalConsoleLayout = (
+  diagnostics: RenderedLayoutDiagnostics,
+  documentKind: "executive" | "one-pager",
+): RenderedLayoutValidationResult => {
+  const issues: string[] = [];
+  const maxPages = documentKind === "one-pager" ? 1 : 3;
+  const overflowTolerance = documentKind === "one-pager" ? WRAPPER_OVERFLOW_TOLERANCE_PX : 18;
+
+  if (documentKind === "one-pager" && diagnostics.wrapperCount !== 1) {
+    issues.push(`Local one-pager rendered ${diagnostics.wrapperCount} wrappers instead of 1.`);
+  }
+  if (documentKind === "executive" && diagnostics.wrapperCount > maxPages) {
+    issues.push(`Local executive brief rendered ${diagnostics.wrapperCount} wrappers instead of ${maxPages} or fewer.`);
+  }
+  if (diagnostics.wrappers.some((wrapper) => wrapper.overflowPx > overflowTolerance)) {
+    issues.push(`Local ${documentKind} wrapper overflow exceeded ${overflowTolerance}px.`);
   }
 
   return { ok: issues.length === 0, issues, diagnostics };

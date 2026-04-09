@@ -37,12 +37,12 @@ export function WhatChangedPanel({ result, point }: WhatChangedPanelProps) {
   return (
     <section className="surface-panel">
       <div className="flex flex-col gap-4 xl:flex-row xl:items-start xl:justify-between">
-        <div>
+        <div className="min-w-0">
           <p className="section-kicker">What Changed</p>
           <h3 className="section-title">Month-over-month structural movement</h3>
           <p className="mt-2 max-w-4xl text-sm leading-7 text-muted">{summary}</p>
         </div>
-        <div className="surface-panel-subtle text-sm text-muted xl:min-w-[280px]">
+        <div className="surface-panel-subtle w-full text-sm text-muted xl:max-w-[320px]">
           <p>
             Current month: <span className="text-ink">M{point.month}</span>
           </p>

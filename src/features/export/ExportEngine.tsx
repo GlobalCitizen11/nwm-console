@@ -1,7 +1,15 @@
 import { renderToStaticMarkup } from "react-dom/server";
 import exportBaseCss from "./styles/export-base.css?raw";
 import exportPrintCss from "./styles/export-print.css?raw";
-import type { CanonicalExportSummary, ExportContentByMode, ExportMode, ExportPreviewBundle, ExportQaResult, ExportSemanticData } from "./types/export";
+import type {
+  CanonicalExportSummary,
+  ExportAvailability,
+  ExportContentByMode,
+  ExportMode,
+  ExportPreviewBundle,
+  ExportQaResult,
+  ExportSemanticData,
+} from "./types/export";
 import type { VoiceBriefIntelligence } from "../../types/voiceBriefIntelligence";
 import { buildPdfFilename } from "./utils/pdfMetadata";
 import { ExportRouter } from "./ExportRouter";
@@ -51,6 +59,27 @@ const buildArtifactContent = (
   };
 };
 
+const buildAvailabilityByMode = (summary: CanonicalExportSummary): Record<ExportMode, ExportAvailability> => {
+  const failedChecks = summary.executiveBriefGate.checks.filter((check) => !check.passed);
+  const executiveExportable = summary.executiveBriefGate.validity === "Structurally Valid";
+  const executiveReason = executiveExportable
+    ? undefined
+    : `Executive Brief withheld: ${failedChecks.map((check) => check.label).join(", ")}.`;
+
+  return {
+    "executive-brief": {
+      exportable: executiveExportable,
+      reason: executiveReason,
+    },
+    "presentation-brief": {
+      exportable: true,
+    },
+    "board-onepager": {
+      exportable: true,
+    },
+  };
+};
+
 export const buildExportBundle = ({
   data,
   scenarioId,
@@ -64,6 +93,7 @@ export const buildExportBundle = ({
   const assistedIntelligence = buildAssistedIntelligenceFromSummary(canonicalSummary);
   const canonicalQa = validateCanonicalSummary(canonicalSummary);
   const { contentByMode, qaByMode: contentQaByMode } = buildArtifactContent(canonicalSummary, assistedIntelligence);
+  const availabilityByMode = buildAvailabilityByMode(canonicalSummary);
 
   const htmlByMode = {
     "executive-brief": renderModeHtml("executive-brief", contentByMode),
@@ -89,6 +119,7 @@ export const buildExportBundle = ({
       "presentation-brief": mergeQa("presentation-brief"),
       "board-onepager": mergeQa("board-onepager"),
     },
+    availabilityByMode,
     filenameByMode: {
       "executive-brief": buildPdfFilename(scenarioId, "executive-brief", month),
       "presentation-brief": buildPdfFilename(scenarioId, "presentation-brief", month),

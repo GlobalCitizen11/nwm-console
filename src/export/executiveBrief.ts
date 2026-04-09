@@ -1,4 +1,5 @@
 import type { BriefingState, ExportDocumentPlan } from "../types";
+import { getFrameworkDisplayLabel, SYSTEM_DISPLAY_LABELS, SYSTEM_LABELS } from "../lib/systemLabels";
 import { buildDocumentHtml, escapeText, renderFooter } from "./designSystem";
 import { createModule, createPage, normalizeDocumentPlan, qaDocumentPlan } from "./layoutEngine";
 
@@ -11,169 +12,233 @@ const formatGeneratedAt = () =>
     minute: "2-digit",
   });
 
-const chunk = (items: string[], size: number) => {
-  const output: string[][] = [];
-  for (let index = 0; index < items.length; index += size) {
-    output.push(items.slice(index, index + size));
-  }
-  return output;
-};
-
 export const buildExecutiveBriefPlan = (state: BriefingState, currentViewName: string): ExportDocumentPlan => {
-  const timelineRows = [
-    ...chunk(state.earlySignals, 2).map((items, index) =>
-      createModule({
-        id: `exec-dev-early-${index}`,
-        kind: "timeline",
-        title: index === 0 ? "Early signals" : "Early signals continued",
-        label: "Narrative evolution",
-        items,
-      }),
-    ),
-    ...chunk(state.systemicUptake, 2).map((items, index) =>
-      createModule({
-        id: `exec-dev-systemic-${index}`,
-        kind: "timeline",
-        title: index === 0 ? "Systemic uptake" : "Systemic uptake continued",
-        label: "Narrative evolution",
-        items,
-      }),
-    ),
+  const gate = state.executiveBriefGate;
+  const haloCheck = gate.checks.find((check) => check.id === "halo-orientation-integrity");
+  const categoryCheck = gate.checks.find((check) => check.id === "category-separation");
+  const passedChecks = gate.checks.filter((check) => check.passed).map((check) => check.label);
+  const failedChecks = gate.unmetRequirements;
+  const boundaryPage = createPage("executive-boundary", "Narrative World Boundary", 2, 18, [
     createModule({
-      id: "exec-dev-current",
-      kind: "development",
-      title: "Current condition",
-      label: "Narrative evolution",
-      items: state.latestDevelopments,
-      narrative: [state.currentCondition, state.structuralShift],
+      id: "exec-boundary-included",
+      kind: "takeaways",
+      title: "Included entities",
+      label: "Boundary scope",
+      items: gate.boundaryDefinition.includedEntities,
     }),
-  ];
+    createModule({
+      id: "exec-boundary-excluded",
+      kind: "takeaways",
+      title: "Excluded entities",
+      label: "Boundary scope",
+      items: gate.boundaryDefinition.excludedEntities,
+    }),
+    createModule({
+      id: "exec-boundary-criteria",
+      kind: "interpretation",
+      title: "Temporal and artifact criteria",
+      label: "Boundary integrity",
+      narrative: [
+        `Temporal window runs from ${gate.boundaryDefinition.temporalWindow.start} to ${gate.boundaryDefinition.temporalWindow.end} at ${gate.boundaryDefinition.temporalWindow.resolution.toLowerCase()} resolution, with the current read at ${gate.boundaryDefinition.temporalWindow.current}.`,
+        `Artifact inclusion criteria are ${gate.boundaryDefinition.artifactInclusionCriteria.join("; ")}.`,
+      ],
+    }),
+  ]);
+  const memoryPage = createPage("executive-memory", "Structural Memory", 3, 18, [
+    createModule({
+      id: "exec-memory-early",
+      kind: "timeline",
+      title: "Early signals",
+      label: "Longitudinal memory",
+      items: state.earlySignals,
+    }),
+    createModule({
+      id: "exec-memory-systemic",
+      kind: "timeline",
+      title: "Systemic uptake",
+      label: "Longitudinal memory",
+      items: state.systemicUptake,
+    }),
+    createModule({
+      id: "exec-memory-current",
+      kind: "development",
+      title: "Current accumulation",
+      label: "Longitudinal memory",
+      items: state.latestDevelopments,
+      narrative: [gate.synchronizationSummary],
+    }),
+  ]);
+  const phasePage = createPage("executive-phase", SYSTEM_LABELS.PAL, 4, 18, [
+    createModule({
+      id: "exec-phase-read",
+      kind: "strategic",
+      title: "Phase read",
+      label: SYSTEM_LABELS.PAL,
+      narrative: [
+        `${state.currentCondition} ${state.structuralShift}`,
+        `Current state is ${state.phase} with ${state.narrativeDensity} density, ${state.structuralMomentum} momentum, and ${state.reversibility} reversibility.`,
+      ],
+    }),
+    createModule({
+      id: "exec-phase-trace",
+      kind: "evidence",
+      title: "Transition and proof chain",
+      label: `${SYSTEM_LABELS.PAL} trace`,
+      items: [
+        `Transitions: ${gate.proofTrace.transitionIds.join(", ") || "none"}`,
+        `Proof objects: ${gate.proofTrace.proofIds.join(", ") || "none"}`,
+        `Rule versions: ${gate.proofTrace.ruleVersions.join(", ") || "none"}`,
+      ],
+    }),
+  ]);
+  const haloPage = createPage("executive-halo", SYSTEM_DISPLAY_LABELS.interpretationLayerIntegrity, 5, 18, [
+    createModule({
+      id: "exec-halo-allowed",
+      kind: "interpretation",
+      title: "Orientation-only scope",
+      label: SYSTEM_LABELS.HALO,
+      narrative: [
+        haloCheck?.detail ?? "The artifact remains orientation-only.",
+        categoryCheck?.detail ?? "Category separation is maintained.",
+      ],
+    }),
+    createModule({
+      id: "exec-halo-validity",
+      kind: "takeaways",
+      title: "Validity conditions",
+      label: SYSTEM_LABELS.HALO,
+      items: passedChecks,
+    }),
+    createModule({
+      id: "exec-halo-failures",
+      kind: "takeaways",
+      title: "Failure modes",
+      label: SYSTEM_LABELS.HALO,
+      items: failedChecks.length > 0 ? failedChecks : ["No active failure modes"],
+    }),
+  ]);
+  const tracePage = createPage("executive-trace", "Proof Object Traceability", 6, 18, [
+    createModule({
+      id: "exec-trace-summary",
+      kind: "strategic",
+      title: "Traceability summary",
+      label: "Audit chain",
+      narrative: [
+        gate.proofTraceSummary,
+        `Review states are ${gate.proofTrace.reviewStates.join(", ") || "unknown"}; challenge states are ${gate.proofTrace.challengeStates.join(", ") || "unknown"}.`,
+      ],
+    }),
+    createModule({
+      id: "exec-trace-markers",
+      kind: "evidence",
+      title: "Traceability markers",
+      label: "Audit chain",
+      items: gate.traceabilityMarkers,
+    }),
+    createModule({
+      id: "exec-trace-evidence",
+      kind: "evidence",
+      title: "Evidence base",
+      label: "Evidence",
+      items: state.signalAnchors,
+    }),
+  ]);
+  const coverPage = createPage("executive-cover", "Cover", 1, 20, [
+    createModule({
+      id: "exec-cover",
+      kind: "cover",
+      title: state.scenarioName,
+      label: "Executive brief",
+      narrative: [
+        state.boundedWorld,
+        state.boundaryDefinition,
+        gate.validity === "Structurally Valid"
+          ? "Phase-adjudicated orientation remains exportable."
+          : "Executive brief withheld pending structural state integrity.",
+      ],
+    }),
+    createModule({
+      id: "exec-summary-cards",
+      kind: "summary-cards",
+      title: "Orientation gate",
+      label: "Gate status",
+      items: [
+        `Mode: ${gate.mode}`,
+        `Framework: ${getFrameworkDisplayLabel(gate.framework)}`,
+        `Validity: ${gate.validity}`,
+        `Phase: ${state.phase}`,
+      ],
+    }),
+    createModule({
+      id: "exec-kpis",
+      kind: "kpi-strip",
+      title: "System state snapshot",
+      label: "KPI strip",
+      items: [
+        `Phase: ${state.phase}`,
+        `Narrative density: ${state.narrativeDensity}`,
+        `Structural momentum: ${state.structuralMomentum}`,
+        `Reversibility: ${state.reversibility}`,
+        `Cycle position: ${state.cyclePosition}`,
+      ],
+    }),
+    createModule({
+      id: "exec-cover-interpretation",
+      kind: "interpretation",
+      title: "Phase-adjudicated orientation",
+      label: "Top line",
+      narrative: [
+        `${state.currentCondition} ${state.structuralShift}`,
+        gate.proofTraceSummary,
+      ],
+    }),
+  ]);
+
+  if (gate.validity !== "Structurally Valid") {
+    return normalizeDocumentPlan({
+      mode: "executive-brief",
+      title: `${state.scenarioName} Executive Brief`,
+      subtitle: `${state.boundedWorld} | ${state.asOf} | ${state.phase}`,
+      pages: [
+        coverPage,
+        createPage("executive-withheld", "Withheld Conditions", 2, 18, [
+          createModule({
+            id: "exec-withheld-conditions",
+            kind: "takeaways",
+            title: "Unmet structural conditions",
+            label: "Withheld",
+            items: failedChecks,
+          }),
+          createModule({
+            id: "exec-withheld-trace",
+            kind: "interpretation",
+            title: "Traceability retained",
+            label: "Withheld",
+            narrative: [
+              gate.proofTraceSummary,
+              `Export remains blocked until the unmet conditions are resolved.`,
+            ],
+          }),
+        ]),
+      ],
+      metadata: {
+        scenarioName: state.scenarioName,
+        asOf: state.asOf,
+        phase: state.phase,
+        generatedAt: formatGeneratedAt(),
+        confidentialityLabel: "Confidential | Internal strategic orientation",
+        currentViewName,
+      },
+    });
+  }
 
   const pages = [
-    createPage("executive-cover", "Cover", 1, 20, [
-      createModule({
-        id: "exec-cover",
-        kind: "cover",
-        title: state.scenarioName,
-        label: "Executive brief",
-        narrative: [state.boundedWorld, state.boundaryDefinition, state.currentCondition],
-      }),
-      createModule({
-        id: "exec-summary-cards",
-        kind: "summary-cards",
-        title: "Top summary cards",
-        label: "Simulation state",
-        items: [state.currentCondition, state.structuralShift, state.primaryPath, state.pressurePoints[0] ?? ""].filter(Boolean),
-      }),
-      createModule({
-        id: "exec-kpis",
-        kind: "kpi-strip",
-        title: "System state snapshot",
-        label: "KPI strip",
-        items: [
-          `Phase: ${state.phase}`,
-          `Narrative density: ${state.narrativeDensity}`,
-          `Structural momentum: ${state.structuralMomentum}`,
-          `Reversibility: ${state.reversibility}`,
-          `Cycle position: ${state.cyclePosition}`,
-        ],
-      }),
-      createModule({
-        id: "exec-cover-interpretation",
-        kind: "interpretation",
-        title: "Executive interpretation",
-        label: "Top line",
-        narrative: [
-          `${state.currentCondition} ${state.structuralShift}`,
-          `Pressure is currently concentrated through ${state.pressurePoints.join(" ")}.`,
-        ],
-      }),
-    ]),
-    createPage("executive-takeaways", "Key Takeaways", 2, 18, [
-      createModule({
-        id: "exec-takeaways",
-        kind: "takeaways",
-        title: "Key takeaways",
-        label: "Page 2",
-        items: [...state.priorities.slice(0, 2), ...state.sensitivities.slice(0, 2)],
-      }),
-      createModule({
-        id: "exec-forward",
-        kind: "forward-paths",
-        title: "Primary path vs alternate paths",
-        label: "Forward orientation",
-        narrative: [state.primaryPath, ...state.alternatePaths],
-      }),
-      createModule({
-        id: "exec-implications",
-        kind: "implications",
-        title: "Operational implications",
-        label: "Implications",
-        items: [...state.visibilityNeeds.slice(0, 2), state.pressurePoints[0] ?? ""].filter(Boolean),
-      }),
-    ]),
-    createPage("executive-evolution", "Narrative Evolution", 3, 18, timelineRows),
-    createPage("executive-strategic", "Strategic Interpretation", 4, 18, [
-      createModule({
-        id: "exec-structural",
-        kind: "strategic",
-        title: "Structural interpretation",
-        label: "Strategic reading",
-        narrative: [
-          `The structural reading is shaped by ${state.crossDomainEffects.join(" ")}`,
-          `The present state remains sensitive to ${state.sensitivities.join(" ")}`,
-        ],
-      }),
-      createModule({
-        id: "exec-positioning",
-        kind: "strategic",
-        title: "Strategic positioning",
-        label: "Priorities",
-        items: [...state.priorities, ...state.visibilityNeeds].slice(0, 6),
-      }),
-    ]),
-    createPage("executive-evidence", "Evidence & Signals", 5, 18, [
-      createModule({
-        id: "exec-evidence",
-        kind: "evidence",
-        title: "Evidence anchors",
-        label: "Signal basis",
-        items: state.signalAnchors,
-      }),
-      createModule({
-        id: "exec-readout-change",
-        kind: "evidence",
-        title: "What would change the readout",
-        label: "Readout conditions",
-        items: [...state.stabilitySignals.slice(0, 2), ...state.alternatePaths.slice(0, 1)],
-      }),
-    ]),
-    createPage("executive-effects", "System Effects + Conclusion", 6, 18, [
-      createModule({
-        id: "exec-cross-domain",
-        kind: "cross-domain",
-        title: "Cross-domain effects",
-        label: "System effects",
-        items: state.crossDomainEffects,
-      }),
-      createModule({
-        id: "exec-containment",
-        kind: "containment",
-        title: "Containment and non-spreading dynamics",
-        label: "Containment",
-        items: state.stabilitySignals,
-      }),
-      createModule({
-        id: "exec-close",
-        kind: "closing",
-        title: "Concluding executive note",
-        label: "Conclusion",
-        narrative: [
-          `${state.currentCondition} ${state.primaryPath}`,
-          `The readout remains anchored by ${state.signalAnchors.slice(0, 2).join(" and ")}.`,
-        ],
-      }),
-    ]),
+    coverPage,
+    boundaryPage,
+    memoryPage,
+    phasePage,
+    haloPage,
+    tracePage,
   ];
 
   return normalizeDocumentPlan({

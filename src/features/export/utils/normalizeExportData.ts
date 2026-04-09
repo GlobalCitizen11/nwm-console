@@ -173,5 +173,6 @@ export const normalizeExportData = (state: BriefingState, currentViewName: strin
     ),
     closingSynthesis: compressSupportText(`${state.currentCondition} ${state.primaryPath} ${state.structuralShift}`, 220),
     sourceState: state,
+    v2: state.v2,
   };
 };

@@ -1,5 +1,6 @@
 import type { CanonicalEvidenceAnchor, CanonicalExportSummary } from "../features/export/types/export";
 import type { VoiceBriefIntelligence, VoiceBriefTranscriptIntelligence } from "../types/voiceBriefIntelligence";
+import { getFrameworkDisplayLabel, SYSTEM_DISPLAY_LABELS, SYSTEM_LABELS } from "./systemLabels";
 import type {
   ExecutiveBriefFieldPack,
   ExecutiveBriefRenderedSectionMapping,
@@ -57,110 +58,14 @@ function clause(text: string, fallback: string) {
   return picked || fallback;
 }
 
-function keySubject(text: string, fallback: string, maxWords = 5) {
-  const picked = clause(text, fallback)
-    .replace(
-      /^(pressure is concentrated in|monitoring should stay fixed on|decision posture should stay disciplined where|the main watchpoint is whether|that pressure is now shaping|visibility is needed on|what matters most is)\s+/i,
-      "",
-    )
-    .replace(/\b(visibility is needed on|what matters most is|monitoring should stay fixed on)\b/gi, "")
-    .replace(/\b(the|a|an)\b/gi, " ")
-    .replace(/\s+/g, " ")
-    .trim();
-  const resolved = picked && !/^(on|whether|where)$/i.test(picked) ? picked : fallback;
-  return words(resolved).slice(0, maxWords).join(" ") || fallback;
-}
-
-function phaseCurrentCondition(phase: string) {
-  const value = lower(phase);
-  if (value.includes("pal")) return "The system is now operating under actively enforced boundary conditions.";
-  if (value.includes("halo")) return "The system is still early enough that boundary conditions are forming rather than fully locked.";
-  if (value.includes("lat")) return "The system is operating under late-stage constraint with narrower room for low-cost adaptation.";
-  return "The system is operating under a bounded condition that now shapes decisions directly.";
-}
-
-function environmentCharacterization(phase: string, density: string, momentum: string) {
-  const phaseValue = lower(phase);
-  const densityValue = lower(density);
-  const momentumValue = lower(momentum);
-
-  if (phaseValue.includes("pal") && densityValue.includes("high")) {
-    return "The environment is dense, politically conditioned, and less tolerant of plans built on broad coordination.";
+function joinList(items: string[]) {
+  if (items.length <= 1) {
+    return items[0] ?? "";
   }
-  if (momentumValue.includes("acceler")) {
-    return "The environment is moving quickly enough that exposed assumptions lose value before institutions can stabilize them.";
+  if (items.length === 2) {
+    return `${items[0]} and ${items[1]}`;
   }
-  if (densityValue.includes("medium")) {
-    return "The environment is still legible, but pressure is building fast enough to alter operating choices before consensus catches up.";
-  }
-  return "The environment now rewards control, resilience, and selective exposure over speed, scale, and presumed alignment.";
-}
-
-function brokenAssumptionsFromSummary(summary: CanonicalExportSummary) {
-  const assumptions = [
-    "Rapid normalization can no longer anchor planning.",
-    "Cross-border efficiency can no longer be treated as default.",
-    "Coordinated relief can no longer be assumed in exposed systems.",
-  ];
-
-  if (lower(summary.reversibility).includes("low")) {
-    assumptions[2] = "Reversible room can no longer be assumed once exposure is widened.";
-  }
-  if (lower(summary.momentum).includes("acceler")) {
-    assumptions[0] = "Adjustment windows no longer stay open long enough to anchor slow planning.";
-  }
-
-  return assumptions.map((item) => trimToMaxWords(item, 10));
-}
-
-function transitionSentence(summary: CanonicalExportSummary) {
-  const phase = lower(summary.phase);
-  const momentum = lower(summary.momentum);
-  if (phase.includes("pal") && momentum.includes("acceler")) {
-    return "The system is transitioning into harder boundary-led operating behavior.";
-  }
-  if (momentum.includes("slow")) {
-    return "The system is consolidating into a more persistent bounded condition.";
-  }
-  return `The system is transitioning toward ${summary.phase.toLowerCase()} operating conditions.`;
-}
-
-function stateClass(source: ExecutiveBriefSourceIntelligence) {
-  const phase = lower(source.currentPhase);
-  const current = lower(source.currentState);
-  const headline = lower(source.executiveHeadline);
-  if (phase.includes("pal") || current.includes("fragment") || headline.includes("fragment")) {
-    return "fragmented";
-  }
-  if (phase.includes("halo")) {
-    return "forming";
-  }
-  if (phase.includes("lat")) {
-    return "late";
-  }
-  return "bounded";
-}
-
-function momentumClass(source: ExecutiveBriefSourceIntelligence) {
-  const transition = lower(source.transitionType);
-  const path = lower(source.primaryPath);
-  if (transition.includes("harder") || transition.includes("acceler") || path.includes("deeper")) {
-    return "accelerating";
-  }
-  if (transition.includes("persistent") || transition.includes("consolid")) {
-    return "consolidating";
-  }
-  return "steady";
-}
-
-function conditionPattern(source: ExecutiveBriefSourceIntelligence) {
-  const state = stateClass(source);
-  const momentum = momentumClass(source);
-  if (state === "forming") return "forming";
-  if (state === "late") return "late";
-  if (momentum === "accelerating") return "accelerating";
-  if (momentum === "consolidating") return "consolidating";
-  return "default";
+  return `${items.slice(0, -1).join(", ")}, and ${items[items.length - 1]}`;
 }
 
 function makeFieldRule<T>(
@@ -170,7 +75,7 @@ function makeFieldRule<T>(
   return { value, ...config };
 }
 
-function anchorToEvidence(anchor: CanonicalEvidenceAnchor): ExecutiveEvidenceItem {
+function anchorToEvidence(anchor: CanonicalEvidenceAnchor, traceRef?: string): ExecutiveEvidenceItem {
   const compact = clean(`${anchor.shortTitle} ${anchor.shortSubtitle}`);
   const normalized = compact
     .replace(/^M\d+(?:-\d+)?\s+[—-]\s+/i, "")
@@ -193,91 +98,212 @@ function anchorToEvidence(anchor: CanonicalEvidenceAnchor): ExecutiveEvidenceIte
   }
 
   return {
-    code: clean(anchor.id).split(/\s+/).slice(0, 2).join(" "),
+    code: clean(traceRef ? `${anchor.id}/${traceRef}` : anchor.id).replace(/\s+/g, "-"),
     signal,
     significance,
   };
 }
 
-function normalizeVoiceIntelligence(
-  intelligence?: VoiceBriefTranscriptIntelligence | VoiceBriefIntelligence,
-) {
-  if (!intelligence) {
-    return undefined;
-  }
-
-  if ("boardRead" in intelligence) {
-    return intelligence;
-  }
-
-  return undefined;
-}
-
 export function buildExecutiveBriefSourceIntelligence(
   summary: CanonicalExportSummary,
-  intelligence?: VoiceBriefTranscriptIntelligence | VoiceBriefIntelligence,
+  _intelligence?: VoiceBriefTranscriptIntelligence | VoiceBriefIntelligence,
 ): ExecutiveBriefSourceIntelligence {
-  const assisted = normalizeVoiceIntelligence(intelligence);
-  const evidenceSignals = summary.evidenceAnchorsCompact.slice(0, 4).map(anchorToEvidence);
-  const pressureSubject = keySubject(summary.primaryPressureSummary, "coordination, allocation, and access");
-  const implicationSubject = keySubject(summary.implicationsSummary, "operating exposure");
-  const monitoringSubject = keySubject(summary.monitoringSummary, "boundary changes that reopen coordination", 6);
-  const watchpointSubject = keySubject(summary.watchpointSummary, "pressure transmission", 6);
+  const gate = summary.executiveBriefGate;
+  const valid = gate.validity === "Structurally Valid";
+  const traceRefs = [
+    ...gate.proofTrace.proofIds,
+    ...gate.proofTrace.transitionIds,
+    ...gate.proofTrace.visibleArtifactIds,
+  ];
+  const evidenceSignals = summary.evidenceAnchorsCompact.slice(0, 6).map((anchor, index) => anchorToEvidence(anchor, traceRefs[index]));
+  const dominantNarratives = joinList(gate.dominantNarratives) || "the active bounded world";
+  const competingNarratives = joinList(gate.competingNarratives) || "no stable competing narrative cluster";
+  const getCheck = (id: typeof gate.checks[number]["id"]) =>
+    gate.checks.find((check) => check.id === id);
+  const boundaryCheck = getCheck("narrative-world-boundary");
+  const memoryCheck = getCheck("structural-memory");
+  const stateVectorCheck = getCheck("state-vector-completeness");
+  const phaseCheck = getCheck("phase-adjudication");
+  const momentumCheck = getCheck("structural-momentum");
+  const densityCheck = getCheck("density-threshold");
+  const reversibilityCheck = getCheck("reversibility-classification");
+  const proofCheck = getCheck("proof-object-sufficiency");
+  const haloCheck = getCheck("halo-orientation-integrity");
+  const categoryCheck = getCheck("category-separation");
+  const failureModes = gate.checks
+    .filter((check) => !check.passed)
+    .map((check) => trimToMaxWords(check.failureMode, 10));
 
   return {
     scenarioName: summary.scenarioTitle,
     boundedWorld: summary.boundedWorld,
-    asOfLabel: `As of ${summary.replayMonth}`,
+    asOfLabel: summary.replayMonth,
     currentPhase: summary.phase,
+    briefMode: getFrameworkDisplayLabel(gate.framework),
+    validityLabel: gate.validity,
     haloSnapshotVisual: undefined,
     executiveHeadline: trimToMaxWords(
-      assisted?.executiveHeadline ?? "Fragmentation now constrains allocation, coordination, and access simultaneously.",
+      valid
+        ? "Phase-adjudicated orientation confirms the current system state."
+        : "Executive brief withheld pending structural state integrity.",
       12,
     ),
     executiveSubline: trimToMaxWords(
-      assisted?.systemState?.sidebarInsight ??
-        `State-dependent operating constraint now matters more than assumptions built around ${implicationSubject}.`,
+      valid
+        ? `${SYSTEM_DISPLAY_LABELS.framework} only. ${summary.phase}; ${summary.density} density, ${summary.momentum} momentum, ${summary.reversibility} reversibility.`
+        : "Structural conditions remain incomplete, so this artifact stays a diagnostic orientation read.",
       20,
     ),
-    currentState: summary.currentStateSummary,
-    environmentalCharacterization: environmentCharacterization(summary.phase, summary.density, summary.momentum),
-    operatingMeaning:
-      assisted?.decisionPosture?.summary ??
-      `${clause(summary.implicationsSummary, "The current condition now changes how the system operates")}. ${clause(summary.strategicPositioningSummary, "Decision posture now needs to be revisited")}.`,
-    brokenAssumptions: brokenAssumptionsFromSummary(summary),
-    pressureZones: [
-      trimToMaxWords(`Pressure is now building fastest around ${pressureSubject}.`, 12),
-      trimToMaxWords(`Pressure also builds where ${monitoringSubject} can change execution conditions quickly.`, 12),
-    ],
-    earlySignals: summary.narrativeDevelopment.earlySignalsSummary,
-    systemicUptake: summary.narrativeDevelopment.systemicUptakeSummary,
-    recentDevelopments: summary.narrativeDevelopment.currentStateFormationSummary,
-    structuralMeaning: summary.structuralInterpretationSummary,
-    implicitVariableBehavior:
-      `Variables are no longer moving independently. ${pressureSubject} now transmits directly into allocation, access, and timing.`,
-    transitionType: trimToMaxWords(transitionSentence(summary), 12),
-    primaryPath: summary.forwardOrientationSummary,
-    alternatePath: summary.alternatePathSummary,
-    currentExposures:
-      `Exposure is highest where ${pressureSubject} overlaps with commitments that still depend on ${implicationSubject}.`,
-    flexibilityNeeds:
-      `Leadership now needs reversibility, selective commitments, and clear trigger discipline around ${watchpointSubject}.`,
-    visibilityNeeds: [
-      trimToMaxWords(`Watch for ${monitoringSubject}.`, 9),
-      trimToMaxWords(`Watch for changes in ${watchpointSubject}.`, 9),
-      trimToMaxWords("Watch for policy easing that materially widens flexibility.", 9),
-    ],
-    priorityAreas:
-      assisted?.decisionPosture?.actions?.slice(0, 4).map((item) => trimToMaxWords(item, 10)) ?? [
-        trimToMaxWords(`Reduce exposure where ${pressureSubject} drives downside.`, 10),
-        trimToMaxWords(`Protect access where ${implicationSubject} can harden fastest.`, 10),
-        trimToMaxWords(`Preserve reversibility before ${watchpointSubject} widens.`, 10),
+    systemStateTitle: "Narrative World Boundary",
+    boundaryParagraph: composeWithinRange(
+      [
+        boundaryCheck?.detail ?? "",
+        gate.boundarySummary,
+        gate.temporalWindowSummary,
+        gate.artifactCriteriaSummary,
       ],
-    sensitivityPoints: [
-      trimToMaxWords(pressureSubject, 4),
-      trimToMaxWords(implicationSubject, 5),
-      trimToMaxWords(watchpointSubject, 4),
-    ],
+      45,
+      85,
+    ),
+    stateParagraph: composeWithinRange(
+      [
+        `Current state is ${summary.phase} with ${summary.density} density, ${summary.momentum} momentum, and ${summary.reversibility} reversibility.`,
+        gate.platformDomainSummary,
+        valid
+          ? "The full structural gate is satisfied, so the brief can remain orientation-only while preserving industrial traceability."
+          : "The full structural gate is not yet satisfied, so the artifact cannot be treated as a valid executive brief.",
+        "That changes the read from generic description into a present-state, phase-adjudicated orientation artifact.",
+      ],
+      45,
+      85,
+    ),
+    systemStateSidebar: trimToMaxWords(
+      valid ? "Boundary and state integrity are sufficient." : "Boundary or state integrity remains incomplete.",
+      18,
+    ),
+    narrativeTitle: "Structural Memory",
+    longitudinalSignalsParagraph: composeWithinRange(
+      [
+        memoryCheck?.detail ?? "",
+        summary.narrativeDevelopment.earlySignalsSummary,
+        `Longitudinal signals currently preserve repeated motifs across ${dominantNarratives}.`,
+      ],
+      40,
+      75,
+    ),
+    motifPersistenceParagraph: composeWithinRange(
+      [
+        summary.narrativeDevelopment.systemicUptakeSummary,
+        summary.narrativeDevelopment.currentStateFormationSummary,
+        `Dominant narratives are ${dominantNarratives}.`,
+        `Competing narratives are ${competingNarratives}.`,
+        gate.synchronizationSummary,
+        "Accumulation now persists as a bounded structural condition rather than an isolated episode.",
+      ],
+      40,
+      75,
+    ),
+    stateVectorParagraph: composeWithinRange(
+      [
+        stateVectorCheck?.detail ?? "",
+        gate.synchronizationSummary,
+        `State vector completeness is expressed through phase ${summary.phase}, density ${summary.density}, momentum ${summary.momentum}, and reversibility ${summary.reversibility} inside the bounded world.`,
+      ],
+      40,
+      75,
+    ),
+    narrativeSidebar: trimToMaxWords(
+      memoryCheck?.passed ? "Longitudinal memory is present and persistent." : "Longitudinal memory remains structurally thin.",
+      18,
+    ),
+    structuralTitle: SYSTEM_LABELS.PAL,
+    phaseAdjudicationParagraph: composeWithinRange(
+      [
+        phaseCheck?.detail ?? "",
+        densityCheck?.detail ?? "",
+        summary.structuralInterpretationSummary,
+        "That changes the artifact from descriptive accumulation into an adjudicated representation of current system state.",
+      ],
+      45,
+      90,
+    ),
+    momentumParagraph: composeWithinRange(
+      [
+        momentumCheck?.detail ?? "",
+        reversibilityCheck?.detail ?? "",
+        valid
+          ? "This resolves state versus transition without moving into prediction or recommendation."
+          : "State versus transition remains partially unresolved, which keeps the read diagnostic rather than fully executive-grade.",
+      ],
+      35,
+      80,
+    ),
+    structuralSidebar: trimToMaxWords(
+      phaseCheck?.passed ? `${SYSTEM_LABELS.PAL} is active and traceable.` : `${SYSTEM_LABELS.PAL} remains incomplete.`,
+      18,
+    ),
+    haloTitle: SYSTEM_DISPLAY_LABELS.interpretationLayerIntegrity,
+    haloIntegrityParagraph: composeWithinRange(
+      [
+        haloCheck?.detail ?? "",
+        `This artifact includes only state, phase, density, momentum, reversibility, and proof-object traceability.`,
+        "That constraint narrows the executive brief to present-state orientation and prevents spillover from forecasting or prescription.",
+      ],
+      40,
+      75,
+    ),
+    categorySeparationParagraph: composeWithinRange(
+      [
+        categoryCheck?.detail ?? "",
+        "Forecasting, advisory content, optimization logic, and actor-intent inference are excluded from the executive brief.",
+        "Simulation outputs remain separate so the artifact preserves category discipline instead of mixing modes.",
+      ],
+      40,
+      75,
+    ),
+    haloSidebar: trimToMaxWords("No forward-path or advisory language enters this artifact.", 18),
+    traceabilityTitle: "Proof Object Traceability",
+    traceabilityParagraph: composeWithinRange(
+      [
+        proofCheck?.detail ?? "",
+        gate.proofTraceSummary,
+        "The trace path remains input to state to output, which protects reproducibility and auditability.",
+      ],
+      40,
+      80,
+    ),
+    auditParagraph: composeWithinRange(
+      [
+        valid
+          ? "All required structural conditions are currently satisfied."
+          : `Unmet conditions remain: ${joinList(gate.checks.filter((check) => !check.passed).map((check) => check.label.toLowerCase()))}.`,
+        valid
+          ? "The artifact can be treated as structurally valid and industrial-grade."
+          : "The artifact remains a structural diagnostic rather than a valid executive brief.",
+        "Audit readiness depends on the visible proof chain remaining intact through export and review.",
+      ],
+      30,
+      70,
+    ),
+    validityConditions: gate.checks
+      .filter((check) => check.passed)
+      .map((check) => trimToMaxWords(check.label, 10))
+      .slice(0, 4),
+    failureModes: failureModes.slice(0, 4),
+    traceabilityMarkers: gate.traceabilityMarkers.map((item) => trimToMaxWords(item, 10)).slice(0, 4),
+    traceabilitySidebar: trimToMaxWords(
+      proofCheck?.passed
+        ? "Challenge-ready audit ledger."
+        : "Proof trace is preserved but not yet sufficient.",
+      18,
+    ),
+    evidenceTitle: "Evidence Base",
+    evidenceIntro: trimToMaxWords(
+      valid
+        ? "Each claim remains traceable from source artifact to state, phase, and output."
+        : "Evidence is preserved, but the structural gate remains incomplete.",
+      40,
+    ),
     evidenceSignals,
   };
 }
@@ -285,259 +311,17 @@ export function buildExecutiveBriefSourceIntelligence(
 export function buildExecutiveBriefSpec(
   source: ExecutiveBriefSourceIntelligence,
 ): ExecutiveBriefSpec {
-  const pattern = conditionPattern(source);
-  const systemStateSidebar =
-    pattern === "forming"
-      ? "Boundary tightening now punishes delay before the condition fully settles."
-      : pattern === "late"
-        ? "Hardened constraint now prices hesitation directly into exposed commitments."
-        : pattern === "accelerating"
-          ? "Active constraint now penalizes slow repositioning across exposed decisions."
-          : "Operating constraint now narrows room before institutions restore confidence.";
-  const sectionVariants = {
-    currentCondition:
-      pattern === "forming"
-        ? [
-            source.currentState,
-            "The boundary is forming faster than consensus, so operating choices are tightening before the wider system fully reprices them.",
-            source.environmentalCharacterization,
-            "That leaves leadership with less room to treat the present condition as provisional.",
-          ]
-        : pattern === "late"
-          ? [
-              source.currentState,
-              phaseCurrentCondition(source.currentPhase),
-              "The condition is mature enough that exposed positions now carry operating cost rather than just scenario risk.",
-              source.environmentalCharacterization,
-            ]
-          : pattern === "accelerating"
-            ? [
-                source.currentState,
-                phaseCurrentCondition(source.currentPhase),
-                source.environmentalCharacterization,
-                "Pressure is moving quickly enough that institutions are reacting after the condition has already changed exposure.",
-              ]
-            : [
-                source.currentState,
-                phaseCurrentCondition(source.currentPhase),
-                source.environmentalCharacterization,
-                "Constraint is active enough to shape exposure decisions before institutions can restore wider confidence.",
-              ],
-    meaning:
-      pattern === "forming"
-        ? [
-            source.operatingMeaning,
-            source.brokenAssumptions[0],
-            source.pressureZones[0],
-            "The main change is that assumptions are breaking before the system has fully settled into a stable new equilibrium.",
-          ]
-        : pattern === "late"
-          ? [
-              source.operatingMeaning,
-              source.brokenAssumptions[1],
-              source.brokenAssumptions[2],
-              source.pressureZones[1],
-              "This now changes operating logic more than it changes narrative interpretation.",
-            ]
-          : [
-              source.operatingMeaning,
-              source.brokenAssumptions[0],
-              source.brokenAssumptions[1],
-              source.pressureZones[0],
-              source.pressureZones[1],
-            ],
-    earlySignals:
-      pattern === "forming"
-        ? [
-            source.earlySignals,
-            "The first signals mattered because they revealed the boundary tightening before most participants treated it as structural.",
-            "That early asymmetry created the initial advantage for faster repositioning.",
-          ]
-        : [
-            source.earlySignals,
-            "The early signal phase mattered because it showed the boundary tightening before the wider system repriced around it.",
-            "Those developments narrowed the room for low-cost adaptation before most operators changed posture.",
-          ],
-    systemicUptake:
-      pattern === "accelerating"
-        ? [
-            source.systemicUptake,
-            "Uptake accelerated once adjacent domains began responding to the same pressure at the same time.",
-            "That synchronization widened the cost of misalignment and made slow interpretation more expensive.",
-            "It also pulled more institutions into the same operating logic before they could preserve independent room to act.",
-          ]
-        : pattern === "consolidating"
-          ? [
-              source.systemicUptake,
-              "Systemic uptake mattered because the signal set stopped looking isolated and started hardening into shared operating behavior.",
-              "Once that happened, the system became more persistent and less tolerant of exposed assumptions.",
-              "That persistence reduced the value of waiting for a cleaner reset and increased the value of earlier controlled adjustment.",
-            ]
-          : [
-              source.systemicUptake,
-              "Systemic uptake mattered because the signal set stopped looking isolated and started changing behavior across adjacent domains.",
-              "Once uptake broadened, delay carried more consequence than incremental interpretation.",
-              "That spread widened the cost of misalignment and narrowed the value of waiting for clarification.",
-            ],
-    currentConditionNarrative:
-      pattern === "late"
-        ? [
-            source.recentDevelopments,
-            "Recent developments now confirm a settled operating condition rather than a temporary sequence of disruptions.",
-            "That leaves little room to treat relief as the default case.",
-          ]
-        : [
-            source.recentDevelopments,
-            "The current condition now reflects accumulated system behavior rather than a temporary sequence of unrelated disruptions.",
-            "That leaves the system operating through constraint instead of waiting for rhetorical relief.",
-          ],
-    structural1:
-      pattern === "accelerating"
-        ? [
-            source.structuralMeaning,
-            "The pattern indicates a fast transmission mechanism in which coordination stress now moves directly into allocation, access, and timing.",
-            "That interaction narrows flexibility earlier than most exposed plans assume.",
-            "It also raises the penalty for commitments that still depend on broad alignment or slow institutional response.",
-          ]
-        : pattern === "consolidating"
-          ? [
-              source.structuralMeaning,
-              "The pattern indicates a consolidating transition in which once-separate variables are beginning to reinforce one another consistently.",
-              "That consistency matters because it turns episodic stress into operating structure.",
-              "Once stress behaves like structure, exposed plans lose more value from delay than from early controlled revision.",
-            ]
-          : [
-              source.structuralMeaning,
-              "The pattern indicates a transition in which coordination stress now transmits directly into allocation, access, and timing.",
-              "Variables that once moved separately now reinforce one another under pressure.",
-              "That interaction changes the operating model by narrowing flexibility and raising the cost of exposed commitments.",
-            ],
-    structural2:
-      pattern === "forming"
-        ? [
-            source.implicitVariableBehavior,
-            "The system is still forming, but the direction is already clear enough to invalidate neutral planning assumptions.",
-          ]
-        : [
-            source.implicitVariableBehavior,
-            "That behavior points to a system shifting away from efficiency-led adjustment and toward boundary-led operating discipline.",
-            "This transition rewards reversible positioning and punishes commitments that depend on rapid normalization.",
-          ],
-    primaryPath:
-      pattern === "accelerating"
-        ? [
-            source.primaryPath,
-            "The primary path still points to faster hardening of the current condition before any broader reopening of flexibility appears.",
-            "That path rewards earlier repositioning and penalizes reliance on delayed stabilization.",
-          ]
-        : [
-            source.primaryPath,
-            "The primary path still favors further hardening of the current condition before any broader reopening of flexibility appears.",
-            "That path increases the value of early repositioning and reduces the value of waiting for informal relief.",
-          ],
-    alternatePath:
-      pattern === "forming"
-        ? [
-            source.alternatePath,
-            "An alternate path remains possible only if behavior changes across the boundary before the current condition fully locks in.",
-            "If that happens early enough, leadership regains room to revise commitments at lower cost.",
-          ]
-        : [
-            source.alternatePath,
-            "An alternate path opens only if behavior changes across the boundary rather than remaining rhetorical.",
-            "If that shift appears, execution pressure can ease, flexibility can widen, and delayed commitments can be revisited on better terms.",
-          ],
-    positioning1:
-      pattern === "late"
-        ? [
-            source.currentExposures,
-            "Leadership should now revisit commitments that are expensive to reverse under hardened boundary conditions.",
-            "The cost of exposed positioning is now operational, not hypothetical.",
-          ]
-        : [
-            source.currentExposures,
-            "Leadership should now revisit commitments that depend on cooperative clearance, low-friction access, or rapid normalization.",
-            "Exposures tied to those assumptions now carry avoidable downside as the current condition persists and reprices decision room.",
-          ],
-    positioning2:
-      pattern === "consolidating"
-        ? [
-            source.flexibilityNeeds,
-            "Selective commitments and clearer triggers now preserve more value than broad optionality language.",
-            "Attention should stay fixed on the few developments that materially reopen room to move.",
-          ]
-        : [
-            source.flexibilityNeeds,
-            "Reversible commitments, selective concentration, and trigger discipline now preserve more value than broad expansion.",
-            "Attention should stay fixed on the few developments that materially reopen room to move.",
-          ],
-  };
-
-  const currentConditionParagraph = composeWithinRange(
-    sectionVariants.currentCondition,
-    45,
-    85,
-  );
-
-  const meaningParagraph = composeWithinRange(
-    sectionVariants.meaning,
-    45,
-    85,
-  );
-
-  const earlySignalsParagraph = composeWithinRange(
-    sectionVariants.earlySignals,
-    40,
-    75,
-  );
-
-  const systemicUptakeParagraph = composeWithinRange(
-    sectionVariants.systemicUptake,
-    40,
-    75,
-  );
-
-  const currentConditionNarrativeParagraph = composeWithinRange(
-    sectionVariants.currentConditionNarrative,
-    40,
-    75,
-  );
-
-  const structuralParagraph1 = composeWithinRange(
-    sectionVariants.structural1,
-    45,
-    90,
-  );
-
-  const structuralParagraph2 = composeWithinRange(
-    sectionVariants.structural2,
-    35,
-    80,
-  );
-
-  const primaryPathParagraph = composeWithinRange(
-    sectionVariants.primaryPath,
-    40,
-    75,
-  );
-
-  const alternatePathParagraph = composeWithinRange(
-    sectionVariants.alternatePath,
-    40,
-    75,
-  );
-
-  const positioningParagraph1 = composeWithinRange(
-    sectionVariants.positioning1,
-    40,
-    80,
-  );
-
-  const positioningParagraph2 = composeWithinRange(
-    sectionVariants.positioning2,
-    30,
-    70,
-  );
+  const currentConditionParagraph = withinRange(source.boundaryParagraph, 45, 85);
+  const meaningParagraph = withinRange(source.stateParagraph, 45, 85);
+  const earlySignalsParagraph = withinRange(source.longitudinalSignalsParagraph, 40, 75);
+  const systemicUptakeParagraph = withinRange(source.motifPersistenceParagraph, 40, 75);
+  const currentConditionNarrativeParagraph = withinRange(source.stateVectorParagraph, 40, 75);
+  const structuralParagraph1 = withinRange(source.phaseAdjudicationParagraph, 45, 90);
+  const structuralParagraph2 = withinRange(source.momentumParagraph, 35, 80);
+  const primaryPathParagraph = withinRange(source.haloIntegrityParagraph, 40, 75);
+  const alternatePathParagraph = withinRange(source.categorySeparationParagraph, 40, 75);
+  const positioningParagraph1 = withinRange(source.traceabilityParagraph, 40, 80);
+  const positioningParagraph2 = withinRange(source.auditParagraph ?? "", 30, 70);
 
   return {
     header: {
@@ -573,6 +357,22 @@ export function buildExecutiveBriefSpec(
         placement: "page1.meta",
         fallback: "replace-with-default",
       }),
+      briefMode: makeFieldRule(trimToMaxWords(source.briefMode, 6), {
+        required: true,
+        maxWords: 6,
+        tone: "signal",
+        renderStyle: "metaRow",
+        placement: "page1.meta",
+        fallback: "replace-with-default",
+      }),
+      validityLabel: makeFieldRule(trimToMaxWords(source.validityLabel, 4), {
+        required: true,
+        maxWords: 4,
+        tone: "signal",
+        renderStyle: "metaRow",
+        placement: "page1.meta",
+        fallback: "replace-with-default",
+      }),
       haloSnapshotVisual: source.haloSnapshotVisual
         ? makeFieldRule(source.haloSnapshotVisual, {
             required: false,
@@ -601,9 +401,9 @@ export function buildExecutiveBriefSpec(
       }),
     },
     systemStateOverview: {
-      sectionTitle: makeFieldRule("System State Overview", {
+      sectionTitle: makeFieldRule(source.systemStateTitle, {
         required: true,
-        maxWords: 3,
+        maxWords: 4,
         tone: "framing",
         renderStyle: "headline",
         placement: "page1.systemState.title",
@@ -630,17 +430,19 @@ export function buildExecutiveBriefSpec(
         placement: "page1.systemState.p2",
         fallback: "compress",
       }),
-      sidebarInsight: makeFieldRule(trimToMaxWords(systemStateSidebar, 18), {
-        required: false,
-        maxWords: 18,
-        tone: "signal",
-        renderStyle: "signalRow",
-        placement: "page1.systemState.sidebar",
-        fallback: "omit",
-      }),
+      sidebarInsight: source.systemStateSidebar
+        ? makeFieldRule(trimToMaxWords(source.systemStateSidebar, 18), {
+            required: false,
+            maxWords: 18,
+            tone: "signal",
+            renderStyle: "signalRow",
+            placement: "page1.systemState.sidebar",
+            fallback: "omit",
+          })
+        : undefined,
     },
     narrativeDevelopment: {
-      sectionTitle: makeFieldRule("Narrative Development", {
+      sectionTitle: makeFieldRule(source.narrativeTitle, {
         required: true,
         maxWords: 3,
         tone: "framing",
@@ -675,17 +477,19 @@ export function buildExecutiveBriefSpec(
         placement: "page2.narrative.p3",
         fallback: "compress",
       }),
-      sidebarInsight: makeFieldRule(trimToMaxWords("The narrative crossed from signal recognition into operating behavior.", 18), {
-        required: false,
-        maxWords: 18,
-        tone: "signal",
-        renderStyle: "signalRow",
-        placement: "page2.narrative.sidebar",
-        fallback: "omit",
-      }),
+      sidebarInsight: source.narrativeSidebar
+        ? makeFieldRule(trimToMaxWords(source.narrativeSidebar, 18), {
+            required: false,
+            maxWords: 18,
+            tone: "signal",
+            renderStyle: "signalRow",
+            placement: "page2.narrative.sidebar",
+            fallback: "omit",
+          })
+        : undefined,
     },
     structuralInterpretation: {
-      sectionTitle: makeFieldRule("Structural Interpretation", {
+      sectionTitle: makeFieldRule(source.structuralTitle, {
         required: true,
         maxWords: 3,
         tone: "framing",
@@ -711,19 +515,21 @@ export function buildExecutiveBriefSpec(
         placement: "page2.structural.p2",
         fallback: "omit",
       }),
-      sidebarInsight: makeFieldRule(trimToMaxWords("Correlated stress now removes the benefit of isolated fixes.", 18), {
-        required: false,
-        maxWords: 18,
-        tone: "signal",
-        renderStyle: "signalRow",
-        placement: "page2.structural.sidebar",
-        fallback: "omit",
-      }),
+      sidebarInsight: source.structuralSidebar
+        ? makeFieldRule(trimToMaxWords(source.structuralSidebar, 18), {
+            required: false,
+            maxWords: 18,
+            tone: "signal",
+            renderStyle: "signalRow",
+            placement: "page2.structural.sidebar",
+            fallback: "omit",
+          })
+        : undefined,
     },
     forwardOrientation: {
-      sectionTitle: makeFieldRule("Forward Orientation", {
+      sectionTitle: makeFieldRule(source.haloTitle, {
         required: true,
-        maxWords: 3,
+        maxWords: 4,
         tone: "framing",
         renderStyle: "headline",
         placement: "page3.forward.title",
@@ -733,7 +539,7 @@ export function buildExecutiveBriefSpec(
         required: true,
         minWords: 40,
         maxWords: 75,
-        tone: "predictive",
+        tone: "analytical",
         renderStyle: "paragraph",
         placement: "page3.forward.p1",
         fallback: "compress",
@@ -742,22 +548,24 @@ export function buildExecutiveBriefSpec(
         required: true,
         minWords: 40,
         maxWords: 75,
-        tone: "predictive",
+        tone: "analytical",
         renderStyle: "paragraph",
         placement: "page3.forward.p2",
         fallback: "compress",
       }),
-      sidebarInsight: makeFieldRule(trimToMaxWords("Only visible behavioral reopening widens flexibility from here.", 18), {
-        required: false,
-        maxWords: 18,
-        tone: "signal",
-        renderStyle: "signalRow",
-        placement: "page3.forward.sidebar",
-        fallback: "omit",
-      }),
+      sidebarInsight: source.haloSidebar
+        ? makeFieldRule(trimToMaxWords(source.haloSidebar, 18), {
+            required: false,
+            maxWords: 18,
+            tone: "signal",
+            renderStyle: "signalRow",
+            placement: "page3.forward.sidebar",
+            fallback: "omit",
+          })
+        : undefined,
     },
     strategicPositioning: {
-      sectionTitle: makeFieldRule("Strategic Positioning", {
+      sectionTitle: makeFieldRule(source.traceabilityTitle, {
         required: true,
         maxWords: 3,
         tone: "framing",
@@ -769,61 +577,74 @@ export function buildExecutiveBriefSpec(
         required: true,
         minWords: 40,
         maxWords: 80,
-        tone: "directive",
+        tone: "analytical",
         renderStyle: "paragraph",
         placement: "page3.positioning.p1",
         fallback: "compress",
       }),
-      positioningParagraph2: makeFieldRule(positioningParagraph2, {
-        required: false,
-        minWords: 30,
-        maxWords: 70,
-        tone: "directive",
-        renderStyle: "paragraph",
-        placement: "page3.positioning.p2",
-        fallback: "omit",
-      }),
-      priorityAreas: makeFieldRule(source.priorityAreas.slice(0, 4).map((item) => trimToMaxWords(item, 10)), {
-        required: false,
-        minItems: 2,
-        maxItems: 4,
-        maxWords: 10,
-        tone: "directive",
-        renderStyle: "bulletList",
-        placement: "page3.positioning.support.priorityAreas",
-        fallback: "omit",
-      }),
-      sensitivityPoints: makeFieldRule(source.sensitivityPoints.slice(0, 4).map((item) => trimToMaxWords(item, 10)), {
-        required: false,
-        minItems: 2,
-        maxItems: 4,
-        maxWords: 10,
-        tone: "analytical",
-        renderStyle: "bulletList",
-        placement: "page3.positioning.support.sensitivityPoints",
-        fallback: "omit",
-      }),
-      visibilityNeeds: makeFieldRule(source.visibilityNeeds.slice(0, 4).map((item) => trimToMaxWords(item, 10)), {
-        required: false,
-        minItems: 2,
-        maxItems: 4,
-        maxWords: 10,
-        tone: "signal",
-        renderStyle: "bulletList",
-        placement: "page3.positioning.support.visibilityNeeds",
-        fallback: "omit",
-      }),
-      sidebarInsight: makeFieldRule(trimToMaxWords("Reversibility now protects value better than speed.", 18), {
-        required: false,
-        maxWords: 18,
-        tone: "signal",
-        renderStyle: "signalRow",
-        placement: "page3.positioning.sidebar",
-        fallback: "omit",
-      }),
+      positioningParagraph2: positioningParagraph2
+        ? makeFieldRule(positioningParagraph2, {
+            required: false,
+            minWords: 30,
+            maxWords: 70,
+            tone: "analytical",
+            renderStyle: "paragraph",
+            placement: "page3.positioning.p2",
+            fallback: "omit",
+          })
+        : undefined,
+      priorityAreas:
+        source.validityConditions.length > 0
+          ? makeFieldRule(source.validityConditions.slice(0, 4).map((item) => trimToMaxWords(item, 10)), {
+              required: false,
+              minItems: 2,
+              maxItems: 4,
+              maxWords: 10,
+              tone: "analytical",
+              renderStyle: "bulletList",
+              placement: "page3.positioning.support.priorityAreas",
+              fallback: "omit",
+            })
+          : undefined,
+      sensitivityPoints:
+        source.failureModes.length > 0
+          ? makeFieldRule(source.failureModes.slice(0, 4).map((item) => trimToMaxWords(item, 10)), {
+              required: false,
+              minItems: 1,
+              maxItems: 4,
+              maxWords: 10,
+              tone: "analytical",
+              renderStyle: "bulletList",
+              placement: "page3.positioning.support.sensitivityPoints",
+              fallback: "omit",
+            })
+          : undefined,
+      visibilityNeeds:
+        source.traceabilityMarkers.length > 0
+          ? makeFieldRule(source.traceabilityMarkers.slice(0, 4).map((item) => trimToMaxWords(item, 10)), {
+              required: false,
+              minItems: 2,
+              maxItems: 4,
+              maxWords: 10,
+              tone: "signal",
+              renderStyle: "bulletList",
+              placement: "page3.positioning.support.visibilityNeeds",
+              fallback: "omit",
+            })
+          : undefined,
+      sidebarInsight: source.traceabilitySidebar
+        ? makeFieldRule(trimToMaxWords(source.traceabilitySidebar, 18), {
+            required: false,
+            maxWords: 18,
+            tone: "signal",
+            renderStyle: "signalRow",
+            placement: "page3.positioning.sidebar",
+            fallback: "omit",
+          })
+        : undefined,
     },
     evidenceBase: {
-      sectionTitle: makeFieldRule("Evidence Base", {
+      sectionTitle: makeFieldRule(source.evidenceTitle, {
         required: true,
         maxWords: 2,
         tone: "framing",
@@ -831,20 +652,14 @@ export function buildExecutiveBriefSpec(
         placement: "page3.evidence.title",
         fallback: "replace-with-default",
       }),
-      intro: makeFieldRule(
-        trimToMaxWords(
-          "These anchors confirm that the present read is grounded in active operating signals rather than narrative drift.",
-          40,
-        ),
-        {
-          required: true,
-          maxWords: 40,
-          tone: "explanatory",
-          renderStyle: "paragraph",
-          placement: "page3.evidence.intro",
-          fallback: "compress",
-        },
-      ),
+      intro: makeFieldRule(trimToMaxWords(source.evidenceIntro, 40), {
+        required: true,
+        maxWords: 40,
+        tone: "explanatory",
+        renderStyle: "paragraph",
+        placement: "page3.evidence.intro",
+        fallback: "compress",
+      }),
       items: makeFieldRule(source.evidenceSignals.slice(0, 6), {
         required: true,
         minItems: 3,
@@ -872,6 +687,8 @@ export function buildExecutiveBriefFieldPack(spec: ExecutiveBriefSpec): Executiv
       { label: "Bounded World", value: spec.header.boundedWorld.value },
       { label: "As Of", value: spec.header.asOfLabel.value },
       { label: "Phase", value: spec.header.currentPhase.value },
+      { label: "Mode", value: spec.header.briefMode.value },
+      { label: "Validity", value: spec.header.validityLabel.value },
     ],
     pageModel: {
       page1: ["header", "systemStateOverview"],
@@ -890,6 +707,8 @@ export function mapExecutiveBriefSpecToRenderedSections(
       boundedWorld: spec.header.boundedWorld.value,
       asOfLabel: spec.header.asOfLabel.value,
       currentPhase: spec.header.currentPhase.value,
+      briefMode: spec.header.briefMode.value,
+      validityLabel: spec.header.validityLabel.value,
       executiveHeadline: spec.header.executiveHeadline.value,
       executiveSubline: spec.header.executiveSubline.value,
     },

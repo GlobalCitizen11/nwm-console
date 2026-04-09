@@ -58,7 +58,7 @@ export function AutoDemoPanel({
       <section className="surface-panel fixed bottom-5 right-5 z-40 w-[320px]">
         <div className="flex items-center justify-between gap-3">
           <div className="min-w-0">
-            <p className="section-kicker">Automated Demo</p>
+            <p className="section-kicker">Guided Walkthrough</p>
             <p className="truncate text-sm font-medium text-ink">
               {stepTitle ?? "Walkthrough running"}
             </p>
@@ -83,10 +83,10 @@ export function AutoDemoPanel({
     <section className="surface-panel fixed bottom-5 right-5 z-40 max-w-md">
       <div className="flex items-start justify-between gap-3">
         <div>
-          <p className="section-kicker">Automated Demo</p>
-          <h3 className="section-title">{stepTitle ?? "Walkthrough controller"}</h3>
+          <p className="section-kicker">Guided Walkthrough</p>
+          <h3 className="section-title">{stepTitle ?? "Walkthrough controls"}</h3>
           <p className="mt-2 text-sm text-muted">
-            {stepDescription ?? "Run a guided, narrated walkthrough of the console and move through the presentation at your own pace."}
+            {stepDescription ?? "Move through the scripted walkthrough at your own pace, or let the active sequence advance automatically."}
           </p>
         </div>
         <div className="flex items-center gap-2">
@@ -109,15 +109,15 @@ export function AutoDemoPanel({
 
       <div className="mt-4 grid gap-3 md:grid-cols-2">
         <label className="control-stack">
-          <span className="control-label">Demo script</span>
+          <span className="control-label">Walkthrough script</span>
           <select className="control-input" value={scriptId} onChange={(event) => onScriptChange(event.target.value)}>
-            <option value="executive">Executive path</option>
+            <option value="executive">Executive walkthrough</option>
             <option value="full">Full walkthrough</option>
-            <option value="commercial">Commercial pitch</option>
+            <option value="commercial">External overview</option>
           </select>
         </label>
         <label className="control-stack">
-          <span className="control-label">Demo speed</span>
+          <span className="control-label">Pace</span>
           <select className="control-input" value={speed} onChange={(event) => onSpeedChange(event.target.value)}>
             <option value="slow">Slow</option>
             <option value="standard">Standard</option>
@@ -134,7 +134,7 @@ export function AutoDemoPanel({
       </div>
 
       <div className="mt-4 flex flex-wrap gap-2">
-        {!active ? <button className="action-button" onClick={onStart}>Start Demo</button> : null}
+        {!active ? <button className="action-button" onClick={onStart}>Start Walkthrough</button> : null}
         {active && !paused ? <button className="action-button" onClick={onPause}>Pause</button> : null}
         {active && paused ? <button className="action-button" onClick={onResume}>Resume</button> : null}
         <button className="action-button" onClick={onStepBack} disabled={stepIndex <= 0}>
